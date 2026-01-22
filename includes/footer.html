@@ -1,26 +1,27 @@
-<footer class="site-footer site-footer-headerlike">
-  <div class="site-header-inner footer-inner">
+<footer class="site-footer footer-structured">
 
-    <!-- LEFT : LOGO + DESCRIPTION -->
+  <!-- MAIN FOOTER ROW -->
+  <div class="footer-main container">
+
+    <!-- LEFT : BRAND -->
     <div class="footer-brand">
-      <!-- LOGO (reuse same SVG/text style as header) -->
-      <span class="footer-logo">InstMates</span>
-
-      <span class="footer-desc">
-        Instrument &amp; Analyzer Technicians Knowledge Platform
-      </span>
+      <div class="footer-logo">InstMates</div>
+      <div class="footer-desc">
+        Instrument & Analyzer Technicians Knowledge Platform
+      </div>
     </div>
 
     <!-- RIGHT : LEGAL -->
     <div class="footer-legal">
-      <a href="legal.html">Safety &amp; Disclaimer</a>
+      <a href="legal.html">Safety & Disclaimer</a>
       <span class="sep">|</span>
       <a href="legal.html">Legal</a>
     </div>
 
   </div>
 
-  <div class="footer-copy">
+  <!-- COPYRIGHT ROW -->
+  <div class="footer-bottom">
     © <span id="footerYear"></span> InstMates. All rights reserved.
   </div>
 
@@ -28,4 +29,5 @@
     document.getElementById("footerYear").textContent =
       new Date().getFullYear();
   </script>
+
 </footer>
