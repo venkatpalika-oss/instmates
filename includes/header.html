@@ -8,7 +8,7 @@
       <svg class="logo-svg"
            width="220"
            height="44"
-           viewBox="0 0 440 88"
+           viewBox="440 88"
            xmlns="http://www.w3.org/2000/svg"
            aria-label="InstMates Logo"
            role="img">
@@ -71,18 +71,35 @@
 
     </a>
 
-  <!-- NAVIGATION -->
-<nav class="main-nav">
-  <a href="index.html">Home</a>
-  <a href="explore.html">Explore</a>
-  <a href="technicians.html">Technicians</a>
-  <a href="community.html">Community</a>
-  <a href="knowledge.html">Knowledge</a>
-  <a href="case-studies.html">Case Studies</a>
-  <a href="about.html">About</a>
-  <a href="login.html" class="nav-cta">Login</a>
-</nav>
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
 
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="technicians.html">Technicians</a>
+      <a href="community.html">Community</a>
+      <a href="knowledge.html">Knowledge</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="about.html">About</a>
+
+      <!-- ================= AUTH NAV (ADDITIVE ONLY) ================= -->
+
+      <!-- Logged OUT -->
+      <a href="login.html" class="nav-cta auth-out">
+        Login
+      </a>
+
+      <!-- Logged IN -->
+      <span class="auth-in" style="display:none;">
+        <a href="profile.html" class="nav-cta">
+          Profile
+        </a>
+        <a href="#" class="nav-logout" onclick="logoutUser()">
+          Logout
+        </a>
+      </span>
+
+    </nav>
 
   </div>
 </header>
