@@ -689,3 +689,41 @@ a:hover{
 .site-footer a:hover{
   text-decoration: underline;
 }
+/* =========================================================
+   Global Metallic Blue Theme Override (SAFE)
+   Applies to ALL pages
+========================================================= */
+
+/* Page background */
+body{
+  background: #e8eef4;
+  color: #0b3c5d;
+}
+
+/* Panels (sections) */
+.panel{
+  background: #f1f6fb;
+  border: 1px solid #c7d4e2;
+}
+
+/* Cards */
+.card{
+  background: #f1f6fb;
+  border: 1px solid #c7d4e2;
+}
+
+/* Muted text tuning */
+.muted{
+  color: #4b637a;
+}
+
+/* Footer background */
+.site-footer{
+  background: #e3ebf3;
+  border-top: 1px solid #c7d4e2;
+}
+
+/* Optional: hero separation */
+.hero{
+  border-bottom: 1px solid #c7d4e2;
+}
