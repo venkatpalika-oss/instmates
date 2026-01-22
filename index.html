@@ -30,15 +30,13 @@
     <h1>InstMates</h1>
 
     <p class="hero-tagline">
-      Share Technology · Learn Techniques · Grow Together
+      The social network for Instrument & Analyzer Technicians
     </p>
 
     <p class="hero-sub">
-      A professional platform built <strong>by</strong> and <strong>for</strong>
-      instrument and process analyzer technicians.
+      Share field experience · Learn from peers · Grow your professional credibility
     </p>
 
-    <!-- 🔽 CHANGED: button opens modal instead of redirect -->
     <button class="btn btn-hero auth-out" onclick="openJoinModal()">
       Join InstMates
     </button>
@@ -52,6 +50,53 @@
 
 <!-- ================= MAIN ================= -->
 <main class="container">
+
+  <!-- ================= ACTIVITY FEED ================= -->
+  <section class="panel">
+    <h2>What Technicians Are Discussing</h2>
+
+    <div class="feed">
+
+      <a href="knowledge/gc-basics.html" class="post-link">
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar small"></div>
+            <div>
+              <strong>Rahul</strong><br>
+              <span class="muted">Analyzer Engineer</span>
+            </div>
+          </div>
+          <p class="muted">
+            GC baseline drifting during high humidity.
+            Moisture ingress in sample line — not detector failure.
+          </p>
+          <div class="post-actions">
+            ❤️ 14 &nbsp; 💬 5
+          </div>
+        </div>
+      </a>
+
+      <a href="knowledge/cems-so2-zero.html" class="post-link">
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar small"></div>
+            <div>
+              <strong>Ahmed</strong><br>
+              <span class="muted">Instrument Technician</span>
+            </div>
+          </div>
+          <p class="muted">
+            CEMS SO₂ zero instability after shutdown.
+            Correct warm-up and zero sequence solved it.
+          </p>
+          <div class="post-actions">
+            ❤️ 21 &nbsp; 💬 8
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
 
   <!-- WHY -->
   <section class="panel">
@@ -93,27 +138,23 @@
 
   </section>
 
-  <!-- PROOF / CREDIBILITY -->
+  <!-- PROOF -->
   <section class="panel">
     <h2>Built on Real Field Experience</h2>
 
     <div class="grid grid-3">
-
       <div class="card">
         <h3>100%</h3>
         <p class="muted">Technician-focused content</p>
       </div>
-
       <div class="card">
         <h3>0%</h3>
         <p class="muted">Recruiter noise & marketing theory</p>
       </div>
-
       <div class="card">
         <h3>24×7</h3>
         <p class="muted">Practical reference availability</p>
       </div>
-
     </div>
   </section>
 
@@ -133,55 +174,27 @@
       </div>
 
       <div class="card">
+        <svg viewBox="0 0 420 200" width="100%"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-label="Learning flow">
 
-<svg viewBox="0 0 420 200" width="100%"
-     xmlns="http://www.w3.org/2000/svg"
-     aria-label="Learning flow">
+          <rect x="20" y="70" width="90" height="50" rx="8"
+                fill="#ecfeff" stroke="#0284c7" stroke-width="3"/>
+          <text x="65" y="100" text-anchor="middle">Learn</text>
 
-  <rect x="20" y="70" width="90" height="50" rx="8"
-        fill="#ecfeff" stroke="#0284c7" stroke-width="3"/>
-  <text x="65" y="100" text-anchor="middle">Learn</text>
+          <rect x="165" y="70" width="90" height="50" rx="8"
+                fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
+          <text x="210" y="100" text-anchor="middle">Apply</text>
 
-  <rect x="165" y="70" width="90" height="50" rx="8"
-        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
-  <text x="210" y="100" text-anchor="middle">Apply</text>
+          <rect x="310" y="70" width="90" height="50" rx="8"
+                fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+          <text x="355" y="100" text-anchor="middle">Share</text>
 
-  <rect x="310" y="70" width="90" height="50" rx="8"
-        fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
-  <text x="355" y="100" text-anchor="middle">Share</text>
-
-  <line x1="110" y1="95" x2="165" y2="95"
-        stroke="#64748b" stroke-width="3"/>
-  <line x1="255" y1="95" x2="310" y2="95"
-        stroke="#64748b" stroke-width="3"/>
-
-</svg>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- TECHNICIAN VOICES -->
-  <section class="panel">
-    <h2>From the Field</h2>
-
-    <div class="grid grid-2">
-
-      <div class="card">
-        <p class="muted">
-          “Finally a platform where GC problems are explained
-          the way they actually happen in the plant.”
-        </p>
-        <strong>— Analyzer Technician</strong>
-      </div>
-
-      <div class="card">
-        <p class="muted">
-          “InstMates feels like talking to a senior technician,
-          not reading a manual.”
-        </p>
-        <strong>— Instrument Engineer</strong>
+          <line x1="110" y1="95" x2="165" y2="95"
+                stroke="#64748b" stroke-width="3"/>
+          <line x1="255" y1="95" x2="310" y2="95"
+                stroke="#64748b" stroke-width="3"/>
+        </svg>
       </div>
 
     </div>
@@ -190,7 +203,6 @@
   <!-- ROADMAP -->
   <section class="panel">
     <h2>What’s Coming Next</h2>
-
     <ul class="checklist">
       <li>Analyzer-specific hubs (GC, FTIR, CEMS)</li>
       <li>Reputation & contribution scoring</li>
@@ -200,25 +212,9 @@
     </ul>
   </section>
 
-  <!-- FINAL CTA -->
-  <section class="panel">
-    <h2>Start Learning Today</h2>
-    <p class="muted">
-      Whether you are in operations, maintenance, commissioning,
-      or shutdown support — InstMates is built for you.
-    </p>
-    <a href="knowledge.html" class="btn btn-hero">
-      Go to Knowledge Hub →
-    </a>
-    <p class="muted" style="margin-top:10px;font-size:.9rem;">
-      By using InstMates, you agree to our
-      <a href="legal.html">Safety, Disclaimer & Legal Terms</a>.
-    </p>
-  </section>
-
 </main>
 
-<!-- ================= JOIN MODAL (NEW) ================= -->
+<!-- ================= JOIN MODAL ================= -->
 <div id="joinModal" class="modal-overlay">
   <div class="modal">
     <button class="modal-close" onclick="closeJoinModal()">×</button>
@@ -237,12 +233,8 @@
     </ul>
 
     <div class="modal-actions">
-      <a href="register.html" class="btn btn-primary">
-        Create Account
-      </a>
-      <button class="btn btn-ghost" onclick="closeJoinModal()">
-        Maybe Later
-      </button>
+      <a href="register.html" class="btn btn-primary">Create Account</a>
+      <button class="btn btn-ghost" onclick="closeJoinModal()">Maybe Later</button>
     </div>
   </div>
 </div>
@@ -253,7 +245,7 @@
 <!-- ================= INCLUDES ================= -->
 <script src="assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- ================= MODAL SCRIPT (NEW) ================= -->
+<!-- ================= MODAL SCRIPT ================= -->
 <script>
   function openJoinModal(){
     document.getElementById('joinModal').classList.add('active');
