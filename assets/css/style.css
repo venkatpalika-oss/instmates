@@ -863,3 +863,70 @@ a:hover{
   box-shadow: 0 2px 4px rgba(146,64,14,.4);
   transform: translateY(0);
 }
+/* =========================================================
+   FINAL FOOTER (STRUCTURED, HEADER-COMPATIBLE)
+========================================================= */
+
+.footer-structured{
+  background: #4b6f88;   /* same family as header */
+  color: #ffffff;
+}
+
+/* Main content row */
+.footer-main{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 16px 12px;
+}
+
+/* Brand block */
+.footer-brand{
+  max-width: 520px;
+}
+
+.footer-logo{
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+
+.footer-desc{
+  font-size: .85rem;
+  color: #e3edf6;
+  margin-top: 4px;
+}
+
+/* Legal links */
+.footer-legal a{
+  color: #eaf2f8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-legal a:hover{
+  text-decoration: underline;
+}
+
+.footer-legal .sep{
+  margin: 0 8px;
+  opacity: .6;
+}
+
+/* Bottom copyright row */
+.footer-bottom{
+  text-align: center;
+  font-size: .78rem;
+  color: #d7e3ed;
+  padding: 6px 0 10px;
+  border-top: 1px solid rgba(255,255,255,.25);
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .footer-main{
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
