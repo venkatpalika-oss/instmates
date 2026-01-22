@@ -4,54 +4,126 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>InstMates | Instrument Technicians Network</title>
-  <meta name="description"
-        content="InstMates is a professional network for instrument technicians to share field skills, learn techniques, build credible work logs, and connect with industry." />
+  <title>InstMates | Community for Instrument & Analyzer Technicians</title>
 
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="description"
+        content="InstMates is a professional community platform for instrument and analyzer technicians to share knowledge, learn techniques, and grow together." />
+
+  <!-- GitHub Pages base -->
+  <base href="/instmates/">
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
 </head>
 
-<body>
+<body data-page="home">
 
-  <!-- ================= GLOBAL HEADER ================= -->
-  <header class="site-header">
-    <div class="header-inner">
+<!-- ================= HEADER INCLUDE ================= -->
+<div id="siteHeader"></div>
 
-      <!-- BRAND -->
-      <div class="brand">
-        <a href="index.html" class="brand-link" aria-label="InstMates Home">
-          <span class="brand-name">InstMates</span>
-          <span class="brand-tag">Share Skills. Learn Techniques.</span>
-        </a>
-      </div>
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-inner container">
+    <h1>InstMates</h1>
+    <p class="hero-tagline">
+      Share Technology · Learn Techniques · Grow Together
+    </p>
 
-      <!-- MAIN NAV -->
-      <nav class="main-nav" aria-label="Primary Navigation">
-        <a href="technicians.html">Technicians</a>
-        <a href="worklogs.html">Work Logs</a>
-        <a href="community.html">Community</a>
-        <a href="knowledge.html">Knowledge</a>
-      </nav>
+    <p class="hero-sub">
+      A dedicated professional network for <strong>instrumentation</strong> and
+      <strong>process analyzer</strong> technicians.
+    </p>
 
-      <!-- USER ACTIONS -->
-      <div class="user-actions">
-        <a href="login.html" class="btn btn-ghost">Login</a>
-        <a href="register.html" class="btn btn-primary">Create Profile</a>
-      </div>
-
+    <div class="hero-actions">
+      <a href="register.html" class="btn btn-primary">Join the Community</a>
+      <a href="explore.html" class="btn btn-ghost">Explore Knowledge</a>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- ================= HOME ================= -->
-  <main class="container">
+<!-- ================= MAIN ================= -->
+<main class="container">
 
-    <!-- HERO -->
-    <section class="hero" aria-label="Hero">
-      <div class="hero-grid">
+  <!-- INTRO PANEL -->
+  <section class="panel">
+    <h2>Why InstMates?</h2>
+    <p class="muted">
+      Instrument and analyzer technicians often rely on scattered manuals,
+      WhatsApp groups, and trial-and-error learning.
+      InstMates brings everything together in one professional platform.
+    </p>
+  </section>
 
-        <div>
-          <h1>Professional Network for Instrument Technicians</h1>
-          <p>
-            Build a credible technician profile using real work logs — calibration, loop checks,
-            shutdown experience, troubleshooting
+  <!-- FEATURE GRID -->
+  <section class="grid grid-3">
 
+    <div class="card">
+      <h3>📘 Knowledge Sharing</h3>
+      <p>
+        Share real field experience, troubleshooting methods,
+        calibration techniques, and best practices.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🛠 Technician-Focused</h3>
+      <p>
+        Built specifically for instrument, analyzer, CEMS,
+        and control system technicians.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🤝 Professional Network</h3>
+      <p>
+        Connect with peers across refineries, power plants,
+        fertilizers, steel, cement, and oil & gas industries.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- IMAGE SECTION -->
+  <section class="panel">
+    <h2>Built From the Field</h2>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <img src="assets/images/field-instrumentation.jpg"
+             alt="Industrial instrumentation and analyzer field work">
+      </div>
+
+      <div class="card">
+        <p class="muted">
+          InstMates is not theoretical.  
+          It is designed by technicians, for technicians —
+          focusing on real alarms, real failures, and real solutions
+          seen in day-to-day plant operations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUTURE MODULES -->
+  <section class="panel">
+    <h2>What’s Coming Next</h2>
+
+    <ul class="checklist">
+      <li>Analyzer troubleshooting decision trees</li>
+      <li>Calibration step-by-step guides</li>
+      <li>Failure case studies</li>
+      <li>Vendor-specific analyzer hubs</li>
+      <li>Technician profiles & reputation</li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER INCLUDE ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
