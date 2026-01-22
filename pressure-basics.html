@@ -2,15 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pressure Measurement Basics | InstMates Field Instrumentation</title>
+  <title>Pressure Basics | Field Instrumentation | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Pressure measurement basics for field instrumentation technicians. Learn gauge, absolute, and differential pressure with clear field logic and inline SVG diagrams." />
+        content="Pressure measurement basics for field instrumentation technicians. Learn absolute, gauge, differential pressure with real plant examples." />
 
   <base href="/instmates/" />
 
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    .info-grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      margin-top:16px;
+    }
+    .info-box{
+      background:#ffffff;
+      border:1px solid rgba(0,0,0,0.12);
+      border-radius:16px;
+      padding:18px;
+    }
+    .info-box h3{
+      margin-top:0;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+    }
+    th,td{
+      border:1px solid rgba(0,0,0,0.12);
+      padding:10px;
+      text-align:left;
+      vertical-align:top;
+    }
+    th{
+      background:#eef6fb;
+      font-weight:700;
+    }
+    .action-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      display:inline-block;
+    }
+    .btn-primary{
+      background:#0b3c5d;
+      color:#ffffff;
+    }
+    .btn-ghost{
+      border:2px solid #0b3c5d;
+      color:#0b3c5d;
+    }
+  </style>
 </head>
 
 <body data-page="pressure-basics">
@@ -30,99 +84,121 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Pressure Measurement – Basics</h2>
+  <h2>Pressure Basics – What Every Technician Must Know</h2>
 
   <p class="muted">
-    Pressure is one of the most fundamental measurements in any plant.
-    Understanding the **type of pressure being measured** is critical before
-    selecting or troubleshooting a pressure transmitter.
+    Pressure measurement is the foundation of level, flow, and many safety systems.
+    Understanding pressure types correctly prevents wrong installation,
+    wrong range selection, and false alarms.
   </p>
 </section>
 
-<!-- ================= TYPES ================= -->
+<!-- ================= TYPES OF PRESSURE ================= -->
 <section class="panel">
-  <h3>Types of Pressure Used in Plants</h3>
+  <h3>Types of Pressure</h3>
 
-  <p class="muted">
-    In field instrumentation, pressure is generally classified into three types:
-    <b>Gauge</b>, <b>Absolute</b>, and <b>Differential</b>.
-  </p>
+  <div class="info-grid">
 
-  <div class="svg-wrap">
+    <div class="info-box">
+      <h3>Absolute Pressure</h3>
+      <p>
+        Measured relative to a perfect vacuum.
+      </p>
+      <ul>
+        <li>Includes atmospheric pressure</li>
+        <li>Used in vacuum and low-pressure systems</li>
+        <li>Symbol: P<sub>abs</sub></li>
+      </ul>
+    </div>
 
-<svg viewBox="0 0 900 360"
-     xmlns="http://www.w3.org/2000/svg"
-     role="img"
-     aria-label="Gauge Absolute and Differential Pressure Diagram">
+    <div class="info-box">
+      <h3>Gauge Pressure</h3>
+      <p>
+        Measured relative to atmospheric pressure.
+      </p>
+      <ul>
+        <li>Most common plant measurement</li>
+        <li>Zero at atmosphere</li>
+        <li>Symbol: P<sub>g</sub></li>
+      </ul>
+    </div>
 
-  <style>
-    .box{fill:#ffffff;stroke:#0b3c5d;stroke-width:2}
-    .atm{fill:#eef6fb;stroke:#2563eb;stroke-width:2}
-    .proc{fill:#fff7ed;stroke:#92400e;stroke-width:2}
-    .txt{font:14px Arial;fill:#222}
-    .title{font:16px Arial;font-weight:700}
-  </style>
-
-  <!-- ATM -->
-  <rect x="360" y="40" width="180" height="50" rx="8" class="atm"/>
-  <text x="450" y="70" text-anchor="middle" class="txt">Atmospheric Pressure</text>
-
-  <!-- GAUGE -->
-  <rect x="60" y="130" width="220" height="120" rx="12" class="box"/>
-  <text x="170" y="160" text-anchor="middle" class="title">Gauge Pressure</text>
-  <text x="170" y="190" text-anchor="middle" class="txt">Measured relative to</text>
-  <text x="170" y="210" text-anchor="middle" class="txt">atmosphere</text>
-
-  <!-- ABSOLUTE -->
-  <rect x="340" y="130" width="220" height="120" rx="12" class="box"/>
-  <text x="450" y="160" text-anchor="middle" class="title">Absolute Pressure</text>
-  <text x="450" y="190" text-anchor="middle" class="txt">Measured from</text>
-  <text x="450" y="210" text-anchor="middle" class="txt">perfect vacuum</text>
-
-  <!-- DIFFERENTIAL -->
-  <rect x="620" y="130" width="220" height="120" rx="12" class="box"/>
-  <text x="730" y="160" text-anchor="middle" class="title">Differential Pressure</text>
-  <text x="730" y="190" text-anchor="middle" class="txt">Difference between</text>
-  <text x="730" y="210" text-anchor="middle" class="txt">two pressures</text>
-
-</svg>
+    <div class="info-box">
+      <h3>Differential Pressure</h3>
+      <p>
+        Difference between two pressures.
+      </p>
+      <ul>
+        <li>Used for flow, level, filter choking</li>
+        <li>Measured using two impulse lines</li>
+        <li>Symbol: ΔP</li>
+      </ul>
+    </div>
 
   </div>
 </section>
 
-<!-- ================= FIELD EXPLANATION ================= -->
+<!-- ================= PLANT EXAMPLES ================= -->
 <section class="panel">
-  <h3>Field Explanation (Technician View)</h3>
+  <h3>Real Plant Examples</h3>
 
-  <ul class="muted">
-    <li><b>Gauge pressure</b> is used when atmospheric pressure is not critical (most plant services).</li>
-    <li><b>Absolute pressure</b> is required for vacuum services and gas calculations.</li>
-    <li><b>Differential pressure</b> is widely used for flow and level measurement.</li>
-    <li>Wrong pressure type selection leads to wrong readings even if the transmitter is healthy.</li>
-  </ul>
+  <table>
+    <tr>
+      <th>Application</th>
+      <th>Pressure Type</th>
+      <th>Reason</th>
+    </tr>
+    <tr>
+      <td>Storage Tank</td>
+      <td>Gauge</td>
+      <td>Open to atmosphere</td>
+    </tr>
+    <tr>
+      <td>Reactor Vessel</td>
+      <td>Absolute / Gauge</td>
+      <td>Depends on vacuum presence</td>
+    </tr>
+    <tr>
+      <td>Orifice Flow</td>
+      <td>Differential</td>
+      <td>Flow ∝ ΔP</td>
+    </tr>
+    <tr>
+      <td>Filter Monitoring</td>
+      <td>Differential</td>
+      <td>Indicates clogging</td>
+    </tr>
+  </table>
 </section>
 
 <!-- ================= COMMON MISTAKES ================= -->
 <section class="panel">
-  <h3>Common Field Mistakes</h3>
+  <h3>Common Beginner Mistakes</h3>
 
-  <ul class="muted">
-    <li>Using gauge transmitters for vacuum service</li>
-    <li>Ignoring atmospheric reference vent blockage</li>
-    <li>Confusing DP pressure with gauge pressure</li>
-    <li>Wrong impulse line connections on DP transmitters</li>
+  <ul>
+    <li>Using gauge transmitter where absolute is required</li>
+    <li>Wrong pressure range selection</li>
+    <li>Ignoring atmospheric reference</li>
+    <li>Confusing DP with gauge pressure</li>
   </ul>
 </section>
 
-<!-- ================= KEY RULE ================= -->
+<!-- ================= GOLDEN RULE ================= -->
 <section class="panel">
   <h3>Golden Rule</h3>
 
   <p class="muted">
-    Always identify the **pressure reference** before selecting or troubleshooting
-    a pressure transmitter. Most pressure problems are selection or installation issues,
-    not transmitter failures.
+    If you don’t understand what the pressure reference is,
+    you don’t understand the measurement.
   </p>
+</section>
+
+<!-- ================= NAVIGATION ================= -->
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost" href="field-pressure.html">← Back to Pressure Overview</a>
+    <a class="btn btn-primary" href="pressure-transmitter.html">Next: Pressure Transmitters →</a>
+  </div>
 </section>
 
 </main>
