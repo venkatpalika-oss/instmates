@@ -118,6 +118,114 @@
   </div>
 </section>
 
+<!-- ================= SVG 1A : PURGE vs INJECT ================= -->
+<section class="panel">
+  <h3>Sampling Valve – Purge vs Inject Operation</h3>
+
+  <p class="muted">
+    The GC sampling valve operates in two modes. During PURGE, the sample
+    continuously refreshes the loop and vents. During INJECT, the valve
+    switches and the carrier gas pushes the loop contents into the column.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 960 360"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Sampling Valve Purge vs Inject Animation">
+
+  <style>
+    .pipe { stroke:#64748b; stroke-width:6; fill:none }
+    .sample { stroke:#2563eb; stroke-width:5; fill:none }
+    .carrier { stroke:#16a34a; stroke-width:5; fill:none }
+    .active { stroke-dasharray:8 6; animation: flow 1s linear infinite }
+    .valve { fill:#334155 }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .mode { font-size:16px; font-weight:700; fill:#0b3c5d }
+
+    @keyframes flow {
+      from { stroke-dashoffset:14 }
+      to   { stroke-dashoffset:0 }
+    }
+  </style>
+
+  <!-- MODE TEXT -->
+  <text x="720" y="40" class="mode">
+    PURGE
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="4s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <text x="720" y="40" class="mode">
+    INJECT
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="4s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <!-- SAMPLE IN -->
+  <line x1="60" y1="140" x2="300" y2="140" class="pipe"/>
+  <text x="60" y="120" class="label">Sample In</text>
+
+  <!-- PURGE / VENT -->
+  <line x1="300" y1="140" x2="560" y2="140" class="pipe"/>
+  <line x1="300" y1="140" x2="560" y2="140"
+        class="sample active">
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="4s"
+             repeatCount="indefinite"/>
+  </line>
+  <text x="470" y="120" class="label">Vent / Purge</text>
+
+  <!-- SAMPLE LOOP -->
+  <rect x="300" y="180" width="160" height="50"
+        rx="25" ry="25"
+        fill="none" stroke="#475569" stroke-width="6"/>
+  <text x="330" y="170" class="label">Sample Loop</text>
+
+  <!-- CARRIER GAS -->
+  <line x1="60" y1="260" x2="300" y2="260" class="pipe"/>
+  <text x="60" y="240" class="label">Carrier Gas</text>
+
+  <!-- TO GC COLUMN -->
+  <line x1="460" y1="205" x2="900" y2="205" class="pipe"/>
+  <text x="760" y="185" class="label">To GC Column</text>
+
+  <!-- INJECT FLOW -->
+  <path d="M60 260 H300
+           C340 260 340 205 380 205
+           H460 H900"
+        class="carrier active">
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="4s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- SAMPLE INTO LOOP -->
+  <path d="M60 140 H300
+           C340 140 340 205 380 205"
+        class="sample active">
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="4s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- VALVE BODY -->
+  <circle cx="300" cy="205" r="30" class="valve"/>
+  <text x="260" y="255" class="label">Sampling Valve</text>
+
+</svg>
+
+  </div>
+</section>
+
 <!-- ================= SVG 2 : FAILURE POINTS ================= -->
 <section class="panel">
   <h3>Common Sampling System Failure Points</h3>
