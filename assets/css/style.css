@@ -738,3 +738,71 @@ a:hover{
 .site-footer li{
   margin: 6px 0;
 }
+/* =========================================================
+   Compact Footer Layout (Header-like, Minimal)
+========================================================= */
+
+.site-footer{
+  background: #0b3c5d;
+  color: #ffffff;
+}
+
+.footer-compact{
+  padding: 16px 0 12px;
+}
+
+.footer-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footer-brand{
+  max-width: 520px;
+}
+
+.footer-brand p{
+  margin: 6px 0 0;
+  font-size: .9rem;
+  line-height: 1.4;
+  color: #dbe7f3;
+}
+
+.footer-legal{
+  white-space: nowrap;
+}
+
+.footer-legal a{
+  color: #e6f0fa;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-legal a:hover{
+  text-decoration: underline;
+}
+
+.footer-legal .sep{
+  margin: 0 8px;
+  opacity: .5;
+}
+
+.footer-copy{
+  margin-top: 8px;
+  text-align: center;
+  font-size: .85rem;
+  color: #dbe7f3;
+}
+
+/* Mobile safety */
+@media (max-width: 768px){
+  .footer-row{
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-legal{
+    margin-top: 6px;
+  }
+}
