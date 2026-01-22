@@ -930,3 +930,34 @@ a:hover{
     gap: 10px;
   }
 }
+/* =========================================================
+   Global Font Upgrade (InstMates)
+========================================================= */
+
+html, body{
+  font-family: 'Inter', system-ui, -apple-system,
+               BlinkMacSystemFont, 'Segoe UI',
+               Roboto, Arial, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+/* Headings – slightly stronger */
+h1, h2, h3, h4{
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Buttons – crisp & readable */
+.btn{
+  font-family: 'Inter', inherit;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+/* Footer & small text */
+.footer-desc,
+.footer-copy,
+.muted{
+  font-weight: 500;
+}
