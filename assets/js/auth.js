@@ -72,3 +72,85 @@ onAuthStateChanged(auth, async user => {
   }
 });
 */
+
+/* =================================================================
+   ADDITIONS BELOW (NO EXISTING CODE MODIFIED)
+   Firestore + Community Posts + Role Support
+================================================================= */
+
+/* ================= FIRESTORE IMPORTS ================= */
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+/* ================= FIRESTORE INIT ================= */
+
+const db = getFirestore(app);
+
+/* ================= REGISTER (PROFILE STORAGE – OPTIONAL USE) ================= */
+/* This does NOT replace registerUser above. Use when needed. */
+
+window.registerUserWithProfile = async function (email, password, fullName) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+  await setDoc(doc(db, "users", cred.user.uid), {
+    name: fullName,
+    email: email,
+    role: "user",
+    verified: false,
+    createdAt: serverTimestamp()
+  });
+
+  return cred;
+};
+
+/* ================= QUESTIONS ================= */
+
+window.createQuestion = async function (title, body, tags = []) {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Not authenticated");
+
+  return addDoc(collection(db, "questions"), {
+    title,
+    body,
+    tags,
+    authorName: user.email,
+    authorUid: user.uid,
+    createdAt: serverTimestamp(),
+    answerCount: 0
+  });
+};
+
+/* ================= ANSWERS ================= */
+
+window.createAnswer = async function (questionId, body) {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Not authenticated");
+
+  return addDoc(collection(db, "answers"), {
+    questionId,
+    body,
+    authorName: user.email,
+    authorUid: user.uid,
+    createdAt: serverTimestamp()
+  });
+};
+
+/* ================= ROLE FETCH (ADMIN / MODERATOR) ================= */
+
+window.getUserRole = async function () {
+  const user = auth.currentUser;
+  if (!user) return null;
+
+  const snap = await getDoc(doc(db, "users", user.uid));
+  if (!snap.exists()) return null;
+
+  return snap.data().role || "user";
+};
