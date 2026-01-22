@@ -6,13 +6,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Gas Chromatograph basics for analyzer technicians. Learn GC working principle, flow path, and major components using clear inline SVG diagrams." />
+        content="Gas Chromatography (GC) basics for analyzer technicians. Learn GC working principles, sampling systems, valves, backflush, and troubleshooting using clear inline SVG diagrams." />
 
   <!-- GitHub Pages base -->
   <base href="/instmates/" />
 
   <!-- Global CSS -->
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    .gc-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      margin-top:16px;
+    }
+    .gc-card{
+      background:#ffffff;
+      border:1px solid rgba(0,0,0,0.12);
+      border-radius:16px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .gc-card h3{
+      margin:0 0 6px;
+    }
+    .gc-card p{
+      margin:0 0 12px;
+      opacity:.85;
+    }
+    .gc-tag{
+      display:inline-block;
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:#eef6fb;
+      color:#0b3c5d;
+      font-weight:700;
+      margin-bottom:8px;
+      width:fit-content;
+    }
+    .gc-btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      background:#0b3c5d;
+      color:#ffffff;
+      font-weight:700;
+      text-align:center;
+    }
+  </style>
 </head>
 
 <body data-page="gc-basics">
@@ -31,142 +77,115 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Gas Chromatograph (GC) – Basics</h2>
+  <h2>Gas Chromatography (GC) – Basics</h2>
 
   <p class="muted">
-    Gas Chromatography is an analytical technique used to separate and measure
-    components of a gas mixture. In process analyzers, GC is widely used for
-    refinery, petrochemical, gas processing, and environmental applications.
+    Gas Chromatography (GC) is a core analytical technique used in refineries,
+    petrochemical plants, gas processing units, and power plants to continuously
+    measure gas composition. This section explains GC fundamentals with
+    technician-focused logic and real plant behavior.
   </p>
 </section>
 
-<!-- ================= SVG 1 : BASIC FLOW ================= -->
+<!-- ================= BASIC FLOW ================= -->
 <section class="panel">
   <h3>GC Working Principle – Basic Flow</h3>
 
   <p class="muted">
-    A GC separates components based on their interaction with the column
-    stationary phase. Each component exits the column at a different time
-    (retention time) and is measured by the detector.
+    A GC analyzer separates gas components inside a column based on their
+    physical and chemical properties. Each component reaches the detector at
+    a different time, forming a chromatogram.
   </p>
 
   <div class="svg-wrap">
 
-<svg viewBox="0 0 960 360" width="100%"
+<svg viewBox="0 0 900 220"
      xmlns="http://www.w3.org/2000/svg"
      role="img"
      aria-label="Gas Chromatograph Basic Flow Diagram">
 
-  <!-- TITLE -->
-  <text x="480" y="28" text-anchor="middle"
-        font-size="20" font-weight="700" fill="#0b3c5d">
-    Gas Chromatograph – Basic Flow
-  </text>
+  <style>
+    .pipe { stroke:#1f78b4; stroke-width:4; fill:none }
+    .label { font:14px Arial; fill:#222 }
+    .box { fill:#ffffff; stroke:#0b3c5d; stroke-width:2 }
+    .detector { fill:#fff7ed; stroke:#92400e; stroke-width:2 }
+  </style>
 
   <!-- SAMPLE IN -->
-  <line x1="40" y1="180" x2="160" y2="180"
-        stroke="#2563eb" stroke-width="4"/>
-  <text x="40" y="160" font-size="14">Sample Gas</text>
+  <line x1="40" y1="110" x2="160" y2="110" class="pipe"/>
+  <text x="40" y="90" class="label">Sample Gas</text>
 
   <!-- INJECTION VALVE -->
-  <rect x="160" y="150" width="100" height="60" rx="8"
-        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
-  <text x="210" y="185" text-anchor="middle" font-size="13">
-    Injection Valve
-  </text>
+  <rect x="160" y="80" width="140" height="60" rx="8" class="box"/>
+  <text x="180" y="115" class="label">Injection Valve</text>
 
   <!-- COLUMN -->
-  <path d="M260 180 Q360 100 460 180 T660 180"
-        fill="none" stroke="#1f78b4" stroke-width="4"/>
-  <text x="460" y="100" text-anchor="middle" font-size="14">
-    Column
-  </text>
+  <path d="M300 110
+           C360 40 460 40 520 110
+           C580 180 680 180 740 110"
+        class="pipe"/>
+  <text x="480" y="30" class="label">Column</text>
 
   <!-- DETECTOR -->
-  <rect x="660" y="150" width="120" height="60" rx="8"
-        fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
-  <text x="720" y="185" text-anchor="middle" font-size="13">
-    Detector
-  </text>
+  <rect x="740" y="80" width="120" height="60" rx="8" class="detector"/>
+  <text x="770" y="115" class="label">Detector</text>
 
   <!-- SIGNAL -->
-  <line x1="780" y1="180" x2="900" y2="180"
-        stroke="#15803d" stroke-width="3"
-        stroke-dasharray="6 4"/>
-  <text x="820" y="160" font-size="14">
-    Signal
-  </text>
+  <line x1="860" y1="110" x2="900" y2="110"
+        stroke="#2e7d32" stroke-width="3" stroke-dasharray="6 4"/>
+  <text x="865" y="90" class="label">Signal</text>
 
 </svg>
 
   </div>
 </section>
 
-<!-- ================= SVG 2 : COMPONENT OVERVIEW ================= -->
+<!-- ================= GC TOPICS GRID ================= -->
 <section class="panel">
-  <h3>Main GC Components</h3>
+  <h3>GC Knowledge Modules</h3>
+
+  <div class="gc-grid">
+
+    <div class="gc-card">
+      <span class="gc-tag">Beginner</span>
+      <h3>GC Sampling System</h3>
+      <p>Probes, filters, regulators, conditioning, and why most GC problems start here.</p>
+      <a class="gc-btn" href="knowledge/gc-sampling-system.html">Open Module</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">Beginner</span>
+      <h3>6-Port Sampling Valve</h3>
+      <p>Understand LOAD vs INJECT positions and internal rotor logic.</p>
+      <a class="gc-btn" href="knowledge/gc-6port-valve.html">Open Module</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">Intermediate</span>
+      <h3>GC Backflush Operation</h3>
+      <p>Why heavy components are reversed to vent and how backflush protects columns.</p>
+      <a class="gc-btn" href="knowledge/gc-backflush.html">Open Module</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">Beginner</span>
+      <h3>GC Column Types</h3>
+      <p>Packed vs capillary columns and how column choice affects separation.</p>
+      <a class="gc-btn" href="knowledge/gc-column-types.html">Open Module</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= TECHNICIAN NOTE ================= -->
+<section class="panel">
+  <h3>Important Note for Technicians</h3>
 
   <p class="muted">
-    A process GC analyzer consists of mechanical, chromatographic, and
-    electronic sections. Understanding each block helps in troubleshooting
-    analyzer problems.
+    A GC analyzer is only as good as its sampling system and valve timing.
+    Before suspecting columns, detectors, or electronics, always verify
+    sampling integrity, pressure stability, and valve operation.
   </p>
-
-  <div class="svg-wrap">
-
-<svg viewBox="0 0 960 400" width="100%"
-     xmlns="http://www.w3.org/2000/svg"
-     role="img"
-     aria-label="Gas Chromatograph Main Components">
-
-  <!-- SAMPLE SYSTEM -->
-  <rect x="60" y="150" width="180" height="80" rx="10"
-        fill="#ecfeff" stroke="#0284c7" stroke-width="3"/>
-  <text x="150" y="185" text-anchor="middle" font-size="14">
-    Sampling System
-  </text>
-  <text x="150" y="205" text-anchor="middle" font-size="12">
-    Filters / Regulators
-  </text>
-
-  <!-- GC OVEN -->
-  <rect x="300" y="120" width="240" height="140" rx="12"
-        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
-  <text x="420" y="150" text-anchor="middle" font-size="14">
-    GC Oven
-  </text>
-  <text x="420" y="175" text-anchor="middle" font-size="12">
-    Valve + Column
-  </text>
-
-  <!-- DETECTOR -->
-  <rect x="620" y="150" width="160" height="80" rx="10"
-        fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
-  <text x="700" y="185" text-anchor="middle" font-size="14">
-    Detector
-  </text>
-
-  <!-- CONNECTIONS -->
-  <line x1="240" y1="190" x2="300" y2="190"
-        stroke="#2563eb" stroke-width="4"/>
-  <line x1="540" y1="190" x2="620" y2="190"
-        stroke="#15803d" stroke-width="4"/>
-
-</svg>
-
-  </div>
-</section>
-
-<!-- ================= SUMMARY ================= -->
-<section class="panel">
-  <h3>Key Points for Technicians</h3>
-
-  <ul class="muted">
-    <li>GC separates components based on retention time.</li>
-    <li>Injection valve timing is critical for repeatability.</li>
-    <li>Column condition directly affects accuracy and response time.</li>
-    <li>Most GC issues originate from sampling problems.</li>
-  </ul>
 </section>
 
 </main>
