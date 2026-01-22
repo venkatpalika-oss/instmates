@@ -690,40 +690,51 @@ a:hover{
   text-decoration: underline;
 }
 /* =========================================================
-   Global Metallic Blue Theme Override (SAFE)
-   Applies to ALL pages
+   Footer Styled Same as Header (Solid Industrial Blue)
 ========================================================= */
 
-/* Page background */
-body{
-  background: #e8eef4;
-  color: #0b3c5d;
-}
-
-/* Panels (sections) */
-.panel{
-  background: #f1f6fb;
-  border: 1px solid #c7d4e2;
-}
-
-/* Cards */
-.card{
-  background: #f1f6fb;
-  border: 1px solid #c7d4e2;
-}
-
-/* Muted text tuning */
-.muted{
-  color: #4b637a;
-}
-
-/* Footer background */
+/* Footer background like header */
 .site-footer{
-  background: #e3ebf3;
-  border-top: 1px solid #c7d4e2;
+  background: #0b3c5d;          /* same as header */
+  color: #ffffff;
+  border-top: none;
 }
 
-/* Optional: hero separation */
-.hero{
-  border-bottom: 1px solid #c7d4e2;
+/* Footer headings */
+.site-footer h4{
+  color: #ffffff;
+}
+
+/* Footer paragraph text */
+.site-footer p{
+  color: #dbe7f3;
+}
+
+/* Footer links */
+.site-footer a{
+  color: #e6f0fa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer a:hover{
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Footer separators */
+.site-footer hr{
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.25);
+}
+
+/* Footer list cleanup (in case not already present) */
+.site-footer ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer li{
+  margin: 6px 0;
 }
