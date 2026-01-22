@@ -1124,3 +1124,13 @@ main::after{
   margin-top:18px;
   flex-wrap:wrap;
 }
+/* Clickable feed cards */
+.post-link{
+  text-decoration:none;
+  color:inherit;
+  display:block;
+}
+.post-link:hover .post-card{
+  transform:translateY(-2px);
+  transition:.15s ease;
+}
