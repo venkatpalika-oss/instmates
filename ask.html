@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ask a Question | InstMates</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body data-page="ask">
+
+<div id="siteHeader"></div>
+
+<main class="container">
+
+  <section class="panel">
+    <h2>Ask a Technical Question</h2>
+
+    <form class="auth-form">
+
+      <label>
+        Question Title
+        <input type="text" placeholder="e.g. GC baseline drifting after calibration" required>
+      </label>
+
+      <label>
+        Details
+        <textarea rows="6"
+          placeholder="Describe the problem, analyzer type, symptoms, and what you have checked so far"
+          required></textarea>
+      </label>
+
+      <label>
+        Tags (comma separated)
+        <input type="text" placeholder="GC,CEMS,Analyzer,Calibration">
+      </label>
+
+      <button class="btn btn-primary full">
+        Post Question
+      </button>
+
+    </form>
+
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="assets/js/includes.js"></script>
+
+</body>
+</html>
