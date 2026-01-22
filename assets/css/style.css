@@ -961,3 +961,22 @@ h1, h2, h3, h4{
 .muted{
   font-weight: 500;
 }
+/* =========================================================
+   Footer Layout Fix – Do NOT Float with Content
+========================================================= */
+
+/* Ensure footer is a full-width block */
+.site-footer{
+  display: block;
+  width: 100%;
+  clear: both;          /* CRITICAL */
+  position: relative;
+  margin-top: 40px;    /* visual separation from content */
+}
+
+/* Safety: clear floats before footer */
+main::after{
+  content: "";
+  display: block;
+  clear: both;
+}
