@@ -2,7 +2,7 @@
   <div class="site-header-inner">
 
     <!-- LOGO + HOME LINK -->
-    <a href="index.html" class="logo" aria-label="InstMates Home">
+    <a href="/instmates/index.html" class="logo" aria-label="InstMates Home">
 
       <!-- INLINE SVG LOGO (FINAL – OPTICAL BALANCE FIXED) -->
       <svg class="logo-svg"
@@ -25,28 +25,17 @@
           INST
         </text>
 
-        <!-- M AS INSTRUMENT (SLIGHTLY MORE GAP FROM T) -->
-        <!-- NOTE: shifted from x=98 → x=110 for balance -->
+        <!-- M AS INSTRUMENT -->
         <g transform="translate(110,0)">
-
-          <!-- Left leg -->
           <rect x="0" y="24" width="16" height="36" rx="8" fill="#7ed957"/>
-
-          <!-- Right leg -->
           <rect x="52" y="24" width="16" height="36" rx="8" fill="#7ed957"/>
-
-          <!-- Center probe -->
           <rect x="26" y="34" width="16" height="26" rx="8" fill="#7ed957"/>
-
-          <!-- Gauge head -->
           <circle cx="34" cy="18" r="14" fill="#ffffff"/>
           <circle cx="34" cy="18" r="11" fill="#0b3c5d"/>
           <line x1="34" y1="18" x2="40" y2="12"
                 stroke="#ffffff"
                 stroke-width="2"
                 stroke-linecap="round"/>
-
-          <!-- Signal waves (optically heavier) -->
           <path d="M72 26 Q84 34 72 42"
                 fill="none"
                 stroke="#7ed957"
@@ -60,7 +49,6 @@
         </g>
 
         <!-- TEXT: ATES -->
-        <!-- NOTE: shifted right to compensate for M + waves -->
         <text x="210" y="60"
               font-size="44"
               font-weight="700"
@@ -69,37 +57,34 @@
           ATES
         </text>
       </svg>
-
     </a>
 
     <!-- NAVIGATION -->
     <nav class="main-nav">
+      <a href="/instmates/index.html">Home</a>
+      <a href="/instmates/explore.html">Explore</a>
+      <a href="/instmates/technicians.html">Technicians</a>
+      <a href="/instmates/community.html">Community</a>
+      <a href="/instmates/knowledge.html">Knowledge</a>
+      <a href="/instmates/case-studies.html">Case Studies</a>
+      <a href="/instmates/about.html">About</a>
 
-      <a href="index.html">Home</a>
-      <a href="explore.html">Explore</a>
-      <a href="technicians.html">Technicians</a>
-      <a href="community.html">Community</a>
-      <a href="knowledge.html">Knowledge</a>
-      <a href="case-studies.html">Case Studies</a>
-      <a href="about.html">About</a>
-
-      <!-- ================= AUTH NAV (ADDITIVE ONLY) ================= -->
+      <!-- AUTH NAV -->
 
       <!-- Logged OUT -->
-      <a href="login.html" class="nav-cta auth-out">
+      <a href="/instmates/login.html" class="nav-cta auth-out">
         Login
       </a>
 
       <!-- Logged IN -->
       <span class="auth-in" style="display:none;">
-        <a href="profile.html" class="nav-cta">
+        <a href="/instmates/profile.html" class="nav-cta">
           Profile
         </a>
         <a href="#" class="nav-logout" onclick="logoutUser()">
           Logout
         </a>
       </span>
-
     </nav>
 
   </div>
