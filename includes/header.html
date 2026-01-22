@@ -4,11 +4,11 @@
     <!-- LOGO + HOME LINK -->
     <a href="index.html" class="logo" aria-label="InstMates Home">
 
-      <!-- INLINE SVG LOGO (FINAL – SAME BASELINE, M RISES) -->
+      <!-- INLINE SVG LOGO (FINAL – OPTICAL BALANCE FIXED) -->
       <svg class="logo-svg"
-           width="210"
+           width="220"
            height="44"
-           viewBox="0 0 420 88"
+           viewBox="0 0 440 88"
            xmlns="http://www.w3.org/2000/svg"
            aria-label="InstMates Logo"
            role="img">
@@ -24,8 +24,9 @@
           INST
         </text>
 
-        <!-- M AS INSTRUMENT (SAME BASE, RISES UPWARD) -->
-        <g transform="translate(98,0)">
+        <!-- M AS INSTRUMENT (SLIGHTLY MORE GAP FROM T) -->
+        <!-- NOTE: shifted from x=98 → x=110 for balance -->
+        <g transform="translate(110,0)">
 
           <!-- Left leg -->
           <rect x="0" y="24" width="16" height="36" rx="8" fill="#7ed957"/>
@@ -44,7 +45,7 @@
                 stroke-width="2"
                 stroke-linecap="round"/>
 
-          <!-- Signal waves -->
+          <!-- Signal waves (optically heavier) -->
           <path d="M72 26 Q84 34 72 42"
                 fill="none"
                 stroke="#7ed957"
@@ -58,7 +59,8 @@
         </g>
 
         <!-- TEXT: ATES -->
-        <text x="192" y="60"
+        <!-- NOTE: shifted right to compensate for M + waves -->
+        <text x="210" y="60"
               font-size="44"
               font-weight="700"
               fill="#ffffff"
