@@ -980,3 +980,101 @@ main::after{
   display: block;
   clear: both;
 }
+/* ================= SOCIAL HOMEPAGE ================= */
+
+.social-hero{
+  display:grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap:32px;
+  padding:48px 0;
+  align-items:center;
+}
+
+.hero-sub{
+  font-size:1.3rem;
+  margin:6px 0;
+}
+
+.hero-tag{
+  opacity:.9;
+  margin:10px 0 18px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:12px;
+}
+
+.avatar-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 56px);
+  gap:12px;
+}
+
+.avatar{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#d0d7de;
+}
+
+.avatar.small{
+  width:40px;
+  height:40px;
+}
+
+.feed{
+  display:grid;
+  gap:16px;
+  margin-top:14px;
+}
+
+.post-card{
+  background:#fff;
+  padding:16px;
+  border-radius:10px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
+.post-header{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.post-actions{
+  margin-top:10px;
+  font-size:.9rem;
+  opacity:.85;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:16px;
+  text-align:center;
+  margin:36px 0;
+}
+
+.stat{
+  background:#fff;
+  padding:18px;
+  border-radius:10px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
+.groups-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.group-card{
+  background:#fff;
+  padding:16px;
+  border-radius:10px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  font-weight:600;
+}
