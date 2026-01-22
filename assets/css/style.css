@@ -458,3 +458,78 @@ article h2{
   background:#cd7f32;
   color:#fff;
 }
+/* ================= AUTH PAGES ================= */
+
+.auth-container{
+  max-width:520px;
+  margin:40px auto;
+}
+
+.auth-panel{
+  background:#fff;
+  padding:26px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+}
+
+.auth-panel h2{
+  margin-top:0;
+  margin-bottom:6px;
+}
+
+.auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:16px;
+}
+
+.auth-form label{
+  font-weight:700;
+  font-size:.95rem;
+}
+
+.auth-form input,
+.auth-form select{
+  width:100%;
+  padding:10px;
+  margin-top:4px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:1rem;
+}
+
+.auth-form input:focus,
+.auth-form select:focus{
+  outline:none;
+  border-color:#0b3c5d;
+  box-shadow:0 0 0 2px rgba(11,60,93,.15);
+}
+
+/* Full-width button support */
+.btn.full{
+  width:100%;
+  text-align:center;
+}
+
+.auth-footer{
+  margin-top:16px;
+  font-size:.95rem;
+}
+
+.auth-footer a{
+  font-weight:700;
+  color:#0b3c5d;
+  text-decoration:none;
+}
+
+.auth-footer a:hover{
+  text-decoration:underline;
+}
+
+/* Mobile spacing */
+@media (max-width:600px){
+  .auth-container{
+    margin:24px 12px;
+  }
+}
