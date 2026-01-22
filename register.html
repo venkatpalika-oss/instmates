@@ -14,14 +14,15 @@
 
 <body data-page="register">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
   <section class="panel auth-panel">
     <h2>Create Your InstMates Account</h2>
 
-    <!-- ✅ FORM -->
     <form class="auth-form" onsubmit="handleRegister(event)">
 
       <label>
@@ -59,7 +60,11 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= INCLUDES (MANDATORY) ================= -->
+<script src="assets/js/includes.js?v=2026-01-22"></script>
 
 <!-- ================= AUTH ================= -->
 <script type="module" src="assets/js/auth.js"></script>
@@ -69,7 +74,7 @@
   window.handleRegister = async function (e) {
     e.preventDefault();
 
-    const inputs = e.target.querySelectorAll('input');
+    const inputs = e.target.querySelectorAll("input");
     const fullName = inputs[0].value;
     const email = inputs[1].value;
     const password = inputs[2].value;
@@ -82,7 +87,6 @@
 
     try {
       await window.registerUser(email, password);
-      // Later: save fullName to Firestore
       window.location.href = "profile-edit.html";
     } catch (err) {
       alert(err.message);
