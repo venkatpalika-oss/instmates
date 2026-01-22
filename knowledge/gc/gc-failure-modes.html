@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GC Failure Modes | InstMates Knowledge Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="GC failure modes explained for analyzer technicians. Visual root cause analysis for missing peaks, drifting baseline, peak shift, long cycle time, and poor repeatability using inline SVG." />
+
+  <!-- GitHub Pages base -->
+  <base href="/instmates/" />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body data-page="gc-failures">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <a href="knowledge.html">Knowledge</a><span>›</span>
+  <a href="knowledge/gc-basics.html">GC Basics</a><span>›</span>
+  <span class="current">Failure Modes</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>GC Failure Modes – Visual Root Cause Analysis</h2>
+
+  <p class="muted">
+    Most GC problems present themselves on the chromatogram before any alarm
+    appears. This page links common field symptoms to their most likely causes
+    so technicians can troubleshoot logically and quickly.
+  </p>
+</section>
+
+<!-- ================= SVG : FAILURE MAP ================= -->
+<section class="panel">
+  <h3>Symptom → Cause → Action Map</h3>
+
+  <p class="muted">
+    Follow the arrows from observed symptom to root cause, then apply the
+    recommended corrective action.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 1100 520"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Failure Modes Root Cause Map">
+
+  <style>
+    .symptom { fill:#fee2e2; stroke:#dc2626; stroke-width:2 }
+    .cause { fill:#fff7ed; stroke:#f59e0b; stroke-width:2 }
+    .action { fill:#dcfce7; stroke:#16a34a; stroke-width:2 }
+    .arrow { stroke:#334155; stroke-width:2; marker-end:url(#arrow) }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .title { font-size:18px; font-weight:700; fill:#0b3c5d }
+  </style>
+
+  <!-- ARROW MARKER -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10"
+            refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <!-- TITLES -->
+  <text x="150" y="40" class="title">Symptom</text>
+  <text x="480" y="40" class="title">Likely Cause</text>
+  <text x="820" y="40" class="title">Corrective Action</text>
+
+  <!-- ROW 1 -->
+  <rect x="60" y="80" width="260" height="60" rx="10" class="symptom"/>
+  <text x="80" y="115" class="label">Missing Peak</text>
+
+  <rect x="400" y="80" width="260" height="60" rx="10" class="cause"/>
+  <text x="420" y="115" class="label">Inject valve not switching / timing error</text>
+
+  <rect x="740" y="80" width="300" height="60" rx="10" class="action"/>
+  <text x="760" y="115" class="label">Check valve actuation, air supply, timing</text>
+
+  <line x1="320" y1="110" x2="400" y2="110" class="arrow"/>
+  <line x1="660" y1="110" x2="740" y2="110" class="arrow"/>
+
+  <!-- ROW 2 -->
+  <rect x="60" y="160" width="260" height="60" rx="10" class="symptom"/>
+  <text x="80" y="195" class="label">Baseline Drift / Noise</text>
+
+  <rect x="400" y="160" width="260" height="60" rx="10" class="cause"/>
+  <text x="420" y="195" class="label">Contamination / moisture / unstable pressure</text>
+
+  <rect x="740" y="160" width="300" height="60" rx="10" class="action"/>
+  <text x="760" y="195" class="label">Check filters, dryers, regulators</text>
+
+  <line x1="320" y1="190" x2="400" y2="190" class="arrow"/>
+  <line x1="660" y1="190" x2="740" y2="190" class="arrow"/>
+
+  <!-- ROW 3 -->
+  <rect x="60" y="240" width="260" height="60" rx="10" class="symptom"/>
+  <text x="80" y="275" class="label">Peak Shift</text>
+
+  <rect x="400" y="240" width="260" height="60" rx="10" class="cause"/>
+  <text x="420" y="275" class="label">Flow / temperature drift</text>
+
+  <rect x="740" y="240" width="300" height="60" rx="10" class="action"/>
+  <text x="760" y="275" class="label">Verify carrier flow, oven control</text>
+
+  <line x1="320" y1="270" x2="400" y2="270" class="arrow"/>
+  <line x1="660" y1="270" x2="740" y2="270" class="arrow"/>
+
+  <!-- ROW 4 -->
+  <rect x="60" y="320" width="260" height="60" rx="10" class="symptom"/>
+  <text x="80" y="355" class="label">Long Cycle Time</text>
+
+  <rect x="400" y="320" width="260" height="60" rx="10" class="cause"/>
+  <text x="420" y="355" class="label">Backflush not working / late timing</text>
+
+  <rect x="740" y="320" width="300" height="60" rx="10" class="action"/>
+  <text x="760" y="355" class="label">Verify backflush valve and sequence</text>
+
+  <line x1="320" y1="350" x2="400" y2="350" class="arrow"/>
+  <line x1="660" y1="350" x2="740" y2="350" class="arrow"/>
+
+  <!-- ROW 5 -->
+  <rect x="60" y="400" width="260" height="60" rx="10" class="symptom"/>
+  <text x="80" y="435" class="label">Poor Repeatability</text>
+
+  <rect x="400" y="400" width="260" height="60" rx="10" class="cause"/>
+  <text x="420" y="435" class="label">Sampling pressure / valve instability</text>
+
+  <rect x="740" y="400" width="300" height="60" rx="10" class="action"/>
+  <text x="760" y="435" class="label">Stabilize sample system, check pneumatics</text>
+
+  <line x1="320" y1="430" x2="400" y2="430" class="arrow"/>
+  <line x1="660" y1="430" x2="740" y2="430" class="arrow"/>
+
+</svg>
+
+  </div>
+</section>
+
+<!-- ================= TECH NOTES ================= -->
+<section class="panel">
+  <h3>Golden Troubleshooting Rules</h3>
+
+  <ul class="muted">
+    <li>Always troubleshoot the sampling system before the GC hardware.</li>
+    <li>Valve timing issues appear immediately on the chromatogram.</li>
+    <li>Pressure instability causes more errors than electronics.</li>
+    <li>Do not recalibrate until the root cause is corrected.</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD TIP ================= -->
+<section class="panel">
+  <h3>Field Tip</h3>
+
+  <p class="muted">
+    If multiple symptoms appear together, suspect a common upstream cause
+    such as contamination, pressure fluctuation, or air supply failure rather
+    than individual component faults.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="assets/js/includes.js"></script>
+
+</body>
+</html>
