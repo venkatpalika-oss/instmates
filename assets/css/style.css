@@ -1134,3 +1134,53 @@ main::after{
   transform:translateY(-2px);
   transition:.15s ease;
 }
+/* ================= PROFILE PAGE ================= */
+
+.profile-hero{
+  margin-top:20px;
+}
+
+.profile-header{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+}
+
+.profile-avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:#d0d7de;
+  flex-shrink:0;
+}
+
+.profile-info h1{
+  margin:0;
+}
+
+.profile-role{
+  font-weight:600;
+  margin:6px 0;
+}
+
+.profile-actions{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.skills-grid{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.skill{
+  background:#eef6fb;
+  border:1px solid #c7e0f4;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:.85rem;
+  font-weight:600;
+}
