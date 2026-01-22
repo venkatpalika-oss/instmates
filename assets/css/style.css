@@ -367,3 +367,26 @@ img{
   border-radius:10px;
   margin-bottom:8px;
 }
+/* ================= COMMUNITY Q&A ================= */
+
+.question-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.question-item{
+  padding-bottom:14px;
+  border-bottom:1px solid #e0e0e0;
+}
+
+.question-item h3{
+  margin:0;
+}
+
+.answer{
+  padding:14px;
+  background:#f8fafc;
+  border-radius:8px;
+  margin-bottom:12px;
+}
