@@ -1184,3 +1184,11 @@ main::after{
   font-size:.85rem;
   font-weight:600;
 }
+.panel h2, .panel h3 {
+  letter-spacing: 0.2px;
+}
+
+.svg-wrap {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
