@@ -1,68 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Knowledge Hub | InstMates</title>
-  <meta name="description"
-        content="Structured technical knowledge for instrument and analyzer technicians." />
 
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description"
+        content="InstMates Knowledge Hub – practical guides, troubleshooting, calibration, and analyzer fundamentals for technicians." />
+
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="knowledge">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
+  <!-- INTRO -->
   <section class="panel">
-    <h2>Analyzer Knowledge Hub</h2>
+    <h2>Knowledge Hub</h2>
     <p class="muted">
-      Practical, field-tested knowledge on analyzers,
-      instrumentation, calibration, troubleshooting, and CEMS.
+      Practical, field-tested knowledge for instrument and analyzer technicians.
+      Built from real plant experience — not theory.
+    </p>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section class="grid grid-3">
+
+    <!-- CARD 1 -->
+    <div class="card">
+      <img src="images/knowledge/gc-basics.jpg"
+           alt="Gas Chromatograph basics">
+
+      <h3>Gas Chromatograph – Working Principle</h3>
+      <p class="muted">
+        Understand GC flow paths, columns, detectors,
+        and how separation actually happens in the field.
+      </p>
+
+      <a href="#" class="btn btn-ghost">
+        Read Guide
+      </a>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="card">
+      <img src="images/knowledge/cems-overview.jpg"
+           alt="CEMS analyzer system">
+
+      <h3>CEMS – System Overview</h3>
+      <p class="muted">
+        Sampling system, analyzer cabinet,
+        data acquisition, and compliance basics.
+      </p>
+
+      <a href="#" class="btn btn-ghost">
+        Learn More
+      </a>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card">
+      <img src="images/knowledge/calibration.jpg"
+           alt="Analyzer calibration">
+
+      <h3>Analyzer Calibration – Step by Step</h3>
+      <p class="muted">
+        Zero, span, linearity, and drift checks
+        explained in technician language.
+      </p>
+
+      <a href="#" class="btn btn-ghost">
+        View Procedure
+      </a>
+    </div>
+
+  </section>
+
+  <!-- ================= TROUBLESHOOTING ================= -->
+  <section class="panel">
+    <h2>Troubleshooting Guides</h2>
+    <p class="muted">
+      Most common analyzer and instrumentation problems
+      with real causes and solutions.
     </p>
   </section>
 
   <section class="grid grid-3">
 
     <div class="card">
-      <h3>Analyzers</h3>
+      <img src="images/knowledge/baseline-drift.jpg"
+           alt="Baseline drift issue">
+
+      <h3>Baseline Drift in Analyzers</h3>
       <p class="muted">
-        GC, FTIR, UV, NDIR, Zirconia, TDLS, Paramagnetic
+        Causes, checks, and corrective actions
+        based on field cases.
       </p>
-      <a href="knowledge/analyzers.html" class="btn btn-ghost">
-        Explore Analyzers
+
+      <a href="#" class="btn btn-ghost">
+        Troubleshoot
       </a>
     </div>
 
     <div class="card">
-      <h3>Instrumentation</h3>
+      <img src="images/knowledge/sample-system.jpg"
+           alt="Sample system issues">
+
+      <h3>Sampling System Failures</h3>
       <p class="muted">
-        Pressure, flow, level, temperature, valves & loops
+        Leaks, condensation, blockages,
+        and transport delay issues.
       </p>
-      <a href="knowledge/instrumentation.html" class="btn btn-ghost">
-        Explore Instrumentation
+
+      <a href="#" class="btn btn-ghost">
+        View Failures
       </a>
     </div>
 
-    <div class="card">
-      <h3>CEMS</h3>
-      <p class="muted">
-        Emission monitoring, calibration, compliance & failures
-      </p>
-      <a href="knowledge/cems.html" class="btn btn-ghost">
-        Explore CEMS
-      </a>
-    </div>
-
-  </section>
-
-</main>
-
-<div id="siteFooter"></div>
-<script src="assets/js/includes.js"></script>
-
-</body>
-</html>
+    <
