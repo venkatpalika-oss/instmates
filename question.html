@@ -1,63 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>GC baseline drifting after calibration | InstMates</title>
+  <title>GC baseline drifting after column change | InstMates</title>
 
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description"
+        content="Community discussion on GC baseline drift after column replacement – causes, checks, and corrective actions." />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="question">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- QUESTION -->
+  <!-- ================= QUESTION ================= -->
   <section class="panel">
-    <h2>GC baseline drifting after calibration – possible causes?</h2>
+
+    <h2>
+      GC baseline drifting after column change
+    </h2>
 
     <p class="muted">
-      Asked by <strong>Venkatesh</strong> · Analyzer · GC
+      Asked by <strong>Venkatesh</strong> ·
+      Analyzer · GC ·
+      1 day ago
     </p>
 
     <p>
-      After calibration of GC, baseline is drifting slowly.
-      Carrier gas pressure is stable. What could be the root cause?
+      After replacing the GC column, a continuous baseline drift is observed.
+      Oven temperature is stable and detector gases are within limits.
+      Calibration completes successfully, but the baseline keeps drifting.
     </p>
+
+    <p>
+      What parameters or checks should be done next?
+    </p>
+
+    <div class="profile-tags">
+      <span>Gas Chromatograph</span>
+      <span>Baseline Drift</span>
+      <span>Column</span>
+      <span>Troubleshooting</span>
+    </div>
+
   </section>
 
-  <!-- ANSWERS -->
+  <!-- ================= ANSWERS ================= -->
   <section class="panel">
+
     <h3>Answers</h3>
 
-    <div class="answer">
+    <!-- ANSWER 1 -->
+    <article class="card">
       <p>
-        Check detector temperature stability and column conditioning.
-        Baseline drift often occurs due to moisture in carrier gas.
+        After column replacement, baseline drift is commonly due to
+        column conditioning. Check whether the column has been baked
+        at the recommended temperature for sufficient time.
       </p>
-      <p class="muted">
-        Answered by Senior Technician
-      </p>
-    </div>
 
-    <div class="answer">
       <p>
-        Verify zero gas purity and ensure sample lines are leak-free.
+        Also verify:
       </p>
+
+      <ul class="checklist">
+        <li>Column installation direction</li>
+        <li>Carrier gas purity and leaks</li>
+        <li>Detector reference flow stability</li>
+      </ul>
+
       <p class="muted">
-        Answered by Analyzer Specialist
+        Answered by <strong>Rahul</strong> ·
+        GC Specialist ·
+        12 years experience
       </p>
-    </div>
+    </article>
+
+    <!-- ANSWER 2 -->
+    <article class="card">
+      <p>
+        Baseline drift can also occur if the column was exposed to
+        moisture or oxygen during installation.
+      </p>
+
+      <p>
+        I recommend purging the column with carrier gas before heating
+        and checking EPC pressure stability during analysis.
+      </p>
+
+      <p class="muted">
+        Answered by <strong>Arun</strong> ·
+        Analyzer Technician ·
+        9 years experience
+      </p>
+    </article>
+
+  </section>
+
+  <!-- ================= ADD ANSWER ================= -->
+  <section class="panel">
+
+    <h3>Your Answer</h3>
+
+    <p class="muted">
+      Share your field experience to help others.
+    </p>
+
+    <form class="auth-form">
+      <label>
+        Your Answer
+        <textarea rows="5"
+                  placeholder="Describe your solution, checks performed, or experience..."
+                  required></textarea>
+      </label>
+
+      <button class="btn btn-primary">
+        Post Answer
+      </button>
+    </form>
+
+    <p class="muted">
+      You must be logged in to post an answer.
+    </p>
 
   </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-<script src="assets/js/includes.js"></script>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="assets/js/includes.js?v=2026-01-22"></script>
 
 </body>
 </html>
