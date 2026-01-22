@@ -14,14 +14,15 @@
 
 <body data-page="login">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
   <section class="panel auth-panel">
     <h2>Login to InstMates</h2>
 
-    <!-- ✅ FORM -->
     <form class="auth-form" onsubmit="handleLogin(event)">
 
       <label>
@@ -48,11 +49,16 @@
       Don’t have an account?
       <a href="register.html">Create one</a>
     </p>
+
   </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= INCLUDES (HEADER / FOOTER) ================= -->
+<script src="assets/js/includes.js?v=2026-01-22"></script>
 
 <!-- ================= AUTH ================= -->
 <script type="module" src="assets/js/auth.js"></script>
@@ -67,7 +73,7 @@
 
     try {
       await window.loginUser(email, password);
-      window.location.href = "profile.html";
+      window.location.href = "explore.html";
     } catch (err) {
       alert(err.message);
     }
