@@ -31,7 +31,265 @@
     <div class="svg-wrap">
 
       <!-- ✅ PASTE THE INLINE SVG HERE -->
-      <!-- Replace this comment with the SVG code -->
+     <svg viewBox="0 0 960 440"
+     width="100%"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Backflush Switching Animation">
+
+  <!-- TITLE -->
+  <text x="480" y="32" text-anchor="middle"
+        font-size="20" font-weight="700" fill="#0b3c5d">
+    GC Backflush – Normal Analysis → Backflush
+  </text>
+
+  <!-- SAMPLE IN -->
+  <line x1="40" y1="220" x2="160" y2="220"
+        stroke="#2563eb" stroke-width="4"/>
+  <text x="40" y="200" font-size="14">Sample In</text>
+
+  <!-- VALVE -->
+  <rect x="160" y="190" width="90" height="60" rx="8"
+        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
+  <text x="205" y="225" text-anchor="middle" font-size="13">
+    Valve
+  </text>
+
+  <!-- PRE-COLUMN -->
+  <path d="M250 220 Q330 150 410 220"
+        fill="none" stroke="#1f78b4" stroke-width="4"/>
+  <text x="330" y="150" text-anchor="middle" font-size="14">
+    Pre-Column
+  </text>
+
+  <!-- TEE -->
+  <circle cx="410" cy="220" r="10"
+          fill="#ffffff" stroke="#0b3c5d" stroke-width="3"/>
+
+  <!-- ANALYTICAL COLUMN -->
+  <path d="M420 220 Q520 130 620 220"
+        fill="none" stroke="#15803d" stroke-width="4"/>
+  <text x="520" y="130" text-anchor="middle" font-size="14">
+    Analytical Column
+  </text>
+
+  <!-- DETECTOR -->
+  <rect x="620" y="190" width="100" height="60" rx="8"
+        fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+  <text x="670" y="225" text-anchor="middle" font-size="13">
+    Detector
+  </text>
+
+  <!-- NORMAL FLOW -->
+  <path d="M250 220 L380 220"
+        stroke="#15803d" stroke-width="4"
+        marker-end="url(#arrow)"/>
+
+  <path d="M420 220 L600 220"
+        stroke="#15803d" stroke-width="4"
+        marker-end="url(#arrow)"/>
+
+  <!-- MOVING SAMPLE (NORMAL) -->
+  <circle r="5" fill="#15803d">
+    <animateMotion
+      dur="3s"
+      repeatCount="indefinite"
+      keyTimes="0;0.6;1"
+      keySplines="0.42 0 0.58 1;0.42 0 0.58 1"
+      calcMode="spline"
+      path="M250 220 L380 220 L600 220"/>
+  </circle>
+
+  <!-- BACKFLUSH LINE -->
+  <path d="M410 220 Q330 300 240 300"
+        fill="none" stroke="#dc2626" stroke-width="4"
+        stroke-dasharray="8 6"
+        marker-end="url(#arrow)"/>
+
+  <!-- HEAVY COMPONENTS (BACKFLUSH ANIMATION) -->
+  <g fill="#dc2626">
+    <circle r="4">
+      <animateMotion
+        begin="3s"
+        dur="2s"
+        repeatCount="indefinite"
+        path="M410 220 Q330 300 240 300"/>
+    </circle>
+    <circle r="4">
+      <animateMotion
+        begin="3.3s"
+        dur="2s"
+        repeatCount="indefinite"
+        path="M390 230 Q310 310 230 300"/>
+    </circle>
+  </g>
+
+  <!-- MODE TEXT -->
+  <text x="480" y="360" text-anchor="middle"
+        font-size="14" fill="#374151">
+    Normal analysis first → backflush removes heavy components
+  </text>
+
+  <!-- TIMING LABELS -->
+  <text x="520" y="260" font-size="13" fill="#15803d">
+    Analysis Phase
+  </text>
+
+  <text x="300" y="330" font-size="13" fill="#dc2626">
+    Backflush Phase
+  </text>
+
+  <!-- ARROW DEF -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10"
+            refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+</svg>
+<svg viewBox="0 0 900 300"
+     width="100%"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Backflush Timing Diagram">
+
+  <!-- TITLE -->
+  <text x="450" y="28" text-anchor="middle"
+        font-size="20" font-weight="700" fill="#0b3c5d">
+    GC Backflush – Timing Sequence
+  </text>
+
+  <!-- TIME AXIS -->
+  <line x1="80" y1="220" x2="820" y2="220"
+        stroke="#0b3c5d" stroke-width="3"/>
+  <text x="830" y="225" font-size="13">Time →</text>
+
+  <!-- PHASE BLOCKS -->
+
+  <!-- INJECTION -->
+  <rect x="100" y="170" width="120" height="40" rx="6"
+        fill="#dbeafe" stroke="#1f78b4" stroke-width="2"/>
+  <text x="160" y="195" text-anchor="middle" font-size="13">
+    Injection
+  </text>
+
+  <!-- ANALYSIS -->
+  <rect x="220" y="170" width="260" height="40" rx="6"
+        fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+  <text x="350" y="195" text-anchor="middle" font-size="13">
+    Normal Analysis
+  </text>
+
+  <!-- CUT TIME -->
+  <line x1="480" y1="150" x2="480" y2="250"
+        stroke="#92400e" stroke-width="3"
+        stroke-dasharray="6 4"/>
+  <text x="480" y="140" text-anchor="middle"
+        font-size="13" fill="#92400e">
+    Cut Time
+  </text>
+
+  <!-- BACKFLUSH -->
+  <rect x="480" y="170" width="220" height="40" rx="6"
+        fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="590" y="195" text-anchor="middle" font-size="13">
+    Backflush
+  </text>
+
+  <!-- NOTES -->
+  <text x="160" y="260" text-anchor="middle"
+        font-size="12" fill="#374151">
+    Sample loaded
+  </text>
+
+  <text x="350" y="260" text-anchor="middle"
+        font-size="12" fill="#374151">
+    Light components reach detector
+  </text>
+
+  <text x="590" y="260" text-anchor="middle"
+        font-size="12" fill="#374151">
+    Heavy components flushed out
+  </text>
+
+</svg>
+<svg viewBox="0 0 920 420"
+     width="100%"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Backflush Valve Configuration Diagram">
+
+  <!-- TITLE -->
+  <text x="460" y="30" text-anchor="middle"
+        font-size="20" font-weight="700" fill="#0b3c5d">
+    GC Backflush – Valve Configuration
+  </text>
+
+  <!-- VALVE A -->
+  <rect x="160" y="120" width="160" height="90" rx="10"
+        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
+  <text x="240" y="150" text-anchor="middle" font-size="14">
+    Valve A
+  </text>
+  <text x="240" y="175" text-anchor="middle" font-size="12">
+    Injection / Cut Valve
+  </text>
+
+  <!-- VALVE B -->
+  <rect x="520" y="120" width="160" height="90" rx="10"
+        fill="#fff7ed" stroke="#92400e" stroke-width="3"/>
+  <text x="600" y="150" text-anchor="middle" font-size="14">
+    Valve B
+  </text>
+  <text x="600" y="175" text-anchor="middle" font-size="12">
+    Backflush Valve
+  </text>
+
+  <!-- CONNECTIONS -->
+  <!-- Sample -->
+  <line x1="80" y1="165" x2="160" y2="165"
+        stroke="#2563eb" stroke-width="4"/>
+  <text x="80" y="145" font-size="13">Sample In</text>
+
+  <!-- Pre-column -->
+  <line x1="320" y1="165" x2="520" y2="165"
+        stroke="#1f78b4" stroke-width="4"/>
+  <text x="420" y="145" text-anchor="middle" font-size="13">
+    Pre-Column
+  </text>
+
+  <!-- Analytical Column -->
+  <line x1="680" y1="165" x2="820" y2="165"
+        stroke="#15803d" stroke-width="4"/>
+  <text x="750" y="145" text-anchor="middle" font-size="13">
+    Analytical Column
+  </text>
+
+  <!-- BACKFLUSH PATH -->
+  <path d="M520 210 Q420 300 260 300"
+        fill="none" stroke="#dc2626" stroke-width="4"
+        stroke-dasharray="8 6"/>
+  <text x="420" y="320" text-anchor="middle"
+        font-size="13" fill="#dc2626">
+    Reverse Flow During Backflush
+  </text>
+
+  <!-- STATES -->
+  <rect x="160" y="340" width="240" height="40" rx="8"
+        fill="#dcfce7" stroke="#15803d"/>
+  <text x="280" y="365" text-anchor="middle" font-size="13">
+    Normal: A = Inject, B = Forward
+  </text>
+
+  <rect x="440" y="340" width="300" height="40" rx="8"
+        fill="#fee2e2" stroke="#dc2626"/>
+  <text x="590" y="365" text-anchor="middle" font-size="13">
+    Backflush: B switches, flow reverses
+  </text>
+
+</svg>
+
       
     </div>
 
