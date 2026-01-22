@@ -547,3 +547,101 @@ article h2{
   background: #0b3c5d;
   color: #ffffff;
 }
+/* =========================================================
+   InstMates Brand Colors & Hover Animations (SAFE ADDITION)
+   Do NOT modify existing styles above
+========================================================= */
+
+:root{
+  --brand-primary: #0b3c5d;
+  --brand-accent:  #1f78b4;
+  --brand-soft:    #eef6fb;
+  --brand-border:  #cbd5e1;
+  --brand-success: #15803d;
+  --brand-warning: #92400e;
+}
+
+/* =========================
+   BUTTON TUNING
+========================= */
+
+/* Primary (keep strong, improve hover) */
+.btn-primary{
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+  transition: background .25s ease,
+              transform .15s ease,
+              box-shadow .15s ease;
+}
+
+.btn-primary:hover{
+  background: var(--brand-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(11,60,93,.25);
+}
+
+/* Soft button (new – for Explore / Learn) */
+.btn-soft{
+  background: var(--brand-soft);
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-border);
+  transition: background .25s ease,
+              color .25s ease,
+              transform .15s ease,
+              box-shadow .15s ease;
+}
+
+.btn-soft:hover{
+  background: var(--brand-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(11,60,93,.2);
+}
+
+/* Ghost button (subtle improvement, stays clean) */
+.btn-ghost{
+  transition: color .2s ease,
+              border-color .2s ease,
+              background .2s ease;
+}
+
+.btn-ghost:hover{
+  background: rgba(11,60,93,.05);
+  border-color: var(--brand-primary);
+}
+
+/* =========================
+   CARD HOVER (SUBTLE)
+========================= */
+
+.card{
+  transition: transform .18s ease,
+              box-shadow .18s ease,
+              border-color .18s ease;
+}
+
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.12);
+  border-color: var(--brand-primary);
+}
+
+/* =========================
+   LINK POLISH
+========================= */
+
+a{
+  transition: color .2s ease;
+}
+
+a:hover{
+  color: var(--brand-accent);
+}
+
+/* =========================
+   HERO BUTTON SPACING (MOBILE SAFE)
+========================= */
+
+.hero-actions .btn{
+  margin: 6px 8px;
+}
