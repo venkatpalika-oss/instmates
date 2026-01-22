@@ -1,8 +1,11 @@
-(async function () {
+document.addEventListener("DOMContentLoaded", function () {
 
   async function loadInto(id, url) {
     const el = document.getElementById(id);
-    if (!el) return;
+    if (!el) {
+      console.error("Target not found:", id);
+      return;
+    }
 
     try {
       const res = await fetch(url, { cache: "no-store" });
@@ -13,8 +16,7 @@
     }
   }
 
-  /* ABSOLUTE paths – immune to <base> */
   loadInto("siteHeader", "/instmates/includes/header.html");
   loadInto("siteFooter", "/instmates/includes/footer.html");
 
-})();
+});
