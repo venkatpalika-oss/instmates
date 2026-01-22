@@ -806,3 +806,31 @@ a:hover{
     margin-top: 6px;
   }
 }
+/* =========================================================
+   Highlight Section: Built on Real Field Experience
+   (Remove flat white, add metallic depth)
+========================================================= */
+
+/* Section background */
+.panel{
+  background: #dde7f1;
+}
+
+/* Cards inside highlight sections */
+.panel .card{
+  background: #eef4fa;
+  border: 1px solid #c1d1e2;
+  box-shadow: 0 6px 16px rgba(11,60,93,.12);
+}
+
+/* Strong metric numbers (100%, 0%, 24x7) */
+.panel .card h3{
+  color: #0b3c5d;
+  font-weight: 800;
+}
+
+/* Slight hover feedback (professional, not flashy) */
+.panel .card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(11,60,93,.22);
+}
