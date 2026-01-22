@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Gas Chromatography (GC) basics for analyzer technicians. Learn GC working principles, sampling systems, valves, backflush, and troubleshooting using clear inline SVG diagrams." />
+        content="Gas Chromatography (GC) basics for analyzer technicians. Learn GC working principles, sampling systems, valves, backflush, timing, heart-cut, full cycle, and failure modes using inline SVG diagrams." />
 
   <!-- GitHub Pages base -->
   <base href="/instmates/" />
@@ -81,9 +81,9 @@
 
   <p class="muted">
     Gas Chromatography (GC) is a core analytical technique used in refineries,
-    petrochemical plants, gas processing units, and power plants to continuously
-    measure gas composition. This section explains GC fundamentals with
-    technician-focused logic and real plant behavior.
+    petrochemical plants, gas processing units, and power plants. This learning
+    path explains GC fundamentals in the same sequence technicians encounter
+    them in the field.
   </p>
 </section>
 
@@ -111,80 +111,92 @@
     .detector { fill:#fff7ed; stroke:#92400e; stroke-width:2 }
   </style>
 
-  <!-- SAMPLE IN -->
   <line x1="40" y1="110" x2="160" y2="110" class="pipe"/>
   <text x="40" y="90" class="label">Sample Gas</text>
 
-  <!-- INJECTION VALVE -->
   <rect x="160" y="80" width="140" height="60" rx="8" class="box"/>
   <text x="180" y="115" class="label">Injection Valve</text>
 
-  <!-- COLUMN -->
   <path d="M300 110
            C360 40 460 40 520 110
            C580 180 680 180 740 110"
         class="pipe"/>
   <text x="480" y="30" class="label">Column</text>
 
-  <!-- DETECTOR -->
   <rect x="740" y="80" width="120" height="60" rx="8" class="detector"/>
   <text x="770" y="115" class="label">Detector</text>
-
-  <!-- SIGNAL -->
-  <line x1="860" y1="110" x2="900" y2="110"
-        stroke="#2e7d32" stroke-width="3" stroke-dasharray="6 4"/>
-  <text x="865" y="90" class="label">Signal</text>
 
 </svg>
 
   </div>
 </section>
 
-<!-- ================= GC TOPICS GRID ================= -->
+<!-- ================= GC LEARNING PATH ================= -->
 <section class="panel">
-  <h3>GC Knowledge Modules</h3>
+  <h3>GC Learning Path</h3>
 
   <div class="gc-grid">
 
     <div class="gc-card">
       <span class="gc-tag">Beginner</span>
       <h3>GC Sampling System</h3>
-      <p>Probes, filters, regulators, conditioning, and why most GC problems start here.</p>
-      <a class="gc-btn" href="knowledge/gc-sampling-system.html">Open Module</a>
+      <p>Probes, filters, regulators, conditioning — the source of most GC problems.</p>
+      <a class="gc-btn" href="knowledge/gc-sampling-system.html">Open</a>
     </div>
 
     <div class="gc-card">
       <span class="gc-tag">Beginner</span>
       <h3>6-Port Sampling Valve</h3>
-      <p>Understand LOAD vs INJECT positions and internal rotor logic.</p>
-      <a class="gc-btn" href="knowledge/gc-6port-valve.html">Open Module</a>
+      <p>LOAD vs INJECT positions and internal valve logic.</p>
+      <a class="gc-btn" href="knowledge/gc-6port-valve.html">Open</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">Intermediate</span>
+      <h3>Timing vs Chromatogram</h3>
+      <p>How valve timing directly affects peaks and retention time.</p>
+      <a class="gc-btn" href="knowledge/gc-timing-chromatogram.html">Open</a>
     </div>
 
     <div class="gc-card">
       <span class="gc-tag">Intermediate</span>
       <h3>GC Backflush Operation</h3>
-      <p>Why heavy components are reversed to vent and how backflush protects columns.</p>
-      <a class="gc-btn" href="knowledge/gc-backflush.html">Open Module</a>
+      <p>Removing heavy components to protect the column and reduce cycle time.</p>
+      <a class="gc-btn" href="knowledge/gc-backflush.html">Open</a>
     </div>
 
     <div class="gc-card">
-      <span class="gc-tag">Beginner</span>
-      <h3>GC Column Types</h3>
-      <p>Packed vs capillary columns and how column choice affects separation.</p>
-      <a class="gc-btn" href="knowledge/gc-column-types.html">Open Module</a>
+      <span class="gc-tag">Advanced</span>
+      <h3>Heart-Cut (Dual Column)</h3>
+      <p>Selectively transferring target components for better separation.</p>
+      <a class="gc-btn" href="knowledge/gc-heartcut.html">Open</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">Advanced</span>
+      <h3>Full GC Cycle</h3>
+      <p>End-to-end analyzer sequence from purge to ready state.</p>
+      <a class="gc-btn" href="knowledge/gc-full-cycle.html">Open</a>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tag">All Levels</span>
+      <h3>GC Failure Modes</h3>
+      <p>Symptom → root cause → corrective action mapping.</p>
+      <a class="gc-btn" href="knowledge/gc-failure-modes.html">Open</a>
     </div>
 
   </div>
 </section>
 
-<!-- ================= TECHNICIAN NOTE ================= -->
+<!-- ================= TECH NOTE ================= -->
 <section class="panel">
-  <h3>Important Note for Technicians</h3>
+  <h3>Technician Rule</h3>
 
   <p class="muted">
-    A GC analyzer is only as good as its sampling system and valve timing.
-    Before suspecting columns, detectors, or electronics, always verify
-    sampling integrity, pressure stability, and valve operation.
+    If a GC analyzer misbehaves, always start upstream:
+    sampling → pressure → valves → timing.
+    Electronics and columns are rarely the first failure point.
   </p>
 </section>
 
