@@ -1,83 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GC Backflush | InstMates</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>GC Backflush Operation | InstMates Knowledge Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <base href="/instmates/">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description"
+        content="GC backflush operation explained for analyzer technicians. Learn why heavy components are reversed to vent, valve sequencing, and common backflush failures using inline SVG." />
+
+  <!-- GitHub Pages base -->
+  <base href="/instmates/" />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
-<body>
+<body data-page="gc-backflush">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<nav class="crumbs">
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
   <a href="index.html">Home</a><span>›</span>
   <a href="knowledge.html">Knowledge</a><span>›</span>
-  <span>GC Backflush</span>
+  <a href="knowledge/gc-basics.html">GC Basics</a><span>›</span>
+  <span class="current">Backflush Operation</span>
 </nav>
 
 <main class="container">
 
+<!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>GC Backflush – Working Principle</h2>
+  <h2>GC Backflush Operation – Fundamentals</h2>
+
   <p class="muted">
-    Backflush removes heavy components after cut time to protect
-    the analytical column and detector.
+    Backflush is a critical GC technique used to remove heavy or late-eluting
+    components from the column. It improves cycle time, protects the column,
+    and stabilizes retention times in process gas chromatography.
+  </p>
+</section>
+
+<!-- ================= SVG : BACKFLUSH ================= -->
+<section class="panel">
+  <h3>Normal Analysis vs Backflush</h3>
+
+  <p class="muted">
+    During normal analysis, light components flow forward to the detector.
+    After the target components elute, the valve switches and reverses flow
+    to flush heavy components safely to vent.
   </p>
 
   <div class="svg-wrap">
 
-    <!-- INLINE SVG (DO NOT LINK, DO NOT IMPORT) -->
-    <svg viewBox="0 0 960 440" width="100%"
-         xmlns="http://www.w3.org/2000/svg"
-         aria-label="GC Backflush Diagram">
+<svg viewBox="0 0 960 420"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Backflush Operation Animation">
 
-      <text x="480" y="30" text-anchor="middle"
-            font-size="20" font-weight="700">
-        GC Backflush Flow
-      </text>
+  <style>
+    .pipe { stroke:#64748b; stroke-width:6; fill:none }
+    .sample { stroke:#2563eb; stroke-width:5; fill:none }
+    .carrier { stroke:#16a34a; stroke-width:5; fill:none }
+    .backflush { stroke:#dc2626; stroke-width:5; fill:none }
+    .active { stroke-dasharray:8 6; animation: flow 1s linear infinite }
+    .column { stroke:#475569; stroke-width:8; fill:none }
+    .valve { fill:#334155 }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .mode { font-size:16px; font-weight:700; fill:#0b3c5d }
 
-      <line x1="40" y1="220" x2="160" y2="220"
-            stroke="#2563eb" stroke-width="4"/>
-      <text x="40" y="200">Sample In</text>
+    @keyframes flow {
+      from { stroke-dashoffset:14 }
+      to   { stroke-dashoffset:0 }
+    }
+  </style>
 
-      <rect x="160" y="190" width="90" height="60" rx="8"
-            fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
-      <text x="205" y="225" text-anchor="middle">Valve</text>
+  <!-- MODE TEXT -->
+  <text x="680" y="40" class="mode">
+    NORMAL ANALYSIS
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </text>
 
-      <path d="M250 220 Q330 150 410 220"
-            fill="none" stroke="#1f78b4" stroke-width="4"/>
-      <text x="330" y="150" text-anchor="middle">Pre-Column</text>
+  <text x="680" y="40" class="mode">
+    BACKFLUSH
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </text>
 
-      <path d="M420 220 Q520 130 620 220"
-            fill="none" stroke="#15803d" stroke-width="4"/>
-      <text x="520" y="130" text-anchor="middle">
-        Analytical Column
-      </text>
+  <!-- SAMPLE IN -->
+  <line x1="60" y1="200" x2="280" y2="200" class="pipe"/>
+  <text x="60" y="180" class="label">Sample In</text>
 
-      <rect x="620" y="190" width="100" height="60" rx="8"
-            fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
-      <text x="670" y="225" text-anchor="middle">Detector</text>
+  <!-- CARRIER GAS -->
+  <line x1="60" y1="320" x2="280" y2="320" class="pipe"/>
+  <text x="60" y="300" class="label">Carrier Gas</text>
 
-      <path d="M410 220 Q330 300 240 300"
-            fill="none" stroke="#dc2626"
-            stroke-width="4" stroke-dasharray="8 6"/>
+  <!-- COLUMN -->
+  <path d="M420 260 H720" class="column"/>
+  <text x="520" y="240" class="label">GC Column</text>
 
-      <text x="300" y="330" fill="#dc2626">
-        Backflush (Reverse Flow)
-      </text>
+  <!-- DETECTOR -->
+  <rect x="740" y="230" width="120" height="60"
+        rx="8" fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+  <text x="780" y="265" class="label">Detector</text>
 
-    </svg>
+  <!-- VENT -->
+  <line x1="420" y1="120" x2="860" y2="120" class="pipe"/>
+  <text x="760" y="100" class="label">Vent</text>
+
+  <!-- VALVE -->
+  <circle cx="280" cy="260" r="50" class="valve"/>
+  <text x="230" y="335" class="label">Backflush Valve</text>
+
+  <!-- NORMAL FLOW -->
+  <path d="M60 200 H280
+           C340 200 340 260 420 260
+           H720 H740"
+        class="sample active">
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- BACKFLUSH FLOW -->
+  <path d="M420 260
+           C360 260 360 120 420 120
+           H860"
+        class="backflush active">
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- CARRIER BACKFLUSH -->
+  <path d="M60 320 H280
+           C340 320 340 260 280 260"
+        class="carrier active">
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </path>
+
+</svg>
 
   </div>
 </section>
 
+<!-- ================= TECH NOTES ================= -->
+<section class="panel">
+  <h3>Key Points for Technicians</h3>
+
+  <ul class="muted">
+    <li>Backflush removes heavy hydrocarbons before they reach the detector.</li>
+    <li>Prevents column contamination and long tailing peaks.</li>
+    <li>Incorrect backflush timing causes missing or distorted heavy peaks.</li>
+    <li>No backflush results in increasing cycle time and baseline rise.</li>
+    <li>Most backflush failures relate to valve actuation or timing logic.</li>
+  </ul>
+</section>
+
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
 <script src="assets/js/includes.js"></script>
 
 </body>
