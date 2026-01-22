@@ -21,21 +21,8 @@
   <section class="panel auth-panel">
     <h2>Login to InstMates</h2>
 
-    <form class="auth-form">
-<script type="module">
-  async function handleLogin(e){
-    e.preventDefault();
-    const email = e.target.querySelector('input[type="email"]').value;
-    const password = e.target.querySelector('input[type="password"]').value;
-
-    try{
-      await window.loginUser(email, password);
-      window.location.href = "profile.html";
-    }catch(err){
-      alert(err.message);
-    }
-  }
-</script>
+    <!-- ✅ FORM -->
+    <form class="auth-form" onsubmit="handleLogin(event)">
 
       <label>
         Email
@@ -47,7 +34,7 @@
         <input type="password" required>
       </label>
 
-      <button class="btn btn-primary full">
+      <button class="btn btn-primary full" type="submit">
         Login
       </button>
 
@@ -66,8 +53,26 @@
 </main>
 
 <div id="siteFooter"></div>
+
+<!-- ================= AUTH ================= -->
 <script type="module" src="assets/js/auth.js"></script>
 
+<!-- ================= LOGIN HANDLER ================= -->
+<script type="module">
+  window.handleLogin = async function (e) {
+    e.preventDefault();
+
+    const email = e.target.querySelector('input[type="email"]').value;
+    const password = e.target.querySelector('input[type="password"]').value;
+
+    try {
+      await window.loginUser(email, password);
+      window.location.href = "profile.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
 
 </body>
 </html>
