@@ -2,35 +2,36 @@
    InstMates - Firebase Authentication (FINAL)
    File: assets/js/auth.js
    SDK: Firebase v9 (Modular)
+   NOTE:
+   - Firebase app is initialized ONLY ONCE in firebase.js
+   - This file contains auth + firestore logic only
 ========================================================= */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+/* ================= IMPORT SHARED FIREBASE ================= */
+
+import { auth, db } from "./firebase.js";
+
+/* ================= AUTH IMPORTS ================= */
+
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-/* ================= FIREBASE CONFIG ================= */
+/* ================= FIRESTORE IMPORTS ================= */
 
-const firebaseConfig = {
-  apiKey: "AIzaSyACIzIFjHxZnKXmwCyIttcgdmzmVEsjo0o",
-  authDomain: "instmates.firebaseapp.com",
-  projectId: "instmates",
-  storageBucket: "instmates.firebasestorage.app",
-  messagingSenderId: "417095841554",
-  appId: "1:417095841554:web:0ffa2bd04471845537a5cb",
-  measurementId: "G-L57QYT7H9F"
-};
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= INIT ================= */
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-/* ================= REGISTER ================= */
+/* ================= REGISTER (BASIC) ================= */
 
 window.registerUser = async function (email, password) {
   return createUserWithEmailAndPassword(auth, email, password);
@@ -60,42 +61,8 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-/* ================= ADMIN CHECK (FUTURE READY) ================= */
-/*
-import { getIdTokenResult } from "firebase/auth";
-
-onAuthStateChanged(auth, async user => {
-  if (!user) return;
-  const token = await getIdTokenResult(user);
-  if (token.claims.admin) {
-    document.body.classList.add("is-admin");
-  }
-});
-*/
-
-/* =================================================================
-   ADDITIONS BELOW (NO EXISTING CODE MODIFIED)
-   Firestore + Community Posts + Role Support
-================================================================= */
-
-/* ================= FIRESTORE IMPORTS ================= */
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  getDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-/* ================= FIRESTORE INIT ================= */
-
-const db = getFirestore(app);
-
-/* ================= REGISTER (PROFILE STORAGE – OPTIONAL USE) ================= */
-/* This does NOT replace registerUser above. Use when needed. */
+/* ================= REGISTER WITH PROFILE (OPTIONAL) ================= */
+/* Does NOT replace registerUser above */
 
 window.registerUserWithProfile = async function (email, password, fullName) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -154,3 +121,16 @@ window.getUserRole = async function () {
 
   return snap.data().role || "user";
 };
+
+/* ================= ADMIN CHECK (FUTURE READY) ================= */
+/*
+import { getIdTokenResult } from "firebase/auth";
+
+onAuthStateChanged(auth, async user => {
+  if (!user) return;
+  const token = await getIdTokenResult(user);
+  if (token.claims.admin) {
+    document.body.classList.add("is-admin");
+  }
+});
+*/
