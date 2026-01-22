@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pressure Measurement Basics | InstMates Field Instrumentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Pressure measurement basics for field instrumentation technicians. Learn gauge, absolute, and differential pressure with clear field logic and inline SVG diagrams." />
+
+  <base href="/instmates/" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body data-page="pressure-basics">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <a href="knowledge.html">Knowledge</a><span>›</span>
+  <a href="field-pressure.html">Pressure Measurement</a><span>›</span>
+  <span class="current">Pressure Basics</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>Pressure Measurement – Basics</h2>
+
+  <p class="muted">
+    Pressure is one of the most fundamental measurements in any plant.
+    Understanding the **type of pressure being measured** is critical before
+    selecting or troubleshooting a pressure transmitter.
+  </p>
+</section>
+
+<!-- ================= TYPES ================= -->
+<section class="panel">
+  <h3>Types of Pressure Used in Plants</h3>
+
+  <p class="muted">
+    In field instrumentation, pressure is generally classified into three types:
+    <b>Gauge</b>, <b>Absolute</b>, and <b>Differential</b>.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 900 360"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="Gauge Absolute and Differential Pressure Diagram">
+
+  <style>
+    .box{fill:#ffffff;stroke:#0b3c5d;stroke-width:2}
+    .atm{fill:#eef6fb;stroke:#2563eb;stroke-width:2}
+    .proc{fill:#fff7ed;stroke:#92400e;stroke-width:2}
+    .txt{font:14px Arial;fill:#222}
+    .title{font:16px Arial;font-weight:700}
+  </style>
+
+  <!-- ATM -->
+  <rect x="360" y="40" width="180" height="50" rx="8" class="atm"/>
+  <text x="450" y="70" text-anchor="middle" class="txt">Atmospheric Pressure</text>
+
+  <!-- GAUGE -->
+  <rect x="60" y="130" width="220" height="120" rx="12" class="box"/>
+  <text x="170" y="160" text-anchor="middle" class="title">Gauge Pressure</text>
+  <text x="170" y="190" text-anchor="middle" class="txt">Measured relative to</text>
+  <text x="170" y="210" text-anchor="middle" class="txt">atmosphere</text>
+
+  <!-- ABSOLUTE -->
+  <rect x="340" y="130" width="220" height="120" rx="12" class="box"/>
+  <text x="450" y="160" text-anchor="middle" class="title">Absolute Pressure</text>
+  <text x="450" y="190" text-anchor="middle" class="txt">Measured from</text>
+  <text x="450" y="210" text-anchor="middle" class="txt">perfect vacuum</text>
+
+  <!-- DIFFERENTIAL -->
+  <rect x="620" y="130" width="220" height="120" rx="12" class="box"/>
+  <text x="730" y="160" text-anchor="middle" class="title">Differential Pressure</text>
+  <text x="730" y="190" text-anchor="middle" class="txt">Difference between</text>
+  <text x="730" y="210" text-anchor="middle" class="txt">two pressures</text>
+
+</svg>
+
+  </div>
+</section>
+
+<!-- ================= FIELD EXPLANATION ================= -->
+<section class="panel">
+  <h3>Field Explanation (Technician View)</h3>
+
+  <ul class="muted">
+    <li><b>Gauge pressure</b> is used when atmospheric pressure is not critical (most plant services).</li>
+    <li><b>Absolute pressure</b> is required for vacuum services and gas calculations.</li>
+    <li><b>Differential pressure</b> is widely used for flow and level measurement.</li>
+    <li>Wrong pressure type selection leads to wrong readings even if the transmitter is healthy.</li>
+  </ul>
+</section>
+
+<!-- ================= COMMON MISTAKES ================= -->
+<section class="panel">
+  <h3>Common Field Mistakes</h3>
+
+  <ul class="muted">
+    <li>Using gauge transmitters for vacuum service</li>
+    <li>Ignoring atmospheric reference vent blockage</li>
+    <li>Confusing DP pressure with gauge pressure</li>
+    <li>Wrong impulse line connections on DP transmitters</li>
+  </ul>
+</section>
+
+<!-- ================= KEY RULE ================= -->
+<section class="panel">
+  <h3>Golden Rule</h3>
+
+  <p class="muted">
+    Always identify the **pressure reference** before selecting or troubleshooting
+    a pressure transmitter. Most pressure problems are selection or installation issues,
+    not transmitter failures.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<script src="/instmates/assets/js/includes.js"></script>
+
+</body>
+</html>
