@@ -105,7 +105,7 @@
   </section>
 
   <!-- ================= ADD ANSWER ================= -->
-  <section class="panel">
+  <section class="panel" id="answerSection">
 
     <h3>Your Answer</h3>
 
@@ -113,7 +113,9 @@
       Share your field experience to help others.
     </p>
 
-    <form class="auth-form">
+    <!-- FORM (UNCHANGED VISUALLY) -->
+    <form class="auth-form" onsubmit="submitAnswer(event)">
+
       <label>
         Your Answer
         <textarea rows="5"
@@ -124,10 +126,12 @@
       <button class="btn btn-primary">
         Post Answer
       </button>
+
     </form>
 
-    <p class="muted">
-      You must be logged in to post an answer.
+    <!-- LOGIN NOTE (NEW, HIDDEN BY DEFAULT) -->
+    <p class="muted" id="loginNote" style="display:none;">
+      You must <a href="login.html">log in</a> to post an answer.
     </p>
 
   </section>
@@ -139,6 +143,43 @@
 
 <!-- ================= SCRIPTS ================= -->
 <script src="assets/js/includes.js?v=2026-01-22"></script>
+
+<!-- ================= AUTH + FIRESTORE HANDLING (ADDITIVE) ================= -->
+<script type="module">
+  import { getAuth, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const auth = getAuth();
+
+  /* TEMP STATIC QUESTION ID (WILL BE DYNAMIC LATER) */
+  const QUESTION_ID = "gc-baseline-drift-demo";
+
+  /* AUTH GUARD FOR POSTING */
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      document.querySelector("#answerSection form").style.display = "none";
+      document.getElementById("loginNote").style.display = "block";
+    }
+  });
+
+  /* SUBMIT ANSWER */
+  window.submitAnswer = async function (e) {
+    e.preventDefault();
+
+    const textarea = e.target.querySelector("textarea");
+    const body = textarea.value.trim();
+
+    if (!body) return;
+
+    try {
+      await window.createAnswer(QUESTION_ID, body);
+      alert("Answer posted successfully.");
+      textarea.value = "";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
 
 </body>
 </html>
