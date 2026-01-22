@@ -2,158 +2,176 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>InstMates | Practical Knowledge for Instrument & Analyzer Technicians</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta name="description"
-        content="InstMates is a practical knowledge hub for instrumentation and analyzer technicians. Learn GC, sampling systems, troubleshooting, and real plant concepts with clear diagrams." />
+  <title>InstMates | Instrument & Analyzer Technicians Community</title>
 
-  <!-- GitHub Pages base -->
-  <base href="/instmates/" />
+  <meta name="description"
+        content="InstMates is a professional community for instrument and analyzer technicians to share knowledge, document field cases, and grow through verified skills." />
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="home">
 
-<!-- ================= HEADER ================= -->
+<!-- ================= HEADER (AUTO LOADED) ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-inner container">
+
+    <h1>InstMates</h1>
+
+    <p class="hero-tagline">
+      Share Technology · Learn Techniques · Grow Together
+    </p>
+
+    <p class="hero-sub">
+      A professional platform built <strong>by</strong> and <strong>for</strong>
+      instrument and process analyzer technicians.
+    </p>
+
+    <div class="hero-actions">
+      <a href="register.html" class="btn btn-primary auth-out">
+        Join InstMates
+      </a>
+      <a href="knowledge.html" class="btn btn-ghost">
+        Explore Knowledge
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= MAIN ================= -->
 <main class="container">
 
-<!-- ================= HERO ================= -->
-<section class="panel hero-panel">
-  <h1>Built by Technicians. For Technicians.</h1>
+  <!-- INTRO / TRUST -->
+  <section class="panel">
+    <h2>Why InstMates?</h2>
+    <p class="muted">
+      Instrument and analyzer technicians rely on real field experience,
+      not theory alone. InstMates brings together verified skills,
+      real troubleshooting cases, and structured technical knowledge
+      into one focused professional platform.
+    </p>
+  </section>
 
-  <p class="muted" style="max-width:760px;">
-    InstMates is a practical learning platform for instrumentation and analyzer
-    professionals. No marketing theory — only real plant concepts explained
-    visually and logically.
-  </p>
+  <!-- WHAT INST MATES OFFERS -->
+  <section class="grid grid-3">
 
-  <div class="svg-wrap">
+    <div class="card">
+      <h3>👤 Professional Identity</h3>
+      <p class="muted">
+        Technician profiles that reflect real analyzer,
+        instrumentation, and plant experience.
+      </p>
+      <a href="profile.html" class="btn btn-ghost">
+        View Sample Profile
+      </a>
+    </div>
 
-<svg viewBox="0 0 960 220" width="100%"
+    <div class="card">
+      <h3>🧠 Practical Knowledge</h3>
+      <p class="muted">
+        Structured guides, visual explanations,
+        and field-tested solutions.
+      </p>
+      <a href="knowledge.html" class="btn btn-ghost">
+        Knowledge Hub
+      </a>
+    </div>
+
+    <div class="card">
+      <h3>🧪 Proof From the Field</h3>
+      <p class="muted">
+        Real failure case studies with root cause,
+        corrective action, and lessons learned.
+      </p>
+      <a href="case-studies.html" class="btn btn-ghost">
+        View Case Studies
+      </a>
+    </div>
+
+  </section>
+
+  <!-- BUILT FROM THE FIELD (SAFE SVG REPLACEMENT) -->
+  <section class="panel">
+    <h2>Built From the Field</h2>
+
+    <div class="grid grid-2">
+
+      <!-- INLINE SVG (SAFE, NO CSS ASSUMPTIONS) -->
+      <div class="card">
+
+<svg viewBox="0 0 520 220" width="100%"
      xmlns="http://www.w3.org/2000/svg"
      role="img"
-     aria-label="Analyzer knowledge flow">
+     aria-label="Field instrumentation workflow">
 
   <!-- PROCESS -->
-  <rect x="40" y="90" width="180" height="60" rx="10"
+  <rect x="20" y="80" width="120" height="60" rx="8"
         fill="#ecfeff" stroke="#0284c7" stroke-width="3"/>
-  <text x="130" y="125" text-anchor="middle">Process</text>
+  <text x="80" y="115" text-anchor="middle">Process</text>
+
+  <!-- SAMPLING -->
+  <rect x="170" y="80" width="120" height="60" rx="8"
+        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
+  <text x="230" y="115" text-anchor="middle">Sampling</text>
 
   <!-- ANALYZER -->
-  <rect x="300" y="90" width="180" height="60" rx="10"
-        fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
-  <text x="390" y="125" text-anchor="middle">Analyzer</text>
-
-  <!-- MEASUREMENT -->
-  <rect x="560" y="90" width="180" height="60" rx="10"
+  <rect x="320" y="80" width="120" height="60" rx="8"
         fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
-  <text x="650" y="125" text-anchor="middle">Measurement</text>
-
-  <!-- DECISION -->
-  <rect x="800" y="90" width="120" height="60" rx="10"
-        fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
-  <text x="860" y="125" text-anchor="middle">Decision</text>
+  <text x="380" y="115" text-anchor="middle">Analyzer</text>
 
   <!-- FLOW -->
-  <line x1="220" y1="120" x2="300" y2="120" stroke="#64748b" stroke-width="3"/>
-  <line x1="480" y1="120" x2="560" y2="120" stroke="#64748b" stroke-width="3"/>
-  <line x1="740" y1="120" x2="800" y2="120" stroke="#64748b" stroke-width="3"/>
+  <line x1="140" y1="110" x2="170" y2="110"
+        stroke="#64748b" stroke-width="3"/>
+  <line x1="290" y1="110" x2="320" y2="110"
+        stroke="#64748b" stroke-width="3"/>
 
 </svg>
 
-  </div>
+      </div>
 
-  <div style="margin-top:16px;">
-    <a class="btn btn-primary" href="knowledge.html">
-      Start Learning →
-    </a>
-  </div>
-</section>
+      <!-- TEXT -->
+      <div class="card">
+        <p class="muted">
+          InstMates is built by technicians — not recruiters
+          or generic social platforms. Every feature is shaped around
+          real alarms, real failures, shutdown work,
+          and actual plant conditions.
+        </p>
+      </div>
 
-<!-- ================= WHAT YOU’LL LEARN ================= -->
-<section class="panel">
-  <h2>What You’ll Learn</h2>
-
-  <div class="card-grid">
-
-    <div class="card">
-      <h4>Analyzer Fundamentals</h4>
-      <p>Understand how analyzers work using clear flow diagrams.</p>
     </div>
+  </section>
 
-    <div class="card">
-      <h4>Sampling Systems</h4>
-      <p>Learn why most analyzer problems start outside the analyzer.</p>
-    </div>
+  <!-- ROADMAP -->
+  <section class="panel">
+    <h2>What’s Coming Next</h2>
 
-    <div class="card">
-      <h4>Troubleshooting</h4>
-      <p>Symptoms → root cause → corrective action.</p>
-    </div>
+    <ul class="checklist">
+      <li>Reputation & contribution scoring</li>
+      <li>Analyzer-specific hubs (GC, FTIR, CEMS)</li>
+      <li>Peer verification & moderation</li>
+      <li>Mentorship for junior technicians</li>
+      <li>Advanced search & filtering</li>
+    </ul>
+  </section>
 
-    <div class="card">
-      <h4>Alarm Logic</h4>
-      <p>Interpret alarms correctly before taking action.</p>
-    </div>
+</main>
 
-  </div>
-</section>
+<!-- ================= FOOTER (AUTO LOADED) ================= -->
+<div id="siteFooter"></div>
 
-<!-- ================= FEATURED KNOWLEDGE ================= -->
-<section class="panel">
-  <h2>Featured Knowledge</h2>
+<!-- ================= INCLUDES (MANDATORY) ================= -->
+<script src="assets/js/includes.js?v=2026-01-22"></script>
 
-  <div class="card-grid">
+<!-- ================= AUTH ================= -->
+<script type="module" src="assets/js/auth.js"></script>
 
-    <div class="card">
-      <h4>GC Basics</h4>
-      <p>How a gas chromatograph really works.</p>
-      <a class="btn btn-primary"
-         href="knowledge/gc/gc-basics.html">
-        Open →
-      </a>
-    </div>
-
-    <div class="card">
-      <h4>GC 6-Port Valve</h4>
-      <p>Sample loading and injection explained visually.</p>
-      <a class="btn btn-primary"
-         href="knowledge/gc/gc-6port-valve.html">
-        Open →
-      </a>
-    </div>
-
-    <div class="card">
-      <h4>GC Backflush</h4>
-      <p>Cut time logic and heavy component removal.</p>
-      <a class="btn btn-primary"
-         href="knowledge/gc/gc-backflush.html">
-        Open →
-      </a>
-    </div>
-
-  </div>
-</section>
-
-<!-- ================= WHY INST MATES ================= -->
-<section class="panel">
-  <h2>Why InstMates?</h2>
-
-  <ul class="muted">
-    <li>✔ Written from real plant experience</li>
-    <li>✔ Visual explanations instead of textbook theory</li>
-    <li>✔ Focused on analyzers and sampling systems</li>
-    <li>✔ Designed for technicians and engineers</li>
-  </ul>
-</section>
-
-<!-- ================= COMING SOON ================= -->
-<section class="panel">
-  <h2>Coming Soon</h2>
-
-  <div class="card-grid
+</body>
+</html>
