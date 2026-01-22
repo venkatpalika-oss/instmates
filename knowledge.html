@@ -1,56 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Knowledge Hub | InstMates</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <base href="/instmates/">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description"
+        content="InstMates Knowledge Hub – practical instrumentation and analyzer knowledge with clear explanations and diagrams for technicians and engineers." />
+
+  <!-- GitHub Pages base -->
+  <base href="/instmates/" />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
-<body>
+<body data-page="knowledge">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <span class="current">Knowledge Hub</span>
+</nav>
 
 <main class="container">
 
+<!-- ================= INTRO ================= -->
 <section class="panel">
   <h2>Knowledge Hub</h2>
   <p class="muted">
-    Practical instrumentation and analyzer knowledge with clear diagrams
-    for technicians and engineers.
+    Practical, field-oriented knowledge for instrumentation and analyzer
+    technicians. Each topic is explained step-by-step with clear diagrams
+    and real plant experience.
   </p>
 </section>
 
+<!-- ================= GAS CHROMATOGRAPHY ================= -->
 <section class="panel">
-  <h3>Gas Chromatography</h3>
+  <h3>Gas Chromatography (GC)</h3>
 
   <div class="card-grid">
 
+    <!-- GC BASICS -->
     <div class="card">
       <h4>GC Basics</h4>
-      <p>Working principle and major components.</p>
+      <p>
+        Learn the basic working principle of a gas chromatograph,
+        major components, and flow path.
+      </p>
       <a class="btn btn-primary"
          href="knowledge/gc/gc-basics.html">
         Learn →
       </a>
     </div>
 
+    <!-- 6-PORT VALVE -->
     <div class="card">
-      <h4>6-Port Valve</h4>
-      <p>Sample loading and injection sequence.</p>
+      <h4>6-Port Sampling Valve</h4>
+      <p>
+        Understand sample loading and injection using a 6-port rotary valve,
+        including LOAD and INJECT positions.
+      </p>
       <a class="btn btn-primary"
          href="knowledge/gc/gc-6port-valve.html">
         Learn →
       </a>
     </div>
 
+    <!-- BACKFLUSH -->
     <div class="card">
       <h4>GC Backflush</h4>
-      <p>Cut time logic and heavy component removal.</p>
+      <p>
+        Learn cut time logic and how backflush removes heavy components
+        to protect the column and detector.
+      </p>
       <a class="btn btn-primary"
          href="knowledge/gc/gc-backflush.html">
+        Learn →
+      </a>
+    </div>
+
+    <!-- SAMPLING SYSTEM -->
+    <div class="card">
+      <h4>GC Sampling System</h4>
+      <p>
+        Understand probes, filters, regulators, conditioning,
+        and why most GC problems start in the sampling system.
+      </p>
+      <a class="btn btn-primary"
+         href="knowledge/gc/gc-sampling-system.html">
+        Learn →
+      </a>
+    </div>
+
+    <!-- COLUMN TYPES -->
+    <div class="card">
+      <h4>GC Column Types</h4>
+      <p>
+        Compare packed and capillary columns, understand separation behavior,
+        applications, and common column problems.
+      </p>
+      <a class="btn btn-primary"
+         href="knowledge/gc/gc-column-types.html">
         Learn →
       </a>
     </div>
@@ -58,9 +112,21 @@
   </div>
 </section>
 
+<!-- ================= FUTURE SECTIONS ================= -->
+<section class="panel">
+  <h3>More Topics Coming</h3>
+  <p class="muted">
+    Additional sections such as GC troubleshooting, method tuning,
+    CEMS analyzers, PEMS, and field best practices will be added here.
+  </p>
+</section>
+
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
 <script src="assets/js/includes.js"></script>
 
 </body>
