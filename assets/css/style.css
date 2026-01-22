@@ -533,3 +533,17 @@ article h2{
     margin:24px 12px;
   }
 }
+/* =====================================
+   Soft Secondary Button (Safe Addition)
+===================================== */
+
+.btn-soft {
+  background: #eef6fb;
+  color: #0b3c5d;
+  border: 1px solid #0b3c5d;
+}
+
+.btn-soft:hover {
+  background: #0b3c5d;
+  color: #ffffff;
+}
