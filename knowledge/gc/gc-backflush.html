@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GC Backflush | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <base href="/instmates/">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+  <a href="index.html">Home</a><span>›</span>
+  <a href="knowledge.html">Knowledge</a><span>›</span>
+  <span>GC Backflush</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h2>GC Backflush – Working Principle</h2>
+  <p class="muted">
+    Backflush removes heavy components after cut time to protect
+    the analytical column and detector.
+  </p>
+
+  <div class="svg-wrap">
+
+    <!-- INLINE SVG (DO NOT LINK, DO NOT IMPORT) -->
+    <svg viewBox="0 0 960 440" width="100%"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-label="GC Backflush Diagram">
+
+      <text x="480" y="30" text-anchor="middle"
+            font-size="20" font-weight="700">
+        GC Backflush Flow
+      </text>
+
+      <line x1="40" y1="220" x2="160" y2="220"
+            stroke="#2563eb" stroke-width="4"/>
+      <text x="40" y="200">Sample In</text>
+
+      <rect x="160" y="190" width="90" height="60" rx="8"
+            fill="#eef6fb" stroke="#0b3c5d" stroke-width="3"/>
+      <text x="205" y="225" text-anchor="middle">Valve</text>
+
+      <path d="M250 220 Q330 150 410 220"
+            fill="none" stroke="#1f78b4" stroke-width="4"/>
+      <text x="330" y="150" text-anchor="middle">Pre-Column</text>
+
+      <path d="M420 220 Q520 130 620 220"
+            fill="none" stroke="#15803d" stroke-width="4"/>
+      <text x="520" y="130" text-anchor="middle">
+        Analytical Column
+      </text>
+
+      <rect x="620" y="190" width="100" height="60" rx="8"
+            fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+      <text x="670" y="225" text-anchor="middle">Detector</text>
+
+      <path d="M410 220 Q330 300 240 300"
+            fill="none" stroke="#dc2626"
+            stroke-width="4" stroke-dasharray="8 6"/>
+
+      <text x="300" y="330" fill="#dc2626">
+        Backflush (Reverse Flow)
+      </text>
+
+    </svg>
+
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="assets/js/includes.js"></script>
+
+</body>
+</html>
