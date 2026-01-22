@@ -296,3 +296,43 @@ img{
   .hero h1{font-size:1.8rem}
   .main-nav{justify-content:center}
 }
+/* ================= MOBILE HEADER OPTIMIZATION ================= */
+
+@media (max-width: 768px){
+
+  .site-header-inner{
+    padding:10px 12px;
+  }
+
+  /* Logo scaling */
+  .logo-svg{
+    height:34px;      /* desktop = 42px */
+  }
+
+  /* Navigation tighter */
+  .main-nav{
+    gap:14px;
+  }
+
+  .main-nav a{
+    font-size:0.95rem;
+    padding:4px 2px;
+  }
+
+  .nav-cta{
+    padding:4px 10px;
+    font-size:0.9rem;
+  }
+}
+
+/* Extra-small devices */
+@media (max-width: 480px){
+
+  .logo-svg{
+    height:30px;
+  }
+
+  .main-nav{
+    gap:10px;
+  }
+}
