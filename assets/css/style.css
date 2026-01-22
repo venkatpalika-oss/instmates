@@ -645,3 +645,24 @@ a:hover{
 .hero-actions .btn{
   margin: 6px 8px;
 }
+/* =========================================================
+   Home Hero – Primary Action Buttons (Orange)
+   Only used for Join & Explore on index page
+========================================================= */
+
+.btn-hero{
+  background: #f59e0b;           /* orange */
+  color: #1f2937;                /* dark text */
+  border: 1px solid #92400e;
+  font-weight: 700;
+  transition: background .25s ease,
+              transform .15s ease,
+              box-shadow .15s ease;
+}
+
+.btn-hero:hover{
+  background: #d97706;           /* darker orange */
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(146,64,14,.35);
+}
