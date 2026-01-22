@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  loadInto("siteHeader", "includes/header.html");
-  loadInto("siteFooter", "includes/footer.html");
+  loadInto("siteHeader", "/instmates/includes/header.html");
+loadInto("siteFooter", "/instmates/includes/footer.html");
+
 
 });
 
