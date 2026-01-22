@@ -21,7 +21,8 @@
   <section class="panel auth-panel">
     <h2>Create Your InstMates Account</h2>
 
-    <form class="auth-form">
+    <!-- ✅ FORM -->
+    <form class="auth-form" onsubmit="handleRegister(event)">
 
       <label>
         Full Name
@@ -43,7 +44,7 @@
         <input type="password" required>
       </label>
 
-      <button class="btn btn-primary full">
+      <button class="btn btn-primary full" type="submit">
         Create Account
       </button>
 
@@ -59,9 +60,35 @@
 </main>
 
 <div id="siteFooter"></div>
+
+<!-- ================= AUTH ================= -->
 <script type="module" src="assets/js/auth.js"></script>
 
+<!-- ================= REGISTER HANDLER ================= -->
+<script type="module">
+  window.handleRegister = async function (e) {
+    e.preventDefault();
+
+    const inputs = e.target.querySelectorAll('input');
+    const fullName = inputs[0].value;
+    const email = inputs[1].value;
+    const password = inputs[2].value;
+    const confirm = inputs[3].value;
+
+    if (password !== confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      await window.registerUser(email, password);
+      // Later: save fullName to Firestore
+      window.location.href = "profile-edit.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+</script>
 
 </body>
 </html>
-
