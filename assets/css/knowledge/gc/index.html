@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GC Basics | InstMates</title>
+
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <style>
+    .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:#fff;border:1px solid rgba(0,0,0,0.12);border-radius:14px;padding:14px}
+    .card h3{margin:0 0 6px}
+    .card p{margin:0 0 10px;opacity:.85}
+    .btn{display:inline-block;padding:10px 12px;border-radius:10px;text-decoration:none;background:#0b3c5d;color:#fff;font-weight:700}
+  </style>
+</head>
+<body>
+
+<main class="container">
+  <h1>Gas Chromatography (GC) Basics</h1>
+  <p class="muted">Interactive visuals for technicians – valves, timing, backflush, and troubleshooting.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>1) Purge vs Inject</h3>
+      <p>Understand the sampling valve in two modes.</p>
+      <a class="btn" href="svg/gc-sampling-valve.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>2) 6-Port Valve Mapping</h3>
+      <p>See internal rotor logic switch between LOAD and INJECT.</p>
+      <a class="btn" href="svg/gc-6port-valve.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>3) Backflush Concept</h3>
+      <p>Why heavies get flushed to vent to protect the column.</p>
+      <a class="btn" href="svg/gc-backflush.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>4) Dual Column / Heart-Cut</h3>
+      <p>How only the “window of interest” goes to analytical column.</p>
+      <a class="btn" href="svg/gc-heartcut.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>5) Timing vs Chromatogram</h3>
+      <p>Link valve events to peaks and retention time behavior.</p>
+      <a class="btn" href="svg/gc-timing-chrom.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>6) Failure Modes</h3>
+      <p>Leak, wrong timing, stuck valve → what the chromatogram looks like.</p>
+      <a class="btn" href="svg/gc-failures.html">Open</a>
+    </div>
+
+    <div class="card">
+      <h3>7) Full GC Cycle Timeline</h3>
+      <p>End-to-end overview from purge to ready.</p>
+      <a class="btn" href="svg/gc-full-cycle.html">Open</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
