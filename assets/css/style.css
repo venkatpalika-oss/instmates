@@ -398,3 +398,19 @@ article h2{
   margin-top:18px;
   color:#0b3c5d;
 }
+/* ================= CASE STUDIES ================= */
+
+.case-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.case-item{
+  border-bottom:1px solid #e0e0e0;
+  padding-bottom:12px;
+}
+
+article h2{
+  margin-top:18px;
+}
