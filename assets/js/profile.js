@@ -24,12 +24,11 @@ onAuthStateChanged(auth, async (user) => {
 
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
-
   if (!snap.exists()) return;
 
   const d = snap.data();
 
-  // Autofill
+  // Autofill base fields
   setVal("fullName", d.name);
   setVal("role", d.role);
   setVal("location", d.location);
@@ -37,6 +36,11 @@ onAuthStateChanged(auth, async (user) => {
   setVal("primaryDomain", d.primaryDomain);
   setVal("skills", (d.skills || []).join(", "));
   setVal("summary", d.summary);
+
+  // Autofill troubleshooting blocks
+  if (Array.isArray(d.majorTroubleshooting)) {
+    d.majorTroubleshooting.forEach(t => addTroubleBlock(t));
+  }
 
   if (progressBar) {
     progressBar.style.width = `${d.profileCompletion || 0}%`;
@@ -51,6 +55,8 @@ form.addEventListener("submit", async (e) => {
   const user = auth.currentUser;
   if (!user) return;
 
+  const troubleshooting = collectTroubleshooting();
+
   const data = {
     name: val("fullName"),
     role: val("role"),
@@ -60,6 +66,7 @@ form.addEventListener("submit", async (e) => {
     skills: split("skills"),
     industries: getMulti("industries"),
     summary: val("summary"),
+    majorTroubleshooting: troubleshooting,
     updatedAt: serverTimestamp()
   };
 
@@ -85,6 +92,40 @@ form.addEventListener("submit", async (e) => {
     alert("Failed to save profile. Please try again.");
   }
 });
+
+/* ================= TROUBLESHOOTING ================= */
+
+function collectTroubleshooting() {
+  const blocks = document.querySelectorAll(".trouble-card");
+  const list = [];
+
+  blocks.forEach(b => {
+    const item = {};
+    b.querySelectorAll("[data-field]").forEach(el => {
+      item[el.dataset.field] = el.value.trim();
+    });
+
+    // Save only meaningful entries
+    if (item.system || item.problem || item.action) {
+      list.push(item);
+    }
+  });
+
+  return list;
+}
+
+function addTroubleBlock(data = {}) {
+  const tpl = document.getElementById("troubleTemplate");
+  if (!tpl) return;
+
+  const clone = tpl.content.cloneNode(true);
+  clone.querySelectorAll("[data-field]").forEach(el => {
+    el.value = data[el.dataset.field] || "";
+  });
+
+  document.getElementById("troubleshootingList")
+    ?.appendChild(clone);
+}
 
 /* ================= HELPERS ================= */
 
@@ -124,6 +165,7 @@ function calculateCompletion(d) {
   if (d.primaryDomain) score += 15;
   if (d.skills?.length) score += 15;
   if (d.industries?.length) score += 10;
-  if (d.summary) score += 10;
+  if (d.summary) score += 5;
+  if (d.majorTroubleshooting?.length) score += 5;
   return score;
 }
