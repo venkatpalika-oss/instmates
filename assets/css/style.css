@@ -1199,9 +1199,8 @@ main::after{
 
 body.logged-in .auth-in { display: inline-flex; gap: 10px; }
 body.logged-in .auth-out { display: none; }
-/* =========================
-   AUTH UI – NO FLICKER
-========================= */
+
+/* ================= AUTH UI – NO FLICKER ================= */
 
 /* Hide everything by default */
 .auth-in,
@@ -1209,13 +1208,12 @@ body.logged-in .auth-out { display: none; }
   display: none !important;
 }
 
-/* Show logged-out UI only after auth resolved */
+/* Only show AFTER auth state is known */
 body.auth-ready:not(.logged-in) .auth-out {
   display: inline-flex !important;
   gap: 10px;
 }
 
-/* Show logged-in UI only after auth resolved */
 body.auth-ready.logged-in .auth-in {
   display: inline-flex !important;
   gap: 10px;
