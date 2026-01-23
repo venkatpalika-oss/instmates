@@ -71,22 +71,23 @@
       <a href="case-studies.html">Case Studies</a>
       <a href="about.html">About</a>
 
-      <!-- AUTH NAV -->
+      <!-- ================= AUTH NAV ================= -->
 
-      <!-- Logged OUT -->
-      <a href="login.html" class="nav-cta auth-out">
-        Login
-      </a>
+<!-- Logged OUT -->
+<span class="auth-out">
+  <a href="/login.html" class="nav-cta">Login</a>
+  <a href="/register.html" class="nav-cta nav-cta-primary">Join</a>
+</span>
 
-      <!-- Logged IN -->
-      <span class="auth-in" style="display:none;">
-        <a href="profile.html" class="nav-cta">
-          Profile
-        </a>
-        <a href="#" class="nav-logout" onclick="logoutUser()">
-          Logout
-        </a>
-      </span>
+<!-- Logged IN -->
+<span class="auth-in">
+  <a href="#" id="myProfileLink" class="nav-cta">
+    My Profile
+  </a>
+  <a href="#" class="nav-logout nav-cta" onclick="logoutUser()">
+    Logout
+  </a>
+</span>
     </nav>
 
   </div>
