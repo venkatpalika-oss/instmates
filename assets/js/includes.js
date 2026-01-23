@@ -1,4 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
+// assets/js/includes.js
+// LOCKED – ROOT DOMAIN INCLUDE HANDLER
+
+document.addEventListener("DOMContentLoaded", () => {
 
   async function loadInto(id, url) {
     const el = document.getElementById(id);
@@ -14,10 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===============================
-  // INST MATES (ROOT DOMAIN)
+  // INST MATES – ROOT ABSOLUTE INCLUDES
   // ===============================
- loadInto("siteHeader", "/includes/header.html");
-loadInto("siteFooter", "/includes/footer.html");
-import("/assets/js/header-auth.js");
+  loadInto("siteHeader", "/includes/header.html");
+  loadInto("siteFooter", "/includes/footer.html");
+
+  // ===============================
+  // AUTH / HEADER LOGIC (MODULE)
+  // ===============================
+  import("/assets/js/header-auth.js");
 
 });
