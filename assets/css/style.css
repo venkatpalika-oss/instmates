@@ -1218,3 +1218,25 @@ body.auth-ready.logged-in .auth-in {
   display: inline-flex !important;
   gap: 10px;
 }
+.profile-progress {
+  margin-bottom: 18px;
+}
+
+.progress-label {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#profileBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  transition: width 0.4s ease;
+}
