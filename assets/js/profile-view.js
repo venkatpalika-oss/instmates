@@ -1,51 +1,53 @@
-/* =========================================================
-   InstMates - Public Profile View
-   File: assets/js/profile-view.js
-========================================================= */
-
 import { db } from "./firebase.js";
-
 import { doc, getDoc } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= GET UID FROM URL ================= */
+/* ================= GET UID ================= */
 
 const params = new URLSearchParams(window.location.search);
 const uid = params.get("uid");
 
 if (!uid) {
-  document.getElementById("profileName").textContent = "Profile not found";
-  throw new Error("No UID provided");
+  document.body.innerHTML = "<p>User not found.</p>";
+  throw new Error("Missing UID");
 }
 
 /* ================= LOAD PROFILE ================= */
 
-async function loadProfile() {
-  const snap = await getDoc(doc(db, "users", uid));
+(async function () {
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
 
   if (!snap.exists()) {
-    document.getElementById("profileName").textContent = "Profile not found";
+    document.body.innerHTML = "<p>User not found.</p>";
     return;
   }
 
   const data = snap.data();
 
-  document.getElementById("profileName").textContent =
-    data.name || "InstMates Member";
+  document.getElementById("pv-name").innerText = data.name || "Anonymous";
+  document.getElementById("pv-role").innerText = data.role || "";
+  document.getElementById("pv-location").innerText = data.location || "";
 
-  document.getElementById("profileRole").textContent =
-    data.role || "Field Professional";
+  document.getElementById("pv-exp").innerText =
+    data.experienceYears ?? "—";
 
-  // Skills
-  const skillsGrid = document.getElementById("skillsGrid");
-  skillsGrid.innerHTML = "";
+  document.getElementById("pv-domain").innerText =
+    data.primaryDomain || "—";
+
+  document.getElementById("pv-industry").innerText =
+    data.industries?.join(", ") || "—";
+
+  document.getElementById("pv-summary").innerText =
+    data.summary || "No summary provided.";
+
+  const skillsWrap = document.getElementById("pv-skills");
+  skillsWrap.innerHTML = "";
 
   (data.skills || []).forEach(skill => {
-    const span = document.createElement("span");
-    span.className = "skill";
-    span.textContent = skill;
-    skillsGrid.appendChild(span);
+    const s = document.createElement("span");
+    s.className = "skill";
+    s.innerText = skill;
+    skillsWrap.appendChild(s);
   });
-}
-
-loadProfile();
+})();
