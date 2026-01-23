@@ -6,10 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Professional profile on InstMates – real field experience from instrument and analyzer technicians." />
+        content="Professional technician profile on InstMates with real troubleshooting experience." />
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+
+  <style>
+    .profile-header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .profile-avatar{
+      width:80px;
+      height:80px;
+      border-radius:50%;
+      background:#e5e7eb;
+    }
+    .cred-strip{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .badge{
+      background:#f1f5f9;
+      padding:6px 10px;
+      border-radius:6px;
+      font-size:.9rem;
+    }
+    .trouble-public{
+      border-left:4px solid #22c55e;
+      background:#f8fafc;
+      padding:16px;
+      border-radius:8px;
+      margin-bottom:18px;
+    }
+    .trouble-public h4{
+      margin:0 0 6px;
+    }
+  </style>
 </head>
 
 <body data-page="profile-view">
@@ -17,14 +53,12 @@
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= PROFILE ================= -->
 <main class="container">
 
-  <section class="panel profile-view">
-
+  <!-- ================= PROFILE HEADER ================= -->
+  <section class="panel">
     <div class="profile-header">
       <div class="profile-avatar"></div>
-
       <div>
         <h1 id="pv-name">—</h1>
         <p class="muted" id="pv-role">—</p>
@@ -32,24 +66,23 @@
       </div>
     </div>
 
-    <div class="profile-stats">
-      <div><strong id="pv-exp">—</strong><span>Years Experience</span></div>
-      <div><strong id="pv-domain">—</strong><span>Primary Domain</span></div>
-      <div><strong id="pv-industry">—</strong><span>Industries</span></div>
+    <div class="cred-strip">
+      <span class="badge" id="pv-exp"></span>
+      <span class="badge" id="pv-domain"></span>
+      <span class="badge" id="pv-industries"></span>
     </div>
-
   </section>
 
-  <!-- ABOUT -->
+  <!-- ================= SUMMARY ================= -->
   <section class="panel">
-    <h2>About</h2>
+    <h2>Professional Summary</h2>
     <p class="muted" id="pv-summary">—</p>
   </section>
 
-  <!-- SKILLS -->
+  <!-- ================= MAJOR TROUBLESHOOTING ================= -->
   <section class="panel">
-    <h2>Core Skills</h2>
-    <div class="skills-grid" id="pv-skills"></div>
+    <h2>Major Troubleshooting & Breakthroughs</h2>
+    <div id="pv-troubleshooting"></div>
   </section>
 
 </main>
