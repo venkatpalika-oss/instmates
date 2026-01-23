@@ -39,7 +39,6 @@ import {
 window.registerUser = async function (email, password, fullName) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-  // Create mandatory user profile
   await setDoc(doc(db, "users", cred.user.uid), {
     uid: cred.user.uid,
     name: fullName,
@@ -50,9 +49,7 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
-  // Force onboarding
   window.location.href = "/profile.html";
-
   return cred;
 };
 
@@ -70,11 +67,11 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (CORE NAVIGATION BRAIN)
+   AUTH STATE HANDLER (NO HOME HIJACK)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
-  // Mark auth as resolved (prevents flicker)
+  // Mark auth resolved (prevents flicker)
   document.body.classList.add("auth-ready");
 
   if (!user) {
@@ -83,6 +80,15 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   document.body.classList.add("logged-in");
+
+  const path = location.pathname;
+
+  // Pages that REQUIRE completed profile
+  const protectedPages = [
+    "/explore.html",
+    "/community.html",
+    "/post.html"
+  ];
 
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
@@ -94,24 +100,35 @@ onAuthStateChanged(auth, async (user) => {
 
     const data = snap.data();
 
+    /* ===== PROFILE NOT COMPLETED ===== */
     if (!data.profileCompleted) {
-      if (!location.pathname.includes("profile.html")) {
+
+      // Redirect ONLY if user tries protected or auth pages
+      if (
+        protectedPages.some(p => path.endsWith(p)) ||
+        path.endsWith("/login.html") ||
+        path.endsWith("/register.html")
+      ) {
         window.location.href = "/profile.html";
       }
-    } else {
-      if (
-        location.pathname.includes("login") ||
-        location.pathname.includes("register") ||
-        location.pathname.includes("profile.html")
-      ) {
-        window.location.href = "/explore.html";
-      }
+
+      // Allow home / marketing pages
+      return;
     }
+
+    /* ===== PROFILE COMPLETED ===== */
+    if (
+      path.endsWith("/login.html") ||
+      path.endsWith("/register.html") ||
+      path.endsWith("/profile.html")
+    ) {
+      window.location.href = "/explore.html";
+    }
+
   } catch (err) {
     console.error("Auth state error:", err);
   }
 });
-
 
 /* =========================================================
    QUESTIONS
@@ -162,18 +179,3 @@ window.getUserRole = async function () {
 
   return snap.data().role || "user";
 };
-
-/* =========================================================
-   ADMIN CHECK (FUTURE – CLAIM BASED)
-========================================================= */
-/*
-import { getIdTokenResult } from "firebase/auth";
-
-onAuthStateChanged(auth, async user => {
-  if (!user) return;
-  const token = await getIdTokenResult(user);
-  if (token.claims.admin) {
-    document.body.classList.add("is-admin");
-  }
-});
-*/
