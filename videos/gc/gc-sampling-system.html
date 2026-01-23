@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GC Sampling System – Animated Working Principle | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Animated working principle of GC sampling system. Visual step-by-step explanation of probes, filters, regulators, purge flow, and common failure points." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="video-gc-sampling">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/videos/index.html">Video Hub</a><span>›</span>
+  <span class="current">GC Sampling System</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>GC Sampling System – Animated Walkthrough</h2>
+  <p class="muted">
+    This animation explains how a GC sampling system extracts, conditions,
+    and delivers a stable sample to the analyzer.
+    Animation follows real plant logic — not lab theory.
+  </p>
+</section>
+
+<!-- ================= CONTROLS ================= -->
+<section class="panel">
+  <div class="action-row">
+    <button class="btn btn-primary" id="playBtn">▶ Play</button>
+    <button class="btn btn-ghost" id="stepBtn">Step</button>
+    <span class="muted" id="stepLabel">Step 1: Process Extraction</span>
+  </div>
+</section>
+
+<!-- ================= SVG ANIMATION ================= -->
+<section class="panel">
+
+<svg id="gcSvg" viewBox="0 0 960 360"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Sampling System Animation">
+
+  <style>
+    .unit { fill:#f1f5f9; stroke:#334155; stroke-width:3 }
+    .highlight { fill:#dcfce7; stroke:#16a34a }
+    .pipe { stroke:#64748b; stroke-width:5 }
+    .flow { stroke:#2563eb; stroke-width:5; stroke-dasharray:10 6 }
+    .label { font:14px Arial; fill:#0b3c5d }
+  </style>
+
+  <!-- PROCESS -->
+  <rect id="process" x="40" y="140" width="160" height="80" rx="10" class="unit"/>
+  <text x="120" y="185" text-anchor="middle" class="label">Process Line</text>
+
+  <!-- PROBE -->
+  <rect id="probe" x="220" y="140" width="120" height="80" rx="10" class="unit"/>
+  <text x="280" y="185" text-anchor="middle" class="label">Sample Probe</text>
+
+  <!-- FILTER -->
+  <rect id="filter" x="380" y="140" width="120" height="80" rx="10" class="unit"/>
+  <text x="440" y="175" text-anchor="middle" class="label">Filter</text>
+  <text x="440" y="195" text-anchor="middle" class="label">Particulates</text>
+
+  <!-- REGULATOR -->
+  <rect id="reg" x="540" y="140" width="150" height="80" rx="10" class="unit"/>
+  <text x="615" y="185" text-anchor="middle" class="label">Pressure Regulator</text>
+
+  <!-- GC -->
+  <rect id="gc" x="720" y="140" width="180" height="80" rx="10" class="unit"/>
+  <text x="810" y="175" text-anchor="middle" class="label">GC Analyzer</text>
+  <text x="810" y="195" text-anchor="middle" class="label">Injection Valve</text>
+
+  <!-- PIPES -->
+  <line x1="200" y1="180" x2="220" y2="180" class="pipe"/>
+  <line x1="340" y1="180" x2="380" y2="180" class="pipe"/>
+  <line x1="500" y1="180" x2="540" y2="180" class="pipe"/>
+  <line x1="690" y1="180" x2="720" y2="180" class="pipe"/>
+
+  <!-- FLOW -->
+  <line id="flow1" x1="200" y1="180" x2="900" y2="180"
+        class="flow" opacity="0"/>
+
+</svg>
+
+</section>
+
+<!-- ================= FIELD NOTE ================= -->
+<section class="panel">
+  <p class="muted">
+    🔧 Field rule: If GC results are unstable, always troubleshoot
+    <b>sampling → pressure → conditioning</b> before touching the analyzer.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script src="/videos/gc/gc-sampling-system.js"></script>
+
+</body>
+</html>
