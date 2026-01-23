@@ -11,17 +11,22 @@
   <!-- Global CSS -->
   <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
 
+  <!-- Page polish (HTML-safe, no JS dependency) -->
   <style>
-    .profile-header{
+    .profile-hero{
       display:flex;
-      gap:18px;
+      gap:20px;
       align-items:center;
     }
     .profile-avatar{
-      width:80px;
-      height:80px;
+      width:88px;
+      height:88px;
       border-radius:50%;
       background:#e5e7eb;
+      flex-shrink:0;
+    }
+    .profile-meta h1{
+      margin:0;
     }
     .cred-strip{
       margin-top:14px;
@@ -31,9 +36,13 @@
     }
     .badge{
       background:#f1f5f9;
-      padding:6px 10px;
-      border-radius:6px;
+      padding:6px 12px;
+      border-radius:999px;
       font-size:.9rem;
+      font-weight:500;
+    }
+    .section-title{
+      margin-bottom:10px;
     }
     .trouble-public{
       border-left:4px solid #22c55e;
@@ -44,6 +53,14 @@
     }
     .trouble-public h4{
       margin:0 0 6px;
+      font-size:1.05rem;
+    }
+    .trouble-public p{
+      margin:6px 0;
+    }
+    .empty-state{
+      color:#64748b;
+      font-style:italic;
     }
   </style>
 </head>
@@ -55,34 +72,46 @@
 
 <main class="container">
 
-  <!-- ================= PROFILE HEADER ================= -->
+  <!-- ================= PROFILE HERO ================= -->
   <section class="panel">
-    <div class="profile-header">
+    <div class="profile-hero">
       <div class="profile-avatar"></div>
-      <div>
+
+      <div class="profile-meta">
         <h1 id="pv-name">—</h1>
         <p class="muted" id="pv-role">—</p>
         <p class="muted" id="pv-location"></p>
-      </div>
-    </div>
 
-    <div class="cred-strip">
-      <span class="badge" id="pv-exp"></span>
-      <span class="badge" id="pv-domain"></span>
-      <span class="badge" id="pv-industries"></span>
+        <div class="cred-strip">
+          <span class="badge" id="pv-exp"></span>
+          <span class="badge" id="pv-domain"></span>
+          <span class="badge" id="pv-industries"></span>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ================= SUMMARY ================= -->
   <section class="panel">
-    <h2>Professional Summary</h2>
-    <p class="muted" id="pv-summary">—</p>
+    <h2 class="section-title">Professional Summary</h2>
+    <p class="muted" id="pv-summary">
+      —
+    </p>
   </section>
 
   <!-- ================= MAJOR TROUBLESHOOTING ================= -->
   <section class="panel">
-    <h2>Major Troubleshooting & Breakthroughs</h2>
-    <div id="pv-troubleshooting"></div>
+    <h2 class="section-title">Major Troubleshooting & Breakthroughs</h2>
+
+    <p class="muted">
+      Real field problems solved that built confidence, recognition, and trust.
+    </p>
+
+    <div id="pv-troubleshooting">
+      <p class="empty-state">
+        No troubleshooting stories added yet.
+      </p>
+    </div>
   </section>
 
 </main>
