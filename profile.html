@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Rahul | Analyzer Engineer | InstMates</title>
+  <title>Complete Your Profile | InstMates</title>
 
   <meta name="description"
-        content="Professional profile of Rahul, Analyzer Engineer. Field experience in GC, CEMS, troubleshooting and calibration." />
+        content="Complete your InstMates profile to start exploring the community." />
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,126 +15,51 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
 </head>
 
-<body data-page="profile">
+<body data-page="profile-setup">
 
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= PROFILE HERO ================= -->
-<section class="panel profile-hero container">
-
-  <div class="profile-header">
-
-    <div class="profile-avatar">
-      <!-- Placeholder avatar -->
-    </div>
-
-    <div class="profile-info">
-      <h1>Rahul</h1>
-      <p class="profile-role">
-        Analyzer Engineer · Gas Chromatography & CEMS
-      </p>
-
-      <p class="muted">
-        12+ years of field experience in refinery & petrochemical plants.
-        Specialized in GC troubleshooting, calibration, and analyzer reliability.
-      </p>
-
-      <div class="profile-actions">
-        <button class="btn btn-primary">Connect</button>
-        <button class="btn btn-ghost">Message</button>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- ================= STATS ================= -->
-  <section class="stats">
-    <div class="stat">
-      <strong>58</strong>
-      <span>Posts</span>
-    </div>
-    <div class="stat">
-      <strong>124</strong>
-      <span>Contributions</span>
-    </div>
-    <div class="stat">
-      <strong>18</strong>
-      <span>Reputation</span>
-    </div>
-  </section>
-
-  <!-- ================= ABOUT ================= -->
   <section class="panel">
-    <h2>About</h2>
+    <h1>Complete Your Profile</h1>
     <p class="muted">
-      Working as an Analyzer Engineer with extensive hands-on exposure
-      to online gas chromatographs, CEMS analyzers, sampling systems,
-      and shutdown/startup activities.
+      This helps other technicians understand your experience and skills.
     </p>
-  </section>
 
-  <!-- ================= SKILLS ================= -->
-  <section class="panel">
-    <h2>Core Skills</h2>
+    <form id="profileForm" class="form">
 
-    <div class="skills-grid">
-      <span class="skill">Gas Chromatography (GC)</span>
-      <span class="skill">CEMS & Emission Monitoring</span>
-      <span class="skill">Analyzer Calibration</span>
-      <span class="skill">Sampling Systems</span>
-      <span class="skill">Root Cause Analysis</span>
-      <span class="skill">Shutdown & Commissioning</span>
-    </div>
-  </section>
+      <label>
+        Full Name
+        <input type="text" id="fullName" required />
+      </label>
 
-  <!-- ================= RECENT POSTS ================= -->
-  <section class="panel">
-    <h2>Recent Field Posts</h2>
+      <label>
+        Role
+        <select id="role" required>
+          <option value="">Select role</option>
+          <option value="Instrument Technician">Instrument Technician</option>
+          <option value="Analyzer Engineer">Analyzer Engineer</option>
+          <option value="Instrumentation Engineer">Instrumentation Engineer</option>
+          <option value="Maintenance Supervisor">Maintenance Supervisor</option>
+        </select>
+      </label>
 
-    <div class="feed">
+      <label>
+        Core Skills (comma separated)
+        <input type="text" id="skills"
+               placeholder="GC, CEMS, Sampling Systems, Calibration" />
+      </label>
 
-      <div class="post-card">
-        <p class="muted">
-          GC baseline drifting during monsoon season —
-          resolved by upgrading sample conditioning.
-        </p>
-        <div class="post-actions">
-          ❤️ 16 &nbsp; 💬 6
-        </div>
-      </div>
+      <button type="submit" class="btn btn-primary">
+        Save & Continue
+      </button>
 
-      <div class="post-card">
-        <p class="muted">
-          Importance of proper zero/span sequence in SO₂ CEMS
-          after prolonged shutdown.
-        </p>
-        <div class="post-actions">
-          ❤️ 22 &nbsp; 💬 9
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= GROUPS ================= -->
-  <section class="panel">
-    <h2>Groups</h2>
-
-    <div class="groups-grid">
-      <div class="group-card">Gas Chromatography</div>
-      <div class="group-card">CEMS & Emission Monitoring</div>
-      <div class="group-card">Analyzer Troubleshooting</div>
-      <div class="group-card">Middle East Technicians</div>
-    </div>
+    </form>
   </section>
 
 </main>
@@ -143,7 +68,10 @@
 <div id="siteFooter"></div>
 
 <!-- ================= INCLUDES ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+<!-- ================= PROFILE LOGIC ================= -->
+<script type="module" src="/assets/js/profile.js"></script>
 
 </body>
 </html>
