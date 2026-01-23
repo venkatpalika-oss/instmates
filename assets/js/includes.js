@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  loadInto("siteHeader", "/instmates/includes/header.html");
-loadInto("siteFooter", "/instmates/includes/footer.html");
-
+  // ===============================
+  // INST MATES (ROOT DOMAIN)
+  // ===============================
+  loadInto("siteHeader", "includes/header.html");
+  loadInto("siteFooter", "includes/footer.html");
 
 });
-
