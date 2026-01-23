@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates - Profile Setup Logic
+   InstMates - Profile Setup Logic (FIXED)
    File: assets/js/profile.js
 ========================================================= */
 
@@ -11,7 +11,7 @@ import { onAuthStateChanged } from
 import { doc, updateDoc, getDoc, serverTimestamp } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= AUTH GUARD ================= */
+/* ================= AUTH GUARD + LOAD PROFILE ================= */
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -19,13 +19,24 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  const snap = await getDoc(doc(db, "users", user.uid));
-  if (snap.exists()) {
-    const data = snap.data();
-    if (data.profileCompleted) {
-      window.location.href = "/explore.html";
-    }
-  }
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+
+  // 🔹 Autofill form (IMPORTANT)
+  const nameEl = document.getElementById("fullName");
+  const roleEl = document.getElementById("role");
+  const skillsEl = document.getElementById("skills");
+
+  if (nameEl) nameEl.value = data.name || "";
+  if (roleEl) roleEl.value = data.role || "";
+  if (skillsEl) skillsEl.value = (data.skills || []).join(", ");
+
+  // ❌ REMOVED forced redirect
+  // User is now allowed to edit profile anytime
 });
 
 /* ================= SAVE PROFILE ================= */
@@ -52,5 +63,6 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
     updatedAt: serverTimestamp()
   });
 
-  window.location.href = "/explore.html";
+  // ✅ Redirect to PUBLIC profile (better UX)
+  window.location.href = `/profile-view.html?uid=${user.uid}`;
 });
