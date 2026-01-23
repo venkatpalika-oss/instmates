@@ -24,69 +24,111 @@
 <div id="siteHeader"></div>
 
 <main class="container">
-<section class="panel container">
-  <h2>Complete Your Profile</h2>
-  <p class="muted">Help others understand your real field experience.</p>
 
-  <!-- COMPLETENESS BAR -->
-  <div class="profile-progress">
-    <div class="progress-label">
-      Profile Completion: <strong><span id="profilePercent">0</span>%</strong>
+  <section class="panel profile-panel">
+
+    <h2>Complete Your Profile</h2>
+    <p class="muted">
+      This helps other technicians understand your real field experience.
+    </p>
+
+    <!-- COMPLETION -->
+    <div class="profile-progress">
+      <span>Profile Completion</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="profileProgress" style="width:0%"></div>
+      </div>
     </div>
-    <div class="progress-bar">
-      <div id="profileBar"></div>
-    </div>
-  </div>
 
-  <form id="profileForm">
+    <form id="profileForm">
 
-    <label>Full Name</label>
-    <input id="fullName" type="text" required />
+      <!-- ================= IDENTITY ================= -->
+      <div class="profile-section">
+        <h3>Identity</h3>
 
-    <label>Role</label>
-    <select id="role" required>
-      <option value="">Select role</option>
-      <option>Instrument Technician</option>
-      <option>Analyzer Engineer</option>
-      <option>Supervisor</option>
-    </select>
+        <div class="form-grid">
+          <div>
+            <label>Full Name</label>
+            <input id="fullName" type="text" required>
+          </div>
 
-    <label>Location</label>
-    <input id="location" type="text" placeholder="Country / Region" />
+          <div>
+            <label>Role</label>
+            <select id="role" required>
+              <option value="">Select role</option>
+              <option>Instrument Technician</option>
+              <option>Analyzer Engineer</option>
+              <option>Supervisor</option>
+            </select>
+          </div>
 
-    <label>Years of Experience</label>
-    <input id="experienceYears" type="number" min="0" max="50" />
+          <div>
+            <label>Location</label>
+            <input id="location" type="text" placeholder="Country / Region">
+          </div>
 
-    <label>Primary Domain</label>
-    <select id="primaryDomain">
-      <option value="">Select domain</option>
-      <option>Gas Chromatography (GC)</option>
-      <option>CEMS</option>
-      <option>FTIR</option>
-      <option>Field Instrumentation</option>
-    </select>
+          <div>
+            <label>Years of Experience</label>
+            <input id="experienceYears" type="number" min="0">
+          </div>
+        </div>
+      </div>
 
-    <label>Core Skills (comma separated)</label>
-    <input id="skills" placeholder="GC, Sampling Systems, Calibration" />
+      <!-- ================= EXPERTISE ================= -->
+      <div class="profile-section">
+        <h3>Technical Expertise</h3>
 
-    <label>Industries Worked</label>
-    <select id="industries" multiple>
-      <option>Refinery</option>
-      <option>Petrochemical</option>
-      <option>Power Plant</option>
-      <option>Fertilizer</option>
-    </select>
+        <div class="form-grid">
+          <div>
+            <label>Primary Domain</label>
+            <select id="primaryDomain">
+              <option value="">Select domain</option>
+              <option>Gas Chromatography</option>
+              <option>CEMS</option>
+              <option>FTIR</option>
+              <option>Field Instrumentation</option>
+            </select>
+          </div>
 
-    <label>Experience Summary</label>
-    <textarea id="summary" rows="4"
-      placeholder="Describe key troubleshooting or commissioning experience"></textarea>
+          <div>
+            <label>Core Skills (comma separated)</label>
+            <input id="skills" type="text" placeholder="GC, Sampling, Calibration">
+          </div>
 
-    <button class="btn btn-primary" type="submit">
-      Save Profile
-    </button>
+          <div>
+            <label>Industries Worked</label>
+            <select id="industries" multiple>
+              <option>Refinery</option>
+              <option>Petrochemical</option>
+              <option>Power Plant</option>
+              <option>Fertilizer</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-  </form>
-</section>
+      <!-- ================= EXPERIENCE ================= -->
+      <div class="profile-section">
+        <h3>Field Experience</h3>
+
+        <label>Experience Summary</label>
+        <textarea id="summary" rows="4"
+          placeholder="Describe key troubleshooting, shutdowns, commissioning or plant experience"></textarea>
+      </div>
+
+      <!-- ================= ACTION ================= -->
+      <div class="profile-actions">
+        <button class="btn btn-primary" type="submit">
+          Save Profile
+        </button>
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
+
 
 
 </main>
