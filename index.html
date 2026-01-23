@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+  <!-- Global CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="home">
@@ -41,7 +41,7 @@
       Join InstMates
     </button>
 
-    <a href="knowledge.html" class="btn btn-hero">
+    <a href="/knowledge.html" class="btn btn-hero">
       Explore Knowledge
     </a>
 
@@ -57,7 +57,7 @@
 
     <div class="feed">
 
-      <a href="knowledge.html" class="post-link">
+      <a href="/knowledge.html" class="post-link">
         <div class="post-card">
           <div class="post-header">
             <div class="avatar small"></div>
@@ -76,7 +76,7 @@
         </div>
       </a>
 
-      <a href="knowledge.html" class="post-link">
+      <a href="/knowledge.html" class="post-link">
         <div class="post-card">
           <div class="post-header">
             <div class="avatar small"></div>
@@ -233,7 +233,7 @@
     </ul>
 
     <div class="modal-actions">
-      <a href="register.html" class="btn btn-primary">Create Account</a>
+      <a href="/register.html" class="btn btn-primary">Create Account</a>
       <button class="btn btn-ghost" onclick="closeJoinModal()">Maybe Later</button>
     </div>
   </div>
@@ -242,11 +242,9 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= INCLUDES ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
-
-<!-- ================= HEADER AUTH UI (REQUIRED) ================= -->
-<script type="module" src="assets/js/header-auth.js"></script>
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script type="module" src="/assets/js/header-auth.js"></script>
 
 <!-- ================= MODAL SCRIPT ================= -->
 <script>
