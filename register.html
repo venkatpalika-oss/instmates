@@ -9,7 +9,8 @@
   <meta name="description"
         content="Create an InstMates account and join the professional community of instrument and analyzer technicians." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+  <!-- Global CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="register">
@@ -53,7 +54,7 @@
 
     <p class="muted">
       Already have an account?
-      <a href="login.html">Login</a>
+      <a href="/login.html">Login</a>
     </p>
 
   </section>
@@ -63,20 +64,27 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= INCLUDES (MANDATORY) ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
+<!-- ===================================================== -->
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ===================================================== -->
 
-<!-- ================= AUTH ================= -->
-<script type="module" src="assets/js/auth.js"></script>
+<!-- 1️⃣ HEADER + FOOTER INCLUDES -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- ================= REGISTER HANDLER ================= -->
+<!-- 2️⃣ HEADER AUTH UI -->
+<script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- 3️⃣ AUTH CORE -->
+<script type="module" src="/assets/js/auth.js"></script>
+
+<!-- 4️⃣ REGISTER HANDLER (PAGE SPECIFIC) -->
 <script type="module">
   window.handleRegister = async function (e) {
     e.preventDefault();
 
     const inputs = e.target.querySelectorAll("input");
-    const fullName = inputs[0].value;
-    const email = inputs[1].value;
+    const fullName = inputs[0].value.trim();
+    const email = inputs[1].value.trim();
     const password = inputs[2].value;
     const confirm = inputs[3].value;
 
@@ -86,8 +94,8 @@
     }
 
     try {
-      await window.registerUser(email, password);
-      window.location.href = "profile-edit.html";
+      await window.registerUser(email, password, fullName);
+      window.location.href = "/profile.html";
     } catch (err) {
       alert(err.message);
     }
