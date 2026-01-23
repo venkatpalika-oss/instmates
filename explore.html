@@ -9,13 +9,13 @@
   <meta name="description"
         content="Explore InstMates – access technician profiles, community Q&A, knowledge hub, and real field case studies." />
 
-  <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+  <!-- Global CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="explore">
 
-<!-- ================= HEADER (AUTO LOADED) ================= -->
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
 <!-- ================= MAIN ================= -->
@@ -38,7 +38,7 @@
         View professional profiles showcasing
         analyzer, instrumentation, and field experience.
       </p>
-      <a href="technicians.html" class="btn btn-ghost">
+      <a href="/technicians.html" class="btn btn-ghost">
         Browse Technicians
       </a>
     </div>
@@ -49,7 +49,7 @@
         Ask questions, share solutions,
         and learn from real plant experience.
       </p>
-      <a href="community.html" class="btn btn-ghost">
+      <a href="/community.html" class="btn btn-ghost">
         Go to Community
       </a>
     </div>
@@ -60,7 +60,7 @@
         Structured guides on analyzers,
         instrumentation, calibration, and CEMS.
       </p>
-      <a href="knowledge.html" class="btn btn-ghost">
+      <a href="/knowledge.html" class="btn btn-ghost">
         Explore Knowledge
       </a>
     </div>
@@ -71,7 +71,7 @@
         Real field failures with root cause,
         corrective actions, and lessons learned.
       </p>
-      <a href="case-studies.html" class="btn btn-ghost">
+      <a href="/case-studies.html" class="btn btn-ghost">
         View Case Studies
       </a>
     </div>
@@ -82,7 +82,7 @@
         View or update your professional profile
         and track your contributions.
       </p>
-      <a href="profile.html" class="btn btn-primary">
+      <a href="/profile.html" class="btn btn-primary">
         Open Profile
       </a>
     </div>
@@ -93,7 +93,7 @@
         Learn why InstMates exists and
         how it supports technicians.
       </p>
-      <a href="about.html" class="btn btn-ghost">
+      <a href="/about.html" class="btn btn-ghost">
         About InstMates
       </a>
     </div>
@@ -102,11 +102,21 @@
 
 </main>
 
-<!-- ================= FOOTER (AUTO LOADED) ================= -->
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= SCRIPTS ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
+<!-- ===================================================== -->
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ===================================================== -->
+
+<!-- 1️⃣ HEADER + FOOTER -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+<!-- 2️⃣ HEADER AUTH UI -->
+<script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- 3️⃣ AUTH + ONBOARDING GUARD -->
+<script type="module" src="/assets/js/auth.js"></script>
 
 </body>
 </html>
