@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>GC Sampling System – Animated Working Principle | InstMates</title>
+  <title>GC Sampling System – Animated Explanation | InstMates Videos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Animated working principle of GC sampling system. Visual step-by-step explanation of probes, filters, regulators, purge flow, and common failure points." />
+        content="Animated explanation of GC sampling system for analyzer technicians. Visual flow of probe, filter, regulator, purge, and injection with field-focused logic." />
 
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
+  <link rel="stylesheet" href="/assets/css/style.css" />
 </head>
 
 <body data-page="video-gc-sampling">
@@ -19,7 +20,8 @@
 <!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
-  <a href="/videos/index.html">Video Hub</a><span>›</span>
+  <a href="/videos/index.html">Videos</a><span>›</span>
+  <a href="/videos/index.html#gc">Gas Chromatography</a><span>›</span>
   <span class="current">GC Sampling System</span>
 </nav>
 
@@ -27,81 +29,91 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>GC Sampling System – Animated Walkthrough</h2>
+  <h2>GC Sampling System – Animated Working Principle</h2>
+
   <p class="muted">
-    This animation explains how a GC sampling system extracts, conditions,
-    and delivers a stable sample to the analyzer.
-    Animation follows real plant logic — not lab theory.
+    This animation explains the GC sampling system exactly as it behaves in
+    real process analyzers — from probe extraction to injection into the GC.
+    Focus is on <b>flow direction, pressure control, purge logic</b>,
+    and why most GC faults originate here.
   </p>
 </section>
 
-<!-- ================= CONTROLS ================= -->
+<!-- ================= VIDEO / ANIMATION ================= -->
 <section class="panel">
-  <div class="action-row">
-    <button class="btn btn-primary" id="playBtn">▶ Play</button>
-    <button class="btn btn-ghost" id="stepBtn">Step</button>
-    <span class="muted" id="stepLabel">Step 1: Process Extraction</span>
+  <h3>Animated Flow Explanation</h3>
+
+  <!-- PLACEHOLDER VIDEO FRAME -->
+  <div class="video-frame" style="aspect-ratio:16/9;background:#0f172a;border-radius:16px;
+       display:flex;align-items:center;justify-content:center;color:#e5e7eb;">
+    <div style="text-align:center;">
+      <div style="font-size:22px;font-weight:700;">GC Sampling System Animation</div>
+      <div style="opacity:.75;margin-top:6px;">
+        SVG animation will play here
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- ================= SVG ANIMATION ================= -->
-<section class="panel">
-
-<svg id="gcSvg" viewBox="0 0 960 360"
-     xmlns="http://www.w3.org/2000/svg"
-     role="img"
-     aria-label="GC Sampling System Animation">
-
-  <style>
-    .unit { fill:#f1f5f9; stroke:#334155; stroke-width:3 }
-    .highlight { fill:#dcfce7; stroke:#16a34a }
-    .pipe { stroke:#64748b; stroke-width:5 }
-    .flow { stroke:#2563eb; stroke-width:5; stroke-dasharray:10 6 }
-    .label { font:14px Arial; fill:#0b3c5d }
-  </style>
-
-  <!-- PROCESS -->
-  <rect id="process" x="40" y="140" width="160" height="80" rx="10" class="unit"/>
-  <text x="120" y="185" text-anchor="middle" class="label">Process Line</text>
-
-  <!-- PROBE -->
-  <rect id="probe" x="220" y="140" width="120" height="80" rx="10" class="unit"/>
-  <text x="280" y="185" text-anchor="middle" class="label">Sample Probe</text>
-
-  <!-- FILTER -->
-  <rect id="filter" x="380" y="140" width="120" height="80" rx="10" class="unit"/>
-  <text x="440" y="175" text-anchor="middle" class="label">Filter</text>
-  <text x="440" y="195" text-anchor="middle" class="label">Particulates</text>
-
-  <!-- REGULATOR -->
-  <rect id="reg" x="540" y="140" width="150" height="80" rx="10" class="unit"/>
-  <text x="615" y="185" text-anchor="middle" class="label">Pressure Regulator</text>
-
-  <!-- GC -->
-  <rect id="gc" x="720" y="140" width="180" height="80" rx="10" class="unit"/>
-  <text x="810" y="175" text-anchor="middle" class="label">GC Analyzer</text>
-  <text x="810" y="195" text-anchor="middle" class="label">Injection Valve</text>
-
-  <!-- PIPES -->
-  <line x1="200" y1="180" x2="220" y2="180" class="pipe"/>
-  <line x1="340" y1="180" x2="380" y2="180" class="pipe"/>
-  <line x1="500" y1="180" x2="540" y2="180" class="pipe"/>
-  <line x1="690" y1="180" x2="720" y2="180" class="pipe"/>
-
-  <!-- FLOW -->
-  <line id="flow1" x1="200" y1="180" x2="900" y2="180"
-        class="flow" opacity="0"/>
-
-</svg>
-
-</section>
-
-<!-- ================= FIELD NOTE ================= -->
-<section class="panel">
-  <p class="muted">
-    🔧 Field rule: If GC results are unstable, always troubleshoot
-    <b>sampling → pressure → conditioning</b> before touching the analyzer.
+  <p class="muted" style="margin-top:14px;">
+    (This animation will visually show sample extraction, filtration,
+    pressure regulation, purge flow, and injection sequence.)
   </p>
+</section>
+
+<!-- ================= STEP-BY-STEP LOGIC ================= -->
+<section class="panel">
+  <h3>What the Animation Shows</h3>
+
+  <ol class="muted">
+    <li>
+      <b>Process Line → Probe</b><br>
+      Sample is extracted from a representative point in the process.
+    </li>
+    <li>
+      <b>Filter</b><br>
+      Removes particulates, wax, and contaminants that damage valves and columns.
+    </li>
+    <li>
+      <b>Pressure Regulator</b><br>
+      Reduces process pressure to a stable analyzer inlet pressure.
+    </li>
+    <li>
+      <b>Purge / Vent</b><br>
+      Keeps sample fresh and prevents dead volume effects.
+    </li>
+    <li>
+      <b>Injection Valve</b><br>
+      Transfers a repeatable volume into the GC column.
+    </li>
+  </ol>
+</section>
+
+<!-- ================= FIELD FAILURES ================= -->
+<section class="panel">
+  <h3>Common Field Failures Shown Visually</h3>
+
+  <ul class="muted">
+    <li>Probe plugging → slow response, missing peaks</li>
+    <li>Filter choking → pressure drop, unstable retention</li>
+    <li>Regulator hunting → noisy chromatogram</li>
+    <li>Blocked vent → memory effects, carryover</li>
+    <li>Poor purge → bad repeatability</li>
+  </ul>
+</section>
+
+<!-- ================= KNOWLEDGE LINK ================= -->
+<section class="panel">
+  <h3>Related Knowledge Page</h3>
+
+  <p class="muted">
+    Use the detailed knowledge page for static diagrams,
+    failure tables, and troubleshooting logic.
+  </p>
+
+  <a class="btn btn-ghost"
+     href="/knowledge/gc/gc-sampling-system.html">
+    ← Back to GC Sampling System (Knowledge)
+  </a>
 </section>
 
 </main>
@@ -110,8 +122,7 @@
 <div id="siteFooter"></div>
 
 <!-- ================= INCLUDES ================= -->
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
-<script src="/videos/gc/gc-sampling-system.js"></script>
+<script src="/assets/js/includes.js"></script>
 
 </body>
 </html>
