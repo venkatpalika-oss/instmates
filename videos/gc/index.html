@@ -2,63 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>GC Video Explanations | InstMates</title>
+  <title>InstMates Video Hub | Animated Instrumentation Lessons</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Animated video explanations of Gas Chromatography working principles for analyzer technicians." />
+        content="Animated video explanations for instrumentation and analyzer technicians. Learn GC, pressure, flow, and analyzers with clear visual walkthroughs." />
 
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
-<body data-page="gc-videos">
+<body data-page="videos">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<nav class="crumbs">
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
-  <a href="/videos/index.html">Videos</a><span>›</span>
-  <span class="current">Gas Chromatography</span>
+  <span class="current">Video Hub</span>
 </nav>
 
 <main class="container">
 
+<!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Gas Chromatography – Video Explanations</h2>
+  <h2>InstMates Video Hub</h2>
+
   <p class="muted">
-    Short, technician-focused animations explaining how GC systems
-    actually work in the field.
+    This section contains <b>animated visual explanations</b> designed for
+    <b>instrumentation and analyzer technicians</b>.
+    These videos complement the Knowledge Hub and explain
+    <b>working principles, flow paths, and timing logic</b> step by step.
+  </p>
+
+  <p class="muted">
+    👉 Text & diagrams = Knowledge Hub  
+    👉 Motion & sequencing = Video Hub
   </p>
 </section>
 
+<!-- ================= GC VIDEOS ================= -->
 <section class="panel">
+  <h3>Gas Chromatography (GC)</h3>
+
   <div class="grid grid-3">
 
     <div class="card">
       <h4>GC Sampling System</h4>
-      <p class="muted">Where most GC problems really start.</p>
+      <p class="muted">
+        Animated explanation of probes, filters, regulators,
+        conditioning, purge flow, and failure points.
+      </p>
       <a class="btn btn-primary"
          href="/videos/gc/gc-sampling-system.html">
         Watch →
       </a>
     </div>
 
-    <div class="card">
-      <h4>6-Port Sampling Valve</h4>
-      <p class="muted">LOAD vs INJECT made visual.</p>
-      <a class="btn btn-ghost"
-         href="/videos/gc/gc-6port-valve.html">
-        Watch →
-      </a>
+    <div class="card muted">
+      <h4>GC 6-Port Valve (Coming Soon)</h4>
+      <p class="muted">
+        LOAD vs INJECT animation with timing overlay.
+      </p>
+      <span class="btn btn-ghost disabled">Planned</span>
     </div>
 
-    <div class="card">
-      <h4>GC Backflush</h4>
-      <p class="muted">Why heavy components go to vent.</p>
-      <a class="btn btn-ghost"
-         href="/videos/gc/gc-backflush.html">
-        Watch →
-      </a>
+    <div class="card muted">
+      <h4>GC Backflush (Coming Soon)</h4>
+      <p class="muted">
+        Heavy component reversal and cycle impact.
+      </p>
+      <span class="btn btn-ghost disabled">Planned</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FIELD INSTRUMENTATION ================= -->
+<section class="panel">
+  <h3>Field Instrumentation</h3>
+
+  <div class="grid grid-3">
+
+    <div class="card muted">
+      <h4>Pressure Measurement (Planned)</h4>
+      <p class="muted">
+        Absolute, gauge, DP with impulse line animation.
+      </p>
+      <span class="btn btn-ghost disabled">Planned</span>
+    </div>
+
+    <div class="card muted">
+      <h4>Flow Measurement (Planned)</h4>
+      <p class="muted">
+        Orifice, DP flow, installation effects.
+      </p>
+      <span class="btn btn-ghost disabled">Planned</span>
     </div>
 
   </div>
@@ -66,7 +106,11 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-<script src="/assets/js/includes.js"></script>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
 </body>
 </html>
