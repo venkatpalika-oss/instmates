@@ -8,11 +8,8 @@
   <meta name="description"
         content="GC failure modes explained for analyzer technicians. Visual root cause analysis for missing peaks, drifting baseline, peak shift, long cycle time, and poor repeatability using inline SVG." />
 
-  <!-- GitHub Pages base -->
-  <base href="/instmates/" />
-
   <!-- Global CSS -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="gc-failures">
@@ -22,12 +19,11 @@
 
 <!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
-  <a href="index.html">Home</a><span>›</span>
-  <a href="knowledge.html">Knowledge</a><span>›</span>
-  <a href="gc-basics.html">GC Basics</a><span>›</span>
-  <span class="current">6-Port Sampling Valve</span>
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/gc/gc-basics.html">GC Basics</a><span>›</span>
+  <span class="current">GC Failure Modes</span>
 </nav>
-
 
 <main class="container">
 
@@ -67,7 +63,6 @@
     .title { font-size:18px; font-weight:700; fill:#0b3c5d }
   </style>
 
-  <!-- ARROW MARKER -->
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10"
             refX="10" refY="3" orient="auto">
@@ -75,12 +70,12 @@
     </marker>
   </defs>
 
-  <!-- TITLES -->
   <text x="150" y="40" class="title">Symptom</text>
   <text x="480" y="40" class="title">Likely Cause</text>
   <text x="820" y="40" class="title">Corrective Action</text>
 
-  <!-- ROW 1 -->
+  <!-- ROWS -->
+  <!-- Missing Peak -->
   <rect x="60" y="80" width="260" height="60" rx="10" class="symptom"/>
   <text x="80" y="115" class="label">Missing Peak</text>
 
@@ -93,7 +88,7 @@
   <line x1="320" y1="110" x2="400" y2="110" class="arrow"/>
   <line x1="660" y1="110" x2="740" y2="110" class="arrow"/>
 
-  <!-- ROW 2 -->
+  <!-- Baseline Drift -->
   <rect x="60" y="160" width="260" height="60" rx="10" class="symptom"/>
   <text x="80" y="195" class="label">Baseline Drift / Noise</text>
 
@@ -106,7 +101,7 @@
   <line x1="320" y1="190" x2="400" y2="190" class="arrow"/>
   <line x1="660" y1="190" x2="740" y2="190" class="arrow"/>
 
-  <!-- ROW 3 -->
+  <!-- Peak Shift -->
   <rect x="60" y="240" width="260" height="60" rx="10" class="symptom"/>
   <text x="80" y="275" class="label">Peak Shift</text>
 
@@ -119,7 +114,7 @@
   <line x1="320" y1="270" x2="400" y2="270" class="arrow"/>
   <line x1="660" y1="270" x2="740" y2="270" class="arrow"/>
 
-  <!-- ROW 4 -->
+  <!-- Long Cycle -->
   <rect x="60" y="320" width="260" height="60" rx="10" class="symptom"/>
   <text x="80" y="355" class="label">Long Cycle Time</text>
 
@@ -132,7 +127,7 @@
   <line x1="320" y1="350" x2="400" y2="350" class="arrow"/>
   <line x1="660" y1="350" x2="740" y2="350" class="arrow"/>
 
-  <!-- ROW 5 -->
+  <!-- Repeatability -->
   <rect x="60" y="400" width="260" height="60" rx="10" class="symptom"/>
   <text x="80" y="435" class="label">Poor Repeatability</text>
 
@@ -179,7 +174,7 @@
 <div id="siteFooter"></div>
 
 <!-- ================= INCLUDES ================= -->
-<script src="assets/js/includes.js"></script>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>
 </html>
