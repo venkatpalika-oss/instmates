@@ -24,43 +24,70 @@
 <div id="siteHeader"></div>
 
 <main class="container">
+<section class="panel container">
+  <h2>Complete Your Profile</h2>
+  <p class="muted">Help others understand your real field experience.</p>
 
-  <section class="panel">
-    <h1>Complete Your Profile</h1>
-    <p class="muted">
-      This helps other technicians understand your experience and skills.
-    </p>
+  <!-- COMPLETENESS BAR -->
+  <div class="profile-progress">
+    <div class="progress-label">
+      Profile Completion: <strong><span id="profilePercent">0</span>%</strong>
+    </div>
+    <div class="progress-bar">
+      <div id="profileBar"></div>
+    </div>
+  </div>
 
-    <form id="profileForm" class="form">
+  <form id="profileForm">
 
-      <label>
-        Full Name
-        <input type="text" id="fullName" required />
-      </label>
+    <label>Full Name</label>
+    <input id="fullName" type="text" required />
 
-      <label>
-        Role
-        <select id="role" required>
-          <option value="">Select role</option>
-          <option value="Instrument Technician">Instrument Technician</option>
-          <option value="Analyzer Engineer">Analyzer Engineer</option>
-          <option value="Instrumentation Engineer">Instrumentation Engineer</option>
-          <option value="Maintenance Supervisor">Maintenance Supervisor</option>
-        </select>
-      </label>
+    <label>Role</label>
+    <select id="role" required>
+      <option value="">Select role</option>
+      <option>Instrument Technician</option>
+      <option>Analyzer Engineer</option>
+      <option>Supervisor</option>
+    </select>
 
-      <label>
-        Core Skills (comma separated)
-        <input type="text" id="skills"
-               placeholder="GC, CEMS, Sampling Systems, Calibration" />
-      </label>
+    <label>Location</label>
+    <input id="location" type="text" placeholder="Country / Region" />
 
-      <button type="submit" class="btn btn-primary">
-        Save & Continue
-      </button>
+    <label>Years of Experience</label>
+    <input id="experienceYears" type="number" min="0" max="50" />
 
-    </form>
-  </section>
+    <label>Primary Domain</label>
+    <select id="primaryDomain">
+      <option value="">Select domain</option>
+      <option>Gas Chromatography (GC)</option>
+      <option>CEMS</option>
+      <option>FTIR</option>
+      <option>Field Instrumentation</option>
+    </select>
+
+    <label>Core Skills (comma separated)</label>
+    <input id="skills" placeholder="GC, Sampling Systems, Calibration" />
+
+    <label>Industries Worked</label>
+    <select id="industries" multiple>
+      <option>Refinery</option>
+      <option>Petrochemical</option>
+      <option>Power Plant</option>
+      <option>Fertilizer</option>
+    </select>
+
+    <label>Experience Summary</label>
+    <textarea id="summary" rows="4"
+      placeholder="Describe key troubleshooting or commissioning experience"></textarea>
+
+    <button class="btn btn-primary" type="submit">
+      Save Profile
+    </button>
+
+  </form>
+</section>
+
 
 </main>
 
