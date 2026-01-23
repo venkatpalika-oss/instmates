@@ -74,6 +74,9 @@ window.logoutUser = async function () {
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
+  // Mark auth as resolved (prevents flicker)
+  document.body.classList.add("auth-ready");
+
   if (!user) {
     document.body.classList.remove("logged-in");
     return;
@@ -84,7 +87,6 @@ onAuthStateChanged(auth, async (user) => {
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
 
-    // Safety fallback (should never happen, but protects data)
     if (!snap.exists()) {
       window.location.href = "/profile.html";
       return;
@@ -92,14 +94,11 @@ onAuthStateChanged(auth, async (user) => {
 
     const data = snap.data();
 
-    // Profile not completed → force profile page
     if (!data.profileCompleted) {
       if (!location.pathname.includes("profile.html")) {
         window.location.href = "/profile.html";
       }
-    } 
-    // Profile completed → allow app access
-    else {
+    } else {
       if (
         location.pathname.includes("login") ||
         location.pathname.includes("register") ||
@@ -112,6 +111,7 @@ onAuthStateChanged(auth, async (user) => {
     console.error("Auth state error:", err);
   }
 });
+
 
 /* =========================================================
    QUESTIONS
