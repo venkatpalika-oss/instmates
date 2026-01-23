@@ -1,17 +1,31 @@
-/* =========================================================
-   InstMates - Profile Setup Logic (FINAL FIX)
-   File: assets/js/profile.js
-========================================================= */
-
 import { auth, db } from "./firebase.js";
-
 import { onAuthStateChanged } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-import { doc, setDoc, getDoc, serverTimestamp } from
+import { doc, updateDoc, getDoc, serverTimestamp } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= AUTH GUARD + LOAD PROFILE ================= */
+/* ================= COMPLETENESS CALCULATOR ================= */
+
+function calculateCompletion(data) {
+  let score = 0;
+
+  if (data.name) score += 15;
+  if (data.role) score += 15;
+  if (data.experienceYears) score += 10;
+  if (data.primaryDomain) score += 15;
+  if (data.skills?.length) score += 20;
+  if (data.industries?.length) score += 10;
+  if (data.summary) score += 15;
+
+  return Math.min(score, 100);
+}
+
+function updateProgress(percent) {
+  document.getElementById("profilePercent").innerText = percent;
+  document.getElementById("profileBar").style.width = percent + "%";
+}
+
+/* ================= LOAD PROFILE ================= */
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -21,22 +35,29 @@ onAuthStateChanged(auth, async (user) => {
 
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
+  if (!snap.exists()) return;
 
-  // Autofill ONLY if document exists
-  if (snap.exists()) {
-    const data = snap.data();
+  const data = snap.data();
 
-    const nameEl = document.getElementById("fullName");
-    const roleEl = document.getElementById("role");
-    const skillsEl = document.getElementById("skills");
+  // Autofill
+  fullName.value = data.name || "";
+  role.value = data.role || "";
+  location.value = data.location || "";
+  experienceYears.value = data.experienceYears || "";
+  primaryDomain.value = data.primaryDomain || "";
+  skills.value = (data.skills || []).join(", ");
+  summary.value = data.summary || "";
 
-    if (nameEl) nameEl.value = data.name || "";
-    if (roleEl) roleEl.value = data.role || "";
-    if (skillsEl) skillsEl.value = (data.skills || []).join(", ");
+  if (data.industries) {
+    [...industries.options].forEach(o => {
+      o.selected = data.industries.includes(o.value);
+    });
   }
+
+  updateProgress(calculateCompletion(data));
 });
 
-/* ================= SAVE PROFILE (CREATE OR UPDATE) ================= */
+/* ================= SAVE PROFILE ================= */
 
 document.getElementById("profileForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -44,33 +65,21 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
   const user = auth.currentUser;
   if (!user) return;
 
-  const fullName = document.getElementById("fullName").value.trim();
-  const role = document.getElementById("role").value;
-  const skillsInput = document.getElementById("skills").value;
+  const payload = {
+    name: fullName.value.trim(),
+    role: role.value,
+    location: location.value.trim(),
+    experienceYears: Number(experienceYears.value || 0),
+    primaryDomain: primaryDomain.value,
+    skills: skills.value.split(",").map(s => s.trim()).filter(Boolean),
+    industries: [...industries.selectedOptions].map(o => o.value),
+    summary: summary.value.trim(),
+    updatedAt: serverTimestamp()
+  };
 
-  const skills = skillsInput
-    ? skillsInput.split(",").map(s => s.trim()).filter(Boolean)
-    : [];
+  payload.profileCompleted = calculateCompletion(payload) >= 60;
 
-  try {
-    await setDoc(
-      doc(db, "users", user.uid),
-      {
-        uid: user.uid,
-        name: fullName,
-        role,
-        skills,
-        profileCompleted: true,
-        updatedAt: serverTimestamp()
-      },
-      { merge: true } // 🔥 THIS IS THE FIX
-    );
+  await updateDoc(doc(db, "users", user.uid), payload);
 
-    // Redirect to public profile
-    window.location.href = `/profile-view.html?uid=${user.uid}`;
-
-  } catch (err) {
-    console.error("Profile save error:", err);
-    alert("Failed to save profile. Please try again.");
-  }
+  window.location.href = `/profile-view.html?uid=${user.uid}`;
 });
