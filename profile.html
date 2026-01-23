@@ -16,6 +16,22 @@
 
   <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+
+  <!-- PAGE-SPECIFIC CSS -->
+  <style>
+    .trouble-card{
+      background:#f8fafc;
+      padding:16px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      margin-bottom:16px;
+    }
+    .trouble-card label{
+      display:block;
+      font-weight:600;
+      margin-top:10px;
+    }
+  </style>
 </head>
 
 <body data-page="profile-setup">
@@ -36,7 +52,7 @@
     <div class="profile-progress">
       <span>Profile Completion</span>
       <div class="progress-track">
-        <div class="progress-fill" id="profileProgress" style="width:0%"></div>
+        <div class="progress-fill" id="profileProgress" style="width:50%"></div>
       </div>
     </div>
 
@@ -109,11 +125,25 @@
 
       <!-- ================= EXPERIENCE ================= -->
       <div class="profile-section">
-        <h3>Field Experience</h3>
+        <h3>Field Experience Summary</h3>
 
         <label>Experience Summary</label>
         <textarea id="summary" rows="4"
           placeholder="Describe key troubleshooting, shutdowns, commissioning or plant experience"></textarea>
+      </div>
+
+      <!-- ================= MAJOR TROUBLESHOOTING ================= -->
+      <div class="profile-section">
+        <h3>Major Troubleshooting & Breakthroughs</h3>
+        <p class="muted">
+          Problems you solved that gave you recognition, confidence, or deep professional satisfaction.
+        </p>
+
+        <div id="troubleshootingList"></div>
+
+        <button type="button" class="btn btn-ghost" onclick="addTroubleBlock()">
+          + Add Major Troubleshooting
+        </button>
       </div>
 
       <!-- ================= ACTION ================= -->
@@ -129,12 +159,32 @@
 
 </main>
 
-
-
-</main>
-
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= TROUBLE TEMPLATE ================= -->
+<template id="troubleTemplate">
+  <div class="trouble-card">
+    <label>System / Analyzer</label>
+    <input type="text" placeholder="e.g. Yokogawa GC8000 – Refinery">
+
+    <label>Problem Faced</label>
+    <textarea rows="2"
+      placeholder="Describe the issue that was difficult or recurring"></textarea>
+
+    <label>Your Diagnosis / Action</label>
+    <textarea rows="2"
+      placeholder="How you identified the root cause and what you did"></textarea>
+
+    <label>Outcome / Impact</label>
+    <textarea rows="2"
+      placeholder="Result achieved (uptime restored, audit passed, plant saved etc.)"></textarea>
+
+    <label>Why This Mattered to You</label>
+    <textarea rows="2"
+      placeholder="Recognition, confidence, learning, leadership moment"></textarea>
+  </div>
+</template>
 
 <!-- ================= INCLUDES (LOAD ONCE) ================= -->
 <script src="assets/js/includes.js?v=2026-01-22"></script>
@@ -145,6 +195,14 @@
 <!-- ================= PROFILE EDIT LOGIC ================= -->
 <script type="module" src="assets/js/profile.js"></script>
 
+<!-- ================= TROUBLESHOOT UI LOGIC ================= -->
+<script>
+  function addTroubleBlock(){
+    const tpl = document.getElementById("troubleTemplate");
+    const clone = tpl.content.cloneNode(true);
+    document.getElementById("troubleshootingList").appendChild(clone);
+  }
+</script>
 
 </body>
 </html>
