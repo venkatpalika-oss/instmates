@@ -1,31 +1,20 @@
+/* =========================================================
+   InstMates - Profile Setup Logic (FINAL + STABLE)
+   File: assets/js/profile.js
+========================================================= */
+
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { doc, updateDoc, getDoc, serverTimestamp } from
+import { doc, setDoc, getDoc, serverTimestamp } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= COMPLETENESS CALCULATOR ================= */
+/* ================= ELEMENTS ================= */
 
-function calculateCompletion(data) {
-  let score = 0;
+const form = document.getElementById("profileForm");
+const progressBar = document.getElementById("profileProgress");
 
-  if (data.name) score += 15;
-  if (data.role) score += 15;
-  if (data.experienceYears) score += 10;
-  if (data.primaryDomain) score += 15;
-  if (data.skills?.length) score += 20;
-  if (data.industries?.length) score += 10;
-  if (data.summary) score += 15;
-
-  return Math.min(score, 100);
-}
-
-function updateProgress(percent) {
-  document.getElementById("profilePercent").innerText = percent;
-  document.getElementById("profileBar").style.width = percent + "%";
-}
-
-/* ================= LOAD PROFILE ================= */
+/* ================= AUTH + LOAD ================= */
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -35,51 +24,106 @@ onAuthStateChanged(auth, async (user) => {
 
   const ref = doc(db, "users", user.uid);
   const snap = await getDoc(ref);
+
   if (!snap.exists()) return;
 
-  const data = snap.data();
+  const d = snap.data();
 
   // Autofill
-  fullName.value = data.name || "";
-  role.value = data.role || "";
-  location.value = data.location || "";
-  experienceYears.value = data.experienceYears || "";
-  primaryDomain.value = data.primaryDomain || "";
-  skills.value = (data.skills || []).join(", ");
-  summary.value = data.summary || "";
+  setVal("fullName", d.name);
+  setVal("role", d.role);
+  setVal("location", d.location);
+  setVal("experienceYears", d.experienceYears);
+  setVal("primaryDomain", d.primaryDomain);
+  setVal("skills", (d.skills || []).join(", "));
+  setVal("summary", d.summary);
 
-  if (data.industries) {
-    [...industries.options].forEach(o => {
-      o.selected = data.industries.includes(o.value);
-    });
+  if (progressBar) {
+    progressBar.style.width = `${d.profileCompletion || 0}%`;
   }
-
-  updateProgress(calculateCompletion(data));
 });
 
 /* ================= SAVE PROFILE ================= */
 
-document.getElementById("profileForm").addEventListener("submit", async (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const user = auth.currentUser;
   if (!user) return;
 
-  const payload = {
-    name: fullName.value.trim(),
-    role: role.value,
-    location: location.value.trim(),
-    experienceYears: Number(experienceYears.value || 0),
-    primaryDomain: primaryDomain.value,
-    skills: skills.value.split(",").map(s => s.trim()).filter(Boolean),
-    industries: [...industries.selectedOptions].map(o => o.value),
-    summary: summary.value.trim(),
+  const data = {
+    name: val("fullName"),
+    role: val("role"),
+    location: val("location"),
+    experienceYears: num("experienceYears"),
+    primaryDomain: val("primaryDomain"),
+    skills: split("skills"),
+    industries: getMulti("industries"),
+    summary: val("summary"),
     updatedAt: serverTimestamp()
   };
 
-  payload.profileCompleted = calculateCompletion(payload) >= 60;
+  const completion = calculateCompletion(data);
+  data.profileCompletion = completion;
+  data.profileCompleted = completion >= 70;
 
-  await updateDoc(doc(db, "users", user.uid), payload);
+  try {
+    await setDoc(doc(db, "users", user.uid), data, { merge: true });
 
-  window.location.href = `/profile-view.html?uid=${user.uid}`;
+    if (progressBar) {
+      progressBar.style.width = `${completion}%`;
+    }
+
+    alert("Profile saved successfully");
+
+    if (data.profileCompleted) {
+      window.location.href = `/profile-view.html?uid=${user.uid}`;
+    }
+
+  } catch (err) {
+    console.error("Profile save error:", err);
+    alert("Failed to save profile. Please try again.");
+  }
 });
+
+/* ================= HELPERS ================= */
+
+function val(id) {
+  return document.getElementById(id)?.value.trim() || "";
+}
+
+function num(id) {
+  const v = parseInt(val(id), 10);
+  return isNaN(v) ? null : v;
+}
+
+function split(id) {
+  const v = val(id);
+  return v ? v.split(",").map(s => s.trim()).filter(Boolean) : [];
+}
+
+function getMulti(id) {
+  const el = document.getElementById(id);
+  if (!el) return [];
+  return Array.from(el.selectedOptions).map(o => o.value);
+}
+
+function setVal(id, v) {
+  const el = document.getElementById(id);
+  if (el && v !== undefined) el.value = v;
+}
+
+/* ================= COMPLETION LOGIC ================= */
+
+function calculateCompletion(d) {
+  let score = 0;
+  if (d.name) score += 15;
+  if (d.role) score += 15;
+  if (d.location) score += 10;
+  if (d.experienceYears) score += 10;
+  if (d.primaryDomain) score += 15;
+  if (d.skills?.length) score += 15;
+  if (d.industries?.length) score += 10;
+  if (d.summary) score += 10;
+  return score;
+}
