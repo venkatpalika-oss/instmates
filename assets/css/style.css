@@ -1240,3 +1240,49 @@ body.auth-ready.logged-in .auth-in {
   background: linear-gradient(90deg, #22c55e, #16a34a);
   transition: width 0.4s ease;
 }
+.profile-panel {
+  max-width: 900px;
+  margin: auto;
+}
+
+.profile-section {
+  margin-top: 24px;
+}
+
+.profile-section h3 {
+  margin-bottom: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.profile-progress {
+  margin: 16px 0;
+}
+
+.progress-track {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #22c55e;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.profile-actions {
+  margin-top: 24px;
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
