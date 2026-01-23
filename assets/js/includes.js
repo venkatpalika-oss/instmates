@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===============================
   // INST MATES (ROOT DOMAIN)
   // ===============================
-  loadInto("siteHeader", "includes/header.html");
-  loadInto("siteFooter", "includes/footer.html");
+ loadInto("siteHeader", "/includes/header.html");
+loadInto("siteFooter", "/includes/footer.html");
 import("/assets/js/header-auth.js");
 
 });
