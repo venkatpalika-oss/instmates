@@ -18,5 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===============================
   loadInto("siteHeader", "includes/header.html");
   loadInto("siteFooter", "includes/footer.html");
+import("/assets/js/header-auth.js");
 
 });
