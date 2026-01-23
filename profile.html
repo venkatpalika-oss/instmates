@@ -52,7 +52,7 @@
     <div class="profile-progress">
       <span>Profile Completion</span>
       <div class="progress-track">
-        <div class="progress-fill" id="profileProgress" style="width:50%"></div>
+        <div class="progress-fill" id="profileProgress" style="width:0%"></div>
       </div>
     </div>
 
@@ -80,7 +80,7 @@
 
           <div>
             <label>Location</label>
-            <input id="location" type="text" placeholder="Country / Region">
+            <input id="location" type="text">
           </div>
 
           <div>
@@ -107,7 +107,7 @@
           </div>
 
           <div>
-            <label>Core Skills (comma separated)</label>
+            <label>Core Skills</label>
             <input id="skills" type="text" placeholder="GC, Sampling, Calibration">
           </div>
 
@@ -126,10 +126,8 @@
       <!-- ================= EXPERIENCE ================= -->
       <div class="profile-section">
         <h3>Field Experience Summary</h3>
-
-        <label>Experience Summary</label>
         <textarea id="summary" rows="4"
-          placeholder="Describe key troubleshooting, shutdowns, commissioning or plant experience"></textarea>
+          placeholder="Key troubleshooting, shutdowns, commissioning, audits"></textarea>
       </div>
 
       <!-- ================= MAJOR TROUBLESHOOTING ================= -->
@@ -166,42 +164,47 @@
 <template id="troubleTemplate">
   <div class="trouble-card">
     <label>System / Analyzer</label>
-    <input type="text" placeholder="e.g. Yokogawa GC8000 – Refinery">
+    <input data-field="system" type="text">
 
     <label>Problem Faced</label>
-    <textarea rows="2"
-      placeholder="Describe the issue that was difficult or recurring"></textarea>
+    <textarea data-field="problem" rows="2"></textarea>
 
     <label>Your Diagnosis / Action</label>
-    <textarea rows="2"
-      placeholder="How you identified the root cause and what you did"></textarea>
+    <textarea data-field="action" rows="2"></textarea>
 
     <label>Outcome / Impact</label>
-    <textarea rows="2"
-      placeholder="Result achieved (uptime restored, audit passed, plant saved etc.)"></textarea>
+    <textarea data-field="outcome" rows="2"></textarea>
 
     <label>Why This Mattered to You</label>
-    <textarea rows="2"
-      placeholder="Recognition, confidence, learning, leadership moment"></textarea>
+    <textarea data-field="impact" rows="2"></textarea>
   </div>
 </template>
 
-<!-- ================= INCLUDES (LOAD ONCE) ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script type="module" src="/assets/js/header-auth.js"></script>
+<script type="module" src="/assets/js/profile.js"></script>
 
-<!-- ================= HEADER AUTH UI ================= -->
-<script type="module" src="assets/js/header-auth.js"></script>
-
-<!-- ================= PROFILE EDIT LOGIC ================= -->
-<script type="module" src="assets/js/profile.js"></script>
-
-<!-- ================= TROUBLESHOOT UI LOGIC ================= -->
+<!-- ================= TROUBLE + COMPLETION LOGIC ================= -->
 <script>
   function addTroubleBlock(){
     const tpl = document.getElementById("troubleTemplate");
-    const clone = tpl.content.cloneNode(true);
-    document.getElementById("troubleshootingList").appendChild(clone);
+    document.getElementById("troubleshootingList")
+      .appendChild(tpl.content.cloneNode(true));
+    updateCompletion();
   }
+
+  function updateCompletion(){
+    let score = 0;
+    if(fullName.value) score += 20;
+    if(role.value) score += 20;
+    if(skills.value) score += 20;
+    if(summary.value) score += 20;
+    if(document.querySelectorAll(".trouble-card").length) score += 20;
+    document.getElementById("profileProgress").style.width = score + "%";
+  }
+
+  document.addEventListener("input", updateCompletion);
 </script>
 
 </body>
