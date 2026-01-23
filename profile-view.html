@@ -2,70 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Technician Profile | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Technician Profile | InstMates</title>
-
   <meta name="description"
-        content="Professional profile on InstMates – real field experience, skills, and contributions." />
-
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        content="Professional profile on InstMates – real field experience from instrument and analyzer technicians." />
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22" />
 </head>
 
-<body data-page="public-profile">
+<body data-page="profile-view">
 
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= PROFILE ================= -->
 <main class="container">
 
-  <!-- ================= PROFILE HERO ================= -->
-  <section class="panel profile-hero">
+  <section class="panel profile-view">
 
     <div class="profile-header">
+      <div class="profile-avatar"></div>
 
-      <div class="profile-avatar">
-        <!-- Future avatar -->
+      <div>
+        <h1 id="pv-name">—</h1>
+        <p class="muted" id="pv-role">—</p>
+        <p class="muted" id="pv-location"></p>
       </div>
+    </div>
 
-      <div class="profile-info">
-        <h1 id="profileName">Loading...</h1>
-        <p class="profile-role" id="profileRole"></p>
-
-        <p class="muted" id="profileBio">
-          Field professional on InstMates.
-        </p>
-
-        <div class="profile-actions">
-          <button class="btn btn-ghost" disabled>
-            Connect (Coming Soon)
-          </button>
-        </div>
-      </div>
-
+    <div class="profile-stats">
+      <div><strong id="pv-exp">—</strong><span>Years Experience</span></div>
+      <div><strong id="pv-domain">—</strong><span>Primary Domain</span></div>
+      <div><strong id="pv-industry">—</strong><span>Industries</span></div>
     </div>
 
   </section>
 
-  <!-- ================= SKILLS ================= -->
+  <!-- ABOUT -->
+  <section class="panel">
+    <h2>About</h2>
+    <p class="muted" id="pv-summary">—</p>
+  </section>
+
+  <!-- SKILLS -->
   <section class="panel">
     <h2>Core Skills</h2>
-    <div class="skills-grid" id="skillsGrid">
-      <!-- injected -->
-    </div>
-  </section>
-
-  <!-- ================= META ================= -->
-  <section class="panel muted">
-    <small>
-      Profile verified through InstMates community participation.
-    </small>
+    <div class="skills-grid" id="pv-skills"></div>
   </section>
 
 </main>
@@ -74,10 +58,10 @@
 <div id="siteFooter"></div>
 
 <!-- ================= INCLUDES ================= -->
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script src="assets/js/includes.js?v=2026-01-22"></script>
 
 <!-- ================= PROFILE VIEW LOGIC ================= -->
-<script type="module" src="/assets/js/profile-view.js"></script>
+<script type="module" src="assets/js/profile-view.js"></script>
 
 </body>
 </html>
