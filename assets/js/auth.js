@@ -67,28 +67,40 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (NO HOME HIJACK)
+   AUTH STATE HANDLER (NO HOME HIJACK – FINAL)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
-  // Mark auth resolved (prevents flicker)
+  // Prevent header flicker
   document.body.classList.add("auth-ready");
 
+  const path = location.pathname;
+
+  /* ================= PUBLIC PAGES (NEVER REDIRECT) ================= */
+  const publicPages = [
+    "/",                 // root domain
+    "/index.html",
+    "/knowledge.html",
+    "/about.html"
+  ];
+
+  // Handle auth UI only, no navigation
+  if (publicPages.includes(path)) {
+    if (user) {
+      document.body.classList.add("logged-in");
+    } else {
+      document.body.classList.remove("logged-in");
+    }
+    return; // 🔴 CRITICAL STOP
+  }
+
+  /* ================= LOGGED OUT ================= */
   if (!user) {
     document.body.classList.remove("logged-in");
     return;
   }
 
   document.body.classList.add("logged-in");
-
-  const path = location.pathname;
-
-  // Pages that REQUIRE completed profile
-  const protectedPages = [
-    "/explore.html",
-    "/community.html",
-    "/post.html"
-  ];
 
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
@@ -100,27 +112,30 @@ onAuthStateChanged(auth, async (user) => {
 
     const data = snap.data();
 
+    /* ================= PROTECTED APP PAGES ================= */
+    const protectedPages = [
+      "/explore.html",
+      "/community.html",
+      "/post.html"
+    ];
+
     /* ===== PROFILE NOT COMPLETED ===== */
     if (!data.profileCompleted) {
-
-      // Redirect ONLY if user tries protected or auth pages
       if (
-        protectedPages.some(p => path.endsWith(p)) ||
-        path.endsWith("/login.html") ||
-        path.endsWith("/register.html")
+        protectedPages.includes(path) ||
+        path === "/login.html" ||
+        path === "/register.html"
       ) {
         window.location.href = "/profile.html";
       }
-
-      // Allow home / marketing pages
       return;
     }
 
     /* ===== PROFILE COMPLETED ===== */
     if (
-      path.endsWith("/login.html") ||
-      path.endsWith("/register.html") ||
-      path.endsWith("/profile.html")
+      path === "/login.html" ||
+      path === "/register.html" ||
+      path === "/profile.html"
     ) {
       window.location.href = "/explore.html";
     }
