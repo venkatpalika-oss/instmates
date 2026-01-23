@@ -131,14 +131,16 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    /* ===== PROFILE COMPLETED ===== */
-    if (
-      path === "/login.html" ||
-      path === "/register.html" ||
-      path === "/profile.html"
-    ) {
-      window.location.href = "/explore.html";
-    }
+   /* ===== PROFILE COMPLETED ===== */
+if (
+  path.endsWith("/login.html") ||
+  path.endsWith("/register.html")
+) {
+  window.location.href = "/explore.html";
+}
+
+/* 🚫 NEVER redirect from profile.html */
+
 
   } catch (err) {
     console.error("Auth state error:", err);
