@@ -9,7 +9,8 @@
   <meta name="description"
         content="Login to InstMates – the professional platform for instrument and analyzer technicians." />
 
-  <link rel="stylesheet" href="assets/css/style.css?v=2026-01-22">
+  <!-- Global CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
 </head>
 
 <body data-page="login">
@@ -42,12 +43,12 @@
     </form>
 
     <p class="muted">
-      <a href="forgot-password.html">Forgot password?</a>
+      <a href="/forgot-password.html">Forgot password?</a>
     </p>
 
     <p class="muted">
       Don’t have an account?
-      <a href="register.html">Create one</a>
+      <a href="/register.html">Create one</a>
     </p>
 
   </section>
@@ -57,13 +58,20 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= INCLUDES (HEADER / FOOTER) ================= -->
-<script src="assets/js/includes.js?v=2026-01-22"></script>
+<!-- ===================================================== -->
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ===================================================== -->
 
-<!-- ================= AUTH ================= -->
-<script type="module" src="assets/js/auth.js"></script>
+<!-- 1️⃣ HEADER + FOOTER INCLUDES -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- ================= LOGIN HANDLER ================= -->
+<!-- 2️⃣ HEADER AUTH UI -->
+<script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- 3️⃣ AUTH CORE -->
+<script type="module" src="/assets/js/auth.js"></script>
+
+<!-- 4️⃣ LOGIN HANDLER (PAGE SPECIFIC) -->
 <script type="module">
   window.handleLogin = async function (e) {
     e.preventDefault();
@@ -73,7 +81,7 @@
 
     try {
       await window.loginUser(email, password);
-      window.location.href = "explore.html";
+      window.location.href = "/explore.html";
     } catch (err) {
       alert(err.message);
     }
