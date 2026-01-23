@@ -1192,3 +1192,10 @@ main::after{
   margin-top: 12px;
   margin-bottom: 8px;
 }
+/* ================= AUTH VISIBILITY ================= */
+
+.auth-in { display: none; }
+.auth-out { display: inline-flex; gap: 10px; }
+
+body.logged-in .auth-in { display: inline-flex; gap: 10px; }
+body.logged-in .auth-out { display: none; }
