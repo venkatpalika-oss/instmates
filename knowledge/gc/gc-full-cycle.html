@@ -8,7 +8,7 @@
   <meta name="description"
         content="Complete GC analyzer cycle timeline explained for analyzer technicians. Learn purge, inject, separation, detection, backflush, and ready state using an inline SVG sequence." />
 
-  <!-- Global CSS -->
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
@@ -21,7 +21,7 @@
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
   <a href="/knowledge.html">Knowledge</a><span>›</span>
-  <a href="/knowledge/gc/gc-basics.html">GC Basics</a><span>›</span>
+  <a href="/knowledge/gc/index.html">Gas Chromatography (GC)</a><span>›</span>
   <span class="current">Full GC Cycle</span>
 </nav>
 
@@ -65,16 +65,13 @@
     .title { font-size:18px; font-weight:700; fill:#0b3c5d }
   </style>
 
-  <!-- TITLE -->
   <text x="550" y="30" text-anchor="middle" class="title">
     GC Analyzer Cycle – Sequence Overview
   </text>
 
-  <!-- TIME AXIS -->
   <line x1="80" y1="300" x2="1020" y2="300" class="axis"/>
   <text x="520" y="330" class="label">Time →</text>
 
-  <!-- STEPS -->
   <rect x="100" y="260" width="140" height="60" rx="10" class="step"/>
   <text x="120" y="295" class="label">Purge</text>
 
@@ -93,23 +90,15 @@
   <rect x="1000" y="260" width="100" height="60" rx="10" class="step"/>
   <text x="1015" y="295" class="label">Ready</text>
 
-  <!-- CHROMATOGRAM AXES -->
   <line x1="80" y1="120" x2="1020" y2="120" class="axis"/>
   <line x1="80" y1="120" x2="80" y2="200" class="axis"/>
   <text x="10" y="165" class="label" transform="rotate(-90 10 165)">
     Detector Signal
   </text>
 
-  <!-- PEAKS -->
-  <path d="M450 200
-           C480 90 520 90 550 200"
-        class="peak"/>
+  <path d="M450 200 C480 90 520 90 550 200" class="peak"/>
+  <path d="M560 200 C600 120 640 120 670 200" class="peak"/>
 
-  <path d="M560 200
-           C600 120 640 120 670 200"
-        class="peak"/>
-
-  <!-- BACKFLUSH MARKER -->
   <line x1="820" y1="90" x2="820" y2="220" class="backflush"/>
   <text x="780" y="80" class="label">Heavy Components Flushed</text>
 
@@ -149,8 +138,8 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= INCLUDES ================= -->
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<!-- ================= INCLUDES (MODULE – LOCKED) ================= -->
+<script type="module" src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>
 </html>
