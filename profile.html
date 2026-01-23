@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Complete Your Profile | InstMates</title>
+  <title>Your Profile | InstMates</title>
 
   <meta name="description"
-        content="Complete your InstMates profile to start exploring the community." />
+        content="Edit your InstMates profile and showcase your real field experience." />
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,10 +31,16 @@
       font-weight:600;
       margin-top:10px;
     }
+    .section-note{
+      margin-top:-6px;
+      margin-bottom:12px;
+      font-size:.9rem;
+      color:#64748b;
+    }
   </style>
 </head>
 
-<body data-page="profile-setup">
+<body data-page="profile">
 
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
@@ -43,14 +49,14 @@
 
   <section class="panel profile-panel">
 
-    <h2>Complete Your Profile</h2>
+    <h2>Your Professional Profile</h2>
     <p class="muted">
-      This helps other technicians understand your real field experience.
+      This profile represents your real field experience and professional credibility on InstMates.
     </p>
 
     <!-- COMPLETION -->
     <div class="profile-progress">
-      <span>Profile Completion</span>
+      <span>Profile Strength</span>
       <div class="progress-track">
         <div class="progress-fill" id="profileProgress" style="width:0%"></div>
       </div>
@@ -61,6 +67,9 @@
       <!-- ================= IDENTITY ================= -->
       <div class="profile-section">
         <h3>Identity</h3>
+        <p class="section-note">
+          Basic professional information visible on your public profile.
+        </p>
 
         <div class="form-grid">
           <div>
@@ -80,7 +89,7 @@
 
           <div>
             <label>Location</label>
-            <input id="location" type="text">
+            <input id="location" type="text" placeholder="Country / Region">
           </div>
 
           <div>
@@ -93,6 +102,9 @@
       <!-- ================= EXPERTISE ================= -->
       <div class="profile-section">
         <h3>Technical Expertise</h3>
+        <p class="section-note">
+          Your primary working areas and hands-on technical strengths.
+        </p>
 
         <div class="form-grid">
           <div>
@@ -108,7 +120,8 @@
 
           <div>
             <label>Core Skills</label>
-            <input id="skills" type="text" placeholder="GC, Sampling, Calibration">
+            <input id="skills" type="text"
+                   placeholder="GC, Sampling, Calibration, Maintenance">
           </div>
 
           <div>
@@ -126,15 +139,19 @@
       <!-- ================= EXPERIENCE ================= -->
       <div class="profile-section">
         <h3>Field Experience Summary</h3>
+        <p class="section-note">
+          A short summary of your most valuable on-site experience.
+        </p>
+
         <textarea id="summary" rows="4"
-          placeholder="Key troubleshooting, shutdowns, commissioning, audits"></textarea>
+          placeholder="Shutdowns, commissioning, troubleshooting, audits, reliability improvements"></textarea>
       </div>
 
       <!-- ================= MAJOR TROUBLESHOOTING ================= -->
       <div class="profile-section">
         <h3>Major Troubleshooting & Breakthroughs</h3>
-        <p class="muted">
-          Problems you solved that gave you recognition, confidence, or deep professional satisfaction.
+        <p class="section-note">
+          Highlight problems you solved that brought recognition, learning, or plant impact.
         </p>
 
         <div id="troubleshootingList"></div>
@@ -180,12 +197,12 @@
   </div>
 </template>
 
-<!-- ================= INCLUDES ================= -->
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 <script type="module" src="/assets/js/header-auth.js"></script>
 <script type="module" src="/assets/js/profile.js"></script>
 
-<!-- ================= TROUBLE + COMPLETION LOGIC ================= -->
+<!-- ================= UI HELPERS ================= -->
 <script>
   function addTroubleBlock(){
     const tpl = document.getElementById("troubleTemplate");
