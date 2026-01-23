@@ -5,6 +5,7 @@
    NOTE:
    - Firebase app is initialized ONLY ONCE in firebase.js
    - This file contains auth + firestore logic only
+   - Enforces profile-first onboarding (Option A)
 ========================================================= */
 
 /* ================= IMPORT SHARED FIREBASE ================= */
@@ -31,10 +32,28 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= REGISTER (BASIC) ================= */
+/* =========================================================
+   REGISTER (PROFILE-FIRST — REQUIRED)
+========================================================= */
 
-window.registerUser = async function (email, password) {
-  return createUserWithEmailAndPassword(auth, email, password);
+window.registerUser = async function (email, password, fullName) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+  // Create mandatory user profile
+  await setDoc(doc(db, "users", cred.user.uid), {
+    uid: cred.user.uid,
+    name: fullName,
+    email: email,
+    role: "user",
+    verified: false,
+    profileCompleted: false,
+    createdAt: serverTimestamp()
+  });
+
+  // Force onboarding
+  window.location.href = "/profile.html";
+
+  return cred;
 };
 
 /* ================= LOGIN ================= */
@@ -46,39 +65,57 @@ window.loginUser = async function (email, password) {
 /* ================= LOGOUT ================= */
 
 window.logoutUser = async function () {
-  return signOut(auth);
+  await signOut(auth);
+  window.location.href = "/index.html";
 };
 
-/* ================= AUTH STATE ================= */
+/* =========================================================
+   AUTH STATE HANDLER (CORE NAVIGATION BRAIN)
+========================================================= */
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    document.body.classList.add("logged-in");
-    console.log("Logged in:", user.email);
-  } else {
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
     document.body.classList.remove("logged-in");
-    console.log("Logged out");
+    return;
+  }
+
+  document.body.classList.add("logged-in");
+
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+
+    // Safety fallback (should never happen, but protects data)
+    if (!snap.exists()) {
+      window.location.href = "/profile.html";
+      return;
+    }
+
+    const data = snap.data();
+
+    // Profile not completed → force profile page
+    if (!data.profileCompleted) {
+      if (!location.pathname.includes("profile.html")) {
+        window.location.href = "/profile.html";
+      }
+    } 
+    // Profile completed → allow app access
+    else {
+      if (
+        location.pathname.includes("login") ||
+        location.pathname.includes("register") ||
+        location.pathname.includes("profile.html")
+      ) {
+        window.location.href = "/explore.html";
+      }
+    }
+  } catch (err) {
+    console.error("Auth state error:", err);
   }
 });
 
-/* ================= REGISTER WITH PROFILE (OPTIONAL) ================= */
-/* Does NOT replace registerUser above */
-
-window.registerUserWithProfile = async function (email, password, fullName) {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-  await setDoc(doc(db, "users", cred.user.uid), {
-    name: fullName,
-    email: email,
-    role: "user",
-    verified: false,
-    createdAt: serverTimestamp()
-  });
-
-  return cred;
-};
-
-/* ================= QUESTIONS ================= */
+/* =========================================================
+   QUESTIONS
+========================================================= */
 
 window.createQuestion = async function (title, body, tags = []) {
   const user = auth.currentUser;
@@ -95,7 +132,9 @@ window.createQuestion = async function (title, body, tags = []) {
   });
 };
 
-/* ================= ANSWERS ================= */
+/* =========================================================
+   ANSWERS
+========================================================= */
 
 window.createAnswer = async function (questionId, body) {
   const user = auth.currentUser;
@@ -110,19 +149,23 @@ window.createAnswer = async function (questionId, body) {
   });
 };
 
-/* ================= ROLE FETCH (ADMIN / MODERATOR) ================= */
+/* =========================================================
+   ROLE FETCH (ADMIN / MODERATOR READY)
+========================================================= */
 
 window.getUserRole = async function () {
   const user = auth.currentUser;
   if (!user) return null;
 
   const snap = await getDoc(doc(db, "users", user.uid));
-  if (!snap.exists()) return null;
+  if (!snap.exists()) return "user";
 
   return snap.data().role || "user";
 };
 
-/* ================= ADMIN CHECK (FUTURE READY) ================= */
+/* =========================================================
+   ADMIN CHECK (FUTURE – CLAIM BASED)
+========================================================= */
 /*
 import { getIdTokenResult } from "firebase/auth";
 
