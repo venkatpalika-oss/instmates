@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
   <title>Case Studies | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <meta name="description"
-        content="Real-world analyzer and instrumentation failure case studies from the field." />
+        content="Real-world analyzer and instrumentation failure case studies from the field. Symptoms, root causes, corrective actions, and lessons learned by technicians." />
 
   <!-- GLOBAL CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="case-studies">
@@ -25,52 +25,72 @@
 
 <main class="container">
 
-  <!-- ================= INTRO ================= -->
-  <section class="panel">
-    <h2>Field Case Studies</h2>
-    <p class="muted">
-      Real failures, symptoms, root causes, and corrective actions
-      documented by instrument & analyzer technicians.
-    </p>
-  </section>
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>Field Case Studies</h2>
 
-  <!-- ================= CASE LIST ================= -->
-  <section class="panel">
+  <p class="muted">
+    Real failures, symptoms, root causes, and corrective actions
+    documented by instrument and analyzer technicians from live plants.
+  </p>
 
-    <div class="case-list">
+  <a href="/submit-case.html" class="btn btn-primary">
+    Submit a Case Study
+  </a>
+</section>
 
-      <!-- ROSEMOUNT 3051 CASE -->
-      <div class="case-item">
-        <h3>
-          <a href="/case-studies/rosemount-3051-zero-shift.html">
-            Emerson Rosemount 3051 – Zero Shift After Shutdown
-          </a>
-        </h3>
+<!-- ================= CASE LIST ================= -->
+<section class="panel">
 
-        <p class="muted">
-          Instrumentation · DP Transmitter · Emerson
-        </p>
+  <div class="case-list">
 
-        <p class="muted">
-          Root Cause: Equalizing valve left open after shutdown
-        </p>
-      </div>
-
-      <!-- PLACEHOLDER FOR FUTURE CASES -->
-      <!--
-      <div class="case-item">
-        <h3>
-          <a href="/case-studies/example.html">
-            Example Case Study
-          </a>
-        </h3>
-        <p class="muted">Analyzer · GC · Sampling</p>
-      </div>
-      -->
-
+    <!-- GC CASE -->
+    <div class="case-item">
+      <h3>
+        <a href="/case-studies/gc-baseline-drift-after-calibration.html">
+          GC Baseline Drift After Calibration
+        </a>
+      </h3>
+      <p class="muted">
+        Analyzer · Gas Chromatograph · Calibration
+      </p>
+      <p class="muted">
+        Refinery · Continuous Analyzer Shelter
+      </p>
     </div>
 
-  </section>
+    <!-- ROSEMOUNT DP LEVEL CASE -->
+    <div class="case-item">
+      <h3>
+        <a href="/case-studies/emerson-rosemount-3414-3417-wet-leg-zero-shift.html">
+          Emerson Rosemount 3414/3417 – Wet Leg Zero Shift
+        </a>
+      </h3>
+      <p class="muted">
+        Instrumentation · DP Level Measurement
+      </p>
+      <p class="muted">
+        Refinery · Closed Vessel Application
+      </p>
+    </div>
+
+    <!-- PLACEHOLDER FOR NEXT CASE -->
+    <!--
+    <div class="case-item">
+      <h3>
+        <a href="/case-studies/krohne-altosonic-v12-zero-drift.html">
+          KROHNE ALTOSONIC V12 – Zero Drift Case
+        </a>
+      </h3>
+      <p class="muted">
+        Flow Measurement · Ultrasonic Meter
+      </p>
+    </div>
+    -->
+
+  </div>
+
+</section>
 
 </main>
 
