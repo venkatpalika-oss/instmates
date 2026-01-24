@@ -8,8 +8,8 @@
   <meta name="description"
         content="Real field case study on GC baseline drift after calibration. Root cause analysis, corrective action, and lessons learned for analyzer technicians." />
 
-  <base href="/instmates/" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- GLOBAL CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="case-study">
@@ -19,8 +19,8 @@
 
 <!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
-  <a href="index.html">Home</a><span>›</span>
-  <a href="case-studies/index.html">Case Studies</a><span>›</span>
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/case-studies/index.html">Case Studies</a><span>›</span>
   <span class="current">GC Baseline Drift</span>
 </nav>
 
@@ -64,4 +64,41 @@
 
 <!-- ================= ROOT CAUSE ================= -->
 <section class="panel">
-  <h3>R
+  <h3>Root Cause</h3>
+  <p class="muted">
+    Moisture ingress into the sampling system during calibration introduced
+    instability in detector response. The issue was not related to detector
+    electronics or column health.
+  </p>
+</section>
+
+<!-- ================= CORRECTIVE ACTION ================= -->
+<section class="panel">
+  <h3>Corrective Action</h3>
+  <ul class="muted">
+    <li>Dried and purged the sampling lines</li>
+    <li>Verified sample conditioning and filters</li>
+    <li>Stabilized pressure before recalibration</li>
+  </ul>
+</section>
+
+<!-- ================= LESSONS LEARNED ================= -->
+<section class="panel">
+  <h3>Lessons Learned</h3>
+  <ul class="muted">
+    <li>Never recalibrate before stabilizing the sampling system</li>
+    <li>Baseline drift usually indicates upstream issues</li>
+    <li>Moisture is a silent GC killer</li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
