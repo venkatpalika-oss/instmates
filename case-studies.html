@@ -1,74 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Case Studies | InstMates</title>
+  <title>Field Case Studies | InstMates</title>
+
   <meta name="description"
-        content="Real-world analyzer and instrumentation failure case studies from the field." />
+        content="Real-world analyzer and instrumentation case studies from the field. Symptoms, root cause analysis, corrective actions, and lessons learned by technicians." />
 
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="case-studies">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <span class="current">Case Studies</span>
+</nav>
 
 <main class="container">
 
-  <section class="panel">
-    <h2>Field Case Studies</h2>
-    <p class="muted">
-      Real failures, symptoms, root causes, and fixes
-      documented by instrument & analyzer technicians.
-    </p>
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>Field Case Studies</h2>
 
-    <a href="submit-case.html" class="btn btn-primary">
-      Submit a Case Study
-    </a>
-  </section>
+  <p class="muted">
+    Real plant issues documented by instrument and analyzer technicians.
+    Each case follows a practical format:
+    <b>symptom → root cause → corrective action → lesson learned</b>.
+  </p>
 
-  <section class="panel">
+  <a href="/submit-case.html" class="btn btn-primary">
+    Submit a Case Study
+  </a>
+</section>
 
-    <div class="case-list">
+<!-- ================= CASE LIST ================= -->
+<section class="panel">
 
-      <div class="case-item">
-        <h3>
-          <a href="case-studies/gc-baseline-drift.html">
-            GC Baseline Drift After Calibration
-          </a>
-        </h3>
-        <p class="muted">
-          Analyzer · GC · Calibration · Drift
-        </p>
-        <p class="muted">
-          Submitted by Venkatesh · Refinery
-        </p>
-      </div>
+  <div class="case-list">
 
-      <div class="case-item">
-        <h3>
-          <a href="case-study.html">
-            CEMS SO₂ Analyzer Showing Zero Intermittently
-          </a>
-        </h3>
-        <p class="muted">
-          CEMS · Emissions · Signal Loss
-        </p>
-        <p class="muted">
-          Submitted by Technician
-        </p>
-      </div>
+    <!-- CASE 1 -->
+    <div class="case-item">
+      <h3>
+        <a href="/case-studies/gc-baseline-drift.html">
+          GC Baseline Drift After Calibration
+        </a>
+      </h3>
 
+      <p class="muted">
+        Analyzer · Gas Chromatograph · Calibration
+      </p>
+
+      <p class="muted">
+        Refinery · Continuous Analyzer Shelter
+      </p>
     </div>
 
-  </section>
+    <!-- FUTURE CASE TEMPLATE -->
+    <!--
+    <div class="case-item">
+      <h3>
+        <a href="/case-studies/<slug>.html">
+          Case Title
+        </a>
+      </h3>
+      <p class="muted">Category · Analyzer · Topic</p>
+      <p class="muted">Plant / Environment</p>
+    </div>
+    -->
+
+  </div>
+
+</section>
+
+<!-- ================= RULE ================= -->
+<section class="panel">
+  <h3>Technician Rule</h3>
+
+  <p class="muted">
+    Do not recalibrate until the physical cause is fixed.
+    Most analyzer issues originate in sampling, pressure, or environment —
+    not electronics.
+  </p>
+</section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-<script src="assets/js/includes.js"></script>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>
 </html>
