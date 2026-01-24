@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emerson Rosemount 3051 Zero Shift After Shutdown | InstMates Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Real field case study: Emerson Rosemount 3051 DP transmitter showing zero shift after shutdown. Root cause analysis, corrective action, and field lessons learned." />
+
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="case-study">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/case-studies.html">Case Studies</a><span>›</span>
+  <span class="current">Rosemount 3051 Zero Shift</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= TITLE ================= -->
+<section class="panel">
+  <h2>Emerson Rosemount 3051 – Zero Shift After Shutdown</h2>
+
+  <p class="muted">
+    <b>Category:</b> Instrumentation · Differential Pressure · Field Calibration
+  </p>
+</section>
+
+<!-- ================= EQUIPMENT ================= -->
+<section class="panel">
+  <h3>Equipment Details</h3>
+
+  <ul class="muted">
+    <li><b>Manufacturer:</b> Emerson</li>
+    <li><b>Model:</b> Rosemount 3051</li>
+    <li><b>Type:</b> Differential Pressure Transmitter</li>
+    <li><b>Application:</b> Flow measurement (DP)</li>
+    <li><b>Mounting:</b> Field mounted with 3-valve manifold</li>
+  </ul>
+</section>
+
+<!-- ================= PLANT ================= -->
+<section class="panel">
+  <h3>Plant / Environment</h3>
+
+  <p class="muted">
+    Refinery process unit. Outdoor installation.
+    Analyzer shelter shutdown occurred during night hours with ambient
+    temperature drop.
+  </p>
+</section>
+
+<!-- ================= PROBLEM ================= -->
+<section class="panel">
+  <h3>Problem Statement</h3>
+
+  <p class="muted">
+    After a planned unit shutdown and restart, the Rosemount 3051 DP transmitter
+    indicated a constant positive value even when the process was at zero flow.
+    Re-calibration temporarily corrected the issue, but the problem reappeared
+    after the next shutdown.
+  </p>
+</section>
+
+<!-- ================= SYMPTOMS ================= -->
+<section class="panel">
+  <h3>Observed Symptoms</h3>
+
+  <ul class="muted">
+    <li>DP reading not returning to zero after shutdown</li>
+    <li>Zero shift increased after every shutdown</li>
+    <li>Process flow physically confirmed as zero</li>
+    <li>Transmitter diagnostics showed no internal fault</li>
+  </ul>
+</section>
+
+<!-- ================= WRONG ASSUMPTIONS ================= -->
+<section class="panel">
+  <h3>Initial Assumptions (Incorrect)</h3>
+
+  <ul class="muted">
+    <li>Transmitter sensor drift</li>
+    <li>Electronics aging</li>
+    <li>Need for transmitter replacement</li>
+  </ul>
+</section>
+
+<!-- ================= RCA ================= -->
+<section class="panel">
+  <h3>Root Cause Analysis</h3>
+
+  <p class="muted">
+    Detailed inspection of the impulse lines and manifold revealed that the
+    <b>equalizing valve was not fully closed</b>.
+    During shutdown, when process pressure decayed and ambient temperature
+    changed, partial equalization allowed pressure imbalance between the
+    high-pressure and low-pressure sides.
+  </p>
+
+  <p class="muted">
+    This trapped differential pressure caused the transmitter to settle at a
+    false zero point. Recalibration masked the problem but did not eliminate
+    the physical cause.
+  </p>
+</section>
+
+<!-- ================= CORRECTIVE ACTION ================= -->
+<section class="panel">
+  <h3>Corrective Action</h3>
+
+  <ul class="muted">
+    <li>Fully closed the equalizing valve</li>
+    <li>Verified correct manifold valve sequence</li>
+    <li>Drained impulse lines to remove trapped pressure</li>
+    <li>Performed zero calibration only after physical correction</li>
+  </ul>
+</section>
+
+<!-- ================= RESULT ================= -->
+<section class="panel">
+  <h3>Result</h3>
+
+  <p class="muted">
+    After corrective action, the transmitter consistently returned to true zero
+    following shutdowns. No further zero shift was observed, and recalibration
+    frequency was eliminated.
+  </p>
+</section>
+
+<!-- ================= LESSONS ================= -->
+<section class="panel">
+  <h3>Lessons Learned</h3>
+
+  <ul class="muted">
+    <li>Most DP zero shifts are installation-related, not transmitter faults</li>
+    <li>Equalizing valve position is critical during shutdown</li>
+    <li>Never recalibrate before confirming manifold and impulse line condition</li>
+    <li>Replacing transmitters does not fix physical installation problems</li>
+  </ul>
+</section>
+
+<!-- ================= RELATED KNOWLEDGE ================= -->
+<section class="panel">
+  <h3>Related Knowledge</h3>
+
+  <ul class="muted">
+    <li><a href="/knowledge/field/pressure/index.html">Pressure Measurement Basics</a></li>
+    <li><a href="/knowledge/field/pressure/manifold-valves.html">Manifold Valves – Correct Operation</a></li>
+    <li><a href="/knowledge/field/pressure/impulse-lines.html">Impulse Lines – Field Practices</a></li>
+  </ul>
+</section>
+
+<!-- ================= FIELD RULE ================= -->
+<section class="panel">
+  <h3>Technician Rule</h3>
+
+  <p class="muted">
+    If a transmitter shows zero shift after shutdown,
+    check the manifold and impulse lines before touching calibration.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
