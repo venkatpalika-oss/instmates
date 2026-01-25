@@ -6,7 +6,6 @@
    - Firebase app is initialized ONLY ONCE in firebase.js
    - This file contains auth + firestore logic only
    - Enforces profile-first onboarding (Option A)
-   - SITE IS SIGNUP-FIRST (ONLY index.html is public)
 ========================================================= */
 
 /* ================= IMPORT SHARED FIREBASE ================= */
@@ -68,7 +67,7 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (SIGNUP-FIRST — FINAL)
+   AUTH STATE HANDLER (NO HOME HIJACK – FINAL)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
@@ -77,34 +76,37 @@ onAuthStateChanged(auth, async (user) => {
 
   const path = location.pathname;
 
-  /* ================= PUBLIC PAGES (ONLY LANDING) ================= */
+  /* ================= PUBLIC PAGES (NEVER REDIRECT) ================= */
   const publicPages = [
     "/",                 // root domain
-    "/index.html"        // signup / login landing
+    "/index.html",
+    "/knowledge.html",
+    "/about.html"
   ];
 
-  /* ================= NOT LOGGED IN ================= */
+  // Handle auth UI only, no navigation
+  if (publicPages.includes(path)) {
+    if (user) {
+      document.body.classList.add("logged-in");
+    } else {
+      document.body.classList.remove("logged-in");
+    }
+    return; // 🔴 CRITICAL STOP
+  }
+
+  /* ================= LOGGED OUT ================= */
   if (!user) {
     document.body.classList.remove("logged-in");
-
-    // If NOT on a public page → force to index
-    if (!publicPages.includes(path)) {
-      window.location.replace("/index.html");
-    }
     return;
   }
 
-  /* ================= LOGGED IN ================= */
   document.body.classList.add("logged-in");
 
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
 
-    // User record missing → force profile creation
     if (!snap.exists()) {
-      if (path !== "/profile.html") {
-        window.location.replace("/profile.html");
-      }
+      window.location.href = "/profile.html";
       return;
     }
 
@@ -124,22 +126,21 @@ onAuthStateChanged(auth, async (user) => {
         path === "/login.html" ||
         path === "/register.html"
       ) {
-        window.location.replace("/profile.html");
+        window.location.href = "/profile.html";
       }
       return;
     }
 
-    /* ===== PROFILE COMPLETED ===== */
-    if (
-      path.endsWith("/login.html") ||
-      path.endsWith("/register.html") ||
-      path === "/index.html" ||
-      path === "/"
-    ) {
-      window.location.replace("/explore.html");
-    }
+   /* ===== PROFILE COMPLETED ===== */
+if (
+  path.endsWith("/login.html") ||
+  path.endsWith("/register.html")
+) {
+  window.location.href = "/explore.html";
+}
 
-    /* 🚫 NEVER redirect from profile.html */
+/* 🚫 NEVER redirect from profile.html */
+
 
   } catch (err) {
     console.error("Auth state error:", err);
