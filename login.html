@@ -81,7 +81,10 @@
 
     try {
       await window.loginUser(email, password);
-      window.location.href = "/explore.html";
+
+      // 🔐 STEP 2 FIX: always go to dashboard
+      window.location.href = "/dashboard.html";
+
     } catch (err) {
       alert(err.message);
     }
