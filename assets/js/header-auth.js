@@ -3,21 +3,30 @@
 ========================================================= */
 
 import { auth } from "./firebase.js";
-import { onAuthStateChanged, signOut } from
-"https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { onAuthStateChanged } from
+  "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-/* ================= WAIT FOR HEADER ================= */
+onAuthStateChanged(auth, (user) => {
 
-function waitForHeader() {
-  return new Promise(resolve => {
-    const check = () => {
-      const header = document.querySelector(".site-header");
-      if (header) return resolve();
-      setTimeout(check, 50);
-    };
-    check();
-  });
-}
+  // Elements
+  const loggedInNav = document.querySelectorAll(".nav-auth");
+  const loggedOutNav = document.querySelectorAll(".nav-guest");
+
+  if (user) {
+    // Logged IN
+    loggedInNav.forEach(el => el.style.display = "inline-flex");
+    loggedOutNav.forEach(el => el.style.display = "none");
+    document.body.classList.add("auth-in");
+    document.body.classList.remove("auth-out");
+  } else {
+    // Logged OUT
+    loggedInNav.forEach(el => el.style.display = "none");
+    loggedOutNav.forEach(el => el.style.display = "inline-flex");
+    document.body.classList.add("auth-out");
+    document.body.classList.remove("auth-in");
+  }
+});
+
 
 /* ================= INIT HEADER AUTH ================= */
 
