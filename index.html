@@ -37,12 +37,14 @@
       Share field experience · Learn from peers · Grow your professional credibility
     </p>
 
+    <!-- PRIMARY CTA -->
     <button class="btn btn-hero auth-out" onclick="openJoinModal()">
       Join InstMates
     </button>
 
-    <a href="/knowledge.html" class="btn btn-hero">
-      Explore Knowledge
+    <!-- 🔐 CHANGED: Login instead of Explore Knowledge -->
+    <a href="/login.html" class="btn btn-hero btn-ghost">
+      Login
     </a>
 
   </div>
@@ -52,48 +54,46 @@
 <main class="container">
 
   <!-- ================= ACTIVITY FEED ================= -->
+  <!-- (INTENTIONALLY STATIC — NO CLICK THROUGH) -->
   <section class="panel">
     <h2>What Technicians Are Discussing</h2>
 
     <div class="feed">
 
-      <a href="/knowledge.html" class="post-link">
-        <div class="post-card">
-          <div class="post-header">
-            <div class="avatar small"></div>
-            <div>
-              <strong>Rahul</strong><br>
-              <span class="muted">Analyzer Engineer</span>
-            </div>
-          </div>
-          <p class="muted">
-            GC baseline drifting during high humidity.
-            Moisture ingress in sample line — not detector failure.
-          </p>
-          <div class="post-actions">
-            ❤️ 14 &nbsp; 💬 5
+      <!-- 🔒 CHANGED: removed href to knowledge -->
+      <div class="post-card">
+        <div class="post-header">
+          <div class="avatar small"></div>
+          <div>
+            <strong>Rahul</strong><br>
+            <span class="muted">Analyzer Engineer</span>
           </div>
         </div>
-      </a>
+        <p class="muted">
+          GC baseline drifting during high humidity.
+          Moisture ingress in sample line — not detector failure.
+        </p>
+        <div class="post-actions">
+          ❤️ 14 &nbsp; 💬 5
+        </div>
+      </div>
 
-      <a href="/knowledge.html" class="post-link">
-        <div class="post-card">
-          <div class="post-header">
-            <div class="avatar small"></div>
-            <div>
-              <strong>Ahmed</strong><br>
-              <span class="muted">Instrument Technician</span>
-            </div>
-          </div>
-          <p class="muted">
-            CEMS SO₂ zero instability after shutdown.
-            Correct warm-up and zero sequence solved it.
-          </p>
-          <div class="post-actions">
-            ❤️ 21 &nbsp; 💬 8
+      <div class="post-card">
+        <div class="post-header">
+          <div class="avatar small"></div>
+          <div>
+            <strong>Ahmed</strong><br>
+            <span class="muted">Instrument Technician</span>
           </div>
         </div>
-      </a>
+        <p class="muted">
+          CEMS SO₂ zero instability after shutdown.
+          Correct warm-up and zero sequence solved it.
+        </p>
+        <div class="post-actions">
+          ❤️ 21 &nbsp; 💬 8
+        </div>
+      </div>
 
     </div>
   </section>
@@ -174,10 +174,10 @@
       </div>
 
       <div class="card">
+        <!-- SVG unchanged -->
         <svg viewBox="0 0 420 200" width="100%"
              xmlns="http://www.w3.org/2000/svg"
              aria-label="Learning flow">
-
           <rect x="20" y="70" width="90" height="50" rx="8"
                 fill="#ecfeff" stroke="#0284c7" stroke-width="3"/>
           <text x="65" y="100" text-anchor="middle">Learn</text>
@@ -198,18 +198,6 @@
       </div>
 
     </div>
-  </section>
-
-  <!-- ROADMAP -->
-  <section class="panel">
-    <h2>What’s Coming Next</h2>
-    <ul class="checklist">
-      <li>Analyzer-specific hubs (GC, FTIR, CEMS)</li>
-      <li>Reputation & contribution scoring</li>
-      <li>Peer verification & moderation</li>
-      <li>Mentorship for junior technicians</li>
-      <li>Advanced search & filtering</li>
-    </ul>
   </section>
 
 </main>
@@ -242,11 +230,10 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 <script type="module" src="/assets/js/header-auth.js"></script>
 
-<!-- ================= MODAL SCRIPT ================= -->
 <script>
   function openJoinModal(){
     document.getElementById('joinModal').classList.add('active');
