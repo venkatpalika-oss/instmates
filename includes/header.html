@@ -1,4 +1,4 @@
-<!-- HEADER TEST MARKER v2 -->
+<!-- HEADER TEST MARKER v2 (FINAL) -->
 
 <header class="site-header">
   <div class="site-header-inner">
@@ -61,35 +61,33 @@
 
     <!-- NAVIGATION -->
     <nav class="main-nav">
+
+      <!-- ALWAYS VISIBLE -->
       <a href="/index.html">Home</a>
-      <a href="/explore.html">Explore</a>
-      <a href="/profiles/">Technicians</a>
-      <a href="/community.html">Community</a>
-      <a href="/knowledge.html">Knowledge</a>
-      <a href="/videos/index.html">Videos</a>
-      <a href="/case-studies/">Case Studies</a>
-      <a href="/inbox.html">Inbox</a>
-      <a href="/about.html">About</a>
 
-      <!-- ================= AUTH NAV ================= -->
+      <!-- ================= LOGGED-IN ONLY NAV ================= -->
+      <span class="auth-in">
+        <a href="/explore.html">Explore</a>
+        <a href="/profiles/">Technicians</a>
+        <a href="/community.html">Community</a>
+        <a href="/knowledge.html">Knowledge</a>
+        <a href="/videos/index.html">Videos</a>
+        <a href="/case-studies/">Case Studies</a>
+        <a href="/inbox.html">Inbox</a>
+        <a href="/about.html">About</a>
+      </span>
 
-      <!-- Logged OUT -->
+      <!-- ================= LOGGED-OUT ONLY ================= -->
       <span class="auth-out">
         <a href="/login.html" class="nav-cta">Login</a>
         <a href="/register.html" class="nav-cta nav-cta-primary">Join</a>
       </span>
 
-      <!-- Logged IN -->
+      <!-- ================= LOGGED-IN ACTIONS ================= -->
       <span class="auth-in">
-        <a href="/profile.html" class="nav-cta">
-          Edit Profile
-        </a>
-        <a href="#" id="myProfileLink" class="nav-cta">
-          View Profile
-        </a>
-        <a href="#" id="logoutBtn" class="nav-logout nav-cta">
-          Logout
-        </a>
+        <a href="/profile.html" class="nav-cta">Edit Profile</a>
+        <a href="#" id="myProfileLink" class="nav-cta">View Profile</a>
+        <a href="#" id="logoutBtn" class="nav-logout nav-cta">Logout</a>
       </span>
 
     </nav>
