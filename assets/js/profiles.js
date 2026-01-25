@@ -33,15 +33,28 @@ async function loadProfiles() {
       const card = document.createElement("div");
       card.className = "card";
 
-      card.innerHTML = `
-        <h3>${u.name}</h3>
-        <p class="muted">${u.role}</p>
-        <p class="muted">📍 ${u.location || ""}</p>
+     card.innerHTML = `
+  <h3>${u.name}</h3>
+  <p class="muted">${u.role}</p>
+  <p class="muted">📍 ${u.location || ""}</p>
 
-        <div class="tags">
-          ${(u.skills || []).map(s => `<span class="tag">${s}</span>`).join("")}
-        </div>
-      `;
+  <div class="tags">
+    ${(u.skills || []).map(s => `<span class="tag">${s}</span>`).join("")}
+  </div>
+
+  <div class="action-row" style="margin-top:12px;">
+    <a class="btn btn-ghost"
+       href="/profile-view.html?uid=${u.uid}">
+       View Profile
+    </a>
+
+    <a class="btn btn-primary"
+       href="/message.html?to=${u.uid}">
+       Message
+    </a>
+  </div>
+`;
+
 
       grid.appendChild(card);
     });
