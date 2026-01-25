@@ -182,7 +182,6 @@ img{
   gap:12px;
   flex-wrap:wrap;
 }
-
 /* ================= PANELS & GRIDS ================= */
 
 .panel{
@@ -296,6 +295,7 @@ img{
   .hero h1{font-size:1.8rem}
   .main-nav{justify-content:center}
 }
+
 /* ================= MOBILE HEADER OPTIMIZATION ================= */
 
 @media (max-width: 768px){
@@ -352,12 +352,14 @@ img{
   box-shadow:0 2px 8px rgba(0,0,0,.15);
   background:#fff;
 }
+
 @media (max-width: 600px){
   .profile-photo{
     width:140px;
     height:140px;
   }
 }
+
 /* ================= DIRECTORY & ENDORSEMENTS ================= */
 
 .card img{
@@ -367,6 +369,7 @@ img{
   border-radius:10px;
   margin-bottom:8px;
 }
+
 /* ================= COMMUNITY Q&A ================= */
 
 .question-list{
@@ -390,6 +393,7 @@ img{
   border-radius:8px;
   margin-bottom:12px;
 }
+
 article h1{
   margin-top:0;
 }
@@ -398,6 +402,7 @@ article h2{
   margin-top:18px;
   color:#0b3c5d;
 }
+
 /* ================= CASE STUDIES ================= */
 
 .case-list{
@@ -414,6 +419,7 @@ article h2{
 article h2{
   margin-top:18px;
 }
+
 /* ================= REPUTATION SYSTEM ================= */
 
 .reputation-panel .card{
@@ -458,45 +464,12 @@ article h2{
   background:#cd7f32;
   color:#fff;
 }
-/* ================= AUTH PAGES ================= */
 
-.auth-container{
-  max-width:520px;
-  margin:40px auto;
-}
-
-.auth-panel{
-  background:#fff;
-  padding:26px;
-  border-radius:12px;
-  box-shadow:0 4px 16px rgba(0,0,0,.12);
-}
+/* ================= AUTH PAGES (EXTENDED) ================= */
 
 .auth-panel h2{
   margin-top:0;
   margin-bottom:6px;
-}
-
-.auth-form{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  margin-top:16px;
-}
-
-.auth-form label{
-  font-weight:700;
-  font-size:.95rem;
-}
-
-.auth-form input,
-.auth-form select{
-  width:100%;
-  padding:10px;
-  margin-top:4px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:1rem;
 }
 
 .auth-form input:focus,
@@ -510,11 +483,6 @@ article h2{
 .btn.full{
   width:100%;
   text-align:center;
-}
-
-.auth-footer{
-  margin-top:16px;
-  font-size:.95rem;
 }
 
 .auth-footer a{
@@ -547,9 +515,9 @@ article h2{
   background: #0b3c5d;
   color: #ffffff;
 }
+
 /* =========================================================
    InstMates Brand Colors & Hover Animations (SAFE ADDITION)
-   Do NOT modify existing styles above
 ========================================================= */
 
 :root{
@@ -565,7 +533,6 @@ article h2{
    BUTTON TUNING
 ========================= */
 
-/* Primary (keep strong, improve hover) */
 .btn-primary{
   background: var(--brand-primary);
   border-color: var(--brand-primary);
@@ -580,7 +547,6 @@ article h2{
   box-shadow: 0 6px 16px rgba(11,60,93,.25);
 }
 
-/* Soft button (new – for Explore / Learn) */
 .btn-soft{
   background: var(--brand-soft);
   color: var(--brand-primary);
@@ -598,7 +564,6 @@ article h2{
   box-shadow: 0 4px 14px rgba(11,60,93,.2);
 }
 
-/* Ghost button (subtle improvement, stays clean) */
 .btn-ghost{
   transition: color .2s ease,
               border-color .2s ease,
@@ -645,14 +610,14 @@ a:hover{
 .hero-actions .btn{
   margin: 6px 8px;
 }
+
 /* =========================================================
    Home Hero – Primary Action Buttons (Orange)
-   Only used for Join & Explore on index page
 ========================================================= */
 
 .btn-hero{
-  background: #f59e0b;           /* orange */
-  color: #1f2937;                /* dark text */
+  background: #f59e0b;
+  color: #1f2937;
   border: 1px solid #92400e;
   font-weight: 700;
   transition: background .25s ease,
@@ -661,7 +626,7 @@ a:hover{
 }
 
 .btn-hero:hover{
-  background: #d97706;           /* darker orange */
+  background: #d97706;
   color: #ffffff;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(146,64,14,.35);
@@ -689,63 +654,33 @@ a:hover{
 .site-footer a:hover{
   text-decoration: underline;
 }
+
 /* =========================================================
    Footer Styled Same as Header (Solid Industrial Blue)
-========================================================= */
-
-/* Footer background like header */
-.site-footer{
-  background: #0b3c5d;          /* same as header */
-  color: #ffffff;
-  border-top: none;
-}
-
-/* Footer headings */
-.site-footer h4{
-  color: #ffffff;
-}
-
-/* Footer paragraph text */
-.site-footer p{
-  color: #dbe7f3;
-}
-
-/* Footer links */
-.site-footer a{
-  color: #e6f0fa;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.site-footer a:hover{
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/* Footer separators */
-.site-footer hr{
-  border: none;
-  border-top: 1px solid rgba(255,255,255,.25);
-}
-
-/* Footer list cleanup (in case not already present) */
-.site-footer ul{
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.site-footer li{
-  margin: 6px 0;
-}
-/* =========================================================
-   Compact Footer Layout (Header-like, Minimal)
 ========================================================= */
 
 .site-footer{
   background: #0b3c5d;
   color: #ffffff;
+  border-top: none;
 }
+
+.site-footer h4{
+  color: #ffffff;
+}
+
+.site-footer p{
+  color: #dbe7f3;
+}
+
+.site-footer hr{
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.25);
+}
+
+/* =========================================================
+   Compact Footer Layout
+========================================================= */
 
 .footer-compact{
   padding: 16px 0 12px;
@@ -795,7 +730,6 @@ a:hover{
   color: #dbe7f3;
 }
 
-/* Mobile safety */
 @media (max-width: 768px){
   .footer-row{
     flex-direction: column;
@@ -806,181 +740,10 @@ a:hover{
     margin-top: 6px;
   }
 }
+
 /* =========================================================
-   Highlight Section: Built on Real Field Experience
-   (Remove flat white, add metallic depth)
+   Social Homepage Elements
 ========================================================= */
-
-/* Section background */
-.panel{
-  background: #dde7f1;
-}
-
-/* Cards inside highlight sections */
-.panel .card{
-  background: #eef4fa;
-  border: 1px solid #c1d1e2;
-  box-shadow: 0 6px 16px rgba(11,60,93,.12);
-}
-
-/* Strong metric numbers (100%, 0%, 24x7) */
-.panel .card h3{
-  color: #0b3c5d;
-  font-weight: 800;
-}
-
-/* Slight hover feedback (professional, not flashy) */
-.panel .card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(11,60,93,.22);
-}
-/* =========================================================
-   Global Primary Button = Amber (FINAL)
-   Replaces old blue primary everywhere
-========================================================= */
-
-/* Primary buttons now amber */
-.btn-primary{
-  background: #f59e0b;          /* amber */
-  color: #1f2937;
-  border: 1px solid #92400e;
-  font-weight: 700;
-  box-shadow: 0 2px 6px rgba(146,64,14,.35);
-  transition:
-    background .25s ease,
-    box-shadow .2s ease,
-    transform .15s ease;
-}
-
-.btn-primary:hover{
-  background: #d97706;          /* darker amber */
-  color: #ffffff;
-  box-shadow: 0 6px 18px rgba(146,64,14,.45);
-  transform: translateY(-1px);
-}
-
-.btn-primary:active{
-  box-shadow: 0 2px 4px rgba(146,64,14,.4);
-  transform: translateY(0);
-}
-/* =========================================================
-   FINAL FOOTER (STRUCTURED, HEADER-COMPATIBLE)
-========================================================= */
-
-.footer-structured{
-  background: #4b6f88;   /* same family as header */
-  color: #ffffff;
-}
-
-/* Main content row */
-.footer-main{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 16px 12px;
-}
-
-/* Brand block */
-.footer-brand{
-  max-width: 520px;
-}
-
-.footer-logo{
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: .4px;
-}
-
-.footer-desc{
-  font-size: .85rem;
-  color: #e3edf6;
-  margin-top: 4px;
-}
-
-/* Legal links */
-.footer-legal a{
-  color: #eaf2f8;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer-legal a:hover{
-  text-decoration: underline;
-}
-
-.footer-legal .sep{
-  margin: 0 8px;
-  opacity: .6;
-}
-
-/* Bottom copyright row */
-.footer-bottom{
-  text-align: center;
-  font-size: .78rem;
-  color: #d7e3ed;
-  padding: 6px 0 10px;
-  border-top: 1px solid rgba(255,255,255,.25);
-}
-
-/* Mobile */
-@media (max-width: 768px){
-  .footer-main{
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-}
-/* =========================================================
-   Global Font Upgrade (InstMates)
-========================================================= */
-
-html, body{
-  font-family: 'Inter', system-ui, -apple-system,
-               BlinkMacSystemFont, 'Segoe UI',
-               Roboto, Arial, sans-serif;
-  font-size: 15.5px;
-  line-height: 1.55;
-}
-
-/* Headings – slightly stronger */
-h1, h2, h3, h4{
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-/* Buttons – crisp & readable */
-.btn{
-  font-family: 'Inter', inherit;
-  font-weight: 600;
-  letter-spacing: .01em;
-}
-
-/* Footer & small text */
-.footer-desc,
-.footer-copy,
-.muted{
-  font-weight: 500;
-}
-/* =========================================================
-   Footer Layout Fix – Do NOT Float with Content
-========================================================= */
-
-/* Ensure footer is a full-width block */
-.site-footer{
-  display: block;
-  width: 100%;
-  clear: both;          /* CRITICAL */
-  position: relative;
-  margin-top: 40px;    /* visual separation from content */
-}
-
-/* Safety: clear floats before footer */
-main::after{
-  content: "";
-  display: block;
-  clear: both;
-}
-/* ================= SOCIAL HOMEPAGE ================= */
 
 .social-hero{
   display:grid;
@@ -990,37 +753,10 @@ main::after{
   align-items:center;
 }
 
-.hero-sub{
-  font-size:1.3rem;
-  margin:6px 0;
-}
-
-.hero-tag{
-  opacity:.9;
-  margin:10px 0 18px;
-}
-
-.hero-actions{
-  display:flex;
-  gap:12px;
-}
-
 .avatar-grid{
   display:grid;
   grid-template-columns: repeat(3, 56px);
   gap:12px;
-}
-
-.avatar{
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:#d0d7de;
-}
-
-.avatar.small{
-  width:40px;
-  height:40px;
 }
 
 .feed{
@@ -1029,56 +765,15 @@ main::after{
   margin-top:14px;
 }
 
-.post-card{
-  background:#fff;
-  padding:16px;
-  border-radius:10px;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-}
-
-.post-header{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  margin-bottom:8px;
-}
-
 .post-actions{
   margin-top:10px;
   font-size:.9rem;
   opacity:.85;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:16px;
-  text-align:center;
-  margin:36px 0;
-}
-
-.stat{
-  background:#fff;
-  padding:18px;
-  border-radius:10px;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-}
-
-.groups-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-  gap:14px;
-  margin-top:14px;
-}
-
-.group-card{
-  background:#fff;
-  padding:16px;
-  border-radius:10px;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-  font-weight:600;
-}
-/* ================= JOIN MODAL ================= */
+/* =========================================================
+   Join Modal
+========================================================= */
 
 .modal-overlay{
   position:fixed;
@@ -1124,27 +819,10 @@ main::after{
   margin-top:18px;
   flex-wrap:wrap;
 }
-/* Clickable feed cards */
-.post-link{
-  text-decoration:none;
-  color:inherit;
-  display:block;
-}
-.post-link:hover .post-card{
-  transform:translateY(-2px);
-  transition:.15s ease;
-}
-/* ================= PROFILE PAGE ================= */
 
-.profile-hero{
-  margin-top:20px;
-}
-
-.profile-header{
-  display:flex;
-  gap:24px;
-  align-items:flex-start;
-}
+/* =========================================================
+   PROFILE PAGE
+========================================================= */
 
 .profile-avatar{
   width:120px;
@@ -1152,22 +830,6 @@ main::after{
   border-radius:50%;
   background:#d0d7de;
   flex-shrink:0;
-}
-
-.profile-info h1{
-  margin:0;
-}
-
-.profile-role{
-  font-weight:600;
-  margin:6px 0;
-}
-
-.profile-actions{
-  margin-top:12px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
 }
 
 .skills-grid{
@@ -1184,101 +846,27 @@ main::after{
   font-size:.85rem;
   font-weight:600;
 }
-.panel h2, .panel h3 {
-  letter-spacing: 0.2px;
-}
 
-.svg-wrap {
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-
-}
-.profile-progress {
-  margin-bottom: 18px;
-}
-
-.progress-label {
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-}
-
-.progress-bar {
-  height: 10px;
-  background: #e5e7eb;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-#profileBar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  transition: width 0.4s ease;
-}
-.profile-panel {
-  max-width: 900px;
-  margin: auto;
-}
-
-.profile-section {
-  margin-top: 24px;
-}
-
-.profile-section h3 {
-  margin-bottom: 12px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.profile-progress {
-  margin: 16px 0;
-}
-
-.progress-track {
-  background: #e5e7eb;
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  background: #22c55e;
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-.profile-actions {
-  margin-top: 24px;
-  text-align: right;
-}
-
-@media (max-width: 720px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
 /* =========================================================
    AUTH VISIBILITY – FINAL (SINGLE SOURCE OF TRUTH)
 ========================================================= */
 
+/* Hide both by default */
 .auth-in,
-.auth-out {
-  display: none;
+.auth-out{
+  display:none;
 }
 
-body.auth-out .auth-out {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+/* Logged OUT */
+body.auth-out .auth-out{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
 }
 
-body.auth-in .auth-in {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+/* Logged IN */
+body.auth-in .auth-in{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
 }
