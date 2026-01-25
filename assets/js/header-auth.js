@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Header Auth UI (FINAL, RACE-SAFE)
+   InstMates – Header Auth UI (FINAL, RACE-SAFE, NO FLICKER)
 ========================================================= */
 
 import { auth } from "./firebase.js";
@@ -27,9 +27,11 @@ function waitForHeader() {
 
   onAuthStateChanged(auth, (user) => {
 
+    // Reset auth state
     document.body.classList.remove("auth-in", "auth-out");
 
     if (user) {
+      // LOGGED IN
       document.body.classList.add("auth-in");
 
       const profileLink = document.getElementById("myProfileLink");
@@ -48,8 +50,12 @@ function waitForHeader() {
       }
 
     } else {
+      // LOGGED OUT
       document.body.classList.add("auth-out");
     }
+
+    // 🔑 CRITICAL: mark auth as resolved (prevents flicker)
+    document.body.classList.add("auth-ready");
 
   });
 })();
