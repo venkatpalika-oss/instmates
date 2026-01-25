@@ -7,7 +7,7 @@
   <title>InstMates | Instrument & Analyzer Technicians Community</title>
 
   <meta name="description"
-        content="InstMates is a professional community for instrument and analyzer technicians to share knowledge, document field cases, and grow through verified skills." />
+        content="InstMates is the professional community for instrument and analyzer technicians to share field experience, learn practical techniques, and solve real problems." />
 
   <!-- Google Font: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Global CSS (ROOT SAFE) -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-25">
 </head>
 
 <body data-page="home">
@@ -23,26 +23,28 @@
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= HERO ================= -->
+<!-- ================= HERO (LOGGED-OUT) ================= -->
 <section class="hero">
   <div class="hero-inner container">
 
-    <h1>InstMates</h1>
+    <h1>
+      The professional community for<br>
+      Instrument &amp; Analyzer Technicians
+    </h1>
 
     <p class="hero-tagline">
-      The social network for Instrument & Analyzer Technicians
+      Share technology · Learn techniques · Solve real field problems
     </p>
 
     <p class="hero-sub">
-      Share field experience · Learn from peers · Grow your professional credibility
+      Built by technicians. Focused on real plant and field experience.
     </p>
 
     <!-- PRIMARY CTA -->
     <button class="btn btn-hero auth-out" onclick="openJoinModal()">
-      Join InstMates
+      Join Free
     </button>
 
-    <!-- 🔐 CHANGED: Login instead of Explore Knowledge -->
     <a href="/login.html" class="btn btn-hero btn-ghost">
       Login
     </a>
@@ -53,14 +55,16 @@
 <!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- ================= ACTIVITY FEED ================= -->
-  <!-- (INTENTIONALLY STATIC — NO CLICK THROUGH) -->
+  <!-- ================= ACTIVITY PREVIEW ================= -->
   <section class="panel">
     <h2>What Technicians Are Discussing</h2>
+    <p class="muted">
+      A preview of real field discussions on InstMates.
+      Full access available after free sign-up.
+    </p>
 
     <div class="feed">
 
-      <!-- 🔒 CHANGED: removed href to knowledge -->
       <div class="post-card">
         <div class="post-header">
           <div class="avatar small"></div>
@@ -102,10 +106,10 @@
   <section class="panel">
     <h2>Why InstMates?</h2>
     <p class="muted">
-      Instrument and analyzer technicians rely on real field experience,
-      not theory alone. InstMates brings together verified skills,
-      real troubleshooting cases, and structured technical knowledge
-      into one focused professional platform.
+      Instrument and analyzer technicians rely on proven field experience,
+      not theory alone. InstMates brings together real troubleshooting cases,
+      practical knowledge, and verified professional identity into one
+      focused platform.
     </p>
   </section>
 
@@ -116,23 +120,23 @@
       <h3>👤 Professional Identity</h3>
       <p class="muted">
         Technician profiles that reflect real analyzer,
-        instrumentation, and plant experience.
+        instrumentation, and plant exposure.
       </p>
     </div>
 
     <div class="card">
       <h3>🧠 Practical Knowledge</h3>
       <p class="muted">
-        Visual guides, structured learning,
-        and field-tested solutions.
+        Visual guides, fundamentals, and field-tested
+        explanations — not textbook theory.
       </p>
     </div>
 
     <div class="card">
-      <h3>🧪 Proof From the Field</h3>
+      <h3>🧪 Field-Proven Solutions</h3>
       <p class="muted">
-        Real failure case studies with root cause,
-        corrective action, and lessons learned.
+        Real failures, root causes, corrective actions,
+        and lessons learned from the field.
       </p>
     </div>
 
@@ -153,7 +157,7 @@
       </div>
       <div class="card">
         <h3>24×7</h3>
-        <p class="muted">Practical reference availability</p>
+        <p class="muted">Practical reference access</p>
       </div>
     </div>
   </section>
@@ -167,14 +171,14 @@
       <div class="card">
         <ol class="muted">
           <li>Learn core concepts with visual explanations</li>
-          <li>Read real troubleshooting cases from the field</li>
-          <li>Share your own experience and solutions</li>
+          <li>Read real troubleshooting cases</li>
+          <li>Share your own experience</li>
           <li>Build professional credibility over time</li>
         </ol>
       </div>
 
       <div class="card">
-        <!-- SVG unchanged -->
+        <!-- SVG UNCHANGED -->
         <svg viewBox="0 0 420 200" width="100%"
              xmlns="http://www.w3.org/2000/svg"
              aria-label="Learning flow">
@@ -202,7 +206,7 @@
 
 </main>
 
-<!-- ================= JOIN MODAL ================= -->
+<!-- ================= JOIN MODAL (UNCHANGED) ================= -->
 <div id="joinModal" class="modal-overlay">
   <div class="modal">
     <button class="modal-close" onclick="closeJoinModal()">×</button>
@@ -231,7 +235,7 @@
 <div id="siteFooter"></div>
 
 <!-- ================= SCRIPTS ================= -->
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script src="/assets/js/includes.js?v=2026-01-25"></script>
 <script type="module" src="/assets/js/header-auth.js"></script>
 
 <script>
