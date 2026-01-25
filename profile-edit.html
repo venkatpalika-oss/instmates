@@ -17,6 +17,21 @@
   <section class="panel">
     <h2>Edit Your Profile</h2>
 
+    <!-- ================= PROFILE STATUS (NEW) ================= -->
+    <div id="profileStatus"
+         class="panel"
+         style="margin-bottom:16px;display:none;">
+      <h3 id="profileStatusTitle"></h3>
+      <p id="profileStatusMsg" class="muted"></p>
+
+      <div class="progress-bar">
+        <div id="profileStatusProgress"
+             class="progress-fill"
+             style="width:0%;"></div>
+      </div>
+    </div>
+    <!-- ========================================================= -->
+
     <form class="auth-form">
 
       <label>
@@ -49,6 +64,7 @@
 </main>
 
 <div id="siteFooter"></div>
+
 <script src="assets/js/includes.js"></script>
 
 </body>
