@@ -6,7 +6,12 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { doc, setDoc, getDoc, serverTimestamp } from
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
@@ -58,6 +63,7 @@ form.addEventListener("submit", async (e) => {
   const troubleshooting = collectTroubleshooting();
 
   const data = {
+    uid: user.uid,                        // ✅ explicit UID
     name: val("fullName"),
     role: val("role"),
     location: val("location"),
@@ -67,6 +73,10 @@ form.addEventListener("submit", async (e) => {
     industries: getMulti("industries"),
     summary: val("summary"),
     majorTroubleshooting: troubleshooting,
+
+    // ✅ PUBLIC PROFILE FLAG (CRITICAL)
+    publicProfile: true,
+
     updatedAt: serverTimestamp()
   };
 
@@ -75,7 +85,16 @@ form.addEventListener("submit", async (e) => {
   data.profileCompleted = completion >= 70;
 
   try {
-    await setDoc(doc(db, "users", user.uid), data, { merge: true });
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        ...data,
+
+        // ✅ ensure this exists for listing & ordering
+        createdAt: serverTimestamp()
+      },
+      { merge: true }
+    );
 
     if (progressBar) {
       progressBar.style.width = `${completion}%`;
@@ -105,7 +124,6 @@ function collectTroubleshooting() {
       item[el.dataset.field] = el.value.trim();
     });
 
-    // Save only meaningful entries
     if (item.system || item.problem || item.action) {
       list.push(item);
     }
