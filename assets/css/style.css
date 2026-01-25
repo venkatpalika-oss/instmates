@@ -1192,31 +1192,7 @@ main::after{
   margin-top: 12px;
   margin-bottom: 8px;
 }
-/* ================= AUTH VISIBILITY ================= */
 
-.auth-in { display: none; }
-.auth-out { display: inline-flex; gap: 10px; }
-
-body.logged-in .auth-in { display: inline-flex; gap: 10px; }
-body.logged-in .auth-out { display: none; }
-
-/* ================= AUTH UI – NO FLICKER ================= */
-
-/* Hide everything by default */
-.auth-in,
-.auth-out {
-  display: none !important;
-}
-
-/* Only show AFTER auth state is known */
-body.auth-ready:not(.logged-in) .auth-out {
-  display: inline-flex !important;
-  gap: 10px;
-}
-
-body.auth-ready.logged-in .auth-in {
-  display: inline-flex !important;
-  gap: 10px;
 }
 .profile-progress {
   margin-bottom: 18px;
@@ -1285,4 +1261,24 @@ body.auth-ready.logged-in .auth-in {
   .form-grid {
     grid-template-columns: 1fr;
   }
+}
+/* =========================================================
+   AUTH VISIBILITY – FINAL (SINGLE SOURCE OF TRUTH)
+========================================================= */
+
+.auth-in,
+.auth-out {
+  display: none;
+}
+
+body.auth-out .auth-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body.auth-in .auth-in {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
