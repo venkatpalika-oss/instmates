@@ -876,3 +876,24 @@ body:not(.auth-ready) .auth-in,
 body:not(.auth-ready) .auth-out {
   visibility: hidden;
 }
+/* =========================================================
+   AUTH VISIBILITY – FINAL OVERRIDE (AUTHORITATIVE)
+========================================================= */
+
+/* Base: keep hidden until auth resolved */
+.auth-in,
+.auth-out {
+  display: none;
+}
+
+/* Logged OUT */
+body.auth-out.auth-ready .auth-out {
+  display: inline-flex;
+  visibility: visible;
+}
+
+/* Logged IN */
+body.auth-in.auth-ready .auth-in {
+  display: inline-flex;
+  visibility: visible;
+}
