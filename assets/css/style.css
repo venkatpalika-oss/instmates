@@ -869,3 +869,10 @@ body.auth-in .auth-in {
 }
 
 }
+/* ================= AUTH READY GATE (NO FLICKER) ================= */
+
+/* Hide auth-sensitive UI until auth state is known */
+body:not(.auth-ready) .auth-in,
+body:not(.auth-ready) .auth-out {
+  visibility: hidden;
+}
