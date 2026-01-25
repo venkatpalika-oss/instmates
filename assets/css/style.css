@@ -851,22 +851,21 @@ a:hover{
    AUTH VISIBILITY – FINAL (SINGLE SOURCE OF TRUTH)
 ========================================================= */
 
-/* Hide both by default */
 .auth-in,
-.auth-out{
-  display:none;
+.auth-out {
+  display: none;
 }
 
-/* Logged OUT */
-body.auth-out .auth-out{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
+body.auth-out .auth-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Logged IN */
-body.auth-in .auth-in{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
+body.auth-in .auth-in {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 }
