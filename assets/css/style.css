@@ -1201,11 +1201,6 @@ body:not(.auth-ready) .auth-in,
 body:not(.auth-ready) .auth-out {
   visibility: hidden;
 }
-
-/* Default hidden */
-.auth-in,
-.auth-out {
-  display: none;
 }
 
 /* Logged OUT */
@@ -1217,6 +1212,35 @@ body.auth-out.auth-ready .auth-out {
 
 /* Logged IN */
 body.auth-in.auth-ready .auth-in {
+  display: inline-flex;
+  gap: 10px;
+  visibility: visible;
+}
+/* =========================================================
+   AUTH VISIBILITY – FINAL (SCOPED, NO PAGE HIDE)
+========================================================= */
+
+/* Hide header auth buttons until auth is known */
+body:not(.auth-ready) .site-header .auth-in,
+body:not(.auth-ready) .site-header .auth-out {
+  visibility: hidden;
+}
+
+/* Default hidden (HEADER ONLY) */
+.site-header .auth-in,
+.site-header .auth-out {
+  display: none;
+}
+
+/* Logged OUT */
+body.auth-out.auth-ready .site-header .auth-out {
+  display: inline-flex;
+  gap: 10px;
+  visibility: visible;
+}
+
+/* Logged IN */
+body.auth-in.auth-ready .site-header .auth-in {
   display: inline-flex;
   gap: 10px;
   visibility: visible;
