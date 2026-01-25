@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Header Auth UI (FINAL, SINGLE SOURCE)
+   InstMates – Header Auth UI (FINAL, RACE-SAFE)
 ========================================================= */
 
 import { auth } from "./firebase.js";
@@ -8,33 +8,48 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-onAuthStateChanged(auth, (user) => {
+/* Wait until header HTML is injected */
+function waitForHeader() {
+  return new Promise((resolve) => {
+    const check = () => {
+      if (document.querySelector(".site-header")) {
+        resolve();
+      } else {
+        requestAnimationFrame(check);
+      }
+    };
+    check();
+  });
+}
 
-  // Reset state
-  document.body.classList.remove("auth-in", "auth-out");
+(async () => {
+  await waitForHeader();
 
-  if (user) {
-    // LOGGED IN
-    document.body.classList.add("auth-in");
+  onAuthStateChanged(auth, (user) => {
 
-    const profileLink = document.getElementById("myProfileLink");
-    const logoutBtn   = document.getElementById("logoutBtn");
+    document.body.classList.remove("auth-in", "auth-out");
 
-    if (profileLink) {
-      profileLink.href = `/profile-view.html?uid=${user.uid}`;
+    if (user) {
+      document.body.classList.add("auth-in");
+
+      const profileLink = document.getElementById("myProfileLink");
+      const logoutBtn   = document.getElementById("logoutBtn");
+
+      if (profileLink) {
+        profileLink.href = `/profile-view.html?uid=${user.uid}`;
+      }
+
+      if (logoutBtn) {
+        logoutBtn.onclick = async (e) => {
+          e.preventDefault();
+          await signOut(auth);
+          window.location.href = "/index.html";
+        };
+      }
+
+    } else {
+      document.body.classList.add("auth-out");
     }
 
-    if (logoutBtn) {
-      logoutBtn.onclick = async (e) => {
-        e.preventDefault();
-        await signOut(auth);
-        window.location.href = "/index.html";
-      };
-    }
-
-  } else {
-    // LOGGED OUT
-    document.body.classList.add("auth-out");
-  }
-
-});
+  });
+})();
