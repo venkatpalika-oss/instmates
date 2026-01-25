@@ -7,12 +7,33 @@ import {
   where,
   orderBy,
   getDocs,
-  updateDoc,
-  doc
+  getDoc,
+  doc,
+  updateDoc
 } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const inbox = document.getElementById("inboxList");
+
+// Cache to avoid repeated reads
+const userCache = {};
+
+async function getUserName(uid) {
+  if (userCache[uid]) return userCache[uid];
+
+  try {
+    const snap = await getDoc(doc(db, "users", uid));
+    if (snap.exists()) {
+      const name = snap.data().name || "Unknown User";
+      userCache[uid] = name;
+      return name;
+    }
+  } catch (e) {
+    console.error("User fetch failed:", e);
+  }
+
+  return "Unknown User";
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -35,16 +56,18 @@ onAuthStateChanged(auth, async (user) => {
 
   inbox.innerHTML = "";
 
-  snap.forEach(async (d) => {
+  for (const d of snap.docs) {
     const m = d.data();
+    const senderName = await getUserName(m.fromUid);
 
-    const row = document.createElement("div");
-    row.className = "card";
-    row.style.marginBottom = "12px";
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "12px";
 
-    row.innerHTML = `
-      <p><strong>From:</strong> ${m.fromUid}</p>
+    card.innerHTML = `
+      <p><strong>From:</strong> ${senderName}</p>
       <p>${m.message}</p>
+
       <div class="action-row">
         <a class="btn btn-ghost"
            href="/message.html?to=${m.fromUid}">
@@ -53,10 +76,11 @@ onAuthStateChanged(auth, async (user) => {
       </div>
     `;
 
-    inbox.appendChild(row);
+    inbox.appendChild(card);
 
+    // Mark as read
     if (!m.read) {
       await updateDoc(doc(db, "messages", d.id), { read: true });
     }
-  });
+  }
 });
