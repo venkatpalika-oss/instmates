@@ -1,9 +1,6 @@
 // =========================================================
 // InstMates – ROOT DOMAIN INCLUDE HANDLER (FINAL)
 // File: /assets/js/includes.js
-// Purpose:
-//  - Load header.html and footer.html reliably
-//  - Then load header-auth.js AFTER header exists
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -21,15 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ======================================================
-  // ABSOLUTE ROOT INCLUDES (CRITICAL)
-  // ======================================================
+  // ROOT ABSOLUTE PATHS (CRITICAL)
   loadInto("siteHeader", "/includes/header.html");
   loadInto("siteFooter", "/includes/footer.html");
-
-  // ======================================================
-  // HEADER AUTH LOGIC (LOAD AFTER HEADER EXISTS)
-  // ======================================================
-  import("/assets/js/header-auth.js");
 
 });
