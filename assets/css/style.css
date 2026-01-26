@@ -1318,3 +1318,42 @@ body.auth-in.auth-ready .site-header .auth-in {
   }
 
 }
+/* ===== USER DROPDOWN (NO COLOR OVERRIDE) ===== */
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 120%;
+  min-width: 160px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 6px;
+  z-index: 999;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.user-dropdown hr {
+  margin: 6px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.user-menu.open .user-dropdown {
+  display: block;
+}
