@@ -1403,3 +1403,32 @@ body.auth-in.auth-ready .site-header .auth-in {
 .nav-dropdown:hover .dropdown-menu {
   display: block;
 }
+/* ================= HEADER ALIGNMENT FIX ================= */
+
+/* Force all top-level nav items to align perfectly */
+.site-header .main-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Normalize links + dropdown triggers */
+.site-header .main-nav > a,
+.site-header .main-nav .nav-dropdown > .nav-link {
+  display: flex;
+  align-items: center;
+  height: 44px;              /* matches header height */
+  line-height: 44px;
+}
+
+/* Dropdown wrappers must also align */
+.site-header .nav-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+/* Remove any accidental vertical offset */
+.site-header .nav-link {
+  padding: 0;
+  margin: 0;
+}
