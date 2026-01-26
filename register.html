@@ -65,19 +65,22 @@
 <div id="siteFooter"></div>
 
 <!-- ===================================================== -->
-<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
 <!-- ===================================================== -->
 
 <!-- 1️⃣ HEADER + FOOTER INCLUDES -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- 2️⃣ HEADER AUTH UI -->
+<!-- 2️⃣ GLOBAL AUTH GUARD (BLOCK LOGGED-IN USERS) -->
+<script type="module" src="/assets/js/auth-guard.js"></script>
+
+<!-- 3️⃣ HEADER AUTH UI -->
 <script type="module" src="/assets/js/header-auth.js"></script>
 
-<!-- 3️⃣ AUTH CORE -->
+<!-- 4️⃣ AUTH CORE -->
 <script type="module" src="/assets/js/auth.js"></script>
 
-<!-- 4️⃣ REGISTER HANDLER (PAGE SPECIFIC) -->
+<!-- 5️⃣ REGISTER HANDLER (PAGE SPECIFIC ONLY) -->
 <script type="module">
   window.handleRegister = async function (e) {
     e.preventDefault();
@@ -95,7 +98,15 @@
 
     try {
       await window.registerUser(email, password, fullName);
-      window.location.href = "/profile.html";
+
+      /*
+        IMPORTANT:
+        - Do NOT decide destination here
+        - auth-guard.js enforces profile-first onboarding
+        - New users will be redirected to profile-edit.html
+      */
+      window.location.replace("/profile-edit.html");
+
     } catch (err) {
       alert(err.message);
     }
