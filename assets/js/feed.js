@@ -94,4 +94,51 @@ if (form && textarea) {
       await addDoc(collection(db, "posts"), {
         uid: user.uid,
         authorName: profile.fullName,
-        authorRole:
+        authorRole: profile.role,
+        content: content,
+        createdAt: serverTimestamp()
+      });
+
+      textarea.value = "";
+      loadFeed(); // refresh feed immediately
+
+    } catch (err) {
+      console.error("Post creation failed:", err);
+      alert("Failed to post. Please try again.");
+    }
+  });
+}
+
+/* ================= RENDER ================= */
+
+function renderPost(p) {
+  const card = document.createElement("div");
+  card.className = "post-card";
+
+  card.innerHTML = `
+    <div class="post-header">
+      <div class="avatar small"></div>
+      <div>
+        <strong>${escape(p.authorName || "Unknown")}</strong><br>
+        <span class="muted">${escape(p.authorRole || "")}</span>
+      </div>
+    </div>
+
+    <p>${escape(p.content || "")}</p>
+
+    <div class="post-actions muted">
+      ❤️ 0 &nbsp; 💬 0
+    </div>
+  `;
+
+  return card;
+}
+
+/* ================= HELPERS ================= */
+
+function escape(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
