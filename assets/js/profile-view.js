@@ -1,85 +1,69 @@
-import { db } from "./firebase.js";
-import { doc, getDoc } from
-"https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+/* =========================================================
+   InstMates – Profile View Logic (READ-ONLY)
+   File: assets/js/profile-view.js
+========================================================= */
 
-/* ================= GET UID ================= */
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const params = new URLSearchParams(window.location.search);
-const uid = params.get("uid");
+const card = document.getElementById("profileCard");
 
-if (!uid) {
-  document.body.innerHTML = "<p>User not found</p>";
-  throw new Error("Missing UID");
-}
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return;
 
-/* ================= LOAD PROFILE ================= */
+  const uid = new URLSearchParams(window.location.search)
+    .get("uid");
 
-(async function () {
+  if (!uid) {
+    card.innerHTML = `<p class="muted">Profile not found.</p>`;
+    return;
+  }
+
   try {
-    const ref = doc(db, "users", uid);
-    const snap = await getDoc(ref);
+    const snap = await getDoc(
+      doc(db, "profiles", uid)
+    );
 
     if (!snap.exists()) {
-      document.body.innerHTML = "<p>User not found</p>";
+      card.innerHTML = `<p class="muted">Profile not found.</p>`;
       return;
     }
 
-    const d = snap.data();
+    const p = snap.data();
 
-    // Header
-    setText("pv-name", d.name || "Anonymous");
-    setText("pv-role", d.role || "");
-    setText("pv-location", d.location ? "📍 " + d.location : "");
+    card.innerHTML = `
+      <h2>${escape(p.fullName)}</h2>
 
-    setText("pv-exp",
-      d.experienceYears ? `${d.experienceYears}+ Years Experience` : ""
-    );
+      <p class="muted">${escape(p.role)}</p>
 
-    setText("pv-domain",
-      d.primaryDomain ? `Domain: ${d.primaryDomain}` : ""
-    );
+      <p style="margin-top:12px;">
+        ${escape(p.bio || "No bio provided.")}
+      </p>
 
-    setText("pv-industries",
-      d.industries?.length ? `Industries: ${d.industries.join(", ")}` : ""
-    );
-
-    setText("pv-summary",
-      d.summary || "No summary provided."
-    );
-
-    /* ================= TROUBLESHOOTING ================= */
-
-    const wrap = document.getElementById("pv-troubleshooting");
-    wrap.innerHTML = "";
-
-    if (!d.majorTroubleshooting || !d.majorTroubleshooting.length) {
-      wrap.innerHTML = "<p class='muted'>No major troubleshooting added yet.</p>";
-      return;
-    }
-
-    d.majorTroubleshooting.forEach(t => {
-      const div = document.createElement("div");
-      div.className = "trouble-public";
-
-      div.innerHTML = `
-        <h4>🔧 ${t.system || "System / Analyzer"}</h4>
-        <p><strong>Problem:</strong> ${t.problem || ""}</p>
-        <p><strong>Diagnosis & Action:</strong> ${t.action || ""}</p>
-        <p><strong>Outcome:</strong> ${t.outcome || ""}</p>
-        <p class="muted"><strong>Why it mattered:</strong> ${t.impact || ""}</p>
-      `;
-
-      wrap.appendChild(div);
-    });
+      <div style="margin-top:16px;">
+        <strong>Skills</strong><br>
+        ${(p.skills || [])
+          .map(s => `<span class="tag">${escape(s)}</span>`)
+          .join(" ")}
+      </div>
+    `;
 
   } catch (err) {
     console.error("Profile view error:", err);
+    card.innerHTML = `<p class="muted">Failed to load profile.</p>`;
   }
-})();
+});
 
 /* ================= HELPERS ================= */
 
-function setText(id, val){
-  const el = document.getElementById(id);
-  if (el) el.innerText = val;
+function escape(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
