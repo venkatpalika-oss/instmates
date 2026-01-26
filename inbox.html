@@ -4,18 +4,24 @@
   <meta charset="UTF-8">
   <title>Inbox | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="inbox">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
   <section class="panel">
     <h2>Inbox</h2>
-    <p class="muted">Messages sent to you by other technicians.</p>
+    <p class="muted">
+      Messages sent to you by other technicians.
+    </p>
   </section>
 
   <section id="inboxList" class="panel">
@@ -24,10 +30,24 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<script type="module" src="/assets/js/inbox.js"></script>
+<!-- ===================================================== -->
+<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
+<!-- ===================================================== -->
+
+<!-- 1️⃣ HEADER + FOOTER -->
 <script src="/assets/js/includes.js"></script>
+
+<!-- 2️⃣ GLOBAL AUTH GUARD (MANDATORY) -->
+<script type="module" src="/assets/js/auth-guard.js"></script>
+
+<!-- 3️⃣ HEADER AUTH UI -->
+<script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- 4️⃣ INBOX LOGIC (NO AUTH CHECKS HERE) -->
+<script type="module" src="/assets/js/inbox.js"></script>
 
 </body>
 </html>
