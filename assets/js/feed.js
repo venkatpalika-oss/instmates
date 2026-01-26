@@ -18,6 +18,7 @@ import {
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { createNotification } from "./notifications.js";
 
 /* ================= ELEMENTS ================= */
 
