@@ -1,0 +1,38 @@
+<nav class="crumbs" aria-label="Breadcrumb">
+  <!-- Breadcrumbs will be injected here -->
+</nav>
+
+<script>
+  (function () {
+    const meta = document.querySelector('meta[name="crumbs"]');
+    if (!meta) return;
+
+    const crumbs = meta.content.split(",").map(c => c.trim());
+    const nav = document.querySelector(".crumbs");
+    if (!nav) return;
+
+    nav.innerHTML = "";
+
+    crumbs.forEach((item, i) => {
+      const parts = item.split("|").map(p => p.trim());
+
+      if (parts.length === 2) {
+        const a = document.createElement("a");
+        a.href = parts[1];
+        a.textContent = parts[0];
+        nav.appendChild(a);
+      } else {
+        const span = document.createElement("span");
+        span.className = "current";
+        span.textContent = parts[0];
+        nav.appendChild(span);
+      }
+
+      if (i < crumbs.length - 1) {
+        const sep = document.createElement("span");
+        sep.textContent = "›";
+        nav.appendChild(sep);
+      }
+    });
+  })();
+</script>
