@@ -145,7 +145,10 @@ function renderPost(postId, p) {
     <div class="post-header">
       <div class="avatar small"></div>
       <div>
-        <strong>${escape(p.authorName || "Unknown")}</strong><br>
+      <a href="/profile-view.html?uid=${p.uid}"
+   class="profile-link">
+  <strong>${escape(p.authorName || "Unknown")}</strong>
+</a><br>
         <span class="muted">
           ${escape(p.authorRole || "")}
           · ${timeAgo(p.createdAt)}
