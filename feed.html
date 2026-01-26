@@ -9,17 +9,19 @@
   <meta name="description"
         content="Live technician discussions, troubleshooting cases, and field experience shared by instrument and analyzer professionals." />
 
+  <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="feed">
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- MAIN -->
+<!-- ================= MAIN ================= -->
 <main class="container auth-required">
 
+  <!-- PAGE INTRO -->
   <section class="panel">
     <h2>Technician Feed</h2>
     <p class="muted">
@@ -27,9 +29,10 @@
     </p>
   </section>
 
-  <!-- FEED -->
+  <!-- ================= FEED ================= -->
   <section class="feed">
 
+    <!-- POST 1 -->
     <div class="post-card">
       <div class="post-header">
         <div class="avatar small"></div>
@@ -47,6 +50,7 @@
       </div>
     </div>
 
+    <!-- POST 2 -->
     <div class="post-card">
       <div class="post-header">
         <div class="avatar small"></div>
@@ -68,11 +72,18 @@
 
 </main>
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- SCRIPTS -->
+<!-- ================= SCRIPTS ================= -->
+
+<!-- Header / Footer loader -->
 <script src="/assets/js/includes.js"></script>
+
+<!-- GLOBAL AUTH ENFORCEMENT (MANDATORY) -->
+<script type="module" src="/assets/js/auth-guard.js"></script>
+
+<!-- Feed-specific logic only (NO AUTH here) -->
 <script type="module" src="/assets/js/feed-guard.js"></script>
 
 </body>
