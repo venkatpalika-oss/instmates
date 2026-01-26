@@ -116,13 +116,14 @@ function renderPost(p) {
   card.className = "post-card";
 
   card.innerHTML = `
-    <div class="post-header">
-      <div class="avatar small"></div>
-      <div>
-        <strong>${escape(p.authorName || "Unknown")}</strong><br>
-        <span class="muted">${escape(p.authorRole || "")}</span>
-      </div>
-    </div>
+   <div class="post-header">
+  <div class="avatar small"></div>
+  <div>
+    <strong>${escape(p.authorName || "Unknown")}</strong><br>
+    <span class="muted">${escape(p.authorRole || "")}</span>
+  </div>
+</div>
+
 
     <p>${escape(p.content || "")}</p>
 
