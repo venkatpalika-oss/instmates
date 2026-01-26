@@ -41,43 +41,54 @@
     </a>
 
     <!-- NAVIGATION -->
-    <nav class="main-nav">
+ <nav class="main-nav">
 
-      <!-- ALWAYS VISIBLE -->
-      <a href="/index.html">Home</a>
+  <!-- ALWAYS VISIBLE -->
+  <a href="/index.html">Home</a>
 
-      <!-- LOGGED-IN PRIMARY NAV -->
-      <span class="auth-in">
-        <a href="/explore.html">Explore</a>
-        <a href="/profiles/">Technicians</a>
-        <a href="/community.html">Community</a>
-        <a href="/knowledge.html">Knowledge</a>
-        <a href="/videos/index.html">Videos</a>
+  <!-- ================= LOGGED-IN NAV ================= -->
+  <span class="auth-in">
+
+    <a href="/explore.html">Explore</a>
+    <a href="/profiles/">Technicians</a>
+    <a href="/community.html">Community</a>
+
+    <!-- ===== KNOWLEDGE DROPDOWN ===== -->
+    <div class="nav-dropdown">
+      <span class="nav-link">Knowledge ▾</span>
+      <div class="dropdown-menu">
+        <a href="/knowledge.html">Knowledge Home</a>
+        <a href="/knowledge/field/">Field Instrumentation</a>
+        <a href="/knowledge/analyzers/">Analyzers</a>
         <a href="/case-studies/">Case Studies</a>
-        <a href="/feed.html">Feed</a>
+      </div>
+    </div>
+
+    <a href="/videos/index.html">Videos</a>
+    <a href="/feed.html">Feed</a>
+
+    <!-- ===== ACCOUNT DROPDOWN ===== -->
+    <div class="nav-dropdown user-menu">
+      <span class="nav-link account-link" id="userMenuBtn">
+        Account ▾
       </span>
+      <div class="dropdown-menu">
+        <a href="#" id="myProfileLink">View Profile</a>
+        <a href="/profile.html">Edit Profile</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
 
-      <!-- LOGGED-OUT -->
-      <span class="auth-out">
-        <a href="/login.html" class="nav-cta">Login</a>
-        <a href="/register.html" class="nav-cta nav-cta-primary">Join</a>
-      </span>
+  </span>
 
-      <!-- LOGGED-IN DROPDOWN (NEW, CLEAN) -->
-      <span class="auth-in user-menu">
-        <button id="userMenuBtn" class="nav-cta">
-          Account ▾
-        </button>
+  <!-- ================= LOGGED-OUT ================= -->
+  <span class="auth-out">
+    <a href="/login.html" class="nav-cta">Login</a>
+    <a href="/register.html" class="nav-cta nav-cta-primary">Join</a>
+  </span>
 
-        <div class="user-dropdown" id="userDropdown">
-          <a href="/profile-edit.html">Edit Profile</a>
-          <a href="#" id="myProfileLink">View Profile</a>
-          <hr>
-          <a href="#" id="logoutBtn">Logout</a>
-        </div>
-      </span>
+</nav>
 
-    </nav>
 
   </div>
 </header>
