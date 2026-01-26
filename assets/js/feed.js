@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Feed Logic (PHASE 2 – FINAL)
+   InstMates – Feed Logic (PHASE 2 – UX POLISHED FINAL)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -20,13 +20,14 @@ import {
 
 /* ================= ELEMENTS ================= */
 
-const feedEl = document.querySelector(".feed");
-const form = document.getElementById("newPostForm");
+const feedEl   = document.getElementById("feedList");
+const form     = document.getElementById("postForm");
 const textarea = document.getElementById("postContent");
+const statusEl = document.getElementById("postStatus");
 
 /* ================= AUTH ================= */
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   if (!user) return;
   loadFeed();
 });
@@ -56,7 +57,6 @@ async function loadFeed() {
     }
 
     feedEl.innerHTML = "";
-
     snap.forEach(docSnap => {
       feedEl.appendChild(renderPost(docSnap.data()));
     });
@@ -75,11 +75,14 @@ if (form && textarea) {
 
     const user = auth.currentUser;
     const content = textarea.value.trim();
+    const btn = form.querySelector("button");
 
     if (!user || !content) return;
 
+    btn.disabled = true;
+    btn.textContent = "Posting…";
+
     try {
-      // Load author profile
       const profileSnap = await getDoc(
         doc(db, "profiles", user.uid)
       );
@@ -95,16 +98,25 @@ if (form && textarea) {
         uid: user.uid,
         authorName: profile.fullName,
         authorRole: profile.role,
-        content: content,
+        content,
         createdAt: serverTimestamp()
       });
 
       textarea.value = "";
-      loadFeed(); // refresh feed immediately
+      loadFeed();
+
+      if (statusEl) {
+        statusEl.textContent = "Posted successfully ✓";
+        statusEl.style.display = "block";
+        setTimeout(() => statusEl.style.display = "none", 2000);
+      }
 
     } catch (err) {
       console.error("Post creation failed:", err);
       alert("Failed to post. Please try again.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Post";
     }
   });
 }
@@ -116,14 +128,16 @@ function renderPost(p) {
   card.className = "post-card";
 
   card.innerHTML = `
-   <div class="post-header">
-  <div class="avatar small"></div>
-  <div>
-    <strong>${escape(p.authorName || "Unknown")}</strong><br>
-    <span class="muted">${escape(p.authorRole || "")}</span>
-  </div>
-</div>
-
+    <div class="post-header">
+      <div class="avatar small"></div>
+      <div>
+        <strong>${escape(p.authorName || "Unknown")}</strong><br>
+        <span class="muted">
+          ${escape(p.authorRole || "")}
+          · ${timeAgo(p.createdAt)}
+        </span>
+      </div>
+    </div>
 
     <p>${escape(p.content || "")}</p>
 
@@ -142,4 +156,17 @@ function escape(str) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+function timeAgo(ts) {
+  if (!ts || !ts.toDate) return "Just now";
+
+  const seconds =
+    Math.floor((Date.now() - ts.toDate().getTime()) / 1000);
+
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)} hr ago`;
+
+  return `${Math.floor(seconds / 86400)} days ago`;
 }
