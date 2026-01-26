@@ -1,53 +1,97 @@
+<!-- HEADER TEST MARKER v2 (FINAL) -->
+
 <header class="site-header">
   <div class="site-header-inner">
 
-    <!-- BRAND -->
-    <a href="/index.html" class="brand">
-      Inst<span class="brand-accent">Mates</span>
+    <!-- LOGO + HOME LINK -->
+    <a href="/index.html" class="logo" aria-label="InstMates Home">
+
+      <!-- INLINE SVG LOGO (FINAL – OPTICAL BALANCE FIXED) -->
+      <svg class="logo-svg"
+           width="260"
+           height="44"
+           viewBox="0 0 440 88"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-label="InstMates Logo"
+           role="img"
+           preserveAspectRatio="xMidYMid meet">
+
+        <!-- TEXT: INST -->
+        <text x="0" y="60"
+              font-size="44"
+              font-weight="700"
+              fill="#ffffff"
+              font-family="Segoe UI, Arial, sans-serif">
+          INST
+        </text>
+
+        <!-- M AS INSTRUMENT -->
+        <g transform="translate(110,0)">
+          <rect x="0" y="24" width="16" height="36" rx="8" fill="#7ed957"/>
+          <rect x="52" y="24" width="16" height="36" rx="8" fill="#7ed957"/>
+          <rect x="26" y="34" width="16" height="26" rx="8" fill="#7ed957"/>
+          <circle cx="34" cy="18" r="14" fill="#ffffff"/>
+          <circle cx="34" cy="18" r="11" fill="#0b3c5d"/>
+          <line x1="34" y1="18" x2="40" y2="12"
+                stroke="#ffffff"
+                stroke-width="2"
+                stroke-linecap="round"/>
+          <path d="M72 26 Q84 34 72 42"
+                fill="none"
+                stroke="#7ed957"
+                stroke-width="3"
+                stroke-linecap="round"/>
+          <path d="M80 22 Q96 34 80 46"
+                fill="none"
+                stroke="#7ed957"
+                stroke-width="3"
+                stroke-linecap="round"/>
+        </g>
+
+        <!-- TEXT: ATES -->
+        <text x="210" y="60"
+              font-size="44"
+              font-weight="700"
+              fill="#ffffff"
+              font-family="Segoe UI, Arial, sans-serif">
+          ATES
+        </text>
+      </svg>
     </a>
 
-    <!-- MAIN NAV -->
-    <nav class="site-nav">
-      <a href="/feed.html">Feed</a>
-      <a href="/explore.html">Explore</a>
-      <a href="/knowledge/">Knowledge</a>
-      <a href="/case-studies.html">Case Studies</a>
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+
+      <!-- ALWAYS VISIBLE -->
+      <a href="/index.html">Home</a>
+
+      <!-- ================= LOGGED-IN ONLY NAV ================= -->
+      <span class="auth-in">
+        <a href="/explore.html">Explore</a>
+        <a href="/profiles/">Technicians</a>
+        <a href="/community.html">Community</a>
+        <a href="/knowledge.html">Knowledge</a>
+        <a href="/videos/index.html">Videos</a>
+        <a href="/case-studies/">Case Studies</a>
+        <a href="/inbox.html">Inbox</a>
+        <a href="/feed.html" class="auth-in">Feed</a>
+        <a href="/about.html">About</a>
+      </span>
+
+      <!-- ================= LOGGED-OUT ONLY ================= -->
+      <span class="auth-out">
+        <a href="/login.html" class="nav-cta">Login</a>
+        <a href="/register.html" class="nav-cta nav-cta-primary">Join</a>
+      </span>
+
+      <!-- ================= LOGGED-IN ACTIONS ================= -->
+      <span class="auth-in">
+        <a href="/profile.html" class="nav-cta">Edit Profile</a>
+        <a href="#" id="myProfileLink" class="nav-cta">View Profile</a>
+        <a href="#" id="logoutBtn" class="nav-logout nav-cta">Logout</a>
+      </span>
+
     </nav>
-
-    <!-- ACTIONS -->
-    <div class="site-actions">
-
-      <!-- 🔔 Notifications (logged-in only) -->
-      <a href="/notifications.html"
-         class="icon-link auth-in"
-         title="Notifications">
-        🔔
-      </a>
-
-      <!-- 👤 Profile (logged-in only) -->
-      <a id="myProfileLink"
-         href="#"
-         class="auth-in">
-        My Profile
-      </a>
-
-      <!-- 🔓 Logout (logged-in only) -->
-      <a href="#"
-         id="logoutBtn"
-         class="auth-in">
-        Logout
-      </a>
-
-      <!-- 🔐 Login / Register (logged-out only) -->
-      <a href="/login.html" class="auth-out">
-        Login
-      </a>
-      <a href="/register.html"
-         class="btn btn-primary auth-out">
-        Join
-      </a>
-
-    </div>
 
   </div>
 </header>
