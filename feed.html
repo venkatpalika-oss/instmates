@@ -21,7 +21,7 @@
 <!-- ================= MAIN ================= -->
 <main class="container auth-required">
 
-  <!-- PAGE INTRO -->
+  <!-- ================= PAGE INTRO ================= -->
   <section class="panel">
     <h2>Technician Feed</h2>
     <p class="muted">
@@ -31,7 +31,12 @@
 
   <!-- ================= NEW POST ================= -->
   <section class="panel">
-    <form id="newPostForm" class="auth-form">
+
+    <!-- ✅ INLINE STATUS MESSAGE -->
+    <p id="postStatus" class="muted" style="display:none;"></p>
+
+    <!-- 🔒 ID MUST MATCH feed.js -->
+    <form id="postForm" class="auth-form">
       <textarea id="postContent"
                 rows="4"
                 placeholder="Share a field experience, troubleshooting case, or lesson learned…"
@@ -44,8 +49,9 @@
   </section>
 
   <!-- ================= FEED (DYNAMIC) ================= -->
-  <section class="feed">
-    <!-- feed.js will inject posts here -->
+  <!-- 🔒 ID MUST MATCH feed.js -->
+  <section id="feedList" class="feed">
+    <p class="muted">Loading feed…</p>
   </section>
 
 </main>
@@ -53,18 +59,15 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= SCRIPTS ================= -->
+<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
 
-<!-- Header / Footer loader -->
+<!-- Header / Footer -->
 <script src="/assets/js/includes.js"></script>
 
-<!-- GLOBAL AUTH ENFORCEMENT -->
+<!-- Global auth enforcement -->
 <script type="module" src="/assets/js/auth-guard.js"></script>
 
-<!-- FEED PAGE GUARD -->
-<script type="module" src="/assets/js/feed-guard.js"></script>
-
-<!-- DYNAMIC FEED LOGIC -->
+<!-- Feed logic (includes posting + UX polish) -->
 <script type="module" src="/assets/js/feed.js"></script>
 
 </body>
