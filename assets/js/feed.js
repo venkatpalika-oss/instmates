@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Feed Logic (PHASE 3 – LIKES)
+   InstMates – Feed Logic (PHASE 3 – LIKES + COMMENTS)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -62,8 +62,9 @@ async function loadFeed() {
 
     feedEl.innerHTML = "";
     snap.forEach(docSnap => {
-      const card = renderPost(docSnap.id, docSnap.data());
-      feedEl.appendChild(card);
+      feedEl.appendChild(
+        renderPost(docSnap.id, docSnap.data())
+      );
     });
 
   } catch (err) {
@@ -158,43 +159,129 @@ function renderPost(postId, p) {
       <button class="like-btn ${liked ? "liked" : ""}" data-id="${postId}">
         ❤️ ${likeCount}
       </button>
-      &nbsp; 💬 0
+      &nbsp;
+      <button class="comment-toggle" data-id="${postId}">
+        💬 Comment
+      </button>
+    </div>
+
+    <div class="comments" id="comments-${postId}" style="display:none;">
+      <div class="comment-list"></div>
+
+      <form class="comment-form">
+        <input type="text"
+               placeholder="Write a comment…"
+               required>
+        <button type="submit">Post</button>
+      </form>
     </div>
   `;
 
-  // Like click handler
-  const likeBtn = card.querySelector(".like-btn");
-  likeBtn.addEventListener("click", () => toggleLike(postId, p));
+  // Like handler
+  card.querySelector(".like-btn")
+    .addEventListener("click", () => toggleLike(postId, p));
+
+  // Comment toggle
+  card.querySelector(".comment-toggle")
+    .addEventListener("click", () => toggleComments(postId));
+
+  // Comment submit
+  card.querySelector(".comment-form")
+    .addEventListener("submit", (e) =>
+      submitComment(e, postId)
+    );
 
   return card;
 }
 
-/* ================= LIKE / UNLIKE ================= */
+/* ================= LIKES ================= */
 
 async function toggleLike(postId, postData) {
   if (!currentUser) return;
 
   const ref = doc(db, "posts", postId);
-
   const likedBy = { ...(postData.likedBy || {}) };
   let likes = postData.likes || 0;
 
   if (likedBy[currentUser.uid]) {
-    // Unlike
     delete likedBy[currentUser.uid];
     likes = Math.max(0, likes - 1);
   } else {
-    // Like
     likedBy[currentUser.uid] = true;
     likes += 1;
   }
 
-  try {
-    await updateDoc(ref, { likedBy, likes });
-    loadFeed(); // refresh to reflect change
-  } catch (err) {
-    console.error("Like toggle failed:", err);
+  await updateDoc(ref, { likedBy, likes });
+  loadFeed();
+}
+
+/* ================= COMMENTS ================= */
+
+async function toggleComments(postId) {
+  const box = document.getElementById(`comments-${postId}`);
+  if (!box) return;
+
+  box.style.display =
+    box.style.display === "none" ? "block" : "none";
+
+  if (box.style.display === "block") {
+    loadComments(postId);
   }
+}
+
+async function loadComments(postId) {
+  const list =
+    document.querySelector(`#comments-${postId} .comment-list`);
+  if (!list) return;
+
+  list.innerHTML = `<p class="muted">Loading comments…</p>`;
+
+  const q = query(
+    collection(db, "posts", postId, "comments"),
+    orderBy("createdAt", "asc")
+  );
+
+  const snap = await getDocs(q);
+  list.innerHTML = "";
+
+  snap.forEach(d => {
+    const c = d.data();
+    const div = document.createElement("div");
+    div.className = "comment";
+    div.innerHTML = `
+      <strong>${escape(c.authorName)}</strong>:
+      ${escape(c.content)}
+    `;
+    list.appendChild(div);
+  });
+}
+
+async function submitComment(e, postId) {
+  e.preventDefault();
+  if (!currentUser) return;
+
+  const input = e.target.querySelector("input");
+  const content = input.value.trim();
+  if (!content) return;
+
+  const profileSnap = await getDoc(
+    doc(db, "profiles", currentUser.uid)
+  );
+
+  const profile = profileSnap.data();
+
+  await addDoc(
+    collection(db, "posts", postId, "comments"),
+    {
+      uid: currentUser.uid,
+      authorName: profile.fullName,
+      content,
+      createdAt: serverTimestamp()
+    }
+  );
+
+  input.value = "";
+  loadComments(postId);
 }
 
 /* ================= HELPERS ================= */
