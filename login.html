@@ -59,19 +59,22 @@
 <div id="siteFooter"></div>
 
 <!-- ===================================================== -->
-<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
 <!-- ===================================================== -->
 
 <!-- 1️⃣ HEADER + FOOTER INCLUDES -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- 2️⃣ HEADER AUTH UI -->
+<!-- 2️⃣ GLOBAL AUTH GUARD (PREVENT LOGGED-IN ACCESS) -->
+<script type="module" src="/assets/js/auth-guard.js"></script>
+
+<!-- 3️⃣ HEADER AUTH UI -->
 <script type="module" src="/assets/js/header-auth.js"></script>
 
-<!-- 3️⃣ AUTH CORE -->
+<!-- 4️⃣ AUTH CORE -->
 <script type="module" src="/assets/js/auth.js"></script>
 
-<!-- 4️⃣ LOGIN HANDLER (PAGE SPECIFIC) -->
+<!-- 5️⃣ LOGIN HANDLER (PAGE SPECIFIC ONLY) -->
 <script type="module">
   window.handleLogin = async function (e) {
     e.preventDefault();
@@ -82,8 +85,13 @@
     try {
       await window.loginUser(email, password);
 
-      // 🔐 STEP 2 FIX: always go to dashboard
-      window.location.href = "/dashboard.html";
+      /*
+        IMPORTANT:
+        - auth-guard.js will now decide where the user goes
+        - If profile missing → profile-edit.html
+        - Else → feed.html
+      */
+      window.location.replace("/feed.html");
 
     } catch (err) {
       alert(err.message);
