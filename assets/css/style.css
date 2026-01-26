@@ -1432,3 +1432,18 @@ body.auth-in.auth-ready .site-header .auth-in {
   padding: 0;
   margin: 0;
 }
+/* ================= HEADER BASELINE NORMALIZATION ================= */
+
+/* Normalize all top-level nav items to same text baseline */
+.site-header .main-nav > a,
+.site-header .nav-dropdown > .nav-link {
+  position: relative;
+  top: 1px;               /* micro-adjust, prevents jump */
+  line-height: normal;
+  vertical-align: middle;
+}
+
+/* Ensure dropdown wrappers don’t affect flow */
+.site-header .nav-dropdown {
+  vertical-align: middle;
+}
