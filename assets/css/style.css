@@ -1245,3 +1245,76 @@ body.auth-in.auth-ready .site-header .auth-in {
   gap: 10px;
   visibility: visible;
 }
+/* =========================================================
+   MOBILE RESPONSIVENESS – GLOBAL FIX (SAFE)
+========================================================= */
+
+@media (max-width: 768px) {
+
+  /* CONTAINER */
+  .container {
+    padding: 14px 12px;
+  }
+
+  /* HEADER */
+  .site-header {
+    position: sticky;
+    top: 0;
+  }
+
+  .site-header-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* LOGO (INLINE SVG FIX) */
+  .logo,
+  .brand {
+    max-width: 100%;
+  }
+
+  .logo-svg {
+    width: 160px;
+    height: auto;
+  }
+
+  /* NAV */
+  .site-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .site-nav a {
+    font-size: 14px;
+  }
+
+  /* PANELS */
+  .panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  /* GRIDS → STACK */
+  .grid,
+  .grid-2,
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* CARDS */
+  .card {
+    padding: 14px;
+  }
+
+  /* FORMS */
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px; /* prevents mobile zoom */
+  }
+
+}
