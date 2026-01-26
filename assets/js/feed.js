@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Feed Logic (PHASE 3 – LIKES + COMMENTS)
+   InstMates – Feed Logic (PHASE 3 – LIKES + COMMENTS + NOTIFICATIONS)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -18,6 +18,7 @@ import {
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 import { createNotification } from "./notifications.js";
 
 /* ================= ELEMENTS ================= */
@@ -81,6 +82,7 @@ if (form && textarea) {
     e.preventDefault();
 
     if (!currentUser) return;
+
     const content = textarea.value.trim();
     const btn = form.querySelector("button");
     if (!content) return;
@@ -146,10 +148,9 @@ function renderPost(postId, p) {
     <div class="post-header">
       <div class="avatar small"></div>
       <div>
-      <a href="/profile-view.html?uid=${p.uid}"
-   class="profile-link">
-  <strong>${escape(p.authorName || "Unknown")}</strong>
-</a><br>
+        <a href="/profile-view.html?uid=${p.uid}" class="profile-link">
+          <strong>${escape(p.authorName || "Unknown")}</strong>
+        </a><br>
         <span class="muted">
           ${escape(p.authorRole || "")}
           · ${timeAgo(p.createdAt)}
@@ -160,11 +161,11 @@ function renderPost(postId, p) {
     <p>${escape(p.content || "")}</p>
 
     <div class="post-actions muted">
-      <button class="like-btn ${liked ? "liked" : ""}" data-id="${postId}">
+      <button class="like-btn ${liked ? "liked" : ""}">
         ❤️ ${likeCount}
       </button>
       &nbsp;
-      <button class="comment-toggle" data-id="${postId}">
+      <button class="comment-toggle">
         💬 Comment
       </button>
     </div>
@@ -173,32 +174,27 @@ function renderPost(postId, p) {
       <div class="comment-list"></div>
 
       <form class="comment-form">
-        <input type="text"
-               placeholder="Write a comment…"
-               required>
+        <input type="text" placeholder="Write a comment…" required>
         <button type="submit">Post</button>
       </form>
     </div>
   `;
 
-  // Like handler
   card.querySelector(".like-btn")
     .addEventListener("click", () => toggleLike(postId, p));
 
-  // Comment toggle
   card.querySelector(".comment-toggle")
     .addEventListener("click", () => toggleComments(postId));
 
-  // Comment submit
   card.querySelector(".comment-form")
     .addEventListener("submit", (e) =>
-      submitComment(e, postId)
+      submitComment(e, postId, p.uid)
     );
 
   return card;
 }
 
-/* ================= LIKES ================= */
+/* ================= LIKES (WITH NOTIFICATION) ================= */
 
 async function toggleLike(postId, postData) {
   if (!currentUser) return;
@@ -208,18 +204,29 @@ async function toggleLike(postId, postData) {
   let likes = postData.likes || 0;
 
   if (likedBy[currentUser.uid]) {
+    // UNLIKE
     delete likedBy[currentUser.uid];
     likes = Math.max(0, likes - 1);
   } else {
+    // LIKE
     likedBy[currentUser.uid] = true;
     likes += 1;
+
+    // 🔔 NOTIFY POST OWNER (NO SELF-NOTIFY)
+    await createNotification({
+      toUid: postData.uid,
+      fromUid: currentUser.uid,
+      type: "like",
+      postId,
+      message: "liked your post"
+    });
   }
 
   await updateDoc(ref, { likedBy, likes });
   loadFeed();
 }
 
-/* ================= COMMENTS ================= */
+/* ================= COMMENTS (WITH NOTIFICATION) ================= */
 
 async function toggleComments(postId) {
   const box = document.getElementById(`comments-${postId}`);
@@ -260,7 +267,7 @@ async function loadComments(postId) {
   });
 }
 
-async function submitComment(e, postId) {
+async function submitComment(e, postId, postOwnerUid) {
   e.preventDefault();
   if (!currentUser) return;
 
@@ -283,6 +290,15 @@ async function submitComment(e, postId) {
       createdAt: serverTimestamp()
     }
   );
+
+  // 🔔 NOTIFY POST OWNER
+  await createNotification({
+    toUid: postOwnerUid,
+    fromUid: currentUser.uid,
+    type: "comment",
+    postId,
+    message: "commented on your post"
+  });
 
   input.value = "";
   loadComments(postId);
