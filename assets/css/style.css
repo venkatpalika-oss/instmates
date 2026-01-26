@@ -1403,47 +1403,25 @@ body.auth-in.auth-ready .site-header .auth-in {
 .nav-dropdown:hover .dropdown-menu {
   display: block;
 }
-/* ================= HEADER ALIGNMENT FIX ================= */
+/* ================= HEADER NAV FINAL NORMALIZATION ================= */
 
-/* Force all top-level nav items to align perfectly */
-.site-header .main-nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* Normalize links + dropdown triggers */
+/* Normalize ALL top-level nav items */
 .site-header .main-nav > a,
 .site-header .main-nav .nav-dropdown > .nav-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  height: 44px;              /* matches header height */
-  line-height: 44px;
+  height: 100%;
+  padding: 0 2px;
+  line-height: 1;
 }
 
-/* Dropdown wrappers must also align */
+/* Dropdown containers must not affect baseline */
 .site-header .nav-dropdown {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 
-/* Remove any accidental vertical offset */
-.site-header .nav-link {
-  padding: 0;
-  margin: 0;
-}
-/* ================= HEADER BASELINE NORMALIZATION ================= */
-
-/* Normalize all top-level nav items to same text baseline */
-.site-header .main-nav > a,
-.site-header .nav-dropdown > .nav-link {
-  position: relative;
-  top: 1px;               /* micro-adjust, prevents jump */
-  line-height: normal;
-  vertical-align: middle;
-}
-
-/* Ensure dropdown wrappers don’t affect flow */
-.site-header .nav-dropdown {
-  vertical-align: middle;
+/* Account text stays white */
+.site-header .account-link {
+  color: #ffffff !important;
 }
