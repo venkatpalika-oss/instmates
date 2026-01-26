@@ -1,5 +1,5 @@
 // =========================================================
-// InstMates – ROOT DOMAIN INCLUDE HANDLER (FINAL)
+// InstMates – ROOT DOMAIN INCLUDE HANDLER (FINAL + BREADCRUMBS)
 // File: /assets/js/includes.js
 // =========================================================
 
@@ -18,8 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ROOT ABSOLUTE PATHS (CRITICAL)
+  // ================= HEADER & FOOTER (UNCHANGED) =================
   loadInto("siteHeader", "/includes/header.html");
   loadInto("siteFooter", "/includes/footer.html");
+
+  // ================= BREADCRUMBS (OPTIONAL, SAFE) =================
+  // Will load only if <div id="siteBreadcrumbs"></div> exists
+  loadInto("siteBreadcrumbs", "/includes/breadcrumbs.html");
 
 });
