@@ -12,23 +12,26 @@ import {
   orderBy,
   limit,
   getDocs,
-  serverTimestamp,
-  addDoc
+  addDoc,
+  doc,
+  getDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
 
 const feedEl = document.querySelector(".feed");
+const form = document.getElementById("newPostForm");
+const textarea = document.getElementById("postContent");
 
-/* ================= AUTH + LOAD FEED ================= */
+/* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
-  if (!user) return; // feed-guard handles redirect
-
+  if (!user) return;
   loadFeed();
 });
 
-/* ================= LOAD POSTS ================= */
+/* ================= LOAD FEED ================= */
 
 async function loadFeed() {
   if (!feedEl) return;
@@ -55,8 +58,7 @@ async function loadFeed() {
     feedEl.innerHTML = "";
 
     snap.forEach(docSnap => {
-      const p = docSnap.data();
-      feedEl.appendChild(renderPost(p));
+      feedEl.appendChild(renderPost(docSnap.data()));
     });
 
   } catch (err) {
@@ -65,36 +67,31 @@ async function loadFeed() {
   }
 }
 
-/* ================= RENDER POST ================= */
+/* ================= CREATE POST ================= */
 
-function renderPost(p) {
-  const card = document.createElement("div");
-  card.className = "post-card";
+if (form && textarea) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  card.innerHTML = `
-    <div class="post-header">
-      <div class="avatar small"></div>
-      <div>
-        <strong>${escape(p.authorName || "Unknown")}</strong><br>
-        <span class="muted">${escape(p.authorRole || "")}</span>
-      </div>
-    </div>
+    const user = auth.currentUser;
+    const content = textarea.value.trim();
 
-    <p>${escape(p.content || "")}</p>
+    if (!user || !content) return;
 
-    <div class="post-actions muted">
-      ❤️ 0 &nbsp; 💬 0
-    </div>
-  `;
+    try {
+      // Load author profile
+      const profileSnap = await getDoc(
+        doc(db, "profiles", user.uid)
+      );
 
-  return card;
-}
+      if (!profileSnap.exists()) {
+        alert("Complete your profile before posting.");
+        return;
+      }
 
-/* ================= HELPERS ================= */
+      const profile = profileSnap.data();
 
-function escape(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+      await addDoc(collection(db, "posts"), {
+        uid: user.uid,
+        authorName: profile.fullName,
+        authorRole:
