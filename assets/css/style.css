@@ -1357,3 +1357,49 @@ body.auth-in.auth-ready .site-header .auth-in {
 .user-menu.open .user-dropdown {
   display: block;
 }
+/* ================= NAV DROPDOWNS ================= */
+
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link {
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/* Account text explicitly white */
+.account-link {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #ffffff;
+  min-width: 200px;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 8px 0;
+  z-index: 999;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #0b3c5d;
+  white-space: nowrap;
+}
+
+.dropdown-menu a:hover {
+  background: #f5f7fa;
+}
+
+/* ✅ HOVER-ONLY BEHAVIOR */
+.nav-dropdown:hover .dropdown-menu {
+  display: block;
+}
