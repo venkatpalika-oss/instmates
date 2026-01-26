@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Edit Profile | InstMates</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Global CSS (ROOT SAFE) -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="profile-edit">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
   <section class="panel">
     <h2>Edit Your Profile</h2>
 
-    <!-- ================= PROFILE STATUS (NEW) ================= -->
+    <!-- ================= PROFILE STATUS ================= -->
     <div id="profileStatus"
          class="panel"
          style="margin-bottom:16px;display:none;">
@@ -30,31 +34,31 @@
              style="width:0%;"></div>
       </div>
     </div>
-    <!-- ========================================================= -->
+    <!-- =================================================== -->
 
-    <form class="auth-form">
+    <form class="auth-form" id="profileForm">
 
       <label>
         Full Name
-        <input type="text" value="Venkatesh Palika">
+        <input type="text" id="fullName" required>
       </label>
 
       <label>
         Primary Role
-        <input type="text" value="Instrument & Analyzer Technician">
+        <input type="text" id="role" required>
       </label>
 
       <label>
         Short Bio
-        <textarea rows="4">Experienced in GC, CEMS, and plant analyzers.</textarea>
+        <textarea id="bio" rows="4" required></textarea>
       </label>
 
       <label>
         Key Skills (comma separated)
-        <input type="text" value="GC,CEMS,Calibration,Troubleshooting">
+        <input type="text" id="skills" required>
       </label>
 
-      <button class="btn btn-primary full">
+      <button class="btn btn-primary full" type="submit">
         Save Profile
       </button>
 
@@ -63,9 +67,24 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<script src="assets/js/includes.js"></script>
+<!-- ===================================================== -->
+<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
+<!-- ===================================================== -->
+
+<!-- 1️⃣ HEADER + FOOTER -->
+<script src="/assets/js/includes.js"></script>
+
+<!-- 2️⃣ GLOBAL AUTH GUARD (MANDATORY) -->
+<script type="module" src="/assets/js/auth-guard.js"></script>
+
+<!-- 3️⃣ HEADER AUTH UI -->
+<script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- 4️⃣ PROFILE LOGIC -->
+<script type="module" src="/assets/js/profile.js"></script>
 
 </body>
 </html>
