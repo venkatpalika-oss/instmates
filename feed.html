@@ -29,45 +29,23 @@
     </p>
   </section>
 
-  <!-- ================= FEED ================= -->
+  <!-- ================= NEW POST ================= -->
+  <section class="panel">
+    <form id="newPostForm" class="auth-form">
+      <textarea id="postContent"
+                rows="4"
+                placeholder="Share a field experience, troubleshooting case, or lesson learned…"
+                required></textarea>
+
+      <button class="btn btn-primary full" type="submit">
+        Post
+      </button>
+    </form>
+  </section>
+
+  <!-- ================= FEED (DYNAMIC) ================= -->
   <section class="feed">
-
-    <!-- POST 1 -->
-    <div class="post-card">
-      <div class="post-header">
-        <div class="avatar small"></div>
-        <div>
-          <strong>Venkatesh</strong><br>
-          <span class="muted">Instrument Technician</span>
-        </div>
-      </div>
-      <p>
-        DP transmitter giving erratic reading after maintenance.
-        Found impulse line partially blocked with debris.
-      </p>
-      <div class="post-actions">
-        ❤️ 12 &nbsp; 💬 4
-      </div>
-    </div>
-
-    <!-- POST 2 -->
-    <div class="post-card">
-      <div class="post-header">
-        <div class="avatar small"></div>
-        <div>
-          <strong>Salman</strong><br>
-          <span class="muted">Analyzer Engineer</span>
-        </div>
-      </div>
-      <p>
-        GC repeatability issue traced to unstable carrier gas pressure
-        after regulator replacement.
-      </p>
-      <div class="post-actions">
-        ❤️ 21 &nbsp; 💬 9
-      </div>
-    </div>
-
+    <!-- feed.js will inject posts here -->
   </section>
 
 </main>
@@ -80,11 +58,14 @@
 <!-- Header / Footer loader -->
 <script src="/assets/js/includes.js"></script>
 
-<!-- GLOBAL AUTH ENFORCEMENT (MANDATORY) -->
+<!-- GLOBAL AUTH ENFORCEMENT -->
 <script type="module" src="/assets/js/auth-guard.js"></script>
 
-<!-- Feed-specific logic only (NO AUTH here) -->
+<!-- FEED PAGE GUARD -->
 <script type="module" src="/assets/js/feed-guard.js"></script>
+
+<!-- DYNAMIC FEED LOGIC -->
+<script type="module" src="/assets/js/feed.js"></script>
 
 </body>
 </html>
