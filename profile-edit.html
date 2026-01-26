@@ -21,7 +21,8 @@
   <section class="panel">
     <h2>Edit Your Profile</h2>
 
-    <!-- ================= PROFILE STATUS ================= -->
+    <!-- ================= PROFILE STATUS (RESERVED) ================= -->
+    <!-- Kept for future use; profile.js does not depend on this -->
     <div id="profileStatus"
          class="panel"
          style="margin-bottom:16px;display:none;">
@@ -34,28 +35,41 @@
              style="width:0%;"></div>
       </div>
     </div>
-    <!-- =================================================== -->
+    <!-- ============================================================= -->
 
-   <form id="profileForm" class="auth-form">
+    <!-- 🔒 CRITICAL: ID MUST MATCH profile.js -->
+    <form id="profileForm" class="auth-form">
 
       <label>
         Full Name
-        <input type="text" id="fullName" required>
+        <input type="text"
+               id="fullName"
+               placeholder="Your full name"
+               required>
       </label>
 
       <label>
         Primary Role
-        <input type="text" id="role" required>
+        <input type="text"
+               id="role"
+               placeholder="Instrument / Analyzer Technician"
+               required>
       </label>
 
       <label>
         Short Bio
-        <textarea id="bio" rows="4" required></textarea>
+        <textarea id="bio"
+                  rows="4"
+                  placeholder="Brief summary of your experience"
+                  required></textarea>
       </label>
 
       <label>
         Key Skills (comma separated)
-        <input type="text" id="skills" required>
+        <input type="text"
+               id="skills"
+               placeholder="GC, CEMS, Calibration, Troubleshooting"
+               required>
       </label>
 
       <button class="btn btn-primary full" type="submit">
@@ -83,7 +97,7 @@
 <!-- 3️⃣ HEADER AUTH UI -->
 <script type="module" src="/assets/js/header-auth.js"></script>
 
-<!-- 4️⃣ PROFILE LOGIC -->
+<!-- 4️⃣ PROFILE LOGIC (PHASE 2 CORE) -->
 <script type="module" src="/assets/js/profile.js"></script>
 
 </body>
