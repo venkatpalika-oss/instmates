@@ -1,5 +1,6 @@
 /* =========================================================
-   InstMates – Header Auth UI (FINAL, RACE-SAFE, NO FLICKER)
+   InstMates – Header Auth UI (FINAL, HARDENED, NO FLICKER)
+   File: assets/js/header-auth.js
 ========================================================= */
 
 import { auth } from "./firebase.js";
@@ -25,13 +26,17 @@ function waitForHeader() {
 (async () => {
   await waitForHeader();
 
-  onAuthStateChanged(auth, (user) => {
+  // Hide header actions until auth resolves (extra safety)
+  document.body.classList.remove("auth-ready");
+  document.body.classList.remove("auth-in", "auth-out");
+
+  onAuthStateChanged(auth, async (user) => {
 
     // Reset auth state
     document.body.classList.remove("auth-in", "auth-out");
 
     if (user) {
-      // LOGGED IN
+      /* ================= LOGGED IN ================= */
       document.body.classList.add("auth-in");
 
       const profileLink = document.getElementById("myProfileLink");
@@ -39,18 +44,26 @@ function waitForHeader() {
 
       if (profileLink) {
         profileLink.href = `/profile-view.html?uid=${user.uid}`;
+      } else {
+        console.warn("HeaderAuth: #myProfileLink not found");
       }
 
       if (logoutBtn) {
         logoutBtn.onclick = async (e) => {
           e.preventDefault();
-          await signOut(auth);
-          window.location.href = "/index.html";
+          try {
+            await signOut(auth);
+            window.location.replace("/index.html");
+          } catch (err) {
+            console.error("Logout failed:", err);
+          }
         };
+      } else {
+        console.warn("HeaderAuth: #logoutBtn not found");
       }
 
     } else {
-      // LOGGED OUT
+      /* ================= LOGGED OUT ================= */
       document.body.classList.add("auth-out");
     }
 
