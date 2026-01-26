@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Feed Logic (PHASE 2 – UX POLISHED FINAL)
+   InstMates – Feed Logic (PHASE 3 – LIKES)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -15,6 +15,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -27,7 +28,10 @@ const statusEl = document.getElementById("postStatus");
 
 /* ================= AUTH ================= */
 
+let currentUser = null;
+
 onAuthStateChanged(auth, (user) => {
+  currentUser = user;
   if (!user) return;
   loadFeed();
 });
@@ -58,7 +62,8 @@ async function loadFeed() {
 
     feedEl.innerHTML = "";
     snap.forEach(docSnap => {
-      feedEl.appendChild(renderPost(docSnap.data()));
+      const card = renderPost(docSnap.id, docSnap.data());
+      feedEl.appendChild(card);
     });
 
   } catch (err) {
@@ -73,18 +78,17 @@ if (form && textarea) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const user = auth.currentUser;
+    if (!currentUser) return;
     const content = textarea.value.trim();
     const btn = form.querySelector("button");
-
-    if (!user || !content) return;
+    if (!content) return;
 
     btn.disabled = true;
     btn.textContent = "Posting…";
 
     try {
       const profileSnap = await getDoc(
-        doc(db, "profiles", user.uid)
+        doc(db, "profiles", currentUser.uid)
       );
 
       if (!profileSnap.exists()) {
@@ -95,10 +99,12 @@ if (form && textarea) {
       const profile = profileSnap.data();
 
       await addDoc(collection(db, "posts"), {
-        uid: user.uid,
+        uid: currentUser.uid,
         authorName: profile.fullName,
         authorRole: profile.role,
         content,
+        likes: 0,
+        likedBy: {},
         createdAt: serverTimestamp()
       });
 
@@ -121,11 +127,18 @@ if (form && textarea) {
   });
 }
 
-/* ================= RENDER ================= */
+/* ================= RENDER POST ================= */
 
-function renderPost(p) {
+function renderPost(postId, p) {
   const card = document.createElement("div");
   card.className = "post-card";
+
+  const liked =
+    currentUser &&
+    p.likedBy &&
+    p.likedBy[currentUser.uid] === true;
+
+  const likeCount = p.likes || 0;
 
   card.innerHTML = `
     <div class="post-header">
@@ -142,11 +155,46 @@ function renderPost(p) {
     <p>${escape(p.content || "")}</p>
 
     <div class="post-actions muted">
-      ❤️ 0 &nbsp; 💬 0
+      <button class="like-btn ${liked ? "liked" : ""}" data-id="${postId}">
+        ❤️ ${likeCount}
+      </button>
+      &nbsp; 💬 0
     </div>
   `;
 
+  // Like click handler
+  const likeBtn = card.querySelector(".like-btn");
+  likeBtn.addEventListener("click", () => toggleLike(postId, p));
+
   return card;
+}
+
+/* ================= LIKE / UNLIKE ================= */
+
+async function toggleLike(postId, postData) {
+  if (!currentUser) return;
+
+  const ref = doc(db, "posts", postId);
+
+  const likedBy = { ...(postData.likedBy || {}) };
+  let likes = postData.likes || 0;
+
+  if (likedBy[currentUser.uid]) {
+    // Unlike
+    delete likedBy[currentUser.uid];
+    likes = Math.max(0, likes - 1);
+  } else {
+    // Like
+    likedBy[currentUser.uid] = true;
+    likes += 1;
+  }
+
+  try {
+    await updateDoc(ref, { likedBy, likes });
+    loadFeed(); // refresh to reflect change
+  } catch (err) {
+    console.error("Like toggle failed:", err);
+  }
 }
 
 /* ================= HELPERS ================= */
