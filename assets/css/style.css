@@ -1425,3 +1425,120 @@ body.auth-in.auth-ready .site-header .auth-in {
 .site-header .account-link {
   color: #ffffff !important;
 }
+/* ================= MOBILE HEADER POLISH ================= */
+@media (max-width: 768px) {
+
+  .site-header-inner {
+    flex-wrap: wrap;
+    padding: 10px 14px;
+  }
+
+  .logo {
+    flex: 1 1 100%;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .main-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .main-nav a {
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  /* Hide heavy links on mobile */
+  .main-nav a[href*="videos"],
+  .main-nav a[href*="case-studies"] {
+    display: none;
+  }
+
+  /* Account dropdown only on hover/tap */
+  .account-menu .dropdown {
+    display: none;
+  }
+
+  .account-menu:hover .dropdown {
+    display: block;
+  }
+}
+/* ================= MOBILE FEED ================= */
+@media (max-width: 768px) {
+
+  .post-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .post-header {
+    gap: 10px;
+  }
+
+  .post-header strong {
+    font-size: 15px;
+  }
+
+  .post-card p {
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+}
+/* ================= ACTION BUTTONS ================= */
+@media (max-width: 768px) {
+
+  .post-actions button,
+  .comment-actions button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 14px;
+  }
+}
+/* ================= COMMENTS ================= */
+@media (max-width: 768px) {
+
+  .comment {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .comment p {
+    margin: 6px 0;
+    font-size: 14px;
+  }
+
+  .comment-actions {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+  }
+}
+/* ================= REPLIES ================= */
+@media (max-width: 768px) {
+
+  .reply {
+    margin-left: 14px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(0,0,0,0.08);
+    font-size: 13.5px;
+  }
+}
+/* ================= INPUT FIX ================= */
+@media (max-width: 768px) {
+
+  textarea,
+  input {
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  textarea {
+    min-height: 90px;
+  }
+}
