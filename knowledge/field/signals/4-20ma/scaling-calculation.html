@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4–20 mA Scaling & Calculation | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="4–20 mA scaling and calculation explained for instrument technicians. Convert mA to engineering units with formulas and examples." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="field-420ma-scaling">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/index.html">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/signals/index.html">Signals</a><span>›</span>
+  <a href="/knowledge/field/signals/4-20ma/index.html">4–20 mA</a><span>›</span>
+  <span class="current">Scaling & Calculation</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>4–20 mA Scaling & Calculation</h2>
+
+  <p class="muted">
+    Scaling converts the 4–20 mA signal into meaningful engineering units
+    such as bar, °C, %, or ppm. Every PLC, DCS, and analyzer system relies
+    on this calculation.
+  </p>
+</section>
+
+<!-- ================= BASIC CONCEPT ================= -->
+<section class="panel">
+  <h3>Basic Concept</h3>
+
+  <ul>
+    <li>4 mA = Lower Range Value (LRV)</li>
+    <li>20 mA = Upper Range Value (URV)</li>
+    <li>Span = URV − LRV</li>
+  </ul>
+</section>
+
+<!-- ================= FORMULA ================= -->
+<section class="panel">
+  <h3>Scaling Formula</h3>
+
+  <pre>
+Process Value =
+(Current − 4) ÷ 16 × Span + LRV
+  </pre>
+
+  <p class="muted">
+    This formula is universal and works for pressure, temperature,
+    flow, level, and analyzer signals.
+  </p>
+</section>
+
+<!-- ================= EXAMPLE ================= -->
+<section class="panel">
+  <h3>Worked Example</h3>
+
+  <p>
+    Pressure transmitter range: <strong>0–100 bar</strong>
+  </p>
+
+  <ul>
+    <li>LRV = 0 bar</li>
+    <li>URV = 100 bar</li>
+    <li>Span = 100 bar</li>
+  </ul>
+
+  <p>
+    If measured current = <strong>12 mA</strong>:
+  </p>
+
+  <pre>
+(12 − 4) ÷ 16 × 100 = 50 bar
+  </pre>
+</section>
+
+<!-- ================= COMMON ERRORS ================= -->
+<section class="panel">
+  <h3>Common Field Errors</h3>
+
+  <ul>
+    <li>Wrong LRV / URV entered in PLC</li>
+    <li>Engineering units mismatch</li>
+    <li>4–20 mA reversed (20–4)</li>
+    <li>Scaling done twice (transmitter + PLC)</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD RULE ================= -->
+<section class="panel">
+  <h3>Field Rule</h3>
+
+  <p class="muted">
+    Always confirm transmitter range before adjusting PLC or DCS scaling.
+    Most “wrong readings” are configuration issues, not hardware faults.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+</body>
+</html>
