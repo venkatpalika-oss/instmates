@@ -57,4 +57,113 @@
   <h4>How It Is Done</h4>
   <ul>
     <li>Inject 4–20 mA using a loop calibrator</li>
-    <li>Observe value
+    <li>Observe value at PLC/DCS</li>
+    <li>No process input required</li>
+  </ul>
+
+  <p class="muted">
+    A loop check does <strong>not</strong> verify sensor accuracy.
+  </p>
+</section>
+
+<!-- ================= BENCH CALIBRATION ================= -->
+<section class="panel">
+  <h3>What is Bench Calibration?</h3>
+
+  <p>
+    Bench calibration verifies the <strong>instrument accuracy</strong>
+    by applying a known physical input and measuring the output.
+  </p>
+
+  <h4>Purpose</h4>
+  <ul>
+    <li>Check sensor accuracy</li>
+    <li>Adjust zero and span</li>
+    <li>Generate calibration records</li>
+    <li>Meet QA / audit requirements</li>
+  </ul>
+
+  <h4>How It Is Done</h4>
+  <ul>
+    <li>Instrument isolated or removed from process</li>
+    <li>Known input applied (pressure, temperature, etc.)</li>
+    <li>Output measured directly</li>
+  </ul>
+
+  <p class="muted">
+    Bench calibration does <strong>not</strong> verify control room wiring or scaling.
+  </p>
+</section>
+
+<!-- ================= COMPARISON ================= -->
+<section class="panel">
+  <h3>Side-by-Side Comparison</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Aspect</th>
+        <th>Loop Check</th>
+        <th>Bench Calibration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Checks wiring</td>
+        <td>✔ Yes</td>
+        <td>✖ No</td>
+      </tr>
+      <tr>
+        <td>Checks sensor accuracy</td>
+        <td>✖ No</td>
+        <td>✔ Yes</td>
+      </tr>
+      <tr>
+        <td>Requires process input</td>
+        <td>✖ No</td>
+        <td>✔ Yes</td>
+      </tr>
+      <tr>
+        <td>Checks PLC/DCS scaling</td>
+        <td>✔ Yes</td>
+        <td>✖ No</td>
+      </tr>
+      <tr>
+        <td>Typical timing</td>
+        <td>Commissioning / troubleshooting</td>
+        <td>Maintenance / QA</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= COMMON MISTAKES ================= -->
+<section class="panel">
+  <h3>Common Field Mistakes</h3>
+  <ul>
+    <li>Assuming loop check confirms transmitter accuracy</li>
+    <li>Calibrating a transmitter with wrong loop wiring</li>
+    <li>Skipping loop check after instrument replacement</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD RULE ================= -->
+<section class="panel">
+  <h3>Field Rule</h3>
+
+  <p class="muted">
+    Always perform a loop check after wiring changes, and a bench calibration
+    when accuracy is in question. One does not replace the other.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
