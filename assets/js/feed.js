@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 4 – COMMENTS + REPLIES (FINAL)
+   PHASE 5 – COMMENT LIKES (FINAL)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -136,6 +136,8 @@ async function submitComment(e, postId, list) {
       uid: currentUser.uid,
       authorName: profile.fullName,
       content,
+      likes: 0,
+      likedBy: {},
       createdAt: serverTimestamp()
     }
   );
@@ -144,17 +146,27 @@ async function submitComment(e, postId, list) {
   loadComments(postId, list);
 }
 
-/* ================= RENDER COMMENT + REPLIES ================= */
+/* ================= RENDER COMMENT ================= */
 
 function renderComment(postId, commentId, c) {
   const div = document.createElement("div");
   div.className = "comment";
 
+  const liked =
+    currentUser &&
+    c.likedBy &&
+    c.likedBy[currentUser.uid] === true;
+
   div.innerHTML = `
     <strong>${escape(c.authorName)}</strong>
     <p>${escape(c.content)}</p>
 
-    <button class="reply-toggle muted">Reply</button>
+    <div class="comment-actions muted">
+      <button class="comment-like ${liked ? "liked" : ""}">
+        ❤️ ${c.likes || 0}
+      </button>
+      <button class="reply-toggle">Reply</button>
+    </div>
 
     <div class="replies"></div>
 
@@ -163,6 +175,9 @@ function renderComment(postId, commentId, c) {
       <button>Reply</button>
     </form>
   `;
+
+  div.querySelector(".comment-like").onclick =
+    () => toggleCommentLike(postId, commentId, c);
 
   const replyForm = div.querySelector(".reply-form");
   const repliesBox = div.querySelector(".replies");
@@ -178,6 +193,27 @@ function renderComment(postId, commentId, c) {
     (e) => submitReply(e, postId, commentId, repliesBox);
 
   return div;
+}
+
+/* ================= COMMENT LIKES ================= */
+
+async function toggleCommentLike(postId, commentId, c) {
+  if (!currentUser) return;
+
+  const ref = doc(db, "posts", postId, "comments", commentId);
+  const likedBy = { ...(c.likedBy || {}) };
+  let likes = c.likes || 0;
+
+  if (likedBy[currentUser.uid]) {
+    delete likedBy[currentUser.uid];
+    likes = Math.max(0, likes - 1);
+  } else {
+    likedBy[currentUser.uid] = true;
+    likes += 1;
+  }
+
+  await updateDoc(ref, { likedBy, likes });
+  loadFeed();
 }
 
 /* ================= REPLIES ================= */
