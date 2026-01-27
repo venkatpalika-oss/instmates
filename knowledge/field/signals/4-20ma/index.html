@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4–20 mA Signal | InstMates Field Instrumentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="4–20 mA current loop fundamentals for field instrumentation technicians. Learn live zero, loop wiring, scaling, diagnostics, calibration, and troubleshooting." />
+
+  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+
+  <style>
+    .fi-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      margin-top:16px;
+    }
+    .fi-card{
+      background:#ffffff;
+      border:1px solid rgba(0,0,0,0.12);
+      border-radius:16px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .fi-card h3{ margin:0 0 6px; }
+    .fi-card p{ margin:0 0 12px; opacity:.85; }
+    .fi-tag{
+      display:inline-block;
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:#eef6fb;
+      color:#0b3c5d;
+      font-weight:700;
+      margin-bottom:8px;
+      width:fit-content;
+    }
+    .fi-btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      background:#0b3c5d;
+      color:#ffffff;
+      font-weight:700;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body data-page="field-420ma">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <span class="current">4–20 mA Signal</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>4–20 mA Signal – Field Instrumentation</h2>
+
+  <p class="muted">
+    The 4–20 mA current loop is the backbone of industrial instrumentation.
+    It is used to transmit pressure, temperature, flow, level, and analyzer
+    measurements reliably across long distances and harsh plant environments.
+  </p>
+</section>
+
+<!-- ================= LEARNING PATH ================= -->
+<section class="panel">
+  <h3>4–20 mA Learning Path</h3>
+
+  <div class="fi-grid">
+
+    <div class="fi-card">
+      <span class="fi-tag">Beginner</span>
+      <h3>4–20 mA Basics</h3>
+      <p>What is a current loop, why current is used, and basic signal concepts.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/420ma-basics.html">Open</a>
+    </div>
+
+    <div class="fi-card">
+      <span class="fi-tag">Beginner</span>
+      <h3>Live Zero (Why 4 mA)</h3>
+      <p>Difference between 0–20 mA and 4–20 mA, fault detection, and safety.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/live-zero.html">Open</a>
+    </div>
+
+    <div class="fi-card">
+      <span class="fi-tag">Intermediate</span>
+      <h3>Loop Wiring & Powering</h3>
+      <p>2-wire, 3-wire, 4-wire transmitters, loop power, and grounding.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/loop-wiring.html">Open</a>
+    </div>
+
+    <div class="fi-card">
+      <span class="fi-tag">Intermediate</span>
+      <h3>Scaling & Calculations</h3>
+      <p>Converting mA to engineering units, span, LRV, URV, and examples.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/scaling-calculation.html">Open</a>
+    </div>
+
+    <div class="fi-card">
+      <span class="fi-tag">All Levels</span>
+      <h3>Diagnostics & Alarms</h3>
+      <p>NAMUR NE43, under-range, over-range, and fault current behavior.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/diagnostics.html">Open</a>
+    </div>
+
+    <div class="fi-card">
+      <span class="fi-tag">All Levels</span>
+      <h3>4–20 mA Troubleshooting</h3>
+      <p>0 mA, stuck at 4 mA, unstable signal, loop resistance issues.</p>
+      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/troubleshooting.html">Open</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FIELD NOTE ================= -->
+<section class="panel">
+  <h3>Field Rule</h3>
+
+  <p class="muted">
+    If a 4–20 mA loop is wrong, always verify the loop current with a multimeter
+    before blaming the transmitter, PLC, or DCS configuration.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
