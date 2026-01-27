@@ -40,6 +40,35 @@
 <!-- ================= LOOP CHECK ================= -->
 <section class="panel">
   <h3>What is a Loop Check?</h3>
+<svg width="100%" viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg" aria-label="4-20 mA loop check signal injection">
+
+  <!-- Loop Calibrator -->
+  <rect x="40" y="90" width="200" height="70" rx="12" fill="#eef6fb" stroke="#0b3c5d"/>
+  <text x="140" y="120" text-anchor="middle" font-weight="700">Loop Calibrator</text>
+  <text x="140" y="140" font-size="12" text-anchor="middle">(Injects 4–20 mA)</text>
+
+  <!-- PLC -->
+  <rect x="340" y="90" width="200" height="70" rx="12" fill="#eef6fb" stroke="#0b3c5d"/>
+  <text x="440" y="120" text-anchor="middle" font-weight="700">PLC / DCS AI</text>
+
+  <!-- Control Room -->
+  <rect x="640" y="90" width="140" height="70" rx="12" fill="#f5f7fa" stroke="#555"/>
+  <text x="710" y="125" text-anchor="middle" font-weight="700">HMI</text>
+
+  <!-- Wiring -->
+  <line x1="240" y1="125" x2="340" y2="125" stroke="#000" stroke-width="2"/>
+  <line x1="540" y1="125" x2="640" y2="125" stroke="#000" stroke-width="2"/>
+
+  <!-- Notes -->
+  <text x="440" y="185" text-anchor="middle" font-size="13">
+    Checks wiring, scaling, alarms, and display
+  </text>
+
+  <text x="440" y="210" text-anchor="middle" font-size="12" fill="#c0392b">
+    No sensor involved → accuracy NOT verified
+  </text>
+
+</svg>
 
   <p>
     A loop check verifies the <strong>entire signal path</strong> from the
