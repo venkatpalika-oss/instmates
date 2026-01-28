@@ -44,7 +44,8 @@ onAuthStateChanged(auth, async (user) => {
 
     // 🚫 Prevent going back to login/register
     if (PUBLIC_PAGES.includes(page)) {
-      window.location.replace("/feed.html");
+      // ✅ FIXED PATH (was /feed.html)
+      window.location.replace("/feed/");
       return;
     }
 
