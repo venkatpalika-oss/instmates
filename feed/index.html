@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Feed | InstMates</title>
+
+  <meta name="description"
+        content="InstMates Feed – real field experiences, troubleshooting stories, and knowledge shared by instrument and analyzer technicians." />
+
+  <!-- Global CSS (LOCKED – DO NOT CHANGE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+</head>
+
+<body data-page="feed">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <span class="current">Feed</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <!-- FEED INTRO -->
+  <section class="panel">
+    <h2>Community Feed</h2>
+    <p class="muted">
+      Field experiences, troubleshooting stories, calibration tips, and real-world lessons shared by technicians.
+    </p>
+
+    <!-- NEW POST CTA (VISIBLE ONLY IF LOGGED IN – handled by JS later) -->
+    <a href="/feed/new.html" class="btn btn-primary">
+      + Create Post
+    </a>
+  </section>
+
+  <!-- ================= FEED LIST ================= -->
+  <section id="feedList" class="grid grid-1">
+
+    <!-- POSTS WILL BE INJECTED HERE BY feed.js -->
+
+    <!-- SAMPLE SKELETON (JS will replace) -->
+    <div class="card muted">
+      Loading posts…
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script type="module" src="/assets/js/feed.js"></script>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>
