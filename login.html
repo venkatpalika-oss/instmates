@@ -65,7 +65,7 @@
 <!-- 1️⃣ HEADER + FOOTER INCLUDES -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
-<!-- 2️⃣ GLOBAL AUTH GUARD (PREVENT LOGGED-IN ACCESS) -->
+<!-- 2️⃣ GLOBAL AUTH GUARD (REDIRECTS AFTER LOGIN) -->
 <script type="module" src="/assets/js/auth-guard.js"></script>
 
 <!-- 3️⃣ HEADER AUTH UI -->
@@ -87,11 +87,10 @@
 
       /*
         IMPORTANT:
-        - auth-guard.js will now decide where the user goes
-        - If profile missing → profile-edit.html
-        - Else → feed.html
+        - Do NOT redirect here
+        - auth-guard.js will handle navigation based on profile state
+        - Prevents Enter-key 404 issues
       */
-      window.location.replace("/feed.html");
 
     } catch (err) {
       alert(err.message);
