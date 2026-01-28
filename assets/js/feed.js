@@ -298,3 +298,29 @@ function timeAgo(ts) {
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
 }
+/* ================= POST PERMISSION GUARD ================= */
+
+import { onAuthStateChanged } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+const postInput = document.getElementById("postInput");
+const postBtn = document.getElementById("postBtn");
+
+onAuthStateChanged(auth, (user) => {
+  if (!postInput || !postBtn) return;
+
+  if (user) {
+    // Logged in → enable posting
+    postInput.disabled = false;
+    postBtn.disabled = false;
+    postInput.placeholder =
+      "Share a field experience, troubleshooting case, or lesson learned…";
+    postBtn.textContent = "Post";
+  } else {
+    // Logged out → lock posting
+    postInput.disabled = true;
+    postBtn.disabled = true;
+    postInput.placeholder = "Login to post in the community feed";
+    postBtn.textContent = "Login to Post";
+  }
+});
