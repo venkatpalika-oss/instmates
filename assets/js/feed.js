@@ -297,6 +297,26 @@ function timeAgo(ts) {
   if (s < 3600) return `${Math.floor(s / 60)} min ago`;
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
+
+   function showPostSuccess(message = "Post published successfully ✓") {
+  let msg = document.getElementById("postSuccessMsg");
+
+  if (!msg) {
+    msg = document.createElement("div");
+    msg.id = "postSuccessMsg";
+    msg.className = "muted";
+    msg.style.marginTop = "8px";
+    msg.style.color = "#2e7d32";
+    document.getElementById("postBtn")?.after(msg);
+  }
+
+  msg.textContent = message;
+  msg.style.display = "block";
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2500);
+
 }
 /* ================= POST PERMISSION GUARD ================= */
 
