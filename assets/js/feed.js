@@ -1,12 +1,13 @@
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 5 – COMMENT LIKES (FINAL)
+   PHASE 5 – COMMENTS + LIKES + REPLIES (FINAL)
    File: assets/js/feed.js
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 import {
   collection,
   query,
@@ -48,6 +49,11 @@ async function loadFeed() {
   const snap = await getDocs(q);
   feed.innerHTML = "";
 
+  if (snap.empty) {
+    feed.innerHTML = `<p class="muted">No posts yet.</p>`;
+    return;
+  }
+
   snap.forEach(d => {
     feed.appendChild(renderPost(d.id, d.data()));
   });
@@ -63,13 +69,13 @@ function renderPost(postId, p) {
     <div class="post-header">
       <strong>
         <a href="/profile-view.html?uid=${p.uid}">
-          ${escape(p.authorName)}
+          ${escapeHTML(p.authorName || "Unknown")}
         </a>
       </strong>
       <span class="muted"> · ${timeAgo(p.createdAt)}</span>
     </div>
 
-    <p>${escape(p.content)}</p>
+    <p>${escapeHTML(p.content)}</p>
 
     <div class="post-actions muted">
       💬 <button class="comment-toggle">Comments</button>
@@ -86,12 +92,14 @@ function renderPost(postId, p) {
   `;
 
   const toggleBtn = div.querySelector(".comment-toggle");
-  const box = div.querySelector(".comments");
+  const commentsBox = div.querySelector(".comments");
   const list = div.querySelector(".comment-list");
 
   toggleBtn.onclick = async () => {
-    box.style.display = box.style.display === "none" ? "block" : "none";
-    if (box.style.display === "block") {
+    commentsBox.style.display =
+      commentsBox.style.display === "none" ? "block" : "none";
+
+    if (commentsBox.style.display === "block") {
       await loadComments(postId, list);
     }
   };
@@ -128,13 +136,16 @@ async function submitComment(e, postId, list) {
   const content = input.value.trim();
   if (!content) return;
 
-  const profile = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
+  const profileSnap =
+    await getDoc(doc(db, "profiles", currentUser.uid));
+
+  const profile = profileSnap.data();
 
   await addDoc(
     collection(db, "posts", postId, "comments"),
     {
       uid: currentUser.uid,
-      authorName: profile.fullName,
+      authorName: profile?.fullName || "User",
       content,
       likes: 0,
       likedBy: {},
@@ -158,8 +169,8 @@ function renderComment(postId, commentId, c) {
     c.likedBy[currentUser.uid] === true;
 
   div.innerHTML = `
-    <strong>${escape(c.authorName)}</strong>
-    <p>${escape(c.content)}</p>
+    <strong>${escapeHTML(c.authorName)}</strong>
+    <p>${escapeHTML(c.content)}</p>
 
     <div class="comment-actions muted">
       <button class="comment-like ${liked ? "liked" : ""}">
@@ -200,7 +211,9 @@ function renderComment(postId, commentId, c) {
 async function toggleCommentLike(postId, commentId, c) {
   if (!currentUser) return;
 
-  const ref = doc(db, "posts", postId, "comments", commentId);
+  const ref =
+    doc(db, "posts", postId, "comments", commentId);
+
   const likedBy = { ...(c.likedBy || {}) };
   let likes = c.likes || 0;
 
@@ -233,9 +246,9 @@ async function loadReplies(postId, commentId, box) {
     const div = document.createElement("div");
     div.className = "reply";
     div.innerHTML = `
-      <strong>${escape(r.authorName)}</strong>
+      <strong>${escapeHTML(r.authorName)}</strong>
       <span class="muted"> · ${timeAgo(r.createdAt)}</span>
-      <p>${escape(r.content)}</p>
+      <p>${escapeHTML(r.content)}</p>
     `;
     box.appendChild(div);
   });
@@ -249,13 +262,16 @@ async function submitReply(e, postId, commentId, box) {
   const content = input.value.trim();
   if (!content) return;
 
-  const profile = (await getDoc(doc(db, "profiles", currentUser.uid))).data();
+  const profileSnap =
+    await getDoc(doc(db, "profiles", currentUser.uid));
+
+  const profile = profileSnap.data();
 
   await addDoc(
     collection(db, "posts", postId, "comments", commentId, "replies"),
     {
       uid: currentUser.uid,
-      authorName: profile.fullName,
+      authorName: profile?.fullName || "User",
       content,
       createdAt: serverTimestamp()
     }
@@ -267,7 +283,7 @@ async function submitReply(e, postId, commentId, box) {
 
 /* ================= HELPERS ================= */
 
-function escape(str) {
+function escapeHTML(str) {
   return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
