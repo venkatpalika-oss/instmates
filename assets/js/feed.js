@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 5 – COMMENTS + LIKES + REPLIES (FINAL)
+   PHASE 5 – POSTS + COMMENTS + LIKES + REPLIES (FINAL)
    File: assets/js/feed.js
 ========================================================= */
 
@@ -25,20 +25,42 @@ import {
 
 let currentUser = null;
 
+/* ================= ELEMENTS ================= */
+
+const feedEl = document.querySelector(".feed");
+const postInput = document.getElementById("postInput");
+const postBtn = document.getElementById("postBtn");
+
 /* ================= AUTH ================= */
 
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
+
+  // ---- POST PERMISSION GUARD ----
+  if (postInput && postBtn) {
+    if (user) {
+      postInput.disabled = false;
+      postBtn.disabled = false;
+      postInput.placeholder =
+        "Share a field experience, troubleshooting case, or lesson learned…";
+      postBtn.textContent = "Post";
+    } else {
+      postInput.disabled = true;
+      postBtn.disabled = true;
+      postInput.placeholder = "Login to post in the community feed";
+      postBtn.textContent = "Login to Post";
+    }
+  }
+
   if (user) loadFeed();
 });
 
 /* ================= LOAD FEED ================= */
 
 async function loadFeed() {
-  const feed = document.querySelector(".feed");
-  if (!feed) return;
+  if (!feedEl) return;
 
-  feed.innerHTML = `<p class="muted">Loading feed…</p>`;
+  feedEl.innerHTML = `<p class="muted">Loading feed…</p>`;
 
   const q = query(
     collection(db, "posts"),
@@ -47,16 +69,43 @@ async function loadFeed() {
   );
 
   const snap = await getDocs(q);
-  feed.innerHTML = "";
+  feedEl.innerHTML = "";
 
   if (snap.empty) {
-    feed.innerHTML = `<p class="muted">No posts yet.</p>`;
+    feedEl.innerHTML = `<p class="muted">No posts yet.</p>`;
     return;
   }
 
   snap.forEach(d => {
-    feed.appendChild(renderPost(d.id, d.data()));
+    feedEl.appendChild(renderPost(d.id, d.data()));
   });
+}
+
+/* ================= CREATE POST ================= */
+
+if (postBtn) {
+  postBtn.onclick = async () => {
+    if (!currentUser) return;
+
+    const content = postInput.value.trim();
+    if (!content) return;
+
+    const profileSnap =
+      await getDoc(doc(db, "profiles", currentUser.uid));
+
+    const profile = profileSnap.data();
+
+    await addDoc(collection(db, "posts"), {
+      uid: currentUser.uid,
+      authorName: profile?.fullName || "User",
+      content,
+      createdAt: serverTimestamp()
+    });
+
+    postInput.value = "";
+    showPostSuccess();
+    loadFeed();
+  };
 }
 
 /* ================= RENDER POST ================= */
@@ -281,6 +330,28 @@ async function submitReply(e, postId, commentId, box) {
   loadReplies(postId, commentId, box);
 }
 
+/* ================= SUCCESS FEEDBACK ================= */
+
+function showPostSuccess(message = "Post published successfully ✓") {
+  let msg = document.getElementById("postSuccessMsg");
+
+  if (!msg) {
+    msg = document.createElement("div");
+    msg.id = "postSuccessMsg";
+    msg.className = "muted";
+    msg.style.marginTop = "8px";
+    msg.style.color = "#2e7d32";
+    postBtn?.after(msg);
+  }
+
+  msg.textContent = message;
+  msg.style.display = "block";
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2500);
+}
+
 /* ================= HELPERS ================= */
 
 function escapeHTML(str) {
@@ -297,50 +368,4 @@ function timeAgo(ts) {
   if (s < 3600) return `${Math.floor(s / 60)} min ago`;
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
-
-   function showPostSuccess(message = "Post published successfully ✓") {
-  let msg = document.getElementById("postSuccessMsg");
-
-  if (!msg) {
-    msg = document.createElement("div");
-    msg.id = "postSuccessMsg";
-    msg.className = "muted";
-    msg.style.marginTop = "8px";
-    msg.style.color = "#2e7d32";
-    document.getElementById("postBtn")?.after(msg);
-  }
-
-  msg.textContent = message;
-  msg.style.display = "block";
-
-  setTimeout(() => {
-    msg.style.display = "none";
-  }, 2500);
-
 }
-/* ================= POST PERMISSION GUARD ================= */
-
-import { onAuthStateChanged } 
-  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-const postInput = document.getElementById("postInput");
-const postBtn = document.getElementById("postBtn");
-
-onAuthStateChanged(auth, (user) => {
-  if (!postInput || !postBtn) return;
-
-  if (user) {
-    // Logged in → enable posting
-    postInput.disabled = false;
-    postBtn.disabled = false;
-    postInput.placeholder =
-      "Share a field experience, troubleshooting case, or lesson learned…";
-    postBtn.textContent = "Post";
-  } else {
-    // Logged out → lock posting
-    postInput.disabled = true;
-    postBtn.disabled = true;
-    postInput.placeholder = "Login to post in the community feed";
-    postBtn.textContent = "Login to Post";
-  }
-});
