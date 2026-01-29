@@ -21,23 +21,7 @@
   <section class="panel">
     <h2>Edit Your Profile</h2>
 
-    <!-- ================= PROFILE STATUS (RESERVED) ================= -->
-    <!-- Kept for future use; profile.js does not depend on this -->
-    <div id="profileStatus"
-         class="panel"
-         style="margin-bottom:16px;display:none;">
-      <h3 id="profileStatusTitle"></h3>
-      <p id="profileStatusMsg" class="muted"></p>
-
-      <div class="progress-bar">
-        <div id="profileStatusProgress"
-             class="progress-fill"
-             style="width:0%;"></div>
-      </div>
-    </div>
-    <!-- ============================================================= -->
-
-    <!-- 🔒 CRITICAL: ID MUST MATCH profile.js -->
+    <!-- 🔒 FORM ID MUST MATCH profile.js -->
     <form id="profileForm" class="auth-form">
 
       <label>
@@ -72,6 +56,14 @@
                required>
       </label>
 
+      <!-- ✅ PUBLIC PROFILE CONTROL -->
+      <label style="display:flex;align-items:center;gap:10px;margin-top:12px;">
+        <input type="checkbox"
+               id="publicProfile"
+               checked>
+        Make my profile visible to other technicians
+      </label>
+
       <button class="btn btn-primary full" type="submit">
         Save Profile
       </button>
@@ -84,20 +76,11 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ===================================================== -->
 <!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
-<!-- ===================================================== -->
 
-<!-- 1️⃣ HEADER + FOOTER -->
 <script src="/assets/js/includes.js"></script>
-
-<!-- 2️⃣ GLOBAL AUTH GUARD (MANDATORY) -->
 <script type="module" src="/assets/js/auth-guard.js"></script>
-
-<!-- 3️⃣ HEADER AUTH UI -->
 <script type="module" src="/assets/js/header-auth.js"></script>
-
-<!-- 4️⃣ PROFILE LOGIC (PHASE 2 CORE) -->
 <script type="module" src="/assets/js/profile.js"></script>
 
 </body>
