@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 5 – POSTS + COMMENTS + LIKES + REPLIES (FINAL)
+   PHASE 5 – POSTS + COMMENTS + LIKES + REPLIES + BADGES
    File: assets/js/feed.js
 ========================================================= */
 
@@ -33,7 +33,7 @@ const postBtn = document.getElementById("postBtn");
 
 /* ================= AUTH ================= */
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
   if (postInput && postBtn) {
@@ -75,9 +75,11 @@ async function loadFeed() {
     return;
   }
 
-  snap.forEach(d => {
-    feedEl.appendChild(renderPost(d.id, d.data()));
-  });
+  for (const d of snap.docs) {
+    const post = d.data();
+    const profile = await getProfile(post.uid);
+    feedEl.appendChild(renderPost(d.id, post, profile));
+  }
 }
 
 /* ================= CREATE POST ================= */
@@ -89,10 +91,7 @@ if (postBtn) {
     const content = postInput.value.trim();
     if (!content) return;
 
-    const profileSnap =
-      await getDoc(doc(db, "profiles", currentUser.uid));
-
-    const profile = profileSnap.data();
+    const profile = await getProfile(currentUser.uid);
 
     await addDoc(collection(db, "posts"), {
       uid: currentUser.uid,
@@ -107,9 +106,29 @@ if (postBtn) {
   };
 }
 
+/* ================= PROFILE FETCH ================= */
+
+async function getProfile(uid) {
+  try {
+    const snap = await getDoc(doc(db, "profiles", uid));
+    return snap.exists() ? snap.data() : {};
+  } catch {
+    return {};
+  }
+}
+
+function renderBadges(badges = []) {
+  if (!badges.length) return "";
+  return `
+    <div class="muted" style="font-size:12px;margin-top:2px">
+      ${badges.map(b => `🏷️ ${b}`).join(" · ")}
+    </div>
+  `;
+}
+
 /* ================= RENDER POST ================= */
 
-function renderPost(postId, p) {
+function renderPost(postId, p, profile) {
   const div = document.createElement("div");
   div.className = "post-card";
 
@@ -120,6 +139,7 @@ function renderPost(postId, p) {
           ${escapeHTML(p.authorName || "Unknown")}
         </a>
       </strong>
+      ${renderBadges(profile?.badges)}
       <span class="muted"> · ${timeAgo(p.createdAt)}</span>
     </div>
 
@@ -177,9 +197,11 @@ async function loadComments(postId, list) {
   const snap = await getDocs(q);
   list.innerHTML = "";
 
-  snap.forEach(d => {
-    list.appendChild(renderComment(postId, d.id, d.data()));
-  });
+  for (const d of snap.docs) {
+    const comment = d.data();
+    const profile = await getProfile(comment.uid);
+    list.appendChild(renderComment(postId, d.id, comment, profile));
+  }
 }
 
 async function submitComment(e, postId, list) {
@@ -190,10 +212,7 @@ async function submitComment(e, postId, list) {
   const content = input.value.trim();
   if (!content) return;
 
-  const profileSnap =
-    await getDoc(doc(db, "profiles", currentUser.uid));
-
-  const profile = profileSnap.data();
+  const profile = await getProfile(currentUser.uid);
 
   await addDoc(
     collection(db, "posts", postId, "comments"),
@@ -214,22 +233,17 @@ async function submitComment(e, postId, list) {
 
 /* ================= RENDER COMMENT ================= */
 
-function renderComment(postId, commentId, c) {
+function renderComment(postId, commentId, c, profile) {
   const div = document.createElement("div");
   div.className = "comment";
 
-  const liked =
-    currentUser &&
-    c.likedBy &&
-    c.likedBy[currentUser.uid] === true;
-
   div.innerHTML = `
     <strong>${escapeHTML(c.authorName)}</strong>
+    ${renderBadges(profile?.badges)}
     <p>${escapeHTML(c.content)}</p>
 
     <div class="comment-actions muted">
       ❤️ ${c.likes || 0}
-      <span class="muted"> · ${c.likes || 0} technicians replied</span>
       <button class="reply-toggle">Reply</button>
     </div>
 
@@ -294,10 +308,7 @@ async function submitReply(e, postId, commentId, box) {
   const content = input.value.trim();
   if (!content) return;
 
-  const profileSnap =
-    await getDoc(doc(db, "profiles", currentUser.uid));
-
-  const profile = profileSnap.data();
+  const profile = await getProfile(currentUser.uid);
 
   await addDoc(
     collection(db, "posts", postId, "comments", commentId, "replies"),
