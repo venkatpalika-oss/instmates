@@ -4,19 +4,20 @@
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
-import { onAuthStateChanged } from
-  "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
   doc,
   getDoc,
   setDoc,
   serverTimestamp
-} from
-  "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
 
 const form = document.getElementById("profileForm");
+const publicProfileCheckbox =
+  document.getElementById("publicProfile");
 
 /* ================= LOAD PROFILE ================= */
 
@@ -39,6 +40,12 @@ onAuthStateChanged(auth, async (user) => {
     setVal("bio", data.bio);
     setVal("skills", (data.skills || []).join(", "));
 
+    // ✅ LOAD PUBLIC PROFILE FLAG (default TRUE)
+    if (publicProfileCheckbox) {
+      publicProfileCheckbox.checked =
+        data.publicProfile !== false;
+    }
+
   } catch (err) {
     console.error("Profile load error:", err);
   }
@@ -59,6 +66,12 @@ if (form) {
       role: val("role"),
       bio: val("bio"),
       skills: split("skills"),
+
+      // ✅ CRITICAL FIX
+      publicProfile: publicProfileCheckbox
+        ? publicProfileCheckbox.checked
+        : true,
+
       profileCompleted: true,
       updatedAt: serverTimestamp()
     };
@@ -68,13 +81,15 @@ if (form) {
         doc(db, "profiles", user.uid),
         {
           ...profile,
+
+          // createdAt only set once
           createdAt: serverTimestamp()
         },
         { merge: true }
       );
 
       alert("Profile saved successfully");
-      window.location.replace("/feed.html");
+      window.location.replace("/feed/");
 
     } catch (err) {
       console.error("Profile save error:", err);
