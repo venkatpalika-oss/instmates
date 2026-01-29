@@ -1544,3 +1544,9 @@ body.auth-in.auth-ready .site-header .auth-in {
     min-height: 90px;
   }
 }
+/* ================= LINK COLOR SAFETY ================= */
+.hero a,
+.hero a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
