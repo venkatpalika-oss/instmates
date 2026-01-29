@@ -31,6 +31,24 @@ const feedEl = document.querySelector(".feed");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 
+/* ================= KNOWLEDGE → FEED PREFILL ================= */
+
+function prefillFromKnowledge() {
+  if (!postInput) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const title = params.get("title");
+
+  if (!title) return;
+
+  postInput.value =
+`Knowledge topic: ${title}
+
+What was your real field experience, fault, or solution related to this?`;
+
+  postInput.focus();
+}
+
 /* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
@@ -51,7 +69,10 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  if (user) loadFeed();
+  if (user) {
+    loadFeed();
+    prefillFromKnowledge();   // 🔗 PHASE 4 HOOK
+  }
 });
 
 /* ================= LOAD FEED ================= */
