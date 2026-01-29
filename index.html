@@ -4,98 +4,215 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>InstMates | Instrument & Analyzer Technicians Community</title>
+  <title>InstMates | Professional Community for Instrument & Analyzer Technicians</title>
 
   <meta name="description"
-        content="InstMates is a professional community for instrument and analyzer technicians to share practical knowledge, field experience, and troubleshooting techniques." />
+        content="InstMates is a professional community for instrument and analyzer technicians to share real field experience, troubleshoot problems, and build technical credibility." />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-26">
 </head>
 
+<!-- backup marker -->  
 <body data-page="home">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
 <!-- ================= HERO ================= -->
 <section class="hero">
   <div class="hero-inner container">
 
-    <h1>InstMates</h1>
+    <h1>
+      The professional network for<br>
+      Instrument & Analyzer Technicians
+    </h1>
 
     <p class="hero-tagline">
-      Share Technology · Learn Techniques
+      Learn from real field experience · Solve plant problems · Build credibility
     </p>
 
-    <p class="muted">
-      A practical knowledge and community platform for
-      instrument and analyzer technicians.
+    <p class="hero-sub">
+      InstMates connects technicians working on analyzers, field instruments,
+      CEMS, and process systems — focused on practical knowledge, not theory or recruiters.
     </p>
+
+    <div class="hero-actions">
+      <a href="/register.html" class="btn btn-hero auth-out">Join Free</a>
+      <a href="/login.html" class="btn btn-ghost auth-out">Login</a>
+      <a href="/feed/" class="btn btn-soft auth-in">Go to Feed</a>
+    </div>
 
   </div>
 </section>
 
-<!-- ================= MAIN CONTENT ================= -->
+<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- INTRO -->
+  <!-- ================= WHO THIS IS FOR ================= -->
   <section class="panel">
-    <h2>What is InstMates?</h2>
+    <h2>Who InstMates Is For</h2>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <!-- IMAGE -->
+       <img src="assets/images/home/hero-instrumentation.jpg"
+     alt="Field Instrumentation">
+        <h3>Instrument Technicians</h3>
+        <p class="muted">
+          Pressure, flow, temperature, level, valves,
+          transmitters, calibration and loop troubleshooting.
+        </p>
+      </div>
+
+      <div class="card">
+        <img src="/assets/images/home/gas-analyzer.jpg"
+             alt="Analyzer Engineers">
+        <h3>Analyzer Engineers</h3>
+        <p class="muted">
+          Gas chromatographs, CEMS, process analyzers,
+          sampling systems, alarms, drift and stability issues.
+        </p>
+      </div>
+
+      <div class="card">
+        <img src="/assets/images/home/control-room.jpg"
+             alt="Plant & Maintenance Teams">
+        <h3>Plant & Maintenance Teams</h3>
+        <p class="muted">
+          Real-world failure cases, startup issues,
+          shutdown recovery, and plant problem-solving.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ACTIVITY PREVIEW ================= -->
+  <section class="panel">
+    <h2>What Technicians Are Discussing</h2>
     <p class="muted">
-      InstMates is built for technicians working in real plants,
-      refineries, and industrial sites.
-      The focus is on practical understanding, troubleshooting,
-      and experience-based learning — not textbook theory.
+      Real questions and answers from the field — visible after login.
     </p>
 
+    <div class="feed">
+
+      <div class="post-card">
+        <div class="post-header">
+          <div class="avatar small"></div>
+          <div>
+            <strong>Rahul</strong><br>
+            <span class="muted">Analyzer Engineer</span>
+          </div>
+        </div>
+        <p>
+          GC baseline drifting during monsoon season.
+          Root cause turned out to be moisture ingress in the sample probe.
+        </p>
+        <div class="post-actions">
+          ❤️ 18 &nbsp; 💬 6
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-header">
+          <div class="avatar small"></div>
+          <div>
+            <strong>Ahmed</strong><br>
+            <span class="muted">CEMS Technician</span>
+          </div>
+        </div>
+        <p>
+          SO₂ analyzer zero instability after plant restart —
+          solved by correcting warm-up sequence.
+        </p>
+        <div class="post-actions">
+          ❤️ 27 &nbsp; 💬 11
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= WHY INST MATES ================= -->
+  <section class="panel">
+    <h2>Why InstMates Exists</h2>
+
     <ul class="checklist">
-      <li>Field-proven instrumentation knowledge</li>
-      <li>Process analyzer basics and troubleshooting</li>
-      <li>Clear explanations without unnecessary complexity</li>
-      <li>Built by technicians, for technicians</li>
+      <li>Built by technicians — not recruiters or marketers</li>
+      <li>Focused on real field failures and solutions</li>
+      <li>No fake engagement or generic theory</li>
+      <li>Practical reference you can trust during breakdowns</li>
     </ul>
   </section>
 
-  <!-- KNOWLEDGE HUB -->
+  <!-- ================= PLATFORM FEATURES ================= -->
   <section class="panel">
-    <h2>Knowledge Hub</h2>
-    <p class="muted">
-      Structured technical content covering both
-      field instrumentation and process analyzers.
-    </p>
+    <h2>What You Can Do on InstMates</h2>
 
-    <ul class="checklist">
-      <li>
-        <a href="/knowledge/analyzers/">
-          Process Analyzers (GC, FTIR, NDIR, TDLS)
-        </a>
-      </li>
-      <li>Field Instrumentation Fundamentals</li>
-      <li>4–20 mA Signal & Loop Diagnostics</li>
-      <li>Pressure, Flow, Level & Temperature</li>
-    </ul>
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>📘 Learn</h3>
+        <p class="muted">
+          Visual explanations, fundamentals, and troubleshooting
+          written in technician language.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🧪 Solve Problems</h3>
+        <p class="muted">
+          Real failure cases with symptoms, root causes,
+          and corrective actions.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>👥 Share Experience</h3>
+        <p class="muted">
+          Post your field learnings and help others
+          facing the same issues.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>⭐ Build Reputation</h3>
+        <p class="muted">
+          Earn credibility through contributions,
+          not job titles.
+        </p>
+      </div>
+
+    </div>
   </section>
 
-  <!-- COMMUNITY -->
-  <section class="panel">
-    <h2>Community Direction</h2>
+  <!-- ================= CTA ================= -->
+  <section class="panel" style="text-align:center">
+    <h2>Join the Technician Network</h2>
     <p class="muted">
-      InstMates is evolving into a technician-focused
-      community platform where experience matters.
+      Free to join. Built for real work. No noise.
     </p>
 
-    <ul class="checklist">
-      <li>Experience-based discussions</li>
-      <li>Real fault cases from sites</li>
-      <li>Practical calibration and commissioning tips</li>
-      <li>Knowledge sharing without noise</li>
-    </ul>
+    <a href="/register.html" class="btn btn-primary auth-out">
+      Create Your Free Account
+    </a>
   </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
+<script type="module" src="/assets/js/header-auth.js"></script>
 
 </body>
 </html>
