@@ -9,6 +9,10 @@
   <meta name="description"
         content="InstMates is a professional community for instrument and analyzer technicians to share real field experience, troubleshoot problems, and build technical credibility." />
 
+  <!-- ================= PWA ================= -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b5ed7">
+
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +22,7 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-26">
 </head>
 
-<!-- backup marker -->  
+<!-- backup marker -->
 <body data-page="home">
 
 <!-- ================= HEADER ================= -->
@@ -61,9 +65,8 @@
     <div class="grid grid-3">
 
       <div class="card">
-        <!-- IMAGE -->
-       <img src="assets/images/home/hero-instrumentation.jpg"
-     alt="Field Instrumentation">
+        <img src="/assets/images/home/hero-instrumentation.jpg"
+             alt="Field Instrumentation">
         <h3>Instrument Technicians</h3>
         <p class="muted">
           Pressure, flow, temperature, level, valves,
@@ -213,6 +216,13 @@
 <!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
 <script type="module" src="/assets/js/header-auth.js"></script>
+
+<!-- ================= SERVICE WORKER ================= -->
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+  }
+</script>
 
 </body>
 </html>
