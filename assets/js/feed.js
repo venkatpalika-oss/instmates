@@ -36,13 +36,12 @@ const postBtn = document.getElementById("postBtn");
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
 
-  // ---- POST PERMISSION GUARD ----
   if (postInput && postBtn) {
     if (user) {
       postInput.disabled = false;
       postBtn.disabled = false;
       postInput.placeholder =
-        "Share a field experience, troubleshooting case, or lesson learned…";
+        "What problem are you facing in the field today?\nExample: 4–20 mA stuck at 4 mA after shutdown";
       postBtn.textContent = "Post";
     } else {
       postInput.disabled = true;
@@ -131,10 +130,16 @@ function renderPost(postId, p) {
     </div>
 
     <div class="comments" style="display:none">
+      <p class="muted" style="margin-bottom:6px">
+        Field fixes help more than opinions.
+      </p>
+
       <div class="comment-list"></div>
 
       <form class="comment-form">
-        <input placeholder="Write a comment…" required />
+        <input
+          placeholder="Reply with a solution, field experience, or diagnostic step…"
+          required />
         <button>Post</button>
       </form>
     </div>
@@ -203,7 +208,8 @@ async function submitComment(e, postId, list) {
   );
 
   input.value = "";
-  loadComments(postId, list);
+  await loadComments(postId, list);
+  scrollToLatest(list);
 }
 
 /* ================= RENDER COMMENT ================= */
@@ -222,22 +228,20 @@ function renderComment(postId, commentId, c) {
     <p>${escapeHTML(c.content)}</p>
 
     <div class="comment-actions muted">
-      <button class="comment-like ${liked ? "liked" : ""}">
-        ❤️ ${c.likes || 0}
-      </button>
+      ❤️ ${c.likes || 0}
+      <span class="muted"> · ${c.likes || 0} technicians replied</span>
       <button class="reply-toggle">Reply</button>
     </div>
 
     <div class="replies"></div>
 
     <form class="reply-form" style="display:none">
-      <input placeholder="Write a reply…" required />
+      <input
+        placeholder="Add a practical follow-up or confirmation…"
+        required />
       <button>Reply</button>
     </form>
   `;
-
-  div.querySelector(".comment-like").onclick =
-    () => toggleCommentLike(postId, commentId, c);
 
   const replyForm = div.querySelector(".reply-form");
   const repliesBox = div.querySelector(".replies");
@@ -253,29 +257,6 @@ function renderComment(postId, commentId, c) {
     (e) => submitReply(e, postId, commentId, repliesBox);
 
   return div;
-}
-
-/* ================= COMMENT LIKES ================= */
-
-async function toggleCommentLike(postId, commentId, c) {
-  if (!currentUser) return;
-
-  const ref =
-    doc(db, "posts", postId, "comments", commentId);
-
-  const likedBy = { ...(c.likedBy || {}) };
-  let likes = c.likes || 0;
-
-  if (likedBy[currentUser.uid]) {
-    delete likedBy[currentUser.uid];
-    likes = Math.max(0, likes - 1);
-  } else {
-    likedBy[currentUser.uid] = true;
-    likes += 1;
-  }
-
-  await updateDoc(ref, { likedBy, likes });
-  loadFeed();
 }
 
 /* ================= REPLIES ================= */
@@ -301,6 +282,8 @@ async function loadReplies(postId, commentId, box) {
     `;
     box.appendChild(div);
   });
+
+  scrollToLatest(box);
 }
 
 async function submitReply(e, postId, commentId, box) {
@@ -327,7 +310,19 @@ async function submitReply(e, postId, commentId, box) {
   );
 
   input.value = "";
-  loadReplies(postId, commentId, box);
+  await loadReplies(postId, commentId, box);
+}
+
+/* ================= AUTO SCROLL ================= */
+
+function scrollToLatest(container) {
+  const items = container.querySelectorAll("div");
+  if (items.length > 0) {
+    items[items.length - 1].scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
 }
 
 /* ================= SUCCESS FEEDBACK ================= */
