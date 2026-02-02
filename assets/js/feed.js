@@ -17,7 +17,7 @@ import {
   addDoc,
   doc,
   getDoc,
-  updateDoc,                 // ✅ ADDED (required for likes)
+  updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -170,12 +170,7 @@ function renderPost(postId, p, profile) {
     <p>${escapeHTML(p.content)}</p>
 
     <div class="post-reactions-summary">
-      <span class="reactions">
-        👍 ❤️ 👏 <strong class="like-count">${p.likes || 0}</strong>
-      </span>
-      <span class="post-meta">
-        <a href="#" class="comment-toggle">Comments</a>
-      </span>
+      👍 ❤️ 👏 <strong class="like-count">${p.likes || 0}</strong>
     </div>
 
     <div class="post-actions-bar">
@@ -268,68 +263,7 @@ async function submitComment(e, postId, list) {
   loadComments(postId, list);
 }
 
-/* ================= RENDER COMMENT ================= */
-
-function renderComment(postId, commentId, c, profile) {
-  const div = document.createElement("div");
-  div.className = "comment";
-
-  div.innerHTML = `
-    <strong>${escapeHTML(c.authorName)}</strong>
-    ${renderBadges(profile?.badges)}
-    <p>${escapeHTML(c.content)}</p>
-    <div class="comment-actions muted">
-      ❤️ ${c.likes || 0}
-      <button class="reply-toggle">Reply</button>
-    </div>
-    <div class="replies"></div>
-    <form class="reply-form" style="display:none">
-      <input placeholder="Add a follow-up…" required />
-      <button>Reply</button>
-    </form>
-  `;
-
-  const repliesBox = div.querySelector(".replies");
-  const replyForm = div.querySelector(".reply-form");
-
-  div.querySelector(".reply-toggle").onclick = async () => {
-    replyForm.style.display =
-      replyForm.style.display === "none" ? "block" : "none";
-    await loadReplies(postId, commentId, repliesBox);
-  };
-
-  replyForm.onsubmit =
-    (e) => submitReply(e, postId, commentId, repliesBox);
-
-  return div;
-}
-
-/* ================= REPLIES ================= */
-
-async function loadReplies(postId, commentId, box) {
-  box.innerHTML = "";
-
-  const q = query(
-    collection(db, "posts", postId, "comments", commentId, "replies"),
-    orderBy("createdAt", "asc")
-  );
-
-  const snap = await getDocs(q);
-
-  snap.forEach(d => {
-    const r = d.data();
-    const div = document.createElement("div");
-    div.className = "reply";
-    div.innerHTML = `
-      <strong>${escapeHTML(r.authorName)}</strong>
-      <span class="muted"> · ${timeAgo(r.createdAt)}</span>
-      <p>${escapeHTML(r.content)}</p>
-    `;
-    box.appendChild(div);
-  });
-}
-
-/* ================= LIKE HANDLER (FINAL) ================= */
+/* ================= LIKE HANDLER ================= */
 
 window.toggleLike = async function ({ postId, button }) {
   if (!currentUser) return;
@@ -350,25 +284,32 @@ window.toggleLike = async function ({ postId, button }) {
     [`likedBy.${currentUser.uid}`]: !liked
   });
 
+  // 🔥 RANDOM REACTION
+  const reactions = ["👍", "❤️", "👏"];
+  const emoji = reactions[Math.floor(Math.random() * reactions.length)];
+  showReaction(button, emoji);
+
   const card = button.closest(".post-card");
   card.querySelector(".like-count").textContent = newLikes;
   button.classList.toggle("liked", !liked);
 };
-/* ================= REACTION FLOAT EFFECT ================= */
 
-function showReaction(button, emoji = "👍") {
-  const wrapper = button.closest(".post-actions-bar");
-  if (!wrapper) return;
+/* ================= REACTION FLOAT ================= */
 
-  const el = document.createElement("span");
-  el.className = "reaction-float";
-  el.textContent = emoji;
+function showReaction(button, emoji) {
+  const bar = button.closest(".post-actions-bar");
+  if (!bar) return;
 
-  wrapper.style.position = "relative";
-  wrapper.appendChild(el);
+  const span = document.createElement("span");
+  span.className = "reaction-float";
+  span.textContent = emoji;
 
-  setTimeout(() => el.remove(), 1200);
+  bar.style.position = "relative";
+  bar.appendChild(span);
+
+  setTimeout(() => span.remove(), 1200);
 }
+
 /* ================= HELPERS ================= */
 
 function escapeHTML(str) {
