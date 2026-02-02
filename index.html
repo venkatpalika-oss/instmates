@@ -4,22 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>InstMates | Professional Community for Instrument & Analyzer Technicians</title>
+  <title>InstMates – Instrument & Analyzer Technicians Community | Real Field Troubleshooting</title>
 
   <meta name="description"
-        content="InstMates is a professional community for instrument and analyzer technicians to share real field experience, troubleshoot problems, and build technical credibility." />
+        content="InstMates is a professional community for instrument and analyzer technicians to share real field experience, troubleshoot analyzer failures, and solve plant problems." />
 
-  <!-- ================= GOOGLE ANALYTICS 4 (FIXED) ================= -->
+  <!-- ================= GOOGLE ANALYTICS 4 ================= -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-L57QYT7H9F', {
-      send_page_view: true
-    });
+    gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
   </script>
-  <!-- ============================================================= -->
 
   <!-- ================= PWA ================= -->
   <link rel="manifest" href="/manifest.json">
@@ -66,6 +63,34 @@
   </div>
 </section>
 
+<!-- ================= FEATURED CASE STUDY ================= -->
+<section class="panel">
+  <h2>Featured Field Case Study</h2>
+
+  <p class="muted">
+    A real analyzer failure from the field, documented step by step
+    with symptoms, root cause, and corrective action.
+  </p>
+
+  <div class="card">
+    <h3>
+      <a href="/case-studies/analyzers/yokogawa/gc8000/error-603-oven-failure.html">
+        Yokogawa GC8000 – Error 603 (Oven Heater Failure)
+      </a>
+    </h3>
+
+    <p class="muted">
+      GC failed to start due to oven temperature not rising.
+      This case explains heater checks, RTD verification,
+      wiring inspection, and final resolution from real field experience.
+    </p>
+
+    <a href="/case-studies/index.html" class="btn btn-soft">
+      View All Case Studies →
+    </a>
+  </div>
+</section>
+
 <!-- ================= MAIN ================= -->
 <main class="container">
 
@@ -76,8 +101,7 @@
     <div class="grid grid-3">
 
       <div class="card">
-        <img src="/assets/images/home/hero-instrumentation.jpg"
-             alt="Field Instrumentation">
+        <img src="/assets/images/home/hero-instrumentation.jpg" alt="Field Instrumentation">
         <h3>Instrument Technicians</h3>
         <p class="muted">
           Pressure, flow, temperature, level, valves,
@@ -86,8 +110,7 @@
       </div>
 
       <div class="card">
-        <img src="/assets/images/home/gas-analyzer.jpg"
-             alt="Analyzer Engineers">
+        <img src="/assets/images/home/gas-analyzer.jpg" alt="Analyzer Engineers">
         <h3>Analyzer Engineers</h3>
         <p class="muted">
           Gas chromatographs, CEMS, process analyzers,
@@ -96,8 +119,7 @@
       </div>
 
       <div class="card">
-        <img src="/assets/images/home/control-room.jpg"
-             alt="Plant & Maintenance Teams">
+        <img src="/assets/images/home/control-room.jpg" alt="Plant & Maintenance Teams">
         <h3>Plant & Maintenance Teams</h3>
         <p class="muted">
           Real-world failure cases, startup issues,
@@ -129,9 +151,7 @@
           GC baseline drifting during monsoon season.
           Root cause turned out to be moisture ingress in the sample probe.
         </p>
-        <div class="post-actions">
-          ❤️ 18 &nbsp; 💬 6
-        </div>
+        <div class="post-actions">❤️ 18 &nbsp; 💬 6</div>
       </div>
 
       <div class="post-card">
@@ -146,9 +166,7 @@
           SO₂ analyzer zero instability after plant restart —
           solved by correcting warm-up sequence.
         </p>
-        <div class="post-actions">
-          ❤️ 27 &nbsp; 💬 11
-        </div>
+        <div class="post-actions">❤️ 27 &nbsp; 💬 11</div>
       </div>
 
     </div>
@@ -210,9 +228,7 @@
   <!-- ================= CTA ================= -->
   <section class="panel" style="text-align:center">
     <h2>Join the Technician Network</h2>
-    <p class="muted">
-      Free to join. Built for real work. No noise.
-    </p>
+    <p class="muted">Free to join. Built for real work. No noise.</p>
 
     <a href="/register.html" class="btn btn-primary auth-out">
       Create Your Free Account
