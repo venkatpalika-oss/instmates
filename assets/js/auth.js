@@ -1,11 +1,11 @@
 /* =========================================================
-   InstMates - Firebase Authentication (FINAL)
+   InstMates - Firebase Authentication (FINAL – STABLE)
    File: assets/js/auth.js
    SDK: Firebase v9 (Modular)
    NOTE:
    - Firebase app is initialized ONLY ONCE in firebase.js
-   - This file contains auth + firestore logic only
-   - Enforces profile-first onboarding (Option A)
+   - Guarantees profile document existence
+   - Enforces profile-first onboarding
 ========================================================= */
 
 /* ================= IMPORT SHARED FIREBASE ================= */
@@ -39,6 +39,7 @@ import {
 window.registerUser = async function (email, password, fullName) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
+  /* ---------- USERS COLLECTION ---------- */
   await setDoc(doc(db, "users", cred.user.uid), {
     uid: cred.user.uid,
     name: fullName,
@@ -46,6 +47,15 @@ window.registerUser = async function (email, password, fullName) {
     role: "user",
     verified: false,
     profileCompleted: false,
+    createdAt: serverTimestamp()
+  });
+
+  /* ---------- PROFILES COLLECTION (CRITICAL) ---------- */
+  await setDoc(doc(db, "profiles", cred.user.uid), {
+    fullName: fullName,
+    role: "Technician",
+    bio: "",
+    skills: [],
     createdAt: serverTimestamp()
   });
 
@@ -67,31 +77,26 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (NO HOME HIJACK – FINAL)
+   AUTH STATE HANDLER (FINAL – NO SURPRISE REDIRECTS)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
-  // Prevent header flicker
+  // Prevent header / auth flicker
   document.body.classList.add("auth-ready");
 
   const path = location.pathname;
 
-  /* ================= PUBLIC PAGES (NEVER REDIRECT) ================= */
+  /* ================= PUBLIC PAGES ================= */
   const publicPages = [
-    "/",                 // root domain
+    "/",
     "/index.html",
     "/knowledge.html",
     "/about.html"
   ];
 
-  // Handle auth UI only, no navigation
   if (publicPages.includes(path)) {
-    if (user) {
-      document.body.classList.add("logged-in");
-    } else {
-      document.body.classList.remove("logged-in");
-    }
-    return; // 🔴 CRITICAL STOP
+    document.body.classList.toggle("logged-in", !!user);
+    return;
   }
 
   /* ================= LOGGED OUT ================= */
@@ -103,24 +108,42 @@ onAuthStateChanged(auth, async (user) => {
   document.body.classList.add("logged-in");
 
   try {
-    const snap = await getDoc(doc(db, "users", user.uid));
+    /* ---------- ENSURE USER DOC ---------- */
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-    if (!snap.exists()) {
+    if (!userSnap.exists()) {
       window.location.href = "/profile.html";
       return;
     }
 
-    const data = snap.data();
+    const userData = userSnap.data();
 
-    /* ================= PROTECTED APP PAGES ================= */
+    /* ---------- ENSURE PROFILE DOC (KEY FIX) ---------- */
+    const profileRef = doc(db, "profiles", user.uid);
+    const profileSnap = await getDoc(profileRef);
+
+    if (!profileSnap.exists()) {
+      await setDoc(profileRef, {
+        fullName: userData.name || user.email.split("@")[0],
+        role: "Technician",
+        bio: "",
+        skills: [],
+        createdAt: serverTimestamp()
+      });
+    }
+
+    /* ================= PROTECTED PAGES ================= */
     const protectedPages = [
       "/explore.html",
       "/community.html",
-      "/post.html"
+      "/post.html",
+      "/profiles/",
+      "/profiles/index.html"
     ];
 
-    /* ===== PROFILE NOT COMPLETED ===== */
-    if (!data.profileCompleted) {
+    /* ---------- PROFILE NOT COMPLETED ---------- */
+    if (!userData.profileCompleted) {
       if (
         protectedPages.includes(path) ||
         path === "/login.html" ||
@@ -131,16 +154,15 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-   /* ===== PROFILE COMPLETED ===== */
-if (
-  path.endsWith("/login.html") ||
-  path.endsWith("/register.html")
-) {
-  window.location.href = "/explore.html";
-}
+    /* ---------- PROFILE COMPLETED ---------- */
+    if (
+      path.endsWith("/login.html") ||
+      path.endsWith("/register.html")
+    ) {
+      window.location.href = "/explore.html";
+    }
 
-/* 🚫 NEVER redirect from profile.html */
-
+    /* 🚫 NEVER redirect from profile.html */
 
   } catch (err) {
     console.error("Auth state error:", err);
