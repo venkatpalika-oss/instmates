@@ -1563,3 +1563,22 @@ body.auth-in.auth-ready .site-header .auth-in {
 .btn-feed:hover {
   background: #d6e4f2;
 }
+/* ================= HERO FEED BUTTON FIX ================= */
+
+/* Visible + active when logged in */
+.auth-in {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Go to Feed button styling */
+.btn-soft {
+  background: #e6eef6;
+  color: #0b3c5d;
+  border: 1px solid #c7d6e5;
+  opacity: 1;
+}
+
+.btn-soft:hover {
+  background: #d6e4f2;
+}
