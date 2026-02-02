@@ -226,3 +226,21 @@ img {
     gap: 8px;
   }
 }
+/* =========================================
+   Home Page – Logged-in Primary Action
+   Make "Go to Feed" stand out
+========================================= */
+
+/* Only when user is logged in */
+body.auth-in .hero-actions .btn-soft {
+  background: #f59e0b;        /* same as Join Free */
+  color: #1f2937;
+  border: 1px solid #92400e;
+  font-weight: 700;
+}
+
+/* Hover */
+body.auth-in .hero-actions .btn-soft:hover {
+  background: #d97706;
+  color: #ffffff;
+}
