@@ -1582,3 +1582,20 @@ body.auth-in.auth-ready .site-header .auth-in {
 .btn-soft:hover {
   background: #d6e4f2;
 }
+/* =====================================================
+   FIX: Home page "Go to Feed" button visibility
+   Make it same style as Login button
+===================================================== */
+
+.hero-actions .btn-soft {
+  background: transparent;
+  color: #ffffff;                 /* same as Login text */
+  border: 2px solid rgba(255,255,255,0.7);
+  opacity: 1;                     /* remove faded look */
+}
+
+.hero-actions .btn-soft:hover {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+  border-color: #ffffff;
+}
