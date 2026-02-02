@@ -354,7 +354,21 @@ window.toggleLike = async function ({ postId, button }) {
   card.querySelector(".like-count").textContent = newLikes;
   button.classList.toggle("liked", !liked);
 };
+/* ================= REACTION FLOAT EFFECT ================= */
 
+function showReaction(button, emoji = "👍") {
+  const wrapper = button.closest(".post-actions-bar");
+  if (!wrapper) return;
+
+  const el = document.createElement("span");
+  el.className = "reaction-float";
+  el.textContent = emoji;
+
+  wrapper.style.position = "relative";
+  wrapper.appendChild(el);
+
+  setTimeout(() => el.remove(), 1200);
+}
 /* ================= HELPERS ================= */
 
 function escapeHTML(str) {
