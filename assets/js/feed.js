@@ -17,6 +17,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  updateDoc,                 // ✅ ADDED (required for likes)
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -147,13 +148,13 @@ function renderBadges(badges = []) {
   `;
 }
 
-/* ================= RENDER POST (UPDATED) ================= */
+/* ================= RENDER POST ================= */
 
 function renderPost(postId, p, profile) {
   const div = document.createElement("div");
   div.className = "post-card";
 
- const liked = currentUser ? hasLiked(p, currentUser.uid) : false;
+  const liked = currentUser ? hasLiked(p, currentUser.uid) : false;
 
   div.innerHTML = `
     <div class="post-header">
@@ -168,27 +169,18 @@ function renderPost(postId, p, profile) {
 
     <p>${escapeHTML(p.content)}</p>
 
-    <!-- ================= REACTION SUMMARY ================= -->
     <div class="post-reactions-summary">
       <span class="reactions">
         👍 ❤️ 👏 <strong class="like-count">${p.likes || 0}</strong>
       </span>
       <span class="post-meta">
-        <a href="#" class="comment-toggle">Comments</a> ·
-        <span>0 reposts</span>
+        <a href="#" class="comment-toggle">Comments</a>
       </span>
     </div>
 
-    <!-- ================= ACTION BAR ================= -->
     <div class="post-actions-bar">
-
       <button class="action-btn ${liked ? "liked" : ""}"
-              data-liked="${liked ? "true" : "false"}"
-              onclick="toggleLike({
-                type:'post',
-                postId:'${postId}',
-                button:this
-              })">
+        onclick="toggleLike({ postId:'${postId}', button:this })">
         👍 <span>Like</span>
       </button>
 
@@ -196,38 +188,23 @@ function renderPost(postId, p, profile) {
         💬 <span>Comment</span>
       </button>
 
-      <button class="action-btn" disabled>
-        🔁 <span>Repost</span>
-      </button>
-
-      <button class="action-btn" disabled>
-        ➤ <span>Send</span>
-      </button>
-
+      <button class="action-btn" disabled>🔁 Repost</button>
+      <button class="action-btn" disabled>➤ Send</button>
     </div>
 
-    <!-- ================= COMMENTS ================= -->
     <div class="comments" style="display:none">
-      <p class="muted" style="margin-bottom:6px">
-        Field fixes help more than opinions.
-      </p>
-
       <div class="comment-list"></div>
-
       <form class="comment-form">
-        <input
-          placeholder="Reply with a solution, field experience, or diagnostic step…"
-          required />
+        <input placeholder="Reply with a practical solution…" required />
         <button>Post</button>
       </form>
     </div>
   `;
 
-  const toggleBtns = div.querySelectorAll(".comment-toggle");
   const commentsBox = div.querySelector(".comments");
   const list = div.querySelector(".comment-list");
 
-  toggleBtns.forEach(btn => {
+  div.querySelectorAll(".comment-toggle").forEach(btn => {
     btn.onclick = async (e) => {
       e.preventDefault();
       commentsBox.style.display =
@@ -259,9 +236,9 @@ async function loadComments(postId, list) {
   list.innerHTML = "";
 
   for (const d of snap.docs) {
-    const comment = d.data();
-    const profile = await getProfile(comment.uid);
-    list.appendChild(renderComment(postId, d.id, comment, profile));
+    const c = d.data();
+    const profile = await getProfile(c.uid);
+    list.appendChild(renderComment(postId, d.id, c, profile));
   }
 }
 
@@ -288,7 +265,7 @@ async function submitComment(e, postId, list) {
   );
 
   input.value = "";
-  await loadComments(postId, list);
+  loadComments(postId, list);
 }
 
 /* ================= RENDER COMMENT ================= */
@@ -301,24 +278,19 @@ function renderComment(postId, commentId, c, profile) {
     <strong>${escapeHTML(c.authorName)}</strong>
     ${renderBadges(profile?.badges)}
     <p>${escapeHTML(c.content)}</p>
-
     <div class="comment-actions muted">
       ❤️ ${c.likes || 0}
       <button class="reply-toggle">Reply</button>
     </div>
-
     <div class="replies"></div>
-
     <form class="reply-form" style="display:none">
-      <input
-        placeholder="Add a practical follow-up or confirmation…"
-        required />
+      <input placeholder="Add a follow-up…" required />
       <button>Reply</button>
     </form>
   `;
 
-  const replyForm = div.querySelector(".reply-form");
   const repliesBox = div.querySelector(".replies");
+  const replyForm = div.querySelector(".reply-form");
 
   div.querySelector(".reply-toggle").onclick = async () => {
     replyForm.style.display =
@@ -357,27 +329,31 @@ async function loadReplies(postId, commentId, box) {
   });
 }
 
-/* ================= SUCCESS FEEDBACK ================= */
+/* ================= LIKE HANDLER (FINAL) ================= */
 
-function showPostSuccess(message = "Post published successfully ✓") {
-  let msg = document.getElementById("postSuccessMsg");
+window.toggleLike = async function ({ postId, button }) {
+  if (!currentUser) return;
 
-  if (!msg) {
-    msg = document.createElement("div");
-    msg.id = "postSuccessMsg";
-    msg.className = "muted";
-    msg.style.marginTop = "8px";
-    msg.style.color = "#2e7d32";
-    postBtn?.after(msg);
-  }
+  const ref = doc(db, "posts", postId);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
 
-  msg.textContent = message;
-  msg.style.display = "block";
+  const data = snap.data();
+  const liked = data.likedBy?.[currentUser.uid] === true;
 
-  setTimeout(() => {
-    msg.style.display = "none";
-  }, 2500);
-}
+  const newLikes = liked
+    ? Math.max((data.likes || 1) - 1, 0)
+    : (data.likes || 0) + 1;
+
+  await updateDoc(ref, {
+    likes: newLikes,
+    [`likedBy.${currentUser.uid}`]: !liked
+  });
+
+  const card = button.closest(".post-card");
+  card.querySelector(".like-count").textContent = newLikes;
+  button.classList.toggle("liked", !liked);
+};
 
 /* ================= HELPERS ================= */
 
@@ -396,6 +372,7 @@ function timeAgo(ts) {
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
 }
+
 function hasLiked(post, uid) {
   return !!post.likedBy && post.likedBy[uid] === true;
 }
