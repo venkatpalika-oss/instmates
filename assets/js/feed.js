@@ -153,7 +153,7 @@ function renderPost(postId, p, profile) {
   const div = document.createElement("div");
   div.className = "post-card";
 
-  const liked = p.likedBy?.[currentUser?.uid];
+ const liked = currentUser ? hasLiked(p, currentUser.uid) : false;
 
   div.innerHTML = `
     <div class="post-header">
@@ -395,4 +395,7 @@ function timeAgo(ts) {
   if (s < 3600) return `${Math.floor(s / 60)} min ago`;
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
+}
+function hasLiked(post, uid) {
+  return !!post.likedBy && post.likedBy[uid] === true;
 }
