@@ -72,9 +72,19 @@ Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= SCRIPTS ================= -->
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+
+<!-- Header / Footer includes -->
 <script src="/assets/js/includes.js"></script>
+
+<!-- Firebase init (MUST load before feed & likes) -->
+<script type="module" src="/assets/js/firebase.js"></script>
+
+<!-- Feed logic (loads posts) -->
 <script type="module" src="/assets/js/feed.js"></script>
+
+<!-- ❤️ Like / Unlike logic -->
+<script type="module" src="/assets/js/likes.js"></script>
 
 </body>
 </html>
