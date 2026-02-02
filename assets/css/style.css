@@ -1550,3 +1550,16 @@ body.auth-in.auth-ready .site-header .auth-in {
   color: #ffffff;
   text-decoration: none;
 }
+/* ================= FEED BUTTON FIX ================= */
+
+.btn-feed {
+  background: #e6eef6;
+  color: #0b3c5d;
+  border: 1px solid #c7d6e5;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.btn-feed:hover {
+  background: #d6e4f2;
+}
