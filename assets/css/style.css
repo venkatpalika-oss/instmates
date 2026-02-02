@@ -149,10 +149,14 @@ img {
     rgba(11,60,93,.72)
   );
   color: #ffffff;
-  border-radius: 16px;
+
+  /* FIX */
+  margin-top: 0;          /* remove gap from header */
+  border-radius: 0 0 16px 16px;  /* only bottom rounded */
+
   padding: 28px 18px;
-  margin-top: 14px;
 }
+
 
 .hero-inner {
   max-width: 1100px;
