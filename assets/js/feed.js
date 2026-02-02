@@ -17,7 +17,6 @@ import {
   addDoc,
   doc,
   getDoc,
-  updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -38,7 +37,6 @@ function prefillFromKnowledge() {
 
   const params = new URLSearchParams(window.location.search);
   const title = params.get("title");
-
   if (!title) return;
 
   postInput.value =
@@ -71,7 +69,7 @@ onAuthStateChanged(auth, async (user) => {
 
   if (user) {
     loadFeed();
-    prefillFromKnowledge();   // 🔗 PHASE 4 HOOK
+    prefillFromKnowledge();
   }
 });
 
@@ -118,6 +116,8 @@ if (postBtn) {
       uid: currentUser.uid,
       authorName: profile?.fullName || "User",
       content,
+      likes: 0,
+      likedBy: {},
       createdAt: serverTimestamp()
     });
 
@@ -147,11 +147,13 @@ function renderBadges(badges = []) {
   `;
 }
 
-/* ================= RENDER POST ================= */
+/* ================= RENDER POST (UPDATED) ================= */
 
 function renderPost(postId, p, profile) {
   const div = document.createElement("div");
   div.className = "post-card";
+
+  const liked = p.likedBy?.[currentUser?.uid];
 
   div.innerHTML = `
     <div class="post-header">
@@ -166,10 +168,45 @@ function renderPost(postId, p, profile) {
 
     <p>${escapeHTML(p.content)}</p>
 
-    <div class="post-actions muted">
-      💬 <button class="comment-toggle">Comments</button>
+    <!-- ================= REACTION SUMMARY ================= -->
+    <div class="post-reactions-summary">
+      <span class="reactions">
+        👍 ❤️ 👏 <strong class="like-count">${p.likes || 0}</strong>
+      </span>
+      <span class="post-meta">
+        <a href="#" class="comment-toggle">Comments</a> ·
+        <span>0 reposts</span>
+      </span>
     </div>
 
+    <!-- ================= ACTION BAR ================= -->
+    <div class="post-actions-bar">
+
+      <button class="action-btn ${liked ? "liked" : ""}"
+              data-liked="${liked ? "true" : "false"}"
+              onclick="toggleLike({
+                type:'post',
+                postId:'${postId}',
+                button:this
+              })">
+        👍 <span>Like</span>
+      </button>
+
+      <button class="action-btn comment-toggle">
+        💬 <span>Comment</span>
+      </button>
+
+      <button class="action-btn" disabled>
+        🔁 <span>Repost</span>
+      </button>
+
+      <button class="action-btn" disabled>
+        ➤ <span>Send</span>
+      </button>
+
+    </div>
+
+    <!-- ================= COMMENTS ================= -->
     <div class="comments" style="display:none">
       <p class="muted" style="margin-bottom:6px">
         Field fixes help more than opinions.
@@ -186,18 +223,21 @@ function renderPost(postId, p, profile) {
     </div>
   `;
 
-  const toggleBtn = div.querySelector(".comment-toggle");
+  const toggleBtns = div.querySelectorAll(".comment-toggle");
   const commentsBox = div.querySelector(".comments");
   const list = div.querySelector(".comment-list");
 
-  toggleBtn.onclick = async () => {
-    commentsBox.style.display =
-      commentsBox.style.display === "none" ? "block" : "none";
+  toggleBtns.forEach(btn => {
+    btn.onclick = async (e) => {
+      e.preventDefault();
+      commentsBox.style.display =
+        commentsBox.style.display === "none" ? "block" : "none";
 
-    if (commentsBox.style.display === "block") {
-      await loadComments(postId, list);
-    }
-  };
+      if (commentsBox.style.display === "block") {
+        await loadComments(postId, list);
+      }
+    };
+  });
 
   div.querySelector(".comment-form").onsubmit =
     (e) => submitComment(e, postId, list);
@@ -249,7 +289,6 @@ async function submitComment(e, postId, list) {
 
   input.value = "";
   await loadComments(postId, list);
-  scrollToLatest(list);
 }
 
 /* ================= RENDER COMMENT ================= */
@@ -284,7 +323,6 @@ function renderComment(postId, commentId, c, profile) {
   div.querySelector(".reply-toggle").onclick = async () => {
     replyForm.style.display =
       replyForm.style.display === "none" ? "block" : "none";
-
     await loadReplies(postId, commentId, repliesBox);
   };
 
@@ -317,44 +355,6 @@ async function loadReplies(postId, commentId, box) {
     `;
     box.appendChild(div);
   });
-
-  scrollToLatest(box);
-}
-
-async function submitReply(e, postId, commentId, box) {
-  e.preventDefault();
-  if (!currentUser) return;
-
-  const input = e.target.querySelector("input");
-  const content = input.value.trim();
-  if (!content) return;
-
-  const profile = await getProfile(currentUser.uid);
-
-  await addDoc(
-    collection(db, "posts", postId, "comments", commentId, "replies"),
-    {
-      uid: currentUser.uid,
-      authorName: profile?.fullName || "User",
-      content,
-      createdAt: serverTimestamp()
-    }
-  );
-
-  input.value = "";
-  await loadReplies(postId, commentId, box);
-}
-
-/* ================= AUTO SCROLL ================= */
-
-function scrollToLatest(container) {
-  const items = container.querySelectorAll("div");
-  if (items.length > 0) {
-    items[items.length - 1].scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
 }
 
 /* ================= SUCCESS FEEDBACK ================= */
