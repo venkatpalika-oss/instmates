@@ -248,3 +248,37 @@ body.auth-in .hero-actions .btn-soft:hover {
   background: #d97706;
   color: #ffffff;
 }
+/* =====================================================
+   FINAL HEADER HEIGHT & ALIGNMENT FIX
+   Restore compact InstMates header
+===================================================== */
+
+.site-header {
+  height: 64px;                 /* lock header height */
+}
+
+.site-header-inner {
+  height: 100%;
+  padding: 0 16px;              /* remove vertical padding */
+  align-items: center;          /* vertical centering */
+}
+
+/* Logo alignment */
+.logo,
+.logo-svg {
+  display: flex;
+  align-items: center;
+}
+
+/* Nav vertical centering */
+.main-nav {
+  height: 100%;
+  align-items: center;
+}
+
+/* Prevent nav links from stretching header */
+.main-nav a,
+.site-header .nav-dropdown > .nav-link {
+  padding: 0;
+  line-height: 1;
+}
