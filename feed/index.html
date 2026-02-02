@@ -27,19 +27,16 @@
 </nav>
 
 <!-- ================= MAIN ================= -->
-<main class="container auth-required">
+<!-- ❌ REMOVED auth-required -->
+<main class="container">
 
   <!-- ================= FEED INTRO ================= -->
   <section class="panel">
     <h2>Community Feed</h2>
     <p class="muted">
-      Field experiences, troubleshooting stories, calibration tips, and real-world lessons shared by technicians.
+      Field experiences, troubleshooting stories, calibration tips,
+      and real-world lessons shared by technicians.
     </p>
-
-    <!-- INLINE POST CTA (NO PAGE NAVIGATION) -->
-    <button class="btn btn-primary" id="openPostComposer">
-      + Create Post
-    </button>
   </section>
 
   <!-- ================= POST COMPOSER ================= -->
@@ -77,14 +74,11 @@ Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
 <!-- Header / Footer includes -->
 <script src="/assets/js/includes.js"></script>
 
-<!-- Firebase init (MUST load before feed & likes) -->
+<!-- Firebase init -->
 <script type="module" src="/assets/js/firebase.js"></script>
 
-<!-- Feed logic (loads posts) -->
+<!-- Feed logic (posts + likes + comments) -->
 <script type="module" src="/assets/js/feed.js"></script>
-
-<!-- ❤️ Like / Unlike logic -->
-<script type="module" src="/assets/js/likes.js"></script>
 
 </body>
 </html>
