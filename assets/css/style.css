@@ -185,7 +185,7 @@ img {
 /* ================= PANELS / CARDS ================= */
 
 .panel {
-  background: #dde7f1;
+  background: #ffffff;              /* RESTORED */
   border-radius: 12px;
   padding: 22px;
   margin-top: 18px;
@@ -193,12 +193,12 @@ img {
 }
 
 .card {
-  background: #eef4fa;
+  background: #ffffff;              /* RESTORED */
   border-radius: 12px;
   padding: 18px;
-  box-shadow: 0 6px 16px rgba(11,60,93,.12);
-  transition: transform .18s ease, box-shadow .18s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
 }
+
 
 .card:hover {
   transform: translateY(-3px);
