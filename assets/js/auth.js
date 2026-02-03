@@ -77,12 +77,16 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (FINAL – NO SURPRISE REDIRECTS)
+   AUTH STATE HANDLER (FINAL – STABLE + UI SYNCED)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
-  // Prevent header / auth flicker
+  /* ---------- AUTH READY ---------- */
   document.body.classList.add("auth-ready");
+
+  /* ✅ FIX #1: SYNC UI STATE (CRITICAL) */
+  document.body.classList.toggle("auth-in", !!user);
+  document.body.classList.toggle("auth-out", !user);
 
   const path = location.pathname;
 
@@ -95,17 +99,13 @@ onAuthStateChanged(auth, async (user) => {
   ];
 
   if (publicPages.includes(path)) {
-    document.body.classList.toggle("logged-in", !!user);
     return;
   }
 
   /* ================= LOGGED OUT ================= */
   if (!user) {
-    document.body.classList.remove("logged-in");
     return;
   }
-
-  document.body.classList.add("logged-in");
 
   try {
     /* ---------- ENSURE USER DOC ---------- */
@@ -119,7 +119,7 @@ onAuthStateChanged(auth, async (user) => {
 
     const userData = userSnap.data();
 
-    /* ---------- ENSURE PROFILE DOC (KEY FIX) ---------- */
+    /* ---------- ENSURE PROFILE DOC ---------- */
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
@@ -138,6 +138,8 @@ onAuthStateChanged(auth, async (user) => {
       "/explore.html",
       "/community.html",
       "/post.html",
+      "/feed/",
+      "/feed/index.html",
       "/profiles/",
       "/profiles/index.html"
     ];
