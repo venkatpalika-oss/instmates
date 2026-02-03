@@ -1,37 +1,27 @@
 /* =========================================================
-   InstMates – Technicians Directory (FINAL)
+   InstMates – Technician Directory Logic (FINAL FIX)
    File: assets/js/technicians.js
-   PURPOSE:
-   - Show ALL technicians
-   - Hide only those who explicitly set publicProfile = false
 ========================================================= */
 
 import { db } from "./firebase.js";
 import {
   collection,
-  getDocs,
-  orderBy,
-  query
+  getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= ELEMENT ================= */
+/* ================= ELEMENTS ================= */
 
 const listEl = document.getElementById("techniciansList");
+const searchInput = document.getElementById("searchInput");
 
 /* ================= LOAD TECHNICIANS ================= */
 
 async function loadTechnicians() {
-
   if (!listEl) return;
 
   listEl.innerHTML = `<p class="muted">Loading technicians…</p>`;
 
-  const q = query(
-    collection(db, "profiles"),
-    orderBy("createdAt", "desc")
-  );
-
-  const snap = await getDocs(q);
+  const snap = await getDocs(collection(db, "profiles"));
   listEl.innerHTML = "";
 
   if (snap.empty) {
@@ -39,57 +29,59 @@ async function loadTechnicians() {
     return;
   }
 
+  let count = 0;
+
   snap.forEach(docSnap => {
     const p = docSnap.data();
 
-    // ✅ CRITICAL FIX
-    // Show profile if publicProfile is TRUE or MISSING
+    // ✅ SHOW IF:
+    // - publicProfile === true
+    // - OR publicProfile is missing (legacy profiles)
     if (p.publicProfile === false) return;
 
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <h3>${escapeHTML(p.fullName || "Technician")}</h3>
-
-      <p class="muted">
-        ${escapeHTML(p.role || "Instrument / Analyzer Technician")}
-      </p>
-
-      ${p.primaryDomain
-        ? `<p class="muted">🧪 ${escapeHTML(p.primaryDomain)}</p>`
-        : ""
-      }
-
-      ${p.location
-        ? `<p class="muted">📍 ${escapeHTML(p.location)}</p>`
-        : ""
-      }
-
-      <div style="margin-top:10px">
-        <a class="btn btn-soft"
-           href="/profile-view.html?uid=${docSnap.id}">
-          View Profile
-        </a>
-
-        <a class="btn btn-ghost"
-           href="/message.html?uid=${docSnap.id}">
-          Message
-        </a>
-      </div>
-    `;
-
-    listEl.appendChild(card);
+    count++;
+    listEl.appendChild(renderCard(docSnap.id, p));
   });
+
+  if (count === 0) {
+    listEl.innerHTML = `<p class="muted">No public profiles available.</p>`;
+  }
 }
 
-/* ================= HELPERS ================= */
+/* ================= RENDER CARD ================= */
 
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+function renderCard(uid, p) {
+  const div = document.createElement("div");
+  div.className = "card";
+
+  div.innerHTML = `
+    <h3>${p.fullName || "Unnamed Technician"}</h3>
+    <p class="muted">${p.role || "Technician"}</p>
+
+    ${p.location ? `<p>📍 ${p.location}</p>` : ""}
+    ${p.primaryDomain ? `<p>${p.primaryDomain}</p>` : ""}
+    ${p.skills?.length ? `<p class="muted">${p.skills.join(", ")}</p>` : ""}
+
+    <a href="/message.html?uid=${uid}" class="btn btn-primary">
+      Message
+    </a>
+  `;
+
+  return div;
+}
+
+/* ================= SEARCH ================= */
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase();
+    document.querySelectorAll("#techniciansList .card").forEach(card => {
+      card.style.display =
+        card.innerText.toLowerCase().includes(q)
+          ? "block"
+          : "none";
+    });
+  });
 }
 
 /* ================= INIT ================= */
