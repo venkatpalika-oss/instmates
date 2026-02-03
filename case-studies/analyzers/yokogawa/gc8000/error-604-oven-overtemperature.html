@@ -2,70 +2,174 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Case Study: Yokogawa GC8000 Error 604 – Oven Overtemperature</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta name="description"
-        content="Upcoming case study for Yokogawa GC8000 Error 604 – oven overtemperature condition and shutdown event." />
+  <title>Case Study: Yokogawa GC8000 Error 604 – Oven Overtemperature</title>
 
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <meta name="description"
+        content="Real field case study of Yokogawa GC8000 Error 604. Oven overtemperature protection triggered due to heater control failure. Diagnosis, fix, and lessons learned." />
+
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-30">
 </head>
 
 <body data-page="case-study">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
   <a href="/case-studies/index.html">Case Studies</a><span>›</span>
-  <a href="/case-studies/analyzers/index.html">Analyzers</a><span>›</span>
-  <span class="current">GC8000 Error 604</span>
+  <a href="/case-studies/analyzers/">Analyzers</a><span>›</span>
+  <a href="/case-studies/analyzers/yokogawa/">Yokogawa</a><span>›</span>
+  <a href="/case-studies/analyzers/yokogawa/gc8000/">GC8000</a><span>›</span>
+  <span class="current">Error 604</span>
 </nav>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
-<section class="panel">
-  <h2>Case Study: GC8000 Error 604</h2>
-  <p class="muted">
-    Oven overtemperature protection activated.
-  </p>
-</section>
+  <!-- INTRO -->
+  <section class="panel">
+    <h2>GC8000 Error 604 – Oven Overtemperature</h2>
+    <p class="muted">
+      Oven temperature exceeded safe operating limit and protection activated.
+    </p>
+  </section>
 
-<section class="panel">
-  <h3>Status</h3>
-  <p class="muted">
-    🚧 This case study is under preparation and will be published soon.
-  </p>
-</section>
+  <!-- CASE SNAPSHOT -->
+  <section class="panel">
+    <h3>Case Snapshot</h3>
+    <ul class="checklist">
+      <li><strong>Analyzer:</strong> Yokogawa GC8000</li>
+      <li><strong>Error Code:</strong> 604</li>
+      <li><strong>Application:</strong> Refinery – Process Analyzer Shelter</li>
+      <li><strong>Status:</strong> Analyzer tripped to protect oven</li>
+    </ul>
+  </section>
 
-<section class="panel">
-  <h3>Typical Field Symptoms</h3>
-  <ul class="muted">
-    <li>Oven temperature rises uncontrollably</li>
-    <li>Error 604 triggered during operation</li>
-    <li>Analyzer enters protective shutdown</li>
-  </ul>
-</section>
+  <!-- SYMPTOMS -->
+  <section class="panel">
+    <h3>Observed Symptoms</h3>
+    <ul>
+      <li>Oven temperature increased rapidly beyond setpoint</li>
+      <li>Error 604 triggered during operation or warm-up</li>
+      <li>Analyzer entered protective shutdown</li>
+      <li>Heater output remained ON despite shutdown command</li>
+    </ul>
+  </section>
 
-<section class="panel">
-  <h3>Common Suspected Causes</h3>
-  <ul class="muted">
-    <li>Failed RTD feedback</li>
-    <li>Heater relay stuck ON</li>
-    <li>Oven control board fault</li>
-    <li>Configuration mismatch</li>
-  </ul>
-</section>
+  <!-- INITIAL ACTIONS -->
+  <section class="panel">
+    <h3>Initial Actions Taken</h3>
+    <ul>
+      <li>Analyzer powered OFF immediately</li>
+      <li>Heater supply isolated for safety</li>
+      <li>Alarm history and temperature trends reviewed</li>
+    </ul>
+    <p class="muted">
+      Immediate shutdown prevented oven damage and column degradation.
+    </p>
+  </section>
 
-<section class="panel">
-  <p class="muted">
-    Full root cause analysis and corrective action
-    will be added after field validation.
-  </p>
-</section>
+  <!-- DIAGNOSIS -->
+  <section class="panel">
+    <h3>Detailed Diagnosis</h3>
+    <ol>
+      <li>Oven temperature trend confirmed runaway heating</li>
+      <li>RTD resistance checked – normal and stable</li>
+      <li>Heater control signal measured – stuck ON</li>
+      <li>Heater relay continuity checked – relay contacts welded</li>
+    </ol>
+  </section>
+
+  <!-- ROOT CAUSE -->
+  <section class="panel">
+    <h3>Root Cause Identified</h3>
+    <p>
+      The oven heater relay was mechanically stuck in the ON position,
+      causing continuous heating regardless of controller output.
+    </p>
+  </section>
+
+  <!-- FIX -->
+  <section class="panel">
+    <h3>Corrective Action</h3>
+    <ul class="checklist">
+      <li>Oven heater supply isolated</li>
+      <li>Oven control board removed</li>
+      <li>Faulty heater relay confirmed</li>
+      <li>Oven control board replaced</li>
+      <li>Temperature control re-validated</li>
+    </ul>
+  </section>
+
+  <!-- RESULT -->
+  <section class="panel">
+    <h3>Result After Fix</h3>
+    <ul>
+      <li>Error 604 cleared after restart</li>
+      <li>Oven temperature stabilized at setpoint</li>
+      <li>No further overtemperature events observed</li>
+      <li>Analyzer returned to normal operation</li>
+    </ul>
+  </section>
+
+  <!-- FAILURE LOGIC -->
+  <section class="panel">
+    <h3>Failure Logic (Simplified)</h3>
+
+    <svg viewBox="0 0 700 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="60" width="180" height="60"
+            fill="#f5f7fa" stroke="#333"/>
+      <text x="55" y="95">Oven Heater</text>
+
+      <rect x="260" y="60" width="200" height="60"
+            fill="#f4cccc" stroke="#333"/>
+      <text x="275" y="95">Heater Relay (Stuck ON)</text>
+
+      <rect x="520" y="60" width="160" height="60"
+            fill="#d9ead3" stroke="#333"/>
+      <text x="545" y="95">Oven Control Board</text>
+
+      <line x1="200" y1="90" x2="260" y2="90" stroke="#000" stroke-width="2"/>
+      <line x1="460" y1="90" x2="520" y2="90" stroke="#000" stroke-width="2"/>
+    </svg>
+  </section>
+
+  <!-- LESSONS -->
+  <section class="panel">
+    <h3>Lessons Learned</h3>
+    <ul class="checklist">
+      <li>Error 604 is a serious safety-related fault</li>
+      <li>RTD health does not rule out heater runaway</li>
+      <li>Relay failure can cause uncontrolled heating</li>
+      <li>Immediate power isolation prevents equipment damage</li>
+    </ul>
+  </section>
+
+  <!-- RELATED -->
+  <section class="panel">
+    <h3>Related GC8000 Case Studies</h3>
+    <ul class="link-list">
+      <li>
+        <a href="/case-studies/analyzers/yokogawa/gc8000/error-602-slow-oven-warmup.html">
+          Error 602 – Slow Oven Warm-Up
+        </a>
+      </li>
+      <li>
+        <a href="/case-studies/analyzers/yokogawa/gc8000/error-603-oven-failure.html">
+          Error 603 – Oven Heater Failure
+        </a>
+      </li>
+    </ul>
+  </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 <script src="/assets/js/includes.js"></script>
 
