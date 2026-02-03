@@ -67,7 +67,10 @@ function renderList(data) {
       <a class="btn btn-soft"
          href="/profile-view.html?uid=${t.uid}">
         View Profile →
-      </a>
+      <a class="btn btn-soft"
+   href="/message.html?uid=${t.uid}&name=${encodeURIComponent(t.name)}">
+  ✉ Message
+</a>
     `;
 
     listEl.appendChild(card);
