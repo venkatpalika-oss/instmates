@@ -1,18 +1,37 @@
 /* =========================================================
-   InstMates – Technician Directory Logic (FINAL FIX)
+   InstMates – Technician Directory Logic (FINAL)
    File: assets/js/technicians.js
+   PURPOSE:
+   - Load ALL technician profiles
+   - Show only completed profiles
+   - No artificial limits
 ========================================================= */
 
-import { db } from "./firebase.js";
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 import {
   collection,
+  query,
+  where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
 
-const listEl = document.getElementById("techniciansList");
+const listEl = document.getElementById("technicianList");
 const searchInput = document.getElementById("searchInput");
+
+/* ================= AUTH GATE ================= */
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.replace("/login.html");
+    return;
+  }
+  loadTechnicians();
+});
 
 /* ================= LOAD TECHNICIANS ================= */
 
@@ -21,69 +40,90 @@ async function loadTechnicians() {
 
   listEl.innerHTML = `<p class="muted">Loading technicians…</p>`;
 
-  const snap = await getDocs(collection(db, "profiles"));
-  listEl.innerHTML = "";
+  try {
+    const q = query(
+      collection(db, "profiles"),
+      where("profileCompleted", "==", true)
+    );
 
-  if (snap.empty) {
-    listEl.innerHTML = `<p class="muted">No technicians found.</p>`;
-    return;
-  }
+    const snap = await getDocs(q);
 
-  let count = 0;
+    if (snap.empty) {
+      listEl.innerHTML = `<p class="muted">No technicians found.</p>`;
+      return;
+    }
 
-  snap.forEach(docSnap => {
-    const p = docSnap.data();
+    const cards = [];
+    snap.forEach(doc => {
+      cards.push(renderCard(doc.id, doc.data()));
+    });
 
-    // ✅ SHOW IF:
-    // - publicProfile === true
-    // - OR publicProfile is missing (legacy profiles)
-    if (p.publicProfile === false) return;
+    listEl.innerHTML = "";
+    cards.forEach(c => listEl.appendChild(c));
 
-    count++;
-    listEl.appendChild(renderCard(docSnap.id, p));
-  });
-
-  if (count === 0) {
-    listEl.innerHTML = `<p class="muted">No public profiles available.</p>`;
+  } catch (err) {
+    console.error("Failed to load technicians:", err);
+    listEl.innerHTML =
+      `<p class="muted">Failed to load technicians.</p>`;
   }
 }
 
 /* ================= RENDER CARD ================= */
 
 function renderCard(uid, p) {
-  const div = document.createElement("div");
-  div.className = "card";
+  const card = document.createElement("div");
+  card.className = "card";
 
-  div.innerHTML = `
-    <h3>${p.fullName || "Unnamed Technician"}</h3>
-    <p class="muted">${p.role || "Technician"}</p>
+  const skills = Array.isArray(p.skills)
+    ? p.skills.join(", ")
+    : "";
 
-    ${p.location ? `<p>📍 ${p.location}</p>` : ""}
-    ${p.primaryDomain ? `<p>${p.primaryDomain}</p>` : ""}
-    ${p.skills?.length ? `<p class="muted">${p.skills.join(", ")}</p>` : ""}
+  card.innerHTML = `
+    <h3>${escapeHTML(p.fullName || "Technician")}</h3>
 
-    <a href="/message.html?uid=${uid}" class="btn btn-primary">
+    <p class="muted">
+      ${escapeHTML(p.role || "Instrument Technician")}
+    </p>
+
+    <p class="muted">
+      📍 ${escapeHTML(p.location || "Location not specified")}
+    </p>
+
+    ${skills
+      ? `<p class="muted">${escapeHTML(skills)}</p>`
+      : ""
+    }
+
+    <a href="/message.html?uid=${uid}"
+       class="btn btn-primary">
       Message
     </a>
   `;
 
-  return div;
+  return card;
 }
 
 /* ================= SEARCH ================= */
 
 if (searchInput) {
   searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase();
-    document.querySelectorAll("#techniciansList .card").forEach(card => {
+    const term = searchInput.value.toLowerCase();
+    const cards = listEl.querySelectorAll(".card");
+
+    cards.forEach(card => {
       card.style.display =
-        card.innerText.toLowerCase().includes(q)
+        card.innerText.toLowerCase().includes(term)
           ? "block"
           : "none";
     });
   });
 }
 
-/* ================= INIT ================= */
+/* ================= HELPERS ================= */
 
-loadTechnicians();
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
