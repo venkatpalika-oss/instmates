@@ -1683,3 +1683,31 @@ body.auth-in.auth-ready .site-header .auth-in {
   from{ transform:translateX(0); }
   to{ transform:translateX(-100%); }
 }
+.case-ticker{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  background:#eaf1f8;
+  border-radius:12px;
+  padding:10px 0;
+  margin:16px 0;
+  text-decoration:none;
+  color:#0b3a5a;
+  font-weight:500;
+}
+
+.case-ticker-track{
+  display:inline-block;
+  white-space:nowrap;
+  padding-left:100%;
+  animation:caseScroll 22s linear infinite;
+}
+
+.case-ticker:hover .case-ticker-track{
+  animation-play-state:paused;
+}
+
+@keyframes caseScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-100%); }
+}
