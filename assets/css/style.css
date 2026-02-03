@@ -1655,3 +1655,29 @@ body.auth-in.auth-ready .site-header .auth-in {
   50% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
+<style>
+.case-scroll{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:6px 2px;
+  scrollbar-width:none;
+}
+.case-scroll::-webkit-scrollbar{
+  display:none;
+}
+.case-chip{
+  white-space:nowrap;
+  padding:8px 14px;
+  border-radius:999px;
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,0.12);
+  font-size:14px;
+  font-weight:500;
+  transition:.2s;
+}
+.case-chip:hover{
+  background:#eef3f8;
+  text-decoration:none;
+}
+</style>
