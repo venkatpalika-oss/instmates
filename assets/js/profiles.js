@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Public Profiles Listing (FINAL)
+   InstMates – Public Profiles Listing (FINAL – FIXED)
    File: /assets/js/profiles.js
 ========================================================= */
 
@@ -9,7 +9,6 @@ import {
   collection,
   getDocs,
   query,
-  where,
   orderBy
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -25,8 +24,6 @@ async function loadProfiles() {
   try {
     const q = query(
       collection(db, "profiles"),
-      where("publicProfile", "==", true),
-      where("profileCompleted", "==", true),
       orderBy("createdAt", "desc")
     );
 
@@ -34,7 +31,7 @@ async function loadProfiles() {
 
     if (snap.empty) {
       grid.innerHTML =
-        `<p class="muted">No public profiles available.</p>`;
+        `<p class="muted">No profiles available.</p>`;
       return;
     }
 
@@ -44,13 +41,23 @@ async function loadProfiles() {
       const u = docSnap.data();
       const uid = docSnap.id;
 
+      /* ================= VISIBILITY LOGIC =================
+         Rules:
+         - profileCompleted must be true
+         - publicProfile defaults to TRUE if missing
+      ===================================================== */
+
+      if (u.profileCompleted !== true) return;
+
+      if (u.publicProfile === false) return;
+
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
         <h3>${escapeHTML(u.fullName || "Technician")}</h3>
         <p class="muted">${escapeHTML(u.role || "Instrument Technician")}</p>
-        <p class="muted">📍 ${escapeHTML(u.location || "")}</p>
+        ${u.location ? `<p class="muted">📍 ${escapeHTML(u.location)}</p>` : ""}
 
         <div class="tags">
           ${(u.skills || [])
