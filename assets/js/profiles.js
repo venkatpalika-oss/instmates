@@ -1,20 +1,19 @@
 /* =========================================================
-   InstMates – Public Profiles Listing (FINAL – FIXED)
+   InstMates – Profiles Directory (USERS + PROFILES)
    File: /assets/js/profiles.js
+   FINAL – SAFE MERGED VIEW
 ========================================================= */
 
 import { db } from "./firebase.js";
 
 import {
   collection,
-  getDocs,
-  query,
-  orderBy
+  getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const grid = document.getElementById("profilesGrid");
 
-/* ================= LOAD PROFILES ================= */
+/* ================= LOAD USERS + PROFILES ================= */
 
 async function loadProfiles() {
   if (!grid) return;
@@ -22,54 +21,72 @@ async function loadProfiles() {
   grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
   try {
-    const q = query(
-      collection(db, "profiles"),
-      orderBy("createdAt", "desc")
-    );
+    /* ---------- FETCH PROFILES ---------- */
+    const profilesSnap = await getDocs(collection(db, "profiles"));
+    const profilesMap = {};
 
-    const snap = await getDocs(q);
+    profilesSnap.forEach(doc => {
+      profilesMap[doc.id] = doc.data();
+    });
 
-    if (snap.empty) {
-      grid.innerHTML =
-        `<p class="muted">No profiles available.</p>`;
+    /* ---------- FETCH USERS ---------- */
+    const usersSnap = await getDocs(collection(db, "users"));
+
+    if (usersSnap.empty) {
+      grid.innerHTML = `<p class="muted">No users found.</p>`;
       return;
     }
 
     grid.innerHTML = "";
 
-    snap.forEach(docSnap => {
-      const u = docSnap.data();
+    usersSnap.forEach(docSnap => {
+      const user = docSnap.data();
       const uid = docSnap.id;
 
-      /* ================= VISIBILITY LOGIC =================
-         Rules:
-         - profileCompleted must be true
-         - publicProfile defaults to TRUE if missing
-      ===================================================== */
+      const profile = profilesMap[uid] || {};
 
-      if (u.profileCompleted !== true) return;
+      const isCompleted = profile.profileCompleted === true;
+      const isPublic = profile.publicProfile !== false;
 
-      if (u.publicProfile === false) return;
+      // ❌ hide only if explicitly private
+      if (!isPublic) return;
 
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        <h3>${escapeHTML(u.fullName || "Technician")}</h3>
-        <p class="muted">${escapeHTML(u.role || "Instrument Technician")}</p>
-        ${u.location ? `<p class="muted">📍 ${escapeHTML(u.location)}</p>` : ""}
+        <h3>${escapeHTML(profile.fullName || user.name || "Technician")}</h3>
+
+        <p class="muted">
+          ${escapeHTML(profile.role || "Instrument / Analyzer Technician")}
+        </p>
+
+        ${profile.location
+          ? `<p class="muted">📍 ${escapeHTML(profile.location)}</p>`
+          : ""
+        }
 
         <div class="tags">
-          ${(u.skills || [])
+          ${(profile.skills || [])
             .map(s => `<span class="tag">${escapeHTML(s)}</span>`)
             .join("")}
         </div>
 
+        ${!isCompleted
+          ? `<p class="muted" style="color:#c62828;margin-top:8px">
+              ⚠ Profile not completed
+            </p>`
+          : ""
+        }
+
         <div class="action-row" style="margin-top:12px;">
-          <a class="btn btn-ghost"
-             href="/profile-view.html?uid=${uid}">
-             View Profile
-          </a>
+          ${isCompleted
+            ? `<a class="btn btn-ghost"
+                 href="/profile-view.html?uid=${uid}">
+                 View Profile
+               </a>`
+            : `<span class="muted">Profile pending</span>`
+          }
 
           <a class="btn btn-primary"
              href="/message.html?to=${uid}">
@@ -82,7 +99,7 @@ async function loadProfiles() {
     });
 
   } catch (err) {
-    console.error("Profile load failed:", err);
+    console.error("Profiles load error:", err);
     grid.innerHTML =
       `<p class="muted">Failed to load profiles.</p>`;
   }
