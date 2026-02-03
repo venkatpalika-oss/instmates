@@ -1,92 +1,97 @@
 /* =========================================================
-   InstMates – Technician Directory
-   Source: users collection (PUBLIC + COMPLETED profiles only)
+   InstMates – Technicians Directory (FINAL)
+   File: assets/js/technicians.js
+   PURPOSE:
+   - Show ALL technicians
+   - Hide only those who explicitly set publicProfile = false
 ========================================================= */
 
-import { auth, db } from "./firebase.js";
-import { onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
+import { db } from "./firebase.js";
 import {
   collection,
-  query,
-  where,
-  getDocs
+  getDocs,
+  orderBy,
+  query
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const listEl = document.getElementById("technicianList");
-const searchInput = document.getElementById("searchInput");
+/* ================= ELEMENT ================= */
 
-let technicians = [];
+const listEl = document.getElementById("techniciansList");
 
-/* ================= AUTH ================= */
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return;
-  await loadTechnicians();
-  renderList(technicians);
-});
-
-/* ================= LOAD ================= */
+/* ================= LOAD TECHNICIANS ================= */
 
 async function loadTechnicians() {
+
+  if (!listEl) return;
+
+  listEl.innerHTML = `<p class="muted">Loading technicians…</p>`;
+
   const q = query(
-    collection(db, "users"),
-    where("profileCompleted", "==", true),
-    where("publicProfile", "==", true)
+    collection(db, "profiles"),
+    orderBy("createdAt", "desc")
   );
 
   const snap = await getDocs(q);
-  technicians = [];
-
-  snap.forEach(doc => technicians.push(doc.data()));
-}
-
-/* ================= RENDER ================= */
-
-function renderList(data) {
   listEl.innerHTML = "";
 
-  if (!data.length) {
+  if (snap.empty) {
     listEl.innerHTML = `<p class="muted">No technicians found.</p>`;
     return;
   }
 
-  data.forEach(t => {
+  snap.forEach(docSnap => {
+    const p = docSnap.data();
+
+    // ✅ CRITICAL FIX
+    // Show profile if publicProfile is TRUE or MISSING
+    if (p.publicProfile === false) return;
+
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <h3>${t.name || "Technician"}</h3>
-      <p class="muted">${t.role || "Technician"}</p>
+      <h3>${escapeHTML(p.fullName || "Technician")}</h3>
 
-      <p><strong>Domain:</strong> ${t.primaryDomain || "—"}</p>
-      <p><strong>Location:</strong> ${t.location || "—"}</p>
-      <p class="muted">${t.experienceYears || 0} years experience</p>
+      <p class="muted">
+        ${escapeHTML(p.role || "Instrument / Analyzer Technician")}
+      </p>
 
-      <a class="btn btn-soft"
-         href="/profile-view.html?uid=${t.uid}">
-        View Profile →
-      <a class="btn btn-soft"
-   href="/message.html?uid=${t.uid}&name=${encodeURIComponent(t.name)}">
-  ✉ Message
-</a>
+      ${p.primaryDomain
+        ? `<p class="muted">🧪 ${escapeHTML(p.primaryDomain)}</p>`
+        : ""
+      }
+
+      ${p.location
+        ? `<p class="muted">📍 ${escapeHTML(p.location)}</p>`
+        : ""
+      }
+
+      <div style="margin-top:10px">
+        <a class="btn btn-soft"
+           href="/profile-view.html?uid=${docSnap.id}">
+          View Profile
+        </a>
+
+        <a class="btn btn-ghost"
+           href="/message.html?uid=${docSnap.id}">
+          Message
+        </a>
+      </div>
     `;
 
     listEl.appendChild(card);
   });
 }
 
-/* ================= SEARCH ================= */
+/* ================= HELPERS ================= */
 
-searchInput?.addEventListener("input", () => {
-  const q = searchInput.value.toLowerCase().trim();
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
-  const filtered = technicians.filter(t =>
-    `${t.name} ${t.primaryDomain} ${t.location}`
-      .toLowerCase()
-      .includes(q)
-  );
+/* ================= INIT ================= */
 
-  renderList(filtered);
-});
+loadTechnicians();
