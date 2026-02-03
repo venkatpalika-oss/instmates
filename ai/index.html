@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>InstMates AI | Analyzer Troubleshooting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="InstMates AI – field-focused analyzer troubleshooting assistant for GC, CEMS and instrumentation technicians." />
+
+  <!-- GLOBAL CSS (LOCKED) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-03">
+</head>
+
+<body data-page="ai">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <span class="current">InstMates AI</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container auth-required">
+
+  <!-- ================= INTRO PANEL ================= -->
+  <section class="panel">
+    <h2>InstMates AI – Analyzer Troubleshooting</h2>
+    <p class="muted">
+      Practical, field-oriented guidance for GC, CEMS and analyzer technicians.
+      <br>
+      <strong>Note:</strong> This does not replace plant safety procedures.
+    </p>
+  </section>
+
+  <!-- ================= ANALYZER SELECT ================= -->
+  <section class="panel">
+    <h3>Select Analyzer</h3>
+
+    <div class="grid grid-2">
+      <label>
+        Analyzer Type
+        <select id="analyzerType">
+          <option value="">Select</option>
+          <option value="gc">Gas Chromatograph (GC)</option>
+          <option value="cems">CEMS</option>
+          <option value="oxygen">Oxygen Analyzer</option>
+        </select>
+      </label>
+
+      <label>
+        Detector / Sensor (Optional)
+        <select id="detectorType">
+          <option value="">Select</option>
+          <option value="fid">FID</option>
+          <option value="tcd">TCD</option>
+          <option value="zirconia">Zirconia</option>
+          <option value="paramagnetic">Paramagnetic</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <!-- ================= CHAT PANEL ================= -->
+  <section class="panel">
+
+    <h3>Ask Your Question</h3>
+
+    <!-- CHAT WINDOW -->
+    <div class="chat-window" style="border:1px solid rgba(0,0,0,.15); border-radius:12px; padding:12px; height:360px; overflow-y:auto; background:#fff;">
+
+      <!-- AI MESSAGE -->
+      <div class="chat-msg ai">
+        <p class="muted">
+          👋 Hi.  
+          Select the analyzer type and describe the issue you are facing in the field.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- INPUT -->
+    <form id="aiForm" style="margin-top:12px;">
+      <textarea
+        id="aiQuestion"
+        rows="3"
+        placeholder="Example: GC8000 showing negative peaks, baseline flat..."
+        required></textarea>
+
+      <button class="btn btn-primary full" type="submit">
+        Ask InstMates AI
+      </button>
+    </form>
+
+    <!-- FREE LIMIT NOTE -->
+    <p class="muted" style="margin-top:10px;">
+      Free users: limited daily questions.  
+      <a href="/pricing.html">Upgrade to Pro</a> for full step-by-step guidance.
+    </p>
+
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>
