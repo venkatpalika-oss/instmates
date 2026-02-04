@@ -90,6 +90,32 @@ async function loadKnowledge(analyzer) {
 
 async function askAI({ analyzer, detector, question, knowledgeText }) {
 
+  const response = await fetch(
+    "https://us-central1-instmates.cloudfunctions.net/askAI",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        analyzer,
+        detector,
+        question,
+        knowledge: knowledgeText
+      })
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.error) {
+    return "AI could not process your request. Please try again.";
+  }
+
+  return data.answer;
+}
+
+
   /*
     THIS is where OpenAI / GPT will be called later.
 
