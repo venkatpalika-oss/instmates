@@ -8,7 +8,7 @@
   <meta name="description"
         content="InstMates AI – field-focused analyzer troubleshooting assistant for GC, CEMS and instrumentation technicians." />
 
-  <!-- GLOBAL CSS (LOCKED) -->
+  <!-- ================= GLOBAL CSS (LOCKED) ================= -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-03">
 </head>
 
@@ -28,66 +28,66 @@
 
   <!-- ================= INTRO PANEL ================= -->
   <section class="panel">
-    <h2>InstMates AI – Analyzer Troubleshooting</h2>
+    <h2>InstMates AI</h2>
     <p class="muted">
-      Practical, field-oriented guidance for GC, CEMS and analyzer technicians.
+      AI-powered, field-oriented troubleshooting for analyzer and instrumentation technicians.
       <br>
-      <strong>Note:</strong> This does not replace plant safety procedures.
+      <strong>Note:</strong> Always follow plant safety procedures and OEM manuals.
     </p>
   </section>
 
   <!-- ================= ANALYZER SELECT ================= -->
   <section class="panel">
-    <h3>Select Analyzer</h3>
+    <h3>Analyzer Details</h3>
 
     <div class="grid grid-2">
       <label>
         Analyzer Type
-        <select id="analyzerType">
+        <select id="analyzer">
           <option value="">Select</option>
-          <option value="gc">Gas Chromatograph (GC)</option>
-          <option value="cems">CEMS</option>
-          <option value="oxygen">Oxygen Analyzer</option>
+          <option value="GC">Gas Chromatograph (GC)</option>
+          <option value="CEMS">CEMS</option>
+          <option value="Oxygen">Oxygen Analyzer</option>
         </select>
       </label>
 
       <label>
         Detector / Sensor (Optional)
-        <select id="detectorType">
+        <select id="detector">
           <option value="">Select</option>
-          <option value="fid">FID</option>
-          <option value="tcd">TCD</option>
-          <option value="zirconia">Zirconia</option>
-          <option value="paramagnetic">Paramagnetic</option>
+          <option value="FID">FID</option>
+          <option value="TCD">TCD</option>
+          <option value="Zirconia">Zirconia</option>
+          <option value="Paramagnetic">Paramagnetic</option>
         </select>
       </label>
     </div>
   </section>
 
-  <!-- ================= CHAT PANEL ================= -->
+  <!-- ================= AI INTERACTION PANEL ================= -->
   <section class="panel">
 
-    <h3>Ask Your Question</h3>
+    <h3>Ask InstMates AI</h3>
 
-    <!-- CHAT WINDOW -->
-    <div class="chat-window" style="border:1px solid rgba(0,0,0,.15); border-radius:12px; padding:12px; height:360px; overflow-y:auto; background:#fff;">
-
-      <!-- AI MESSAGE -->
-      <div class="chat-msg ai">
-        <p class="muted">
-          👋 Hi.  
-          Select the analyzer type and describe the issue you are facing in the field.
-        </p>
-      </div>
-
+    <!-- RESPONSE AREA -->
+    <div id="answer"
+         style="border:1px solid rgba(0,0,0,.15);
+                border-radius:12px;
+                padding:16px;
+                min-height:220px;
+                background:#fff;
+                white-space:pre-wrap;">
+      <p class="muted">
+        👋 Select the analyzer details and describe the issue you are facing in the field.
+      </p>
     </div>
 
     <!-- INPUT -->
-    <form id="aiForm" style="margin-top:12px;">
+    <form id="aiForm" style="margin-top:14px;">
       <textarea
-        id="aiQuestion"
+        id="question"
         rows="3"
-        placeholder="Example: GC8000 showing negative peaks, baseline flat..."
+        placeholder="Example: Yokogawa GC8000 showing negative peaks, baseline flat..."
         required></textarea>
 
       <button class="btn btn-primary full" type="submit">
@@ -97,7 +97,7 @@
 
     <!-- FREE LIMIT NOTE -->
     <p class="muted" style="margin-top:10px;">
-      Free users: limited daily questions.  
+      Free users have limited daily questions.
       <a href="/pricing.html">Upgrade to Pro</a> for full step-by-step guidance.
     </p>
 
@@ -108,7 +108,7 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= INCLUDES ================= -->
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
 <script type="module" src="/assets/js/ai.js"></script>
 
