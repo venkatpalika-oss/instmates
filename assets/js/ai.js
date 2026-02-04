@@ -1,7 +1,7 @@
 /* =========================================================
-   InstMates AI – Frontend Logic (FINAL)
+   InstMates AI – Frontend Logic (FINAL, STABLE)
    File: /assets/js/ai.js
-   ========================================================= */
+========================================================= */
 
 /* ================= LOAD FIELD KNOWLEDGE ================= */
 
@@ -22,7 +22,8 @@ async function loadKnowledge(analyzer) {
     const res = await fetch(file);
     if (!res.ok) return "";
     return await res.text();
-  } catch {
+  } catch (err) {
+    console.error("Knowledge load failed:", err);
     return "";
   }
 }
@@ -30,14 +31,12 @@ async function loadKnowledge(analyzer) {
 /* ================= MAIN LOGIC ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("aiForm");
   const answerBox = document.getElementById("answer");
+  const askBtn = document.getElementById("askBtn");
 
-  if (!form || !answerBox) return;
+  if (!answerBox || !askBtn) return;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
+  askBtn.addEventListener("click", async () => {
     const analyzer = document.getElementById("analyzer")?.value || "";
     const detector = document.getElementById("detector")?.value || "";
     const question = document.getElementById("question")?.value || "";
@@ -74,15 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.json();
 
-      /* ================= SAFE RESPONSE EXTRACTION ================= */
-
       const aiText =
         data.answer ||
         data.reply ||
         data.response ||
         data.result ||
         data.text ||
-        data.choices?.[0]?.message?.content ||
         "";
 
       if (!aiText || typeof aiText !== "string") {
