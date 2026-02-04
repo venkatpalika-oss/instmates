@@ -14,15 +14,19 @@
 
 <body data-page="ai">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
   <span class="current">InstMates AI</span>
 </nav>
 
+<!-- ================= MAIN ================= -->
 <main class="container auth-required">
 
+  <!-- ================= INTRO ================= -->
   <section class="panel">
     <h2>InstMates AI</h2>
     <p class="muted">
@@ -32,15 +36,15 @@
     </p>
   </section>
 
+  <!-- ================= ANALYZER DETAILS ================= -->
   <section class="panel">
     <h3>Analyzer Details</h3>
 
     <div class="grid grid-2">
       <label>
         Analyzer Type
-        <select id="analyzer">
-          <option value="">Select</option>
-          <option value="GC">Gas Chromatograph (GC)</option>
+        <select id="analyzer" required>
+          <option value="GC" selected>Gas Chromatograph (GC)</option>
           <option value="CEMS">CEMS</option>
           <option value="Oxygen">Oxygen Analyzer</option>
         </select>
@@ -59,10 +63,12 @@
     </div>
   </section>
 
+  <!-- ================= AI INTERACTION ================= -->
   <section class="panel">
 
     <h3>Ask InstMates AI</h3>
 
+    <!-- RESPONSE AREA -->
     <div id="answer"
          style="border:1px solid rgba(0,0,0,.15);
                 border-radius:12px;
@@ -75,6 +81,7 @@
       </p>
     </div>
 
+    <!-- INPUT FORM -->
     <form id="aiForm" style="margin-top:14px;">
       <textarea
         id="question"
@@ -96,8 +103,10 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
 <script type="module" src="/assets/js/ai.js"></script>
 
