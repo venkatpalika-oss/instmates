@@ -1,21 +1,33 @@
+/* =========================================================
+   InstMates AI – Frontend Logic (FINAL)
+   File: /assets/js/ai.js
+   ========================================================= */
+
+/* ================= LOAD FIELD KNOWLEDGE ================= */
+
 async function loadKnowledge(analyzer) {
   let file = "";
 
   if (analyzer === "GC") {
     file = "/ai-knowledge/gc-troubleshooting.txt";
-  }
-  if (analyzer === "CEMS") {
+  } else if (analyzer === "CEMS") {
     file = "/ai-knowledge/cems-troubleshooting.txt";
-  }
-  if (analyzer === "Oxygen") {
+  } else if (analyzer === "Oxygen") {
     file = "/ai-knowledge/oxygen-analyzer-troubleshooting.txt";
   }
 
   if (!file) return "";
 
-  const res = await fetch(file);
-  return await res.text();
+  try {
+    const res = await fetch(file);
+    if (!res.ok) return "";
+    return await res.text();
+  } catch {
+    return "";
+  }
 }
+
+/* ================= MAIN LOGIC ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("aiForm");
@@ -26,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const analyzer = document.getElementById("analyzer").value;
-    const detector = document.getElementById("detector").value;
-    const question = document.getElementById("question").value;
+    const analyzer = document.getElementById("analyzer")?.value || "";
+    const detector = document.getElementById("detector")?.value || "";
+    const question = document.getElementById("question")?.value || "";
 
     if (!analyzer || !question.trim()) {
       answerBox.innerHTML =
@@ -56,33 +68,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
+      if (!response.ok) {
+        throw new Error("AI service error");
+      }
+
       const data = await response.json();
+
+      /* ================= SAFE RESPONSE EXTRACTION ================= */
 
       const aiText =
         data.answer ||
         data.reply ||
         data.response ||
         data.result ||
+        data.text ||
+        data.choices?.[0]?.message?.content ||
         "";
 
-      if (!aiText) {
+      if (!aiText || typeof aiText !== "string") {
         answerBox.innerHTML =
           "<strong>No usable response returned from InstMates AI.</strong>";
         return;
       }
 
+      /* ================= FORMAT RESPONSE ================= */
+
       const formatted = aiText
-        .replace(/1\.\s*(.*)/gi, "<h4>🧠 Interpretation</h4><p>$1</p>")
-        .replace(/2\.\s*(.*)/gi, "<h4>⚠️ Most Probable Cause</h4><p>$1</p>")
-        .replace(/3\.\s*(.*)/gi, "<h4>🛠️ Field Check Sequence</h4><p>$1</p>")
-        .replace(/4\.\s*(.*)/gi, "<h4>❌ What This Is NOT</h4><p>$1</p>")
-        .replace(/5\.\s*(.*)/gi, "<h4>📌 Field Rule</h4><p><strong>$1</strong></p>")
+        .replace(/(^|\n)1\.\s*(.*)/gi, "<h4>🧠 Interpretation</h4><p>$2</p>")
+        .replace(/(^|\n)2\.\s*(.*)/gi, "<h4>⚠️ Most Probable Cause</h4><p>$2</p>")
+        .replace(/(^|\n)3\.\s*(.*)/gi, "<h4>🛠️ Field Check Sequence</h4><p>$2</p>")
+        .replace(/(^|\n)4\.\s*(.*)/gi, "<h4>❌ What This Is NOT</h4><p>$2</p>")
+        .replace(/(^|\n)5\.\s*(.*)/gi, "<h4>📌 Field Rule</h4><p><strong>$2</strong></p>")
         .replace(/\n/g, "<br>");
 
       answerBox.innerHTML = formatted;
 
     } catch (err) {
-      console.error(err);
+      console.error("InstMates AI error:", err);
       answerBox.innerHTML =
         "<strong>Error connecting to InstMates AI service.</strong>";
     }
