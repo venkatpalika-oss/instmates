@@ -1,33 +1,29 @@
 /* =========================================================
-   InstMates AI – Frontend Logic (FINAL & WORKING)
+   InstMates AI – Frontend Logic (FINAL + SAFE)
    File: /assets/js/ai.js
 ========================================================= */
 
 /* ================= LOAD FIELD KNOWLEDGE ================= */
 
 async function loadKnowledge(analyzer) {
-  let file = "";
+  const map = {
+    GC: "/ai-knowledge/gc-troubleshooting.txt",
+    CEMS: "/ai-knowledge/cems-troubleshooting.txt",
+    Oxygen: "/ai-knowledge/oxygen-analyzer-troubleshooting.txt"
+  };
 
-  if (analyzer === "GC") {
-    file = "/ai-knowledge/gc-troubleshooting.txt";
-  } else if (analyzer === "CEMS") {
-    file = "/ai-knowledge/cems-troubleshooting.txt";
-  } else if (analyzer === "Oxygen") {
-    file = "/ai-knowledge/oxygen-analyzer-troubleshooting.txt";
-  }
-
+  const file = map[analyzer];
   if (!file) return "";
 
   try {
     const res = await fetch(file);
-    if (!res.ok) return "";
-    return await res.text();
+    return res.ok ? await res.text() : "";
   } catch {
     return "";
   }
 }
 
-/* ================= MAIN AI CALL ================= */
+/* ================= CORE AI CALL ================= */
 
 async function askInstMatesAI() {
   const answerBox = document.getElementById("answer");
@@ -62,21 +58,12 @@ async function askInstMatesAI() {
       }
     );
 
-    if (!response.ok) {
-      throw new Error("AI service error");
-    }
+    if (!response.ok) throw new Error("AI request failed");
 
     const data = await response.json();
+    const aiText = data.answer || "";
 
-    const aiText =
-      data.answer ||
-      data.reply ||
-      data.response ||
-      data.result ||
-      data.text ||
-      "";
-
-    if (!aiText || typeof aiText !== "string") {
+    if (!aiText) {
       answerBox.innerHTML =
         "<strong>No usable response returned from InstMates AI.</strong>";
       return;
@@ -99,12 +86,23 @@ async function askInstMatesAI() {
   }
 }
 
-/* ================= EVENT BINDING ================= */
+/* ================= EVENT BINDINGS ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const askBtn = document.getElementById("askBtn");
+  const form = document.getElementById("aiForm");
+  const askBtn = document.querySelector("button[type='submit']");
 
-  if (!askBtn) return;
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      askInstMatesAI();
+    });
+  }
 
-  askBtn.addEventListener("click", askInstMatesAI);
+  if (askBtn) {
+    askBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      askInstMatesAI();
+    });
+  }
 });
