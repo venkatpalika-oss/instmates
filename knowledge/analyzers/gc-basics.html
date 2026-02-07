@@ -71,6 +71,70 @@
       <li>Detector converts concentration into an electrical signal</li>
       <li>Signal is processed and displayed as peaks on a chromatogram</li>
     </ol>
+ <!-- ================= INLINE SVG DIAGRAM ================= -->
+    <h2>GC Working – Flow Diagram</h2>
+
+    <svg viewBox="0 0 900 240" width="100%" role="img"
+         aria-label="Gas Chromatograph Working Flow Diagram"
+         style="margin:16px 0">
+
+      <!-- Sample -->
+      <rect x="20" y="90" width="150" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="95" y="115" text-anchor="middle" font-size="14">
+        Sample System
+      </text>
+      <text x="95" y="135" text-anchor="middle" font-size="12" fill="#555">
+        Valve / Loop
+      </text>
+
+      <!-- Arrow -->
+      <line x1="170" y1="120" x2="240" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="240,120 230,115 230,125" fill="#333"/>
+
+      <!-- Carrier Gas -->
+      <rect x="240" y="90" width="170" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="325" y="115" text-anchor="middle" font-size="14">
+        Carrier Gas
+      </text>
+      <text x="325" y="135" text-anchor="middle" font-size="12" fill="#555">
+        He / H₂ / N₂
+      </text>
+
+      <!-- Arrow -->
+      <line x1="410" y1="120" x2="480" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="480,120 470,115 470,125" fill="#333"/>
+
+      <!-- Column Oven -->
+      <rect x="480" y="60" width="200" height="120" rx="10"
+            fill="#fdf6e3" stroke="#e0a800"/>
+      <text x="580" y="105" text-anchor="middle" font-size="14">
+        Column Oven
+      </text>
+      <text x="580" y="130" text-anchor="middle" font-size="12" fill="#555">
+        Component Separation
+      </text>
+
+      <!-- Arrow -->
+      <line x1="680" y1="120" x2="750" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="750,120 740,115 740,125" fill="#333"/>
+
+      <!-- Detector -->
+      <rect x="750" y="90" width="130" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="815" y="115" text-anchor="middle" font-size="14">
+        Detector
+      </text>
+      <text x="815" y="135" text-anchor="middle" font-size="12" fill="#555">
+        FID / TCD / ECD
+      </text>
+    </svg>
+
+    <p class="muted">
+      Each separated component appears as a peak on the chromatogram
+      based on its retention time and concentration.
+    </p>
 
     <!-- ================= MAIN COMPONENTS ================= -->
     <h2>Main GC Components (Field View)</h2>
