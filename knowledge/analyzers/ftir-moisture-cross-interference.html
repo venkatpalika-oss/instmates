@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FTIR Moisture & Cross-Interference Explained | InstMates</title>
+
+  <meta name="description"
+        content="FTIR moisture interference and cross-sensitivity explained for technicians – why water affects FTIR readings, how gases overlap, and how to troubleshoot false values." />
+
+  <!-- ================= GLOBAL CSS ================= -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzer">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge/index.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/analyzers/index.html">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer</a><span>›</span>
+  <span class="current">Moisture & Cross-Interference</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <article class="panel">
+
+    <h1>FTIR Moisture & Cross-Interference Explained</h1>
+
+    <p class="muted">
+      Category: Analyzer · FTIR · Measurement Accuracy
+    </p>
+
+    <!-- ================= INTRO ================= -->
+    <h2>Why Moisture Is the Biggest Enemy of FTIR</h2>
+    <p>
+      In FTIR analyzers, <strong>water vapor (H₂O)</strong> is not just another gas.
+      It has very strong and broad infrared absorption bands that overlap
+      with many target gases.
+    </p>
+    <p>
+      Because FTIR measures absorption across a wide IR spectrum,
+      moisture can easily interfere with:
+    </p>
+    <ul class="checklist">
+      <li>SO₂, NO, NO₂</li>
+      <li>CO and CO₂</li>
+      <li>NH₃ and HCl</li>
+      <li>Hydrocarbon components</li>
+    </ul>
+
+    <!-- ================= HOW FTIR SEES GAS ================= -->
+    <h2>How FTIR “Sees” Gas Molecules</h2>
+    <p>
+      Each gas absorbs infrared energy at specific wavelengths,
+      creating a unique absorption fingerprint.
+      FTIR software identifies gases by matching these fingerprints.
+    </p>
+    <p>
+      Moisture becomes a problem because:
+    </p>
+    <ul class="checklist">
+      <li>Its absorption bands are wide</li>
+      <li>It absorbs strongly even at low concentrations</li>
+      <li>It overlaps with many other gases</li>
+    </ul>
+
+    <!-- ================= SVG ================= -->
+    <h2>Moisture Overlap – Visual Explanation</h2>
+
+    <svg viewBox="0 0 900 240" width="100%" role="img"
+         aria-label="FTIR Moisture Cross Interference Diagram"
+         style="margin:16px 0">
+
+      <!-- Axis -->
+      <line x1="50" y1="200" x2="850" y2="200" stroke="#333" stroke-width="2"/>
+      <line x1="50" y1="40" x2="50" y2="200" stroke="#333" stroke-width="2"/>
+
+      <!-- Labels -->
+      <text x="450" y="225" text-anchor="middle" font-size="12">
+        Infrared Wavelength
+      </text>
+      <text x="15" y="120" transform="rotate(-90 15 120)" font-size="12">
+        Absorption Intensity
+      </text>
+
+      <!-- Moisture -->
+      <path d="M80 200 Q200 60 350 200 T620 200"
+            fill="rgba(0,123,255,0.25)" stroke="#0b5ed7" stroke-width="2"/>
+      <text x="220" y="70" font-size="12" fill="#0b5ed7">
+        H₂O Absorption (Broad)
+      </text>
+
+      <!-- Target Gas -->
+      <path d="M350 200 Q430 120 510 200"
+            fill="rgba(220,53,69,0.4)" stroke="#dc3545" stroke-width="2"/>
+      <text x="430" y="110" font-size="12" fill="#dc3545">
+        Target Gas Peak
+      </text>
+    </svg>
+
+    <p class="muted">
+      When moisture concentration changes, FTIR software may
+      misinterpret overlapping absorption as changes in other gases.
+    </p>
+
+    <!-- ================= CROSS INTERFERENCE ================= -->
+    <h2>What Is Cross-Interference?</h2>
+    <p>
+      Cross-interference occurs when absorption from one gas
+      affects the measurement of another gas.
+    </p>
+
+    <ul class="checklist">
+      <li>Moisture masks weaker gas absorption</li>
+      <li>One gas appears higher when another increases</li>
+      <li>False alarms during humidity changes</li>
+      <li>Calibration drift without actual process change</li>
+    </ul>
+
+    <!-- ================= REAL FIELD SYMPTOMS ================= -->
+    <h2>Common Field Symptoms of Moisture Interference</h2>
+    <ul class="checklist">
+      <li>SO₂ or NOx readings increase during rainy or humid conditions</li>
+      <li>Analyzer values change only at night</li>
+      <li>Readings jump after startup or shutdown</li>
+      <li>Calibration fails even with correct gases</li>
+      <li>Different gases trend together unrealistically</li>
+    </ul>
+
+    <!-- ================= WHY NIGHT SHIFTS ================= -->
+    <h2>Why Problems Appear During Night or Winter</h2>
+    <p>
+      Many technicians observe FTIR issues only during night shifts.
+      This is usually due to:
+    </p>
+    <ul class="checklist">
+      <li>Ambient temperature drop</li>
+      <li>Condensation in sample lines</li>
+      <li>Heater power cycling</li>
+      <li>Increased relative humidity</li>
+    </ul>
+
+    <!-- ================= MITIGATION ================= -->
+    <h2>How Moisture Interference Is Managed</h2>
+
+    <h3>1. Proper Sampling Design</h3>
+    <ul class="checklist">
+      <li>Heated probes and lines above dew point</li>
+      <li>No cold spots or low points</li>
+      <li>Short sample paths</li>
+    </ul>
+
+    <h3>2. Moisture Compensation Models</h3>
+    <ul class="checklist">
+      <li>FTIR software mathematically compensates H₂O</li>
+      <li>Requires stable moisture behavior</li>
+      <li>Fails when moisture changes rapidly</li>
+    </ul>
+
+    <h3>3. Calibration Strategy</h3>
+    <ul class="checklist">
+      <li>Calibration gases should match moisture conditions</li>
+      <li>Dry calibration on wet process causes errors</li>
+      <li>Post-maintenance validation is mandatory</li>
+    </ul>
+
+    <!-- ================= TROUBLESHOOTING ================= -->
+    <h2>Troubleshooting Moisture & Cross-Interference</h2>
+    <ol class="checklist">
+      <li>Trend moisture and target gases together</li>
+      <li>Check sample line temperature at multiple points</li>
+      <li>Inspect filters for moisture saturation</li>
+      <li>Review raw FTIR spectrum if available</li>
+      <li>Compare readings before and after drying</li>
+    </ol>
+
+    <p class="muted">
+      If multiple gases change together without a process reason,
+      moisture interference should be suspected immediately.
+    </p>
+
+    <!-- ================= LINKS ================= -->
+    <h2>Related FTIR Pages</h2>
+    <ul class="checklist">
+      <li><a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer – Principles & Maintenance</a></li>
+      <li><a href="/knowledge/analyzers/ftir-sampling-system.html">FTIR Sampling System – Deep Dive</a></li>
+    </ul>
+
+  </article>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>
