@@ -1,75 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Field Instrumentation | InstMates Knowledge</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Field Instrumentation Knowledge | InstMates</title>
 
   <meta name="description"
-        content="Field instrumentation knowledge hub for technicians. Pressure, signals, transmitters, calibration, and troubleshooting." />
+        content="Field instrumentation knowledge hub for technicians – pressure, flow, level, temperature, 4–20 mA loops, calibration, and real plant behavior." />
 
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+  <!-- ================= GLOBAL CSS ================= -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
-<body data-page="knowledge-field">
+<body data-page="instrumentation">
 
 <!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
 <!-- ================= BREADCRUMBS ================= -->
-<nav class="crumbs">
+<nav class="crumbs" aria-label="Breadcrumb">
   <a href="/index.html">Home</a><span>›</span>
-  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge.html">Knowledge Hub</a><span>›</span>
   <span class="current">Field Instrumentation</span>
 </nav>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
-<!-- ================= INTRO ================= -->
-<section class="panel">
-  <h2>Field Instrumentation</h2>
+  <!-- ================= INTRO ================= -->
+  <section class="panel">
+    <h1>Field Instrumentation</h1>
+    <p class="muted">
+      Practical field instrumentation knowledge written for technicians.
+      Focused on real plant installations, calibration behavior,
+      wiring practices, impulse lines, grounding, and failure modes —
+      not textbook theory.
+    </p>
+  </section>
 
-  <p class="muted">
-    Core field instrumentation knowledge for technicians covering
-    measurement principles, signals, calibration, and real field practices.
-  </p>
-</section>
+  <!-- ================= CORE MEASUREMENTS ================= -->
+  <section class="panel">
+    <h2>Core Measurement Topics</h2>
 
-<!-- ================= TOPICS ================= -->
-<section class="panel">
-  <div class="fi-grid">
+    <div class="grid grid-3">
 
-    <div class="fi-card">
-      <span class="fi-tag">Measurement</span>
-      <h3>Pressure Measurement</h3>
-      <p>Basics, transmitters, impulse lines, manifolds, and failures.</p>
-      <a class="fi-btn" href="/knowledge/field/pressure/index.html">Open</a>
+      <!-- ================= PRESSURE ================= -->
+      <div class="card">
+        <h3>Pressure Measurement</h3>
+        <p class="muted">
+          Pressure fundamentals, PT & DP transmitters,
+          impulse lines, manifolds, calibration,
+          and real field failure behavior.
+        </p>
+        <a href="/knowledge/field/pressure/index.html"
+           class="btn btn-soft">
+          Open →
+        </a>
+      </div>
+
+      <!-- ================= FLOW ================= -->
+      <div class="card">
+        <h3>Flow Measurement</h3>
+        <p class="muted">
+          Differential pressure flow, orifice plates,
+          flow transmitters, installation effects,
+          and common flow measurement mistakes.
+        </p>
+        <span class="muted">Coming soon</span>
+      </div>
+
+      <!-- ================= LEVEL ================= -->
+      <div class="card">
+        <h3>Level Measurement</h3>
+        <p class="muted">
+          Level transmitters, displacers, radar,
+          DP level applications, and field challenges.
+        </p>
+        <span class="muted">Coming soon</span>
+      </div>
+
     </div>
+  </section>
 
-    <div class="fi-card">
-      <span class="fi-tag">Signals</span>
-      <h3>4–20 mA Signal</h3>
-      <p>Current loops, wiring, diagnostics, calibration, and case studies.</p>
-      <a class="fi-btn" href="/knowledge/field/signals/4-20ma/index.html">Open</a>
+  <!-- ================= SIGNALS & LOOPS ================= -->
+  <section class="panel">
+    <h2>Signals, Wiring & Loops</h2>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <h3>4–20 mA Loops</h3>
+        <p class="muted">
+          Loop fundamentals, live zero concept,
+          2-wire / 3-wire / 4-wire loops,
+          grounding, and troubleshooting.
+        </p>
+        <span class="muted">Coming soon</span>
+      </div>
+
+      <div class="card">
+        <h3>Field Wiring & Grounding</h3>
+        <p class="muted">
+          Shielding, earthing practices,
+          noise issues, junction boxes,
+          and DCS interface problems.
+        </p>
+        <span class="muted">Coming soon</span>
+      </div>
+
+      <div class="card">
+        <h3>Calibration Practices</h3>
+        <p class="muted">
+          Field calibration vs bench calibration,
+          loop checks, common mistakes,
+          and audit-safe practices.
+        </p>
+        <span class="muted">Coming soon</span>
+      </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
-
-<!-- ================= FIELD RULE ================= -->
-<section class="panel">
-  <h3>Field Rule</h3>
-  <p class="muted">
-    Most instrumentation problems are installation or signal related,
-    not transmitter failures.
-  </p>
-</section>
+  <!-- ================= HOW TO USE ================= -->
+  <section class="panel">
+    <h2>How to Use This Section</h2>
+    <ul class="checklist">
+      <li>Start with the measurement principle (pressure, flow, level)</li>
+      <li>Understand installation before calibration</li>
+      <li>Use diagrams and field logic, not assumptions</li>
+      <li>Refer to case studies for real failure behavior</li>
+    </ul>
+  </section>
 
 </main>
 
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+
 </body>
 </html>
