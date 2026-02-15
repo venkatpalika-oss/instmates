@@ -160,30 +160,39 @@ function attachPostEvents(div, postId, postData) {
   const commentList = div.querySelector(".comment-list");
   const commentForm = div.querySelector(".comment-form");
 
-  /* LIKE */
-  likeBtn.onclick = async () => {
-    if (!currentUser) return;
+/* LIKE */
+likeBtn.onclick = async () => {
+  if (!currentUser) return;
 
-    // animation
+  const userId = currentUser.uid;
+  const postRef = doc(db, "posts", postId);
+
+  try {
+    const postSnap = await getDoc(postRef);
+    const postData = postSnap.data();
+
+    const alreadyLiked = postData.likedBy && postData.likedBy[userId];
+
     likeBtn.style.transform = "scale(1.2)";
     setTimeout(() => {
       likeBtn.style.transform = "scale(1)";
     }, 150);
 
-    try {
-      await updateDoc(doc(db, "posts", postId), {
-        likes: increment(1)
+    if (!alreadyLiked) {
+      await updateDoc(postRef, {
+        likes: (postData.likes || 0) + 1,
+        [`likedBy.${userId}`]: true
       });
 
       const span = likeBtn.querySelector("span");
       span.textContent = Number(span.textContent) + 1;
-
       likeBtn.classList.add("liked");
-
-    } catch (err) {
-      console.error("Like failed:", err);
     }
-  };
+
+  } catch (err) {
+    console.error("Like failed:", err);
+  }
+};
 
   /* COMMENT TOGGLE */
   commentToggle.onclick = async () => {
