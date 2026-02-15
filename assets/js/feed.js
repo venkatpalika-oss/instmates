@@ -1,4 +1,5 @@
 console.log("PHASE 6 ACTIVE");
+
 /* =========================================================
    InstMates – Feed Logic
    PHASE 6 – PROFESSIONAL FEED SYSTEM
@@ -161,15 +162,27 @@ function attachPostEvents(div, postId, postData) {
 
   /* LIKE */
   likeBtn.onclick = async () => {
+    if (!currentUser) return;
+
+    // animation
     likeBtn.style.transform = "scale(1.2)";
-    setTimeout(() => likeBtn.style.transform = "scale(1)", 150);
+    setTimeout(() => {
+      likeBtn.style.transform = "scale(1)";
+    }, 150);
 
-    await updateDoc(doc(db, "posts", postId), {
-      likes: increment(1)
-    });
+    try {
+      await updateDoc(doc(db, "posts", postId), {
+        likes: increment(1)
+      });
 
-    const span = likeBtn.querySelector("span");
-    span.textContent = Number(span.textContent) + 1;
+      const span = likeBtn.querySelector("span");
+      span.textContent = Number(span.textContent) + 1;
+
+      likeBtn.classList.add("liked");
+
+    } catch (err) {
+      console.error("Like failed:", err);
+    }
   };
 
   /* COMMENT TOGGLE */
