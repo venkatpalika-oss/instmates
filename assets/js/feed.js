@@ -171,7 +171,8 @@ likeBtn.onclick = async () => {
     const postSnap = await getDoc(postRef);
     const postData = postSnap.data();
 
-    const alreadyLiked = postData.likedBy && postData.likedBy[userId];
+    const likedBy = postData.likedBy || {};
+    const alreadyLiked = likedBy[userId];
 
     likeBtn.style.transform = "scale(1.2)";
     setTimeout(() => {
@@ -179,9 +180,15 @@ likeBtn.onclick = async () => {
     }, 150);
 
     if (!alreadyLiked) {
+
+      const updatedLikedBy = {
+        ...likedBy,
+        [userId]: true
+      };
+
       await updateDoc(postRef, {
         likes: (postData.likes || 0) + 1,
-        [`likedBy.${userId}`]: true
+        likedBy: updatedLikedBy
       });
 
       const span = likeBtn.querySelector("span");
@@ -194,7 +201,7 @@ likeBtn.onclick = async () => {
   }
 };
 
-  /* COMMENT TOGGLE */
+   /* COMMENT TOGGLE */
   commentToggle.onclick = async () => {
     commentBox.classList.toggle("hidden");
     if (!commentBox.classList.contains("hidden")) {
