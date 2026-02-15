@@ -1874,3 +1874,7 @@ body.auth-in.auth-ready .site-header .auth-in {
 .comment-item:last-child {
   border-bottom: none;
 }
+.feed-actions .liked {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
