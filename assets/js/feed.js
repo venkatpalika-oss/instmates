@@ -1,3 +1,4 @@
+console.log("PHASE 6 ACTIVE");
 /* =========================================================
    InstMates – Feed Logic
    PHASE 6 – PROFESSIONAL FEED SYSTEM
