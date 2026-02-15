@@ -1,6 +1,7 @@
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 5 – POSTS + COMMENTS + LIKES + REPLIES + BADGES
+   PHASE 6 – PROFESSIONAL FEED SYSTEM
+   POSTS + COMMENTS + LIKES + EDIT + DELETE + SORT
    File: assets/js/feed.js
 ========================================================= */
 
@@ -18,28 +19,38 @@ import {
   doc,
   getDoc,
   updateDoc,
-  serverTimestamp
+  deleteDoc,
+  serverTimestamp,
+  increment
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= STATE ================= */
 
 let currentUser = null;
+let currentSort = "latest";
 
 /* ================= ELEMENTS ================= */
 
 const feedEl = document.querySelector(".feed");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
+const sortSelect = document.getElementById("sortFeed");
 
 /* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
-
-  if (user) {
-    loadFeed();
-  }
+  if (user) loadFeed();
 });
+
+/* ================= SORT HANDLER ================= */
+
+if (sortSelect) {
+  sortSelect.addEventListener("change", (e) => {
+    currentSort = e.target.value;
+    loadFeed();
+  });
+}
 
 /* ================= LOAD FEED ================= */
 
@@ -48,11 +59,21 @@ async function loadFeed() {
 
   feedEl.innerHTML = `<p class="muted">Loading feed…</p>`;
 
-  const q = query(
-    collection(db, "posts"),
-    orderBy("createdAt", "desc"),
-    limit(20)
-  );
+  let q;
+
+  if (currentSort === "popular") {
+    q = query(
+      collection(db, "posts"),
+      orderBy("likes", "desc"),
+      limit(20)
+    );
+  } else {
+    q = query(
+      collection(db, "posts"),
+      orderBy("createdAt", "desc"),
+      limit(20)
+    );
+  }
 
   const snap = await getDocs(q);
   feedEl.innerHTML = "";
@@ -84,23 +105,36 @@ async function getProfile(uid) {
 
 function renderPost(postId, p, profile) {
   const div = document.createElement("div");
-  div.className = "post-card";
+  div.className = "card feed-card";
+
+  const isOwner = currentUser && currentUser.uid === p.uid;
 
   div.innerHTML = `
-    <div class="post-header">
-      <strong>${escapeHTML(p.authorName || "User")}</strong>
-      <span class="muted"> · ${timeAgo(p.createdAt)}</span>
+    <div class="feed-header">
+      <strong>${escapeHTML(p.authorName || "Technician")}</strong>
+      <span class="muted small">${timeAgo(p.createdAt)}</span>
     </div>
 
-    <p>${escapeHTML(p.content)}</p>
+    <div class="feed-content">
+      ${escapeHTML(p.content)}
+    </div>
 
-    <div class="post-actions-bar">
-      <button class="action-btn comment-toggle">
+    <div class="feed-actions">
+      <button class="likeBtn" data-id="${postId}">
+        👍 <span>${p.likes || 0}</span>
+      </button>
+
+      <button class="commentToggle" data-id="${postId}">
         💬 Comment
       </button>
+
+      ${isOwner ? `
+        <button class="editBtn" data-id="${postId}">✏️</button>
+        <button class="deleteBtn" data-id="${postId}">🗑️</button>
+      ` : ""}
     </div>
 
-    <div class="comments" style="display:none">
+    <div class="comments hidden" id="comments-${postId}">
       <div class="comment-list"></div>
       <form class="comment-form">
         <input placeholder="Reply with a practical solution…" required />
@@ -109,22 +143,70 @@ function renderPost(postId, p, profile) {
     </div>
   `;
 
-  const commentsBox = div.querySelector(".comments");
-  const list = div.querySelector(".comment-list");
+  attachPostEvents(div, postId, p);
 
-  div.querySelector(".comment-toggle").onclick = async () => {
-    commentsBox.style.display =
-      commentsBox.style.display === "none" ? "block" : "none";
+  return div;
+}
 
-    if (commentsBox.style.display === "block") {
-      await loadComments(postId, list);
+/* ================= POST EVENTS ================= */
+
+function attachPostEvents(div, postId, postData) {
+
+  const likeBtn = div.querySelector(".likeBtn");
+  const commentToggle = div.querySelector(".commentToggle");
+  const commentBox = div.querySelector(".comments");
+  const commentList = div.querySelector(".comment-list");
+  const commentForm = div.querySelector(".comment-form");
+
+  /* LIKE */
+  likeBtn.onclick = async () => {
+    likeBtn.style.transform = "scale(1.2)";
+    setTimeout(() => likeBtn.style.transform = "scale(1)", 150);
+
+    await updateDoc(doc(db, "posts", postId), {
+      likes: increment(1)
+    });
+
+    const span = likeBtn.querySelector("span");
+    span.textContent = Number(span.textContent) + 1;
+  };
+
+  /* COMMENT TOGGLE */
+  commentToggle.onclick = async () => {
+    commentBox.classList.toggle("hidden");
+    if (!commentBox.classList.contains("hidden")) {
+      await loadComments(postId, commentList);
     }
   };
 
-  div.querySelector(".comment-form").onsubmit =
-    (e) => submitComment(e, postId, list);
+  /* COMMENT SUBMIT */
+  commentForm.onsubmit = (e) =>
+    submitComment(e, postId, commentList);
 
-  return div;
+  /* DELETE */
+  const deleteBtn = div.querySelector(".deleteBtn");
+  if (deleteBtn) {
+    deleteBtn.onclick = async () => {
+      if (!confirm("Delete this post?")) return;
+      await deleteDoc(doc(db, "posts", postId));
+      loadFeed();
+    };
+  }
+
+  /* EDIT */
+  const editBtn = div.querySelector(".editBtn");
+  if (editBtn) {
+    editBtn.onclick = async () => {
+      const newContent = prompt("Edit your post:", postData.content);
+      if (!newContent) return;
+
+      await updateDoc(doc(db, "posts", postId), {
+        content: newContent
+      });
+
+      loadFeed();
+    };
+  }
 }
 
 /* ================= COMMENTS ================= */
@@ -147,22 +229,17 @@ async function loadComments(postId, list) {
 
   for (const d of snap.docs) {
     const c = d.data();
-    const profile = await getProfile(c.uid);
-    list.appendChild(renderComment(postId, d.id, c, profile));
+    list.appendChild(renderComment(c));
   }
 }
 
-/* ================= RENDER COMMENT (🔥 FIX) ================= */
-
-function renderComment(postId, commentId, c, profile) {
+function renderComment(c) {
   const div = document.createElement("div");
   div.className = "comment-item";
 
   div.innerHTML = `
-    <div class="comment-header">
-      <strong>${escapeHTML(c.authorName || "User")}</strong>
-      <span class="muted"> · ${timeAgo(c.createdAt)}</span>
-    </div>
+    <strong>${escapeHTML(c.authorName || "User")}</strong>
+    <span class="muted small"> · ${timeAgo(c.createdAt)}</span>
     <p>${escapeHTML(c.content)}</p>
   `;
 
@@ -179,13 +256,11 @@ async function submitComment(e, postId, list) {
   const content = input.value.trim();
   if (!content) return;
 
-  const profile = await getProfile(currentUser.uid);
-
   await addDoc(
     collection(db, "posts", postId, "comments"),
     {
       uid: currentUser.uid,
-      authorName: profile?.fullName || "User",
+      authorName: currentUser.displayName || "User",
       content,
       createdAt: serverTimestamp()
     }
