@@ -1765,3 +1765,49 @@ body.auth-in.auth-ready .site-header .auth-in {
 .feed-card:hover {
   transform: translateY(-2px);
 }
+/* ================= FEED CARD UPGRADE ================= */
+
+.feed-card {
+  transition: 0.2s ease;
+}
+
+.feed-card:hover {
+  transform: translateY(-2px);
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.feed-content {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.feed-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.feed-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 6px;
+}
+
+.feed-actions button:hover {
+  color: #0b5ed7;
+}
+
+.hidden {
+  display: none;
+}
+
+.small {
+  font-size: 12px;
+}
