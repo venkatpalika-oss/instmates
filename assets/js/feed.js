@@ -169,11 +169,17 @@ likeBtn.onclick = async () => {
 
   try {
     const postSnap = await getDoc(postRef);
+    if (!postSnap.exists()) return;
+
     const postData = postSnap.data();
 
-    const likedBy = postData.likedBy || {};
-    const alreadyLiked = likedBy[userId];
+    // Ensure fields exist (for legacy posts)
+    const currentLikes = postData.likes || 0;
+    const currentLikedBy = postData.likedBy || {};
 
+    const alreadyLiked = currentLikedBy[userId] === true;
+
+    // Small animation
     likeBtn.style.transform = "scale(1.2)";
     setTimeout(() => {
       likeBtn.style.transform = "scale(1)";
@@ -182,17 +188,17 @@ likeBtn.onclick = async () => {
     if (!alreadyLiked) {
 
       const updatedLikedBy = {
-        ...likedBy,
+        ...currentLikedBy,
         [userId]: true
       };
 
       await updateDoc(postRef, {
-        likes: (postData.likes || 0) + 1,
+        likes: currentLikes + 1,
         likedBy: updatedLikedBy
       });
 
       const span = likeBtn.querySelector("span");
-      span.textContent = Number(span.textContent) + 1;
+      span.textContent = currentLikes + 1;
       likeBtn.classList.add("liked");
     }
 
