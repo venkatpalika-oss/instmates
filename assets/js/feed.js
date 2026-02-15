@@ -22,8 +22,7 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
-  serverTimestamp,
-  increment
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= STATE ================= */
@@ -166,54 +165,72 @@ function attachPostEvents(div, postId, postData) {
   const commentList = div.querySelector(".comment-list");
   const commentForm = div.querySelector(".comment-form");
 
-/* LIKE */
-likeBtn.onclick = async () => {
-  if (!currentUser) return;
+  /* ================= LIKE (PRODUCTION SAFE) ================= */
 
-  const userId = currentUser.uid;
-  const postRef = doc(db, "posts", postId);
-
-  try {
-    const postSnap = await getDoc(postRef);
-    if (!postSnap.exists()) return;
-
-    const postData = postSnap.data();
-
-    // Ensure fields exist (for legacy posts)
-    const currentLikes = postData.likes || 0;
-    const currentLikedBy = postData.likedBy || {};
-
-    const alreadyLiked = currentLikedBy[userId] === true;
-
-    // Small animation
-    likeBtn.style.transform = "scale(1.2)";
-    setTimeout(() => {
-      likeBtn.style.transform = "scale(1)";
-    }, 150);
-
-    if (!alreadyLiked) {
-
-      const updatedLikedBy = {
-        ...currentLikedBy,
-        [userId]: true
-      };
-
-      await updateDoc(postRef, {
-        likes: currentLikes + 1,
-        likedBy: updatedLikedBy
-      });
-
-      const span = likeBtn.querySelector("span");
-      span.textContent = currentLikes + 1;
-      likeBtn.classList.add("liked");
+  likeBtn.onclick = async () => {
+    if (!currentUser) {
+      alert("Please login to like posts.");
+      return;
     }
 
-  } catch (err) {
-    console.error("Like failed:", err);
-  }
-};
+    const postRef = doc(db, "posts", postId);
 
-   /* COMMENT TOGGLE */
+    try {
+      const postSnap = await getDoc(postRef);
+      if (!postSnap.exists()) return;
+
+      const data = postSnap.data();
+
+      const currentLikes = data.likes || 0;
+      const likedBy = data.likedBy || {};
+
+      const alreadyLiked = likedBy[currentUser.uid] === true;
+
+      // Animation
+      likeBtn.style.transform = "scale(1.2)";
+      setTimeout(() => {
+        likeBtn.style.transform = "scale(1)";
+      }, 150);
+
+      // LIKE
+      if (!alreadyLiked) {
+
+        const updatedLikedBy = {
+          ...likedBy,
+          [currentUser.uid]: true
+        };
+
+        await updateDoc(postRef, {
+          likes: currentLikes + 1,
+          likedBy: updatedLikedBy
+        });
+
+        likeBtn.querySelector("span").textContent = currentLikes + 1;
+        likeBtn.classList.add("liked");
+      }
+
+      // UNLIKE (optional future ready)
+      else {
+
+        const updatedLikedBy = { ...likedBy };
+        delete updatedLikedBy[currentUser.uid];
+
+        await updateDoc(postRef, {
+          likes: Math.max(currentLikes - 1, 0),
+          likedBy: updatedLikedBy
+        });
+
+        likeBtn.querySelector("span").textContent = Math.max(currentLikes - 1, 0);
+        likeBtn.classList.remove("liked");
+      }
+
+    } catch (err) {
+      console.error("Like failed:", err);
+    }
+  };
+
+  /* ================= COMMENT TOGGLE ================= */
+
   commentToggle.onclick = async () => {
     commentBox.classList.toggle("hidden");
     if (!commentBox.classList.contains("hidden")) {
@@ -221,11 +238,13 @@ likeBtn.onclick = async () => {
     }
   };
 
-  /* COMMENT SUBMIT */
+  /* ================= COMMENT SUBMIT ================= */
+
   commentForm.onsubmit = (e) =>
     submitComment(e, postId, commentList);
 
-  /* DELETE */
+  /* ================= DELETE ================= */
+
   const deleteBtn = div.querySelector(".deleteBtn");
   if (deleteBtn) {
     deleteBtn.onclick = async () => {
@@ -235,7 +254,8 @@ likeBtn.onclick = async () => {
     };
   }
 
-  /* EDIT */
+  /* ================= EDIT ================= */
+
   const editBtn = div.querySelector(".editBtn");
   if (editBtn) {
     editBtn.onclick = async () => {
