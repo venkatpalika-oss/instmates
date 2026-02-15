@@ -31,46 +31,13 @@ const feedEl = document.querySelector(".feed");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 
-/* ================= KNOWLEDGE → FEED PREFILL ================= */
-
-function prefillFromKnowledge() {
-  if (!postInput) return;
-
-  const params = new URLSearchParams(window.location.search);
-  const title = params.get("title");
-  if (!title) return;
-
-  postInput.value =
-`Knowledge topic: ${title}
-
-What was your real field experience, fault, or solution related to this?`;
-
-  postInput.focus();
-}
-
 /* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
-  if (postInput && postBtn) {
-    if (user) {
-      postInput.disabled = false;
-      postBtn.disabled = false;
-      postInput.placeholder =
-        "What problem are you facing in the field today?\nExample: 4–20 mA stuck at 4 mA after shutdown";
-      postBtn.textContent = "Post";
-    } else {
-      postInput.disabled = true;
-      postBtn.disabled = true;
-      postInput.placeholder = "Login to post in the community feed";
-      postBtn.textContent = "Login to Post";
-    }
-  }
-
   if (user) {
     loadFeed();
-    prefillFromKnowledge();
   }
 });
 
@@ -102,33 +69,7 @@ async function loadFeed() {
   }
 }
 
-/* ================= CREATE POST ================= */
-
-if (postBtn) {
-  postBtn.onclick = async () => {
-    if (!currentUser) return;
-
-    const content = postInput.value.trim();
-    if (!content) return;
-
-    const profile = await getProfile(currentUser.uid);
-
-    await addDoc(collection(db, "posts"), {
-      uid: currentUser.uid,
-      authorName: profile?.fullName || "User",
-      content,
-      likes: 0,
-      likedBy: {},
-      createdAt: serverTimestamp()
-    });
-
-    postInput.value = "";
-    showPostSuccess();
-    loadFeed();
-  };
-}
-
-/* ================= PROFILE FETCH ================= */
+/* ================= PROFILE ================= */
 
 async function getProfile(uid) {
   try {
@@ -139,52 +80,24 @@ async function getProfile(uid) {
   }
 }
 
-function renderBadges(badges = []) {
-  if (!badges.length) return "";
-  return `
-    <div class="muted" style="font-size:12px;margin-top:2px">
-      ${badges.map(b => `🏷️ ${b}`).join(" · ")}
-    </div>
-  `;
-}
-
 /* ================= RENDER POST ================= */
 
 function renderPost(postId, p, profile) {
   const div = document.createElement("div");
   div.className = "post-card";
 
-  const liked = currentUser ? hasLiked(p, currentUser.uid) : false;
-
   div.innerHTML = `
     <div class="post-header">
-      <strong>
-        <a href="/profile-view.html?uid=${p.uid}">
-          ${escapeHTML(p.authorName || "Unknown")}
-        </a>
-      </strong>
-      ${renderBadges(profile?.badges)}
+      <strong>${escapeHTML(p.authorName || "User")}</strong>
       <span class="muted"> · ${timeAgo(p.createdAt)}</span>
     </div>
 
     <p>${escapeHTML(p.content)}</p>
 
-    <div class="post-reactions-summary">
-      👍 ❤️ 👏 <strong class="like-count">${p.likes || 0}</strong>
-    </div>
-
     <div class="post-actions-bar">
-      <button class="action-btn ${liked ? "liked" : ""}"
-        onclick="toggleLike({ postId:'${postId}', button:this })">
-        👍 <span>Like</span>
-      </button>
-
       <button class="action-btn comment-toggle">
-        💬 <span>Comment</span>
+        💬 Comment
       </button>
-
-      <button class="action-btn" disabled>🔁 Repost</button>
-      <button class="action-btn" disabled>➤ Send</button>
     </div>
 
     <div class="comments" style="display:none">
@@ -199,17 +112,14 @@ function renderPost(postId, p, profile) {
   const commentsBox = div.querySelector(".comments");
   const list = div.querySelector(".comment-list");
 
-  div.querySelectorAll(".comment-toggle").forEach(btn => {
-    btn.onclick = async (e) => {
-      e.preventDefault();
-      commentsBox.style.display =
-        commentsBox.style.display === "none" ? "block" : "none";
+  div.querySelector(".comment-toggle").onclick = async () => {
+    commentsBox.style.display =
+      commentsBox.style.display === "none" ? "block" : "none";
 
-      if (commentsBox.style.display === "block") {
-        await loadComments(postId, list);
-      }
-    };
-  });
+    if (commentsBox.style.display === "block") {
+      await loadComments(postId, list);
+    }
+  };
 
   div.querySelector(".comment-form").onsubmit =
     (e) => submitComment(e, postId, list);
@@ -230,12 +140,36 @@ async function loadComments(postId, list) {
   const snap = await getDocs(q);
   list.innerHTML = "";
 
+  if (snap.empty) {
+    list.innerHTML = `<p class="muted">No replies yet.</p>`;
+    return;
+  }
+
   for (const d of snap.docs) {
     const c = d.data();
     const profile = await getProfile(c.uid);
     list.appendChild(renderComment(postId, d.id, c, profile));
   }
 }
+
+/* ================= RENDER COMMENT (🔥 FIX) ================= */
+
+function renderComment(postId, commentId, c, profile) {
+  const div = document.createElement("div");
+  div.className = "comment-item";
+
+  div.innerHTML = `
+    <div class="comment-header">
+      <strong>${escapeHTML(c.authorName || "User")}</strong>
+      <span class="muted"> · ${timeAgo(c.createdAt)}</span>
+    </div>
+    <p>${escapeHTML(c.content)}</p>
+  `;
+
+  return div;
+}
+
+/* ================= SUBMIT COMMENT ================= */
 
 async function submitComment(e, postId, list) {
   e.preventDefault();
@@ -253,61 +187,12 @@ async function submitComment(e, postId, list) {
       uid: currentUser.uid,
       authorName: profile?.fullName || "User",
       content,
-      likes: 0,
-      likedBy: {},
       createdAt: serverTimestamp()
     }
   );
 
   input.value = "";
   loadComments(postId, list);
-}
-
-/* ================= LIKE HANDLER ================= */
-
-window.toggleLike = async function ({ postId, button }) {
-  if (!currentUser) return;
-
-  const ref = doc(db, "posts", postId);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return;
-
-  const data = snap.data();
-  const liked = data.likedBy?.[currentUser.uid] === true;
-
-  const newLikes = liked
-    ? Math.max((data.likes || 1) - 1, 0)
-    : (data.likes || 0) + 1;
-
-  await updateDoc(ref, {
-    likes: newLikes,
-    [`likedBy.${currentUser.uid}`]: !liked
-  });
-
-  // 🔥 RANDOM REACTION
-  const reactions = ["👍", "❤️", "👏"];
-  const emoji = reactions[Math.floor(Math.random() * reactions.length)];
-  showReaction(button, emoji);
-
-  const card = button.closest(".post-card");
-  card.querySelector(".like-count").textContent = newLikes;
-  button.classList.toggle("liked", !liked);
-};
-
-/* ================= REACTION FLOAT ================= */
-
-function showReaction(button, emoji) {
-  const bar = button.closest(".post-actions-bar");
-  if (!bar) return;
-
-  const span = document.createElement("span");
-  span.className = "reaction-float";
-  span.textContent = emoji;
-
-  bar.style.position = "relative";
-  bar.appendChild(span);
-
-  setTimeout(() => span.remove(), 1200);
 }
 
 /* ================= HELPERS ================= */
@@ -326,8 +211,4 @@ function timeAgo(ts) {
   if (s < 3600) return `${Math.floor(s / 60)} min ago`;
   if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
   return `${Math.floor(s / 86400)} days ago`;
-}
-
-function hasLiked(post, uid) {
-  return !!post.likedBy && post.likedBy[uid] === true;
 }
