@@ -41,9 +41,11 @@ const sortSelect = document.getElementById("sortFeed");
 /* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
+  console.log("AUTH STATE:", user);
   currentUser = user;
   if (user) loadFeed();
 });
+
 
 /* ================= SORT HANDLER ================= */
 
