@@ -1811,3 +1811,66 @@ body.auth-in.auth-ready .site-header .auth-in {
 .small {
   font-size: 12px;
 }
+/* ================= PHASE 6 FEED UI ================= */
+
+.feed-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.feed-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.08);
+}
+
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.feed-content {
+  margin-bottom: 14px;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.feed-actions {
+  display: flex;
+  gap: 18px;
+  font-size: 14px;
+  border-top: 1px solid #eef1f5;
+  padding-top: 10px;
+}
+
+.feed-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #444;
+  font-weight: 500;
+  transition: 0.15s ease;
+}
+
+.feed-actions button:hover {
+  color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+
+.comments {
+  margin-top: 12px;
+}
+
+.comment-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
