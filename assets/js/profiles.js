@@ -1,10 +1,11 @@
-console.log("PROFILES JS ACTIVE");
-
 /* =========================================================
    InstMates – Profiles Directory
+   File: /assets/js/profiles.js
+   FINAL – PROFILE COLLECTION ONLY
 ========================================================= */
 
 import { db } from "./firebase.js";
+
 import {
   collection,
   getDocs
@@ -13,25 +14,21 @@ import {
 const grid = document.getElementById("profilesGrid");
 
 async function loadProfiles() {
+  if (!grid) return;
 
-  if (!grid) {
-    console.warn("profilesGrid element not found.");
-    return;
-  }
-
-  grid.innerHTML = '<p class="muted">Loading profiles…</p>';
+  grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
   try {
 
     const snap = await getDocs(collection(db, "profiles"));
-    console.log("Profiles found:", snap.size);
 
     if (snap.empty) {
-      grid.innerHTML = '<p class="muted">No technicians found.</p>';
+      grid.innerHTML = `<p class="muted">No technicians found.</p>`;
       return;
     }
 
     grid.innerHTML = "";
+
     let visibleCount = 0;
 
     snap.forEach(docSnap => {
@@ -39,60 +36,75 @@ async function loadProfiles() {
       const profile = docSnap.data();
       const uid = docSnap.id;
 
+      const isCompleted = profile.profileCompleted === true;
       const isPublic = profile.publicProfile !== false;
+
       if (!isPublic) return;
 
       visibleCount++;
 
       const card = document.createElement("div");
-      card.className = "card profile-card";
+      card.className = "card";
 
-      let skillsHTML = "";
-      if (Array.isArray(profile.skills) && profile.skills.length > 0) {
-        skillsHTML = '<div class="tags">';
-        profile.skills.forEach(skill => {
-          skillsHTML += '<span class="tag">' + escapeHTML(skill) + '</span>';
-        });
-        skillsHTML += '</div>';
-      }
+      card.innerHTML = `
+        <h3>${escapeHTML(profile.fullName || "Technician")}</h3>
 
-      card.innerHTML =
-        '<h3>' + escapeHTML(profile.fullName || "Technician") + '</h3>' +
-        '<p class="muted">' +
-        escapeHTML(profile.role || "Instrument / Analyzer Technician") +
-        '</p>' +
+        <p class="muted">
+          ${escapeHTML(profile.role || "Instrument / Analyzer Technician")}
+        </p>
 
-        (profile.location
-          ? '<p class="muted">📍 ' + escapeHTML(profile.location) + '</p>'
-          : ''
-        ) +
+        ${profile.location
+          ? `<p class="muted">📍 ${escapeHTML(profile.location)}</p>`
+          : ""
+        }
 
-        skillsHTML +
+        <div class="tags">
+          ${(profile.skills || [])
+            .map(skill => `<span class="tag">${escapeHTML(skill)}</span>`)
+            .join("")}
+        </div>
 
-        '<div class="action-row" style="margin-top:12px;">' +
-          '<a class="btn btn-ghost" href="/profile-view.html?uid=' + uid + '">' +
-            'View Profile' +
-          '</a>' +
-          '<a class="btn btn-primary" href="/message.html?to=' + uid + '">' +
-            'Message' +
-          '</a>' +
-        '</div>';
+        ${!isCompleted
+          ? `<p class="muted" style="color:#c62828;margin-top:8px">
+              ⚠ Profile not completed
+            </p>`
+          : ""
+        }
+
+        <div class="action-row" style="margin-top:12px;">
+          ${isCompleted
+            ? `<a class="btn btn-ghost"
+                 href="/profile-view.html?uid=${uid}">
+                 View Profile
+               </a>`
+            : `<span class="muted">Profile pending</span>`
+          }
+
+          <a class="btn btn-primary"
+             href="/message.html?to=${uid}">
+             Message
+          </a>
+        </div>
+      `;
 
       grid.appendChild(card);
 
     });
 
     if (visibleCount === 0) {
-      grid.innerHTML = '<p class="muted">No public profiles available.</p>';
+      grid.innerHTML = `<p class="muted">No public profiles available.</p>`;
     }
 
   } catch (err) {
     console.error("Profiles load error:", err);
-    grid.innerHTML = '<p class="muted">Failed to load profiles.</p>';
+    grid.innerHTML =
+      `<p class="muted">Failed to load profiles.</p>`;
   }
 }
 
 loadProfiles();
+
+/* ================= HELPERS ================= */
 
 function escapeHTML(str) {
   return String(str)
