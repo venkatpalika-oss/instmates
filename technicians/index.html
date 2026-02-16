@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Technicians | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Browse verified instrument and analyzer technicians by domain, experience, and location." />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="technicians">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <span class="current">Technicians</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container auth-required">
+
+  <!-- ================= INTRO ================= -->
+  <section class="panel">
+    <h2>Technician Directory</h2>
+    <p class="muted">
+      Verified instrument & analyzer professionals from real plants.
+    </p>
+  </section>
+
+  <!-- ================= SEARCH ================= -->
+  <section class="panel">
+    <input id="searchInput"
+           type="search"
+           placeholder="Search by name, domain, or location…"
+           style="width:100%;padding:10px;font-size:15px" />
+  </section>
+
+  <!-- ✅ FIXED ID (IMPORTANT) -->
+  <section id="techniciansList" class="grid grid-3">
+    <p class="muted">Loading technicians…</p>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+<script type="module" src="/assets/js/technicians.js"></script>
+
+</body>
+</html>

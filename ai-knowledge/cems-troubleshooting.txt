@@ -1,0 +1,288 @@
+# CEMS TROUBLESHOOTING KNOWLEDGE
+Scope: Continuous Emission Monitoring Systems (CEMS)
+Applies to: O2, CO, CO2, NOx, SO2 analyzers (generic logic)
+
+---
+
+## CARD 01
+### FAULT
+CEMS analyzer shows zero reading continuously
+
+### CONDITIONS
+- Analyzer powered ON
+- No alarm present
+- Reading stuck at zero
+
+### INTERPRETATION
+Analyzer is running but sample gas is not reaching the measurement cell.
+
+### MOST PROBABLE CAUSES
+- Sample probe blocked
+- Sample pump not running
+- Condensation in sample line
+- Zero gas valve stuck ON
+
+### FIELD CHECK SEQUENCE
+1. Check probe for blockage or ash buildup
+2. Verify sample pump operation and flow
+3. Inspect sample line for condensation
+4. Confirm zero gas solenoid is CLOSED
+
+### FIELD RULE
+Zero reading without alarm usually means no sample flow
+
+---
+
+## CARD 02
+### FAULT
+Analyzer reading drifting slowly upward or downward
+
+### CONDITIONS
+- Gradual drift
+- No sudden jumps
+- Calibration overdue
+
+### INTERPRETATION
+Sample conditioning or analyzer stability issue.
+
+### MOST PROBABLE CAUSES
+- Moisture carryover
+- Sample cooler inefficiency
+- Analyzer aging
+- Ambient temperature influence
+
+### FIELD CHECK SEQUENCE
+1. Check sample cooler outlet temperature
+2. Inspect moisture trap and drain
+3. Verify enclosure temperature
+4. Review last calibration date
+
+### FIELD RULE
+Slow drift usually means conditioning problem, not process change
+
+---
+
+## CARD 03
+### FAULT
+Calibration fails but process reading looks normal
+
+### CONDITIONS
+- Calibration alarm
+- Process value believable
+
+### INTERPRETATION
+Calibration gas is not reaching analyzer correctly.
+
+### MOST PROBABLE CAUSES
+- Calibration gas cylinder empty
+- Wrong calibration gas connected
+- Cal gas pressure low
+- Solenoid valve not switching
+
+### FIELD CHECK SEQUENCE
+1. Check calibration gas pressure
+2. Confirm correct gas cylinder
+3. Manually test calibration solenoid
+4. Inspect calibration tubing
+
+### FIELD RULE
+Good process + failed calibration = calibration path issue
+
+---
+
+## CARD 04
+### FAULT
+Analyzer shows sudden high reading spike
+
+### CONDITIONS
+- Sudden jump
+- Returns to normal later
+
+### INTERPRETATION
+Transient disturbance, not true emission change.
+
+### MOST PROBABLE CAUSES
+- Condensation slug entering analyzer
+- Probe temperature drop
+- Sample pump fluctuation
+- Electrical interference
+
+### FIELD CHECK SEQUENCE
+1. Inspect sample line for water
+2. Check probe heater status
+3. Verify sample pump stability
+4. Check grounding and shielding
+
+### FIELD RULE
+Sudden spikes are usually sampling disturbances
+
+---
+
+## CARD 05
+### FAULT
+Analyzer shows low reading compared to reference
+
+### CONDITIONS
+- Stable but lower than expected
+- Calibration OK
+
+### INTERPRETATION
+Sample dilution or leakage.
+
+### MOST PROBABLE CAUSES
+- Sample line leak
+- Dilution air ingress
+- Low probe insertion depth
+- Filter partially blocked
+
+### FIELD CHECK SEQUENCE
+1. Leak check sample line
+2. Inspect probe mounting
+3. Verify filters condition
+4. Compare with manual sampling if available
+
+### FIELD RULE
+Low stable reading usually means dilution
+
+---
+
+## CARD 06
+### FAULT
+Frequent analyzer maintenance alarm
+
+### CONDITIONS
+- Repeated maintenance warnings
+- Analyzer otherwise running
+
+### INTERPRETATION
+Preventive maintenance overdue or harsh sampling conditions.
+
+### MOST PROBABLE CAUSES
+- Dirty optics or sensor
+- Excessive dust load
+- High moisture content
+- Poor probe location
+
+### FIELD CHECK SEQUENCE
+1. Inspect analyzer cell or optics
+2. Review probe location suitability
+3. Check dust and moisture load
+4. Increase maintenance frequency if required
+
+### FIELD RULE
+Repeated maintenance alarms indicate sampling environment issue
+
+---
+
+## CARD 07
+### FAULT
+Analyzer reading frozen (not updating)
+
+### CONDITIONS
+- No change in reading
+- No active alarm
+
+### INTERPRETATION
+Signal processing or communication issue.
+
+### MOST PROBABLE CAUSES
+- Analyzer software hang
+- Signal output frozen
+- Communication failure
+
+### FIELD CHECK SEQUENCE
+1. Check analyzer display vs output signal
+2. Verify signal update at PLC/DCS
+3. Restart analyzer if safe
+4. Check communication cables
+
+### FIELD RULE
+Frozen value without alarm often needs restart
+
+---
+
+## CARD 08
+### FAULT
+High O2 reading during normal combustion
+
+### CONDITIONS
+- O2 higher than expected
+- Other analyzers normal
+
+### INTERPRETATION
+Air ingress or probe issue.
+
+### MOST PROBABLE CAUSES
+- Probe leak
+- Sample line leak
+- Incorrect probe location
+- Reference air mixing
+
+### FIELD CHECK SEQUENCE
+1. Leak test probe and sample line
+2. Verify probe sealing
+3. Check probe position in duct
+4. Confirm no reference air ingress
+
+### FIELD RULE
+High O2 usually means air leakage
+
+---
+
+## CARD 09
+### FAULT
+Analyzer shows erratic or noisy signal
+
+### CONDITIONS
+- Fluctuating readings
+- Poor signal stability
+
+### INTERPRETATION
+Electrical noise or moisture interference.
+
+### MOST PROBABLE CAUSES
+- Poor grounding
+- Moisture in sample
+- Power supply issues
+- Signal cable interference
+
+### FIELD CHECK SEQUENCE
+1. Inspect grounding
+2. Check sample moisture
+3. Verify power quality
+4. Inspect signal cable routing
+
+### FIELD RULE
+Noise is usually electrical or moisture-related
+
+---
+
+## CARD 10
+### FAULT
+CEMS goes to fault after power failure
+
+### CONDITIONS
+- Fault after restart
+- Worked before power trip
+
+### INTERPRETATION
+Initialization or warm-up issue.
+
+### MOST PROBABLE CAUSES
+- Incomplete warm-up
+- Sensor not initialized
+- Configuration reset
+- UPS failure
+
+### FIELD CHECK SEQUENCE
+1. Allow full warm-up time
+2. Verify sensor initialization
+3. Check configuration status
+4. Inspect UPS health
+
+### FIELD RULE
+Power failures expose weak startup conditions
+
+---
+
+## END OF FILE

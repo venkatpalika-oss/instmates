@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Gas Chromatograph Basics | InstMates</title>
+
+  <meta name="description"
+        content="Gas Chromatograph (GC) basics explained for technicians – working principle, components, carrier gas, columns, detectors, calibration, and common field problems." />
+
+  <!-- ================= GLOBAL CSS ================= -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="gc">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge/index.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/analyzers/index.html">Analyzers</a><span>›</span>
+  <span class="current">Gas Chromatograph Basics</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <article class="panel">
+
+    <h1>Gas Chromatograph (GC) – Basics</h1>
+
+    <p class="muted">
+      Category: Analyzer · Gas Chromatograph · Fundamentals
+    </p>
+
+    <!-- ================= OVERVIEW ================= -->
+    <h2>What a Gas Chromatograph Does</h2>
+    <p>
+      A Gas Chromatograph (GC) is an analytical instrument used to
+      separate, identify, and quantify individual components
+      in a gas or vapor sample.
+    </p>
+    <p>
+      In process plants, refineries, and petrochemical units,
+      GCs are mainly used for:
+    </p>
+    <ul class="checklist">
+      <li>Online composition measurement</li>
+      <li>Product quality monitoring</li>
+      <li>Process control and optimization</li>
+      <li>Safety and regulatory compliance</li>
+    </ul>
+
+    <!-- ================= WORKING PRINCIPLE ================= -->
+    <h2>Working Principle (Step-by-Step)</h2>
+    <p>
+      The GC works on the principle of <strong>separation by retention time</strong>.
+      Each component in the sample travels through the column at a different speed,
+      depending on its interaction with the column material.
+    </p>
+
+    <ol class="checklist">
+      <li>Sample is injected into the GC through a sampling system or valve</li>
+      <li>Carrier gas pushes the sample into the column</li>
+      <li>Components separate inside the column based on boiling point and polarity</li>
+      <li>Separated components reach the detector at different times</li>
+      <li>Detector converts concentration into an electrical signal</li>
+      <li>Signal is processed and displayed as peaks on a chromatogram</li>
+    </ol>
+ <!-- ================= INLINE SVG DIAGRAM ================= -->
+    <h2>GC Working – Flow Diagram</h2>
+
+    <svg viewBox="0 0 900 240" width="100%" role="img"
+         aria-label="Gas Chromatograph Working Flow Diagram"
+         style="margin:16px 0">
+
+      <!-- Sample -->
+      <rect x="20" y="90" width="150" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="95" y="115" text-anchor="middle" font-size="14">
+        Sample System
+      </text>
+      <text x="95" y="135" text-anchor="middle" font-size="12" fill="#555">
+        Valve / Loop
+      </text>
+
+      <!-- Arrow -->
+      <line x1="170" y1="120" x2="240" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="240,120 230,115 230,125" fill="#333"/>
+
+      <!-- Carrier Gas -->
+      <rect x="240" y="90" width="170" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="325" y="115" text-anchor="middle" font-size="14">
+        Carrier Gas
+      </text>
+      <text x="325" y="135" text-anchor="middle" font-size="12" fill="#555">
+        He / H₂ / N₂
+      </text>
+
+      <!-- Arrow -->
+      <line x1="410" y1="120" x2="480" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="480,120 470,115 470,125" fill="#333"/>
+
+      <!-- Column Oven -->
+      <rect x="480" y="60" width="200" height="120" rx="10"
+            fill="#fdf6e3" stroke="#e0a800"/>
+      <text x="580" y="105" text-anchor="middle" font-size="14">
+        Column Oven
+      </text>
+      <text x="580" y="130" text-anchor="middle" font-size="12" fill="#555">
+        Component Separation
+      </text>
+
+      <!-- Arrow -->
+      <line x1="680" y1="120" x2="750" y2="120" stroke="#333" stroke-width="2"/>
+      <polygon points="750,120 740,115 740,125" fill="#333"/>
+
+      <!-- Detector -->
+      <rect x="750" y="90" width="130" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="815" y="115" text-anchor="middle" font-size="14">
+        Detector
+      </text>
+      <text x="815" y="135" text-anchor="middle" font-size="12" fill="#555">
+        FID / TCD / ECD
+      </text>
+    </svg>
+
+    <p class="muted">
+      Each separated component appears as a peak on the chromatogram
+      based on its retention time and concentration.
+    </p>
+
+    <!-- ================= MAIN COMPONENTS ================= -->
+    <h2>Main GC Components (Field View)</h2>
+
+    <h3>1. Carrier Gas System</h3>
+    <p>
+      The carrier gas is the mobile phase that transports the sample
+      through the column. Common carrier gases include:
+    </p>
+    <ul class="checklist">
+      <li>Helium – stable and widely used</li>
+      <li>Hydrogen – fast analysis but higher safety risk</li>
+      <li>Nitrogen – economical but slower separation</li>
+    </ul>
+    <p class="muted">
+      Poor carrier gas purity is one of the most common causes of
+      baseline noise and detector contamination.
+    </p>
+
+    <h3>2. Sample Injection System</h3>
+    <p>
+      Online GCs use sampling valves, loops, and regulators to
+      introduce a fixed volume of sample.
+    </p>
+    <ul class="checklist">
+      <li>Sample pressure stability is critical</li>
+      <li>Leaks cause retention time shift</li>
+      <li>Condensation leads to negative or distorted peaks</li>
+    </ul>
+
+    <h3>3. Column & Oven</h3>
+    <p>
+      The column is the heart of the GC.
+      It is installed inside a temperature-controlled oven.
+    </p>
+    <ul class="checklist">
+      <li>Column type determines separation quality</li>
+      <li>Oven temperature affects retention time</li>
+      <li>Temperature overshoot can damage columns</li>
+    </ul>
+
+    <h3>4. Detector</h3>
+    <p>
+      The detector senses separated components and converts them
+      into electrical signals.
+    </p>
+    <ul class="checklist">
+      <li>FID – hydrocarbons</li>
+      <li>TCD – permanent gases</li>
+      <li>ECD – trace compounds</li>
+    </ul>
+
+    <!-- ================= CALIBRATION ================= -->
+    <h2>Calibration & Validation</h2>
+    <p>
+      Calibration ensures accuracy and repeatability of GC measurements.
+      It is typically done using certified calibration gas mixtures.
+    </p>
+
+    <ul class="checklist">
+      <li>Zero calibration checks baseline stability</li>
+      <li>Span calibration verifies concentration accuracy</li>
+      <li>Response factors must be periodically validated</li>
+      <li>Calibration failures often indicate sampling issues</li>
+    </ul>
+
+    <!-- ================= COMMON FIELD PROBLEMS ================= -->
+    <h2>Common GC Problems Seen in Plants</h2>
+    <ul class="checklist">
+      <li>Baseline drift due to carrier gas contamination</li>
+      <li>Retention time shift from pressure or temperature changes</li>
+      <li>Poor peak separation caused by column aging</li>
+      <li>Negative peaks due to condensation or valve leakage</li>
+      <li>Detector noise from unstable power or grounding</li>
+    </ul>
+
+    <!-- ================= TROUBLESHOOTING ================= -->
+    <h2>Basic Troubleshooting Approach</h2>
+    <p>
+      When a GC shows abnormal behavior, troubleshooting should
+      follow a logical sequence:
+    </p>
+    <ol class="checklist">
+      <li>Confirm carrier gas pressure and purity</li>
+      <li>Check for leaks in sampling lines and valves</li>
+      <li>Verify oven and detector temperatures</li>
+      <li>Review recent calibration history</li>
+      <li>Inspect chromatogram trends, not just alarms</li>
+    </ol>
+
+    <p class="muted">
+      Most GC problems in the field originate from the sampling system,
+      not the analyzer itself.
+    </p>
+
+  </article>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

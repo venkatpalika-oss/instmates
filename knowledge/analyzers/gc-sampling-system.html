@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>GC Sampling System – Deep Dive | InstMates</title>
+
+  <meta name="description"
+        content="Gas Chromatograph sampling system explained for technicians – probes, filters, pressure regulation, sample conditioning, common failures, and troubleshooting." />
+
+  <!-- ================= GLOBAL CSS ================= -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="gc">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge/index.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/analyzers/index.html">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/gc-basics.html">GC Basics</a><span>›</span>
+  <span class="current">GC Sampling System</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <article class="panel">
+
+    <h1>GC Sampling System – Deep Dive</h1>
+
+    <p class="muted">
+      Category: Analyzer · Gas Chromatograph · Sampling System
+    </p>
+
+    <!-- ================= INTRO ================= -->
+    <h2>Why the Sampling System Is Critical</h2>
+    <p>
+      In real plant operation, the GC analyzer itself is rarely the problem.
+      Most GC failures originate from the <strong>sampling system</strong>.
+    </p>
+    <p>
+      Any instability in pressure, temperature, flow, or cleanliness
+      before the sample reaches the column will directly affect:
+    </p>
+    <ul class="checklist">
+      <li>Retention time</li>
+      <li>Peak area and repeatability</li>
+      <li>Baseline stability</li>
+      <li>Calibration success</li>
+    </ul>
+
+    <!-- ================= SAMPLING FLOW ================= -->
+    <h2>Typical GC Sampling Flow</h2>
+
+    <svg viewBox="0 0 960 260" width="100%" role="img"
+         aria-label="GC Sampling System Flow Diagram"
+         style="margin:16px 0">
+
+      <!-- Process -->
+      <rect x="20" y="110" width="160" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="100" y="145" text-anchor="middle" font-size="14">
+        Process Line
+      </text>
+
+      <!-- Arrow -->
+      <line x1="180" y1="140" x2="240" y2="140" stroke="#333" stroke-width="2"/>
+      <polygon points="240,140 230,135 230,145" fill="#333"/>
+
+      <!-- Probe -->
+      <rect x="240" y="90" width="150" height="100" rx="8"
+            fill="#fdf6e3" stroke="#e0a800"/>
+      <text x="315" y="125" text-anchor="middle" font-size="14">
+        Sample Probe
+      </text>
+      <text x="315" y="145" text-anchor="middle" font-size="12" fill="#555">
+        Extraction Point
+      </text>
+
+      <!-- Arrow -->
+      <line x1="390" y1="140" x2="450" y2="140" stroke="#333" stroke-width="2"/>
+      <polygon points="450,140 440,135 440,145" fill="#333"/>
+
+      <!-- Filter -->
+      <rect x="450" y="110" width="140" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="520" y="145" text-anchor="middle" font-size="14">
+        Filter
+      </text>
+
+      <!-- Arrow -->
+      <line x1="590" y1="140" x2="650" y2="140" stroke="#333" stroke-width="2"/>
+      <polygon points="650,140 640,135 640,145" fill="#333"/>
+
+      <!-- Regulator -->
+      <rect x="650" y="110" width="160" height="60" rx="8"
+            fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="730" y="135" text-anchor="middle" font-size="14">
+        Pressure Regulator
+      </text>
+      <text x="730" y="155" text-anchor="middle" font-size="12" fill="#555">
+        Stable Sample Pressure
+      </text>
+
+      <!-- Arrow -->
+      <line x1="810" y1="140" x2="880" y2="140" stroke="#333" stroke-width="2"/>
+      <polygon points="880,140 870,135 870,145" fill="#333"/>
+
+      <!-- Analyzer -->
+      <rect x="880" y="90" width="160" height="100" rx="8"
+            fill="#f5f7fa" stroke="#0b5ed7"/>
+      <text x="960" y="125" text-anchor="middle" font-size="14">
+        GC Analyzer
+      </text>
+      <text x="960" y="145" text-anchor="middle" font-size="12" fill="#555">
+        Valve / Column
+      </text>
+    </svg>
+
+    <!-- ================= COMPONENTS ================= -->
+    <h2>Key Sampling System Components</h2>
+
+    <h3>1. Sample Probe</h3>
+    <ul class="checklist">
+      <li>Correct insertion depth is critical</li>
+      <li>Plugged probes cause slow response and false stability</li>
+      <li>Improper location leads to non-representative samples</li>
+    </ul>
+
+    <h3>2. Sample Filters</h3>
+    <ul class="checklist">
+      <li>Protects valves and columns from particulates</li>
+      <li>Partial choking causes pressure fluctuation</li>
+      <li>Fully choked filters cause zero or flat readings</li>
+    </ul>
+
+    <h3>3. Sample Lines</h3>
+    <ul class="checklist">
+      <li>Should be as short as possible</li>
+      <li>Low points cause liquid accumulation</li>
+      <li>Improper material causes adsorption</li>
+    </ul>
+
+    <h3>4. Pressure Regulation</h3>
+    <p>
+      Sample pressure stability is <strong>more important than flow</strong>
+      for GC repeatability.
+    </p>
+    <ul class="checklist">
+      <li>Pressure fluctuation shifts retention time</li>
+      <li>Regulator creep causes peak area drift</li>
+      <li>Shared regulators create cross-interference</li>
+    </ul>
+
+    <h3>5. Sample Conditioning</h3>
+    <ul class="checklist">
+      <li>Heaters prevent condensation</li>
+      <li>Coolers remove excess moisture</li>
+      <li>Poor conditioning causes negative peaks</li>
+    </ul>
+
+    <!-- ================= COMMON FAILURES ================= -->
+    <h2>Common Sampling System Failures</h2>
+    <ul class="checklist">
+      <li>Condensation during night operation</li>
+      <li>Filter choking after process upset</li>
+      <li>Pressure regulator sticking</li>
+      <li>Leaks at compression fittings</li>
+      <li>Probe blockage from process carryover</li>
+    </ul>
+
+    <!-- ================= TROUBLESHOOTING ================= -->
+    <h2>Field Troubleshooting Sequence</h2>
+    <ol class="checklist">
+      <li>Verify sample pressure stability</li>
+      <li>Inspect filters visually</li>
+      <li>Check for cold spots and condensation</li>
+      <li>Leak test all fittings</li>
+      <li>Compare GC trends with process changes</li>
+    </ol>
+
+    <p class="muted">
+      If GC behavior changes with ambient temperature or time of day,
+      the sampling system should be suspected first.
+    </p>
+
+    <!-- ================= LINK BACK ================= -->
+    <h2>Related Pages</h2>
+    <ul class="checklist">
+      <li><a href="/knowledge/analyzers/gc-basics.html">GC Basics – Working Principle</a></li>
+      <li><a href="/knowledge/analyzers/gc-components.html">GC Components – Deep Dive</a></li>
+    </ul>
+
+  </article>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GC Full Cycle Timeline | InstMates Knowledge Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Complete GC analyzer cycle timeline explained for analyzer technicians. Learn purge, inject, separation, detection, backflush, and ready state using an inline SVG sequence." />
+
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="gc-full-cycle">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/gc/index.html">Gas Chromatography (GC)</a><span>›</span>
+  <span class="current">Full GC Cycle</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>GC Analyzer – Complete Cycle Timeline</h2>
+
+  <p class="muted">
+    A process gas chromatograph operates in a fixed repeating sequence.
+    Understanding the full cycle helps technicians diagnose timing errors,
+    missing peaks, long cycle times, and unstable measurements.
+  </p>
+</section>
+
+<!-- ================= SVG : FULL GC CYCLE ================= -->
+<section class="panel">
+  <h3>End-to-End GC Sequence</h3>
+
+  <p class="muted">
+    This timeline shows the complete GC cycle from sample purge to ready state,
+    including inject, separation, detection, and backflush.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 1100 460"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Analyzer Full Cycle Timeline">
+
+  <style>
+    .axis { stroke:#334155; stroke-width:2 }
+    .step { fill:#e0f2fe; stroke:#0284c7; stroke-width:2 }
+    .stepAlt { fill:#dcfce7; stroke:#16a34a; stroke-width:2 }
+    .stepWarn { fill:#fee2e2; stroke:#dc2626; stroke-width:2 }
+    .peak { fill:none; stroke:#2563eb; stroke-width:3 }
+    .backflush { stroke:#dc2626; stroke-width:3; stroke-dasharray:6 6 }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .title { font-size:18px; font-weight:700; fill:#0b3c5d }
+  </style>
+
+  <text x="550" y="30" text-anchor="middle" class="title">
+    GC Analyzer Cycle – Sequence Overview
+  </text>
+
+  <line x1="80" y1="300" x2="1020" y2="300" class="axis"/>
+  <text x="520" y="330" class="label">Time →</text>
+
+  <rect x="100" y="260" width="140" height="60" rx="10" class="step"/>
+  <text x="120" y="295" class="label">Purge</text>
+
+  <rect x="260" y="260" width="120" height="60" rx="10" class="step"/>
+  <text x="290" y="295" class="label">Inject</text>
+
+  <rect x="400" y="260" width="220" height="60" rx="10" class="stepAlt"/>
+  <text x="430" y="295" class="label">Column Separation</text>
+
+  <rect x="640" y="260" width="160" height="60" rx="10" class="stepAlt"/>
+  <text x="675" y="295" class="label">Detection</text>
+
+  <rect x="820" y="260" width="160" height="60" rx="10" class="stepWarn"/>
+  <text x="850" y="295" class="label">Backflush</text>
+
+  <rect x="1000" y="260" width="100" height="60" rx="10" class="step"/>
+  <text x="1015" y="295" class="label">Ready</text>
+
+  <line x1="80" y1="120" x2="1020" y2="120" class="axis"/>
+  <line x1="80" y1="120" x2="80" y2="200" class="axis"/>
+  <text x="10" y="165" class="label" transform="rotate(-90 10 165)">
+    Detector Signal
+  </text>
+
+  <path d="M450 200 C480 90 520 90 550 200" class="peak"/>
+  <path d="M560 200 C600 120 640 120 670 200" class="peak"/>
+
+  <line x1="820" y1="90" x2="820" y2="220" class="backflush"/>
+  <text x="780" y="80" class="label">Heavy Components Flushed</text>
+
+</svg>
+
+  </div>
+</section>
+
+<!-- ================= TECH NOTES ================= -->
+<section class="panel">
+  <h3>Key Points for Technicians</h3>
+
+  <ul class="muted">
+    <li>Purge stabilizes the sampling system and refreshes the loop.</li>
+    <li>Inject timing defines peak size and repeatability.</li>
+    <li>Separation occurs inside the column based on chemistry.</li>
+    <li>Detection produces the chromatogram peaks.</li>
+    <li>Backflush removes heavy components and protects the column.</li>
+    <li>The analyzer then waits in READY state for the next cycle.</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD USE ================= -->
+<section class="panel">
+  <h3>How This Helps in the Field</h3>
+
+  <ul class="muted">
+    <li>Long cycle time → delayed or missing backflush</li>
+    <li>Missing peaks → inject or valve timing issue</li>
+    <li>Baseline drift → contamination or purge failure</li>
+    <li>Unstable readings → pressure or flow instability</li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES (MODULE – LOCKED) ================= -->
+<script type="module" src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

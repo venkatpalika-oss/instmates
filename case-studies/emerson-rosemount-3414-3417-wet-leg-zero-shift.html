@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emerson Rosemount 3414/3417 – Wet Leg Zero Shift | InstMates Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Real field case study of Emerson Rosemount 3414/3417 DP level transmitter showing zero shift due to wet leg imbalance. Root cause, corrective action, and field lessons." />
+
+  <!-- GLOBAL CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="case-study-rosemount-3414">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/case-studies/">Case Studies</a><span>›</span>
+  <span class="current">Rosemount 3414/3417 – Wet Leg Zero Shift</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= TITLE ================= -->
+<section class="panel">
+  <h2>Emerson Rosemount 3414 / 3417 – Wet Leg Zero Shift</h2>
+
+  <p class="muted">
+    <b>Category:</b> Instrumentation · DP Level Measurement · Wet Leg System
+  </p>
+</section>
+
+<!-- ================= PLANT DETAILS ================= -->
+<section class="panel">
+  <h3>Plant / Application</h3>
+  <p class="muted">
+    Refinery – Closed vessel level measurement using wet leg DP transmitter
+  </p>
+</section>
+
+<!-- ================= PROBLEM ================= -->
+<section class="panel">
+  <h3>Problem Statement</h3>
+  <p class="muted">
+    Rosemount 3414/3417 DP transmitter showed a <b>gradual level offset</b>
+    even though the vessel level was stable. Frequent zero adjustments
+    were required to keep the reading within operating limits.
+  </p>
+</section>
+
+<!-- ================= SYMPTOMS ================= -->
+<section class="panel">
+  <h3>Observed Symptoms</h3>
+  <ul class="muted">
+    <li>Level reading slowly drifting over time</li>
+    <li>Zero shift after shutdown and restart</li>
+    <li>No impulse line blockage observed</li>
+    <li>Transmitter electronics appeared healthy</li>
+  </ul>
+</section>
+
+<!-- ================= INITIAL ASSUMPTIONS ================= -->
+<section class="panel">
+  <h3>Initial (Incorrect) Assumptions</h3>
+  <ul class="muted">
+    <li>Suspected transmitter sensor drift</li>
+    <li>Considered recalibration or replacement</li>
+    <li>Electronics fault initially suspected</li>
+  </ul>
+</section>
+
+<!-- ================= ROOT CAUSE ================= -->
+<section class="panel">
+  <h3>Root Cause Analysis</h3>
+
+  <p class="muted">
+    Detailed inspection identified that the problem was <b>not the transmitter</b>.
+    The actual root causes were related to the <b>wet leg reference column</b>:
+  </p>
+
+  <ul class="muted">
+    <li>Partial evaporation of wet leg fill fluid</li>
+    <li>Unequal condensate levels between high and low legs</li>
+    <li>Inadequate sealing of the wet leg reference pot</li>
+  </ul>
+</section>
+
+<!-- ================= CORRECTIVE ACTION ================= -->
+<section class="panel">
+  <h3>Corrective Actions Taken</h3>
+
+  <ul class="muted">
+    <li>Completely drained and refilled wet leg with correct reference fluid</li>
+    <li>Ensured airtight sealing of the wet leg system</li>
+    <li>Verified equal impulse line routing and slope</li>
+    <li>Performed zero calibration only after stabilizing wet leg</li>
+  </ul>
+</section>
+
+<!-- ================= RESULT ================= -->
+<section class="panel">
+  <h3>Result After Correction</h3>
+
+  <ul class="muted">
+    <li>Stable level reading achieved</li>
+    <li>No further zero drift observed</li>
+    <li>Calibration frequency significantly reduced</li>
+    <li>Transmitter returned to normal operation</li>
+  </ul>
+</section>
+
+<!-- ================= LESSONS ================= -->
+<section class="panel">
+  <h3>Lessons Learned</h3>
+
+  <ul class="muted">
+    <li>Most DP level errors originate from impulse lines and wet legs</li>
+    <li>Wet leg condition is more critical than transmitter accuracy</li>
+    <li>Repeated calibration hides installation problems</li>
+    <li>Stable reference pressure is essential for correct DP measurement</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD RULE ================= -->
+<section class="panel">
+  <h3>Golden Field Rule</h3>
+
+  <p class="muted">
+    If a DP level transmitter shows zero drift,
+    always stabilize the <b>wet leg reference</b>
+    before touching calibration or electronics.
+  </p>
+</section>
+
+<!-- ================= NAVIGATION ================= -->
+<section class="panel">
+  <a class="btn btn-ghost" href="/case-studies/">
+    ← Back to Case Studies
+  </a>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

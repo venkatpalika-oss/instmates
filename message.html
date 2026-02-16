@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Send Message | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description"
+        content="Send a direct message to a fellow instrument or analyzer technician on InstMates." />
+
+  <!-- Global CSS (LOCKED) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-30">
+</head>
+
+<body data-page="message" class="auth-ready">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/profiles/index.html">Technicians</a><span>›</span>
+  <span class="current">Send Message</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container auth-required">
+
+  <section class="panel">
+    <h2>Send Message</h2>
+    <p class="muted">
+      Your message will be delivered directly to this technician.
+    </p>
+
+    <!-- 🔒 Recipient Safety Notice -->
+    <p class="muted" style="font-size:0.9rem">
+      Messages are private. Only you and the recipient can read them.
+    </p>
+
+    <form id="messageForm" class="auth-form">
+
+      <!-- 🔑 Hidden recipient UID (read from URL by message.js) -->
+      <input type="hidden" id="toUid">
+
+      <label>
+        Message
+        <textarea
+          id="messageText"
+          rows="6"
+          placeholder="Write your message here..."
+          required></textarea>
+      </label>
+
+      <button class="btn btn-primary full" type="submit">
+        Send Message
+      </button>
+
+      <p id="messageStatus" class="muted" style="margin-top:10px;"></p>
+
+    </form>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+
+<!-- Header / Footer -->
+<script src="/assets/js/includes.js"></script>
+
+<!-- Firebase init (must load before message.js) -->
+<script type="module" src="/assets/js/firebase.js"></script>
+
+<!-- Message logic -->
+<script type="module" src="/assets/js/message.js"></script>
+
+</body>
+</html>

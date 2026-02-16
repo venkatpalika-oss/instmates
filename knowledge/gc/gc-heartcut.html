@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GC Heart-Cut (Dual Column) | InstMates Knowledge Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="GC heart-cut (dual column) operation explained for analyzer technicians. Learn pre-column separation, cut window logic, analytical column routing, and common timing mistakes using inline SVG." />
+
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="gc-heartcut">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/gc/index.html">Gas Chromatography (GC)</a><span>›</span>
+  <span class="current">Heart-Cut (Dual Column)</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>GC Heart-Cut (Dual Column) – Fundamentals</h2>
+
+  <p class="muted">
+    Heart-cut gas chromatography uses two columns and a switching valve to
+    selectively transfer only the target portion of a chromatographic
+    separation into a second (analytical) column. This technique improves
+    resolution, accuracy, and cycle time in complex gas mixtures.
+  </p>
+</section>
+
+<!-- ================= SVG : HEART CUT ================= -->
+<section class="panel">
+  <h3>Heart-Cut Operation – OFF vs ON</h3>
+
+  <p class="muted">
+    The pre-column performs a rough separation. During the heart-cut window,
+    the valve switches and transfers only the selected time slice into the
+    analytical column. Outside this window, components are safely routed to vent.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 1000 440"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Heart-Cut Dual Column Operation">
+
+  <style>
+    .pipe { stroke:#64748b; stroke-width:6; fill:none }
+    .sample { stroke:#2563eb; stroke-width:5; fill:none }
+    .cut { stroke:#f59e0b; stroke-width:5; fill:none }
+    .carrier { stroke:#16a34a; stroke-width:5; fill:none }
+    .column { stroke:#475569; stroke-width:8; fill:none }
+    .active { stroke-dasharray:8 6; animation: flow 1s linear infinite }
+    .valve { fill:#334155 }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .mode { font-size:16px; font-weight:700; fill:#0b3c5d }
+
+    @keyframes flow {
+      from { stroke-dashoffset:14 }
+      to   { stroke-dashoffset:0 }
+    }
+  </style>
+
+  <!-- MODE TEXT -->
+  <text x="720" y="40" class="mode">
+    HEART-CUT OFF
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <text x="720" y="40" class="mode">
+    HEART-CUT ON
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <!-- SAMPLE IN -->
+  <line x1="60" y1="220" x2="200" y2="220" class="pipe"/>
+  <text x="60" y="200" class="label">Sample In</text>
+
+  <!-- PRE COLUMN -->
+  <path d="M200 220 H420" class="column"/>
+  <text x="270" y="200" class="label">Pre Column</text>
+
+  <!-- HEART CUT VALVE -->
+  <circle cx="500" cy="220" r="40" class="valve"/>
+  <text x="460" y="275" class="label">Heart-Cut Valve</text>
+
+  <!-- ANALYTICAL COLUMN -->
+  <path d="M540 300 H840" class="column"/>
+  <text x="620" y="280" class="label">Analytical Column</text>
+
+  <!-- DETECTOR -->
+  <rect x="860" y="270" width="110" height="60"
+        rx="8" fill="#fef3c7" stroke="#92400e" stroke-width="3"/>
+  <text x="890" y="305" class="label">Detector</text>
+
+  <!-- VENT -->
+  <line x1="540" y1="120" x2="940" y2="120" class="pipe"/>
+  <text x="860" y="100" class="label">Vent</text>
+
+  <!-- HEART CUT OFF FLOW -->
+  <path d="M60 220 H200 H420
+           C460 220 460 120 540 120
+           H940"
+        class="sample active">
+    <animate attributeName="opacity"
+             values="1;0"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- HEART CUT ON FLOW -->
+  <path d="M420 220
+           C460 220 460 300 540 300
+           H840 H860"
+        class="cut active">
+    <animate attributeName="opacity"
+             values="0;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- CARRIER GAS -->
+  <line x1="60" y1="360" x2="500" y2="360" class="carrier active"/>
+  <text x="60" y="340" class="label">Carrier Gas</text>
+
+</svg>
+
+  </div>
+</section>
+
+<!-- ================= TECH NOTES ================= -->
+<section class="panel">
+  <h3>Key Points for Technicians</h3>
+
+  <ul class="muted">
+    <li>Heart-cut transfers only the target time window to the analytical column.</li>
+    <li>Pre-column protects the analytical column from overload.</li>
+    <li>Incorrect cut timing causes missing or overlapping peaks.</li>
+    <li>Wide cuts contaminate the analytical column.</li>
+    <li>Missed cuts result in no peaks on the detector.</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD SYMPTOMS ================= -->
+<section class="panel">
+  <h3>Typical Field Symptoms</h3>
+
+  <ul class="muted">
+    <li>No peaks → cut window not enabled</li>
+    <li>Overlapping peaks → cut window too wide</li>
+    <li>Drifting retention → cut timing shift</li>
+    <li>Long cycle time → missing cut or backflush logic</li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES (MODULE – LOCKED) ================= -->
+<script type="module" src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

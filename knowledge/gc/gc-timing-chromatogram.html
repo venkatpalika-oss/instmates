@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GC Timing vs Chromatogram | InstMates Knowledge Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="GC valve timing vs chromatogram explained for analyzer technicians. Learn how inject timing, cut window, and backflush affect peaks, retention time, and accuracy using inline SVG." />
+
+  <!-- GLOBAL CSS (LOCKED STANDARD) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="gc-timing">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/gc/index.html">Gas Chromatography (GC)</a><span>›</span>
+  <span class="current">Timing vs Chromatogram</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= INTRO ================= -->
+<section class="panel">
+  <h2>GC Timing vs Chromatogram – Core Concept</h2>
+
+  <p class="muted">
+    In process gas chromatography, valve timing directly controls what reaches
+    the column and detector. Incorrect inject timing, cut window, or backflush
+    sequence will immediately appear as missing, shifted, or distorted peaks
+    on the chromatogram.
+  </p>
+</section>
+
+<!-- ================= SVG : TIMING vs CHROMATOGRAM ================= -->
+<section class="panel">
+  <h3>Valve Events and Chromatogram Relationship</h3>
+
+  <p class="muted">
+    This diagram overlays key GC events (inject, cut, backflush) with the
+    resulting chromatogram peaks. Understanding this relationship is critical
+    for troubleshooting repeatability and accuracy issues.
+  </p>
+
+  <div class="svg-wrap">
+
+<svg viewBox="0 0 1000 480"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img"
+     aria-label="GC Timing vs Chromatogram Overlay">
+
+  <style>
+    .axis { stroke:#334155; stroke-width:2 }
+    .grid { stroke:#cbd5e1; stroke-width:1 }
+    .peak { fill:none; stroke-width:3 }
+    .p1 { stroke:#2563eb }
+    .p2 { stroke:#16a34a }
+    .p3 { stroke:#f59e0b }
+    .event { stroke:#dc2626; stroke-width:2; stroke-dasharray:6 6 }
+    .label { font-size:14px; fill:#0b3c5d; font-family:Arial }
+    .eventLabel { font-size:13px; fill:#dc2626; font-weight:700 }
+  </style>
+
+  <!-- AXES -->
+  <line x1="80" y1="380" x2="940" y2="380" class="axis"/>
+  <line x1="80" y1="100" x2="80" y2="380" class="axis"/>
+
+  <!-- GRID -->
+  <line x1="300" y1="100" x2="300" y2="380" class="grid"/>
+  <line x1="520" y1="100" x2="520" y2="380" class="grid"/>
+  <line x1="740" y1="100" x2="740" y2="380" class="grid"/>
+
+  <!-- PEAKS -->
+  <path d="M140 380 C180 170 220 170 260 380" class="peak p1"/>
+  <path d="M340 380 C390 140 450 140 500 380" class="peak p2"/>
+  <path d="M560 380 C640 260 700 260 780 380" class="peak p3"/>
+
+  <!-- EVENTS -->
+  <line x1="140" y1="90" x2="140" y2="400" class="event"/>
+  <text x="110" y="70" class="eventLabel">INJECT</text>
+
+  <rect x="300" y="90" width="220" height="310"
+        fill="none" class="event"/>
+  <text x="330" y="70" class="eventLabel">CUT WINDOW</text>
+
+  <line x1="560" y1="90" x2="560" y2="400" class="event"/>
+  <text x="520" y="70" class="eventLabel">BACKFLUSH</text>
+
+  <!-- AXIS LABELS -->
+  <text x="480" y="430" class="label">Time →</text>
+  <text x="20" y="260" class="label" transform="rotate(-90 20 260)">
+    Detector Signal
+  </text>
+
+  <!-- LEGEND -->
+  <text x="800" y="140" class="label" fill="#2563eb">Light Components</text>
+  <text x="800" y="170" class="label" fill="#16a34a">Target Components</text>
+  <text x="800" y="200" class="label" fill="#f59e0b">Heavy Components</text>
+
+</svg>
+
+  </div>
+</section>
+
+<!-- ================= TECH NOTES ================= -->
+<section class="panel">
+  <h3>Key Points for Technicians</h3>
+
+  <ul class="muted">
+    <li>Inject timing defines peak size and baseline stability.</li>
+    <li>A narrow cut window causes missing or reduced peaks.</li>
+    <li>A wide cut window causes overlapping and contamination.</li>
+    <li>Early backflush removes heavy peaks prematurely.</li>
+    <li>Late or missing backflush increases cycle time and fouls columns.</li>
+  </ul>
+</section>
+
+<!-- ================= TROUBLESHOOTING ================= -->
+<section class="panel">
+  <h3>Typical Field Symptoms</h3>
+
+  <ul class="muted">
+    <li>Peak shift → valve timing drift or clock mismatch</li>
+    <li>Missing peak → inject or cut timing error</li>
+    <li>Baseline rise → delayed or failed backflush</li>
+    <li>Poor repeatability → unstable valve actuation</li>
+  </ul>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= INCLUDES (MODULE – LOCKED) ================= -->
+<script type="module" src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

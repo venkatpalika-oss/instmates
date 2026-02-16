@@ -1,0 +1,22 @@
+{
+  "name": "InstMates",
+  "short_name": "InstMates",
+  "description": "Professional community for instrument and analyzer technicians",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#0b5ed7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
