@@ -1,7 +1,8 @@
 console.log("PROFILES JS ACTIVE");
-===========================
+
+/* =========================================================
    InstMates – Profiles Directory
-   FINAL – PROFILE-ONLY SOURCE (CLEAN ARCHITECTURE)
+   FINAL – PROFILE-ONLY SOURCE
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -13,7 +14,11 @@ import {
 const grid = document.getElementById("profilesGrid");
 
 async function loadProfiles() {
-  if (!grid) return;
+
+  if (!grid) {
+    console.warn("profilesGrid element not found.");
+    return;
+  }
 
   grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
@@ -21,24 +26,31 @@ async function loadProfiles() {
 
     const snap = await getDocs(collection(db, "profiles"));
 
+    console.log("Profiles found:", snap.size);
+
     if (snap.empty) {
-      grid.innerHTML = `<p class="muted">No users found.</p>`;
+      grid.innerHTML = `<p class="muted">No technicians found.</p>`;
       return;
     }
 
     grid.innerHTML = "";
+
+    let visibleCount = 0;
 
     snap.forEach(docSnap => {
 
       const profile = docSnap.data();
       const uid = docSnap.id;
 
+      // Default to true unless explicitly false
       const isPublic = profile.publicProfile !== false;
 
       if (!isPublic) return;
 
+      visibleCount++;
+
       const card = document.createElement("div");
-      card.className = "card";
+      card.className = "card profile-card";
 
       card.innerHTML = `
         <h3>${escapeHTML(profile.fullName || "Technician")}</h3>
@@ -52,39 +64,16 @@ async function loadProfiles() {
           : ""
         }
 
-        <div class="tags">
-          ${(profile.skills || [])
-            .map(s => `<span class="tag">${escapeHTML(s)}</span>`)
-            .join("")}
-        </div>
+        ${Array.isArray(profile.skills) && profile.skills.length > 0
+          ? `
+            <div class="tags">
+              ${profile.skills
+                .map(skill => `<span class="tag">${escapeHTML(skill)}</span>`)
+                .join("")}
+            </div>
+          `
+          : ""
+        }
 
         <div class="action-row" style="margin-top:12px;">
-          <a class="btn btn-ghost"
-             href="/profile-view.html?uid=${uid}">
-             View Profile
-          </a>
-
-          <a class="btn btn-primary"
-             href="/message.html?to=${uid}">
-             Message
-          </a>
-        </div>
-      `;
-
-      grid.appendChild(card);
-    });
-
-  } catch (err) {
-    console.error("Profiles load error:", err);
-    grid.innerHTML = `<p class="muted">Failed to load profiles.</p>`;
-  }
-}
-
-loadProfiles();
-
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+          <a
