@@ -1,6 +1,5 @@
 /* =========================================================
    InstMates – Profiles Directory
-   File: /assets/js/profiles.js
    FINAL – PROFILE COLLECTION ONLY
 ========================================================= */
 
@@ -29,8 +28,6 @@ async function loadProfiles() {
 
     grid.innerHTML = "";
 
-    let visibleCount = 0;
-
     snap.forEach(docSnap => {
 
       const profile = docSnap.data();
@@ -40,8 +37,6 @@ async function loadProfiles() {
       const isPublic = profile.publicProfile !== false;
 
       if (!isPublic) return;
-
-      visibleCount++;
 
       const card = document.createElement("div");
       card.className = "card";
@@ -91,10 +86,6 @@ async function loadProfiles() {
 
     });
 
-    if (visibleCount === 0) {
-      grid.innerHTML = `<p class="muted">No public profiles available.</p>`;
-    }
-
   } catch (err) {
     console.error("Profiles load error:", err);
     grid.innerHTML =
@@ -103,8 +94,6 @@ async function loadProfiles() {
 }
 
 loadProfiles();
-
-/* ================= HELPERS ================= */
 
 function escapeHTML(str) {
   return String(str)
