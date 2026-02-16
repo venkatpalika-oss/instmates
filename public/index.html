@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>InstMates – Instrument & Analyzer Technicians Community | Real Field Troubleshooting</title>
+  <title>InstMates – The Social Technical Platform for Instrument & Analyzer Engineers</title>
 
   <meta name="description"
-        content="InstMates is a professional community for instrument and analyzer technicians to share real field experience, troubleshoot analyzer failures, and solve plant problems." />
+        content="InstMates is a private social-technical platform for instrument and analyzer engineers to share real field troubleshooting cases, calibration failures, and plant breakdown solutions." />
 
   <!-- GOOGLE ANALYTICS -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"></script>
@@ -18,18 +18,50 @@
     gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
   </script>
 
+  <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0b5ed7">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
+
+  <style>
+    .highlight-login {
+      border-left: 4px solid #0b5ed7;
+      background: #f8fbff;
+    }
+
+    .login-cta-box {
+      padding: 20px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      text-align: center;
+    }
+
+    .blur-preview {
+      margin: 20px 0;
+    }
+
+    .blur-card {
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background: #eef3f8;
+      filter: blur(3px);
+      opacity: 0.6;
+    }
+  </style>
 </head>
 
 <body data-page="home">
 
+<!-- HEADER -->
 <div id="siteHeader"></div>
 
 <!-- ================= HERO ================= -->
@@ -37,17 +69,17 @@
   <div class="hero-inner container">
 
     <h1>
-      A Global Community for<br>
-      Instrument & Analyzer Technicians
+      The Social Technical Platform for
+      Instrument & Analyzer Engineers
     </h1>
 
     <p class="hero-tagline">
-      Real field problems · Real fixes · Real technicians
+      Real breakdowns · Real plant fixes · Verified technicians
     </p>
 
     <p class="hero-sub">
-      Practical troubleshooting discussions from real plant engineers.
-      No recruiters. No noise. Just field intelligence.
+      A private network where field engineers share live troubleshooting cases,
+      GC errors, CEMS failures, calibration problems, and real plant recovery lessons.
     </p>
 
     <div class="hero-actions">
@@ -55,72 +87,133 @@
       <a href="/login.html" class="btn btn-soft">Login</a>
     </div>
 
+    <p class="muted" style="margin-top:10px;">
+      🔒 Feed access requires login
+    </p>
+
   </div>
 </section>
 
-<!-- 🔐 ================= FEED LOCK CONVERSION SECTION ================= -->
+<!-- ================= GATED FEED PREVIEW ================= -->
 <section class="panel highlight-login">
 
-  <h2>🔐 See What Engineers Are Discussing Right Now</h2>
+  <h2>🔐 Live Technical Discussions</h2>
 
-  <p class="muted" style="margin-bottom:20px;">
-    The InstMates Feed contains live analyzer faults, CEMS issues,
-    GC troubleshooting cases, and real plant recovery discussions.
+  <p class="muted">
+    See what engineers are discussing right now — GC faults,
+    CEMS trips, unstable 4–20 mA loops, calibration failures.
   </p>
 
-  <!-- Blurred Preview -->
   <div class="blur-preview">
-    <div class="blur-card">🔒 GC8000 baseline instability after restart…</div>
-    <div class="blur-card">🔒 CEMS probe heater failure during monsoon…</div>
-    <div class="blur-card">🔒 4–20 mA signal fluctuating only at DCS side…</div>
+    <div class="blur-card">🔒 GC8000 baseline instability after restart...</div>
+    <div class="blur-card">🔒 CEMS probe heater timing mismatch...</div>
+    <div class="blur-card">🔒 4–20 mA signal fluctuation at DCS input...</div>
   </div>
 
   <div class="login-cta-box">
-    <p style="font-weight:600;">Login required to access full technical discussions.</p>
-
-    <div class="hero-actions" style="margin-top:15px;">
-      <a href="/login.html" class="btn btn-primary">
-        Login to View Feed
-      </a>
-      <a href="/register.html" class="btn btn-ghost">
-        Join Free
-      </a>
+    <p style="font-weight:600;">Login required to unlock full discussions.</p>
+    <div style="margin-top:15px;">
+      <a href="/login.html" class="btn btn-primary">Login to View Feed</a>
+      <a href="/register.html" class="btn btn-ghost">Join Free</a>
     </div>
   </div>
 
 </section>
 
-<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- ================= TRUST SIGNALS ================= -->
+  <!-- ================= PROBLEM SECTION ================= -->
   <section class="panel">
-    <div class="grid grid-4">
+    <h2>Why Critical Technical Knowledge Gets Lost</h2>
+
+    <div class="grid grid-2">
+
       <div class="card">
-        <h3>👤 Technicians</h3>
-        <p class="muted">Growing global plant community</p>
+        <h3>🔧 Night Shift Fixes</h3>
+        <p class="muted">
+          Plant breakdowns solved at 2 AM never get documented anywhere.
+        </p>
       </div>
+
       <div class="card">
-        <h3>🛠 Field Cases</h3>
-        <p class="muted">Real troubleshooting documentation</p>
+        <h3>📂 No Central Archive</h3>
+        <p class="muted">
+          The same analyzer failures repeat across plants worldwide.
+        </p>
       </div>
+
       <div class="card">
-        <h3>💬 Discussions</h3>
-        <p class="muted">Live technical conversations</p>
+        <h3>📉 Generic Platforms</h3>
+        <p class="muted">
+          LinkedIn mixes recruiters and marketing with real technical issues.
+        </p>
       </div>
+
       <div class="card">
-        <h3>🌍 Global</h3>
-        <p class="muted">Used across refineries & plants</p>
+        <h3>⏳ Pressure Environment</h3>
+        <p class="muted">
+          Technicians need fast solutions during shutdown — not theory.
+        </p>
       </div>
+
     </div>
   </section>
 
-  <!-- (Your remaining sections stay unchanged below) -->
+  <!-- ================= SOLUTION SECTION ================= -->
+  <section class="panel">
+    <h2>How InstMates Solves This</h2>
 
-  <!-- FINAL CTA -->
-  <section class="panel" style="text-align:center">
-    <h2>Join the Technician Network</h2>
-    <p class="muted">Access real plant discussions. Built for serious technicians.</p>
+    <div class="grid grid-3">
+
+      <div class="card">
+        <h3>🔒 Private Technical Feed</h3>
+        <p class="muted">
+          Focused discussions only from real field professionals.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🏷 Structured Categories</h3>
+        <p class="muted">
+          Fault • Question • Solution • Calibration.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>⭐ Earn Technical Reputation</h3>
+        <p class="muted">
+          Build credibility through real plant contributions.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SOCIAL PROOF ================= -->
+  <section class="panel" style="text-align:center;">
+    <h2>Built for Field Engineers</h2>
+
+    <p class="muted">
+      Used by technicians working in refineries, power plants,
+      chemical plants, and process industries worldwide.
+    </p>
+
+    <div style="margin-top:15px;">
+      🔥 Active discussions weekly<br>
+      🛠 Real plant breakdown cases<br>
+      🌍 Growing global technician network
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section class="panel" style="text-align:center; background:#f8fbff;">
+    <h2>Access Real Technical Intelligence</h2>
+
+    <p class="muted">
+      Join the private network built for serious instrument
+      and analyzer professionals.
+    </p>
+
     <a href="/register.html" class="btn btn-primary auth-out">
       Create Your Free Account
     </a>
@@ -128,6 +221,7 @@
 
 </main>
 
+<!-- FOOTER -->
 <div id="siteFooter"></div>
 
 <script src="/assets/js/includes.js"></script>
