@@ -1,4 +1,5 @@
-/* =========================================================
+console.log("PROFILES JS ACTIVE");
+===========================
    InstMates – Profiles Directory
    FINAL – PROFILE-ONLY SOURCE (CLEAN ARCHITECTURE)
 ========================================================= */
