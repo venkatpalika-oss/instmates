@@ -1,7 +1,7 @@
 /* =========================================================
-   InstMates – Profiles Directory (USERS + PROFILES)
+   InstMates – Profiles Directory (PROFILE-ONLY SYSTEM)
    File: /assets/js/profiles.js
-   FINAL – PRODUCTION SAFE
+   FINAL – CLEAN ARCHITECTURE
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -13,7 +13,7 @@ import {
 
 const grid = document.getElementById("profilesGrid");
 
-/* ================= LOAD USERS + PROFILES ================= */
+/* ================= LOAD PROFILES ================= */
 
 async function loadProfiles() {
   if (!grid) return;
@@ -21,46 +21,29 @@ async function loadProfiles() {
   grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
   try {
-    /* ---------- FETCH PROFILES ---------- */
-    const profilesSnap = await getDocs(collection(db, "profiles"));
-    const profilesMap = {};
+    const snap = await getDocs(collection(db, "profiles"));
 
-    profilesSnap.forEach(doc => {
-      profilesMap[doc.id] = doc.data();
-    });
-
-    /* ---------- FETCH USERS ---------- */
-    const usersSnap = await getDocs(collection(db, "users"));
-
-    if (usersSnap.empty) {
+    if (snap.empty) {
       grid.innerHTML = `<p class="muted">No users found.</p>`;
       return;
     }
 
     grid.innerHTML = "";
 
-    let visibleCount = 0;
-
-    usersSnap.forEach(docSnap => {
-      const user = docSnap.data();
+    snap.forEach(docSnap => {
+      const profile = docSnap.data();
       const uid = docSnap.id;
 
-      const profile = profilesMap[uid] || {};
-
-      // ✅ FIX: profileCompleted must come from USERS collection
-      const isCompleted = user.profileCompleted === true;
-
-      // Hide only if explicitly private
+      const isCompleted = profile.profileCompleted === true;
       const isPublic = profile.publicProfile !== false;
-      if (!isPublic) return;
 
-      visibleCount++;
+      if (!isPublic) return;
 
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        <h3>${escapeHTML(profile.fullName || user.name || "Technician")}</h3>
+        <h3>${escapeHTML(profile.fullName || "Technician")}</h3>
 
         <p class="muted">
           ${escapeHTML(profile.role || "Instrument / Analyzer Technician")}
@@ -102,10 +85,6 @@ async function loadProfiles() {
 
       grid.appendChild(card);
     });
-
-    if (visibleCount === 0) {
-      grid.innerHTML = `<p class="muted">No public profiles available.</p>`;
-    }
 
   } catch (err) {
     console.error("Profiles load error:", err);
