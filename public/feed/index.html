@@ -12,14 +12,14 @@
         content="InstMates Feed – real field experiences, troubleshooting stories, and knowledge shared by instrument and analyzer technicians." />
 
   <!-- Global CSS (LOCKED – DO NOT CHANGE) -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
 
-  <!-- ✅ Page-level enhancement (non-breaking) -->
+  <!-- ================= PAGE ENHANCEMENTS (SAFE) ================= -->
   <style>
-    /* Feed textarea upgrade */
+    /* Composer upgrade */
     #postInput {
       width: 100%;
-      min-height: 110px;
+      min-height: 120px;
       padding: 14px;
       border-radius: 12px;
       border: 1px solid #d0d7de;
@@ -35,16 +35,24 @@
       box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
     }
 
-    /* Prevent spam clicking visual */
     #postBtn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    /* Cleaner loading card */
     .feed .card.muted {
       text-align: center;
       padding: 24px;
+    }
+
+    /* Optional feed visual polish */
+    .feed-card {
+      padding: 18px;
+      transition: 0.2s ease;
+    }
+
+    .feed-card:hover {
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -67,8 +75,8 @@
   <section class="panel">
     <h2>Community Feed</h2>
     <p class="muted">
-      Field experiences, troubleshooting stories, calibration tips,
-      and real-world lessons shared by technicians.
+      Share real field experience, troubleshooting stories,
+      calibration insights, and analyzer lessons from the plant floor.
     </p>
   </section>
 
@@ -80,11 +88,17 @@
       placeholder="What problem are you facing in the field today?
 Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
 
-    <p class="muted" style="margin-top:6px">
-      Post type: Fault · Question · Solution
-    </p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+      <small class="muted">
+        Tip: Use tags like #GC #CEMS #Calibration #PLC
+      </small>
 
-    <button id="postBtn" class="btn btn-primary full">
+      <small class="muted">
+        Max 1000 characters
+      </small>
+    </div>
+
+    <button id="postBtn" class="btn btn-primary full" style="margin-top:12px;">
       Post
     </button>
 
@@ -108,15 +122,15 @@ Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
 <!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
 
 <!-- Header / Footer includes -->
-<script src="/assets/js/includes.js"></script>
+<script src="/assets/js/includes.js?v=2026-02-17"></script>
 
 <!-- Firebase init -->
-<script type="module" src="/assets/js/firebase.js"></script>
+<script type="module" src="/assets/js/firebase.js?v=2026-02-17"></script>
 
 <!-- Feed logic -->
-<script type="module" src="/assets/js/feed.js"></script>
+<script type="module" src="/assets/js/feed.js?v=2026-02-17"></script>
 
-<!-- ✅ Safe duplicate-click prevention (non-breaking) -->
+<!-- ================= SAFE DOUBLE-CLICK PROTECTION ================= -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const postBtn = document.getElementById("postBtn");
