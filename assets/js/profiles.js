@@ -1,7 +1,7 @@
 /* =========================================================
    InstMates – Profiles Directory (USERS + PROFILES)
    File: /assets/js/profiles.js
-   FINAL – SAFE MERGED VIEW
+   FINAL – PRODUCTION SAFE
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -39,17 +39,22 @@ async function loadProfiles() {
 
     grid.innerHTML = "";
 
+    let visibleCount = 0;
+
     usersSnap.forEach(docSnap => {
       const user = docSnap.data();
       const uid = docSnap.id;
 
       const profile = profilesMap[uid] || {};
 
-      const isCompleted = profile.profileCompleted === true;
-      const isPublic = profile.publicProfile !== false;
+      // ✅ FIX: profileCompleted must come from USERS collection
+      const isCompleted = user.profileCompleted === true;
 
-      // ❌ hide only if explicitly private
+      // Hide only if explicitly private
+      const isPublic = profile.publicProfile !== false;
       if (!isPublic) return;
+
+      visibleCount++;
 
       const card = document.createElement("div");
       card.className = "card";
@@ -97,6 +102,10 @@ async function loadProfiles() {
 
       grid.appendChild(card);
     });
+
+    if (visibleCount === 0) {
+      grid.innerHTML = `<p class="muted">No public profiles available.</p>`;
+    }
 
   } catch (err) {
     console.error("Profiles load error:", err);
