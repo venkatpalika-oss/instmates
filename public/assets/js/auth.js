@@ -2,10 +2,10 @@
    InstMates - Firebase Authentication (FINAL – STABLE)
    File: assets/js/auth.js
    SDK: Firebase v9 (Modular)
-   NOTE:
-   - Firebase app is initialized ONLY ONCE in firebase.js
+   - Firebase app initialized in firebase.js
+   - Auto-heals missing user documents
    - Guarantees profile document existence
-   - Enforces profile-first onboarding
+   - Profile-first onboarding enforced
 ========================================================= */
 
 /* ================= IMPORT SHARED FIREBASE ================= */
@@ -39,7 +39,6 @@ import {
 window.registerUser = async function (email, password, fullName) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-  /* ---------- USERS COLLECTION ---------- */
   await setDoc(doc(db, "users", cred.user.uid), {
     uid: cred.user.uid,
     name: fullName,
@@ -47,10 +46,12 @@ window.registerUser = async function (email, password, fullName) {
     role: "user",
     verified: false,
     profileCompleted: false,
+    followersCount: 0,
+    followingCount: 0,
+    postsCount: 0,
     createdAt: serverTimestamp()
   });
 
-  /* ---------- PROFILES COLLECTION (CRITICAL) ---------- */
   await setDoc(doc(db, "profiles", cred.user.uid), {
     fullName: fullName,
     role: "Technician",
@@ -77,20 +78,17 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (FINAL – STABLE + UI SYNCED)
+   AUTH STATE HANDLER (AUTO-HEAL ENABLED)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
-  /* ---------- AUTH READY ---------- */
-  document.body.classList.add("auth-ready");
 
-  /* ✅ FIX #1: SYNC UI STATE (CRITICAL) */
+  document.body.classList.add("auth-ready");
   document.body.classList.toggle("auth-in", !!user);
   document.body.classList.toggle("auth-out", !user);
 
   const path = location.pathname;
 
-  /* ================= PUBLIC PAGES ================= */
   const publicPages = [
     "/",
     "/index.html",
@@ -102,24 +100,44 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  /* ================= LOGGED OUT ================= */
   if (!user) {
     return;
   }
 
   try {
-    /* ---------- ENSURE USER DOC ---------- */
+
+    /* =====================================================
+       AUTO-HEAL: ENSURE USERS DOCUMENT EXISTS
+    ===================================================== */
+
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-      window.location.href = "/profile.html";
-      return;
+
+      await setDoc(userRef, {
+        uid: user.uid,
+        name: user.displayName || user.email.split("@")[0],
+        email: user.email,
+        role: "user",
+        verified: false,
+        profileCompleted: false,
+        followersCount: 0,
+        followingCount: 0,
+        postsCount: 0,
+        createdAt: serverTimestamp()
+      });
+
+      console.log("Auto-created missing user document.");
     }
 
-    const userData = userSnap.data();
+    const updatedUserSnap = await getDoc(userRef);
+    const userData = updatedUserSnap.data();
 
-    /* ---------- ENSURE PROFILE DOC ---------- */
+    /* =====================================================
+       ENSURE PROFILE DOCUMENT EXISTS
+    ===================================================== */
+
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
@@ -131,9 +149,12 @@ onAuthStateChanged(auth, async (user) => {
         skills: [],
         createdAt: serverTimestamp()
       });
+
+      console.log("Auto-created missing profile document.");
     }
 
     /* ================= PROTECTED PAGES ================= */
+
     const protectedPages = [
       "/explore.html",
       "/community.html",
@@ -144,7 +165,6 @@ onAuthStateChanged(auth, async (user) => {
       "/profiles/index.html"
     ];
 
-    /* ---------- PROFILE NOT COMPLETED ---------- */
     if (!userData.profileCompleted) {
       if (
         protectedPages.includes(path) ||
@@ -156,15 +176,12 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    /* ---------- PROFILE COMPLETED ---------- */
     if (
       path.endsWith("/login.html") ||
       path.endsWith("/register.html")
     ) {
       window.location.href = "/explore.html";
     }
-
-    /* 🚫 NEVER redirect from profile.html */
 
   } catch (err) {
     console.error("Auth state error:", err);
@@ -208,7 +225,7 @@ window.createAnswer = async function (questionId, body) {
 };
 
 /* =========================================================
-   ROLE FETCH (ADMIN / MODERATOR READY)
+   ROLE FETCH
 ========================================================= */
 
 window.getUserRole = async function () {

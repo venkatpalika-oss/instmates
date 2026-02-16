@@ -1,7 +1,6 @@
 /* =========================================================
-   InstMates – Profiles Directory (USERS + PROFILES)
-   File: /assets/js/profiles.js
-   FINAL – SAFE MERGED VIEW
+   InstMates – Profiles Directory
+   FINAL – PROFILE COLLECTION ONLY
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -10,10 +9,9 @@ import {
   collection,
   getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+console.log("Project ID:", db.app.options.projectId);
 
 const grid = document.getElementById("profilesGrid");
-
-/* ================= LOAD USERS + PROFILES ================= */
 
 async function loadProfiles() {
   if (!grid) return;
@@ -21,41 +19,31 @@ async function loadProfiles() {
   grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
   try {
-    /* ---------- FETCH PROFILES ---------- */
-    const profilesSnap = await getDocs(collection(db, "profiles"));
-    const profilesMap = {};
 
-    profilesSnap.forEach(doc => {
-      profilesMap[doc.id] = doc.data();
-    });
+    const snap = await getDocs(collection(db, "profiles"));
 
-    /* ---------- FETCH USERS ---------- */
-    const usersSnap = await getDocs(collection(db, "users"));
-
-    if (usersSnap.empty) {
-      grid.innerHTML = `<p class="muted">No users found.</p>`;
+    if (snap.empty) {
+      grid.innerHTML = `<p class="muted">No technicians found.</p>`;
       return;
     }
 
     grid.innerHTML = "";
 
-    usersSnap.forEach(docSnap => {
-      const user = docSnap.data();
-      const uid = docSnap.id;
+    snap.forEach(docSnap => {
 
-      const profile = profilesMap[uid] || {};
+      const profile = docSnap.data();
+      const uid = docSnap.id;
 
       const isCompleted = profile.profileCompleted === true;
       const isPublic = profile.publicProfile !== false;
 
-      // ❌ hide only if explicitly private
       if (!isPublic) return;
 
       const card = document.createElement("div");
       card.className = "card";
 
       card.innerHTML = `
-        <h3>${escapeHTML(profile.fullName || user.name || "Technician")}</h3>
+        <h3>${escapeHTML(profile.fullName || "Technician")}</h3>
 
         <p class="muted">
           ${escapeHTML(profile.role || "Instrument / Analyzer Technician")}
@@ -68,7 +56,7 @@ async function loadProfiles() {
 
         <div class="tags">
           ${(profile.skills || [])
-            .map(s => `<span class="tag">${escapeHTML(s)}</span>`)
+            .map(skill => `<span class="tag">${escapeHTML(skill)}</span>`)
             .join("")}
         </div>
 
@@ -96,6 +84,7 @@ async function loadProfiles() {
       `;
 
       grid.appendChild(card);
+
     });
 
   } catch (err) {
@@ -106,8 +95,6 @@ async function loadProfiles() {
 }
 
 loadProfiles();
-
-/* ================= HELPERS ================= */
 
 function escapeHTML(str) {
   return String(str)

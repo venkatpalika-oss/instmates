@@ -1,10 +1,9 @@
-console.log("PHASE 6 ACTIVE");
+console.log("PHASE 7 PROFESSIONAL SOCIAL ENGINE ACTIVE");
 
 /* =========================================================
    InstMates – Feed Logic
-   PHASE 6 – PROFESSIONAL FEED SYSTEM
-   POSTS + COMMENTS + LIKES + EDIT + DELETE + SORT
-   File: assets/js/feed.js
+   PROFESSIONAL SOCIAL ENGINE
+   POSTS + COMMENTS + LIKES (SCALABLE) + EDIT + DELETE + SORT
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -16,13 +15,15 @@ import {
   query,
   orderBy,
   limit,
-  getDocs,
+  onSnapshot,
   addDoc,
   doc,
   getDoc,
   updateDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
+  increment,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= STATE ================= */
@@ -32,25 +33,19 @@ let currentSort = "latest";
 
 /* ================= ELEMENTS ================= */
 
-const feedEl = document.querySelector(".feed");
+const feedEl = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 const sortSelect = document.getElementById("sortFeed");
 
 /* ================= AUTH ================= */
 
-onAuthStateChanged(auth, async (user) => {
-  console.log("AUTH USER FROM APP:", user);
+onAuthStateChanged(auth, (user) => {
   currentUser = user;
-
-  if (user) {
-    loadFeed();
-  } else {
-    console.log("USER IS NOT LOGGED IN");
-  }
+  loadFeed();
 });
 
-/* ================= SORT HANDLER ================= */
+/* ================= SORT ================= */
 
 if (sortSelect) {
   sortSelect.addEventListener("change", (e) => {
@@ -59,19 +54,44 @@ if (sortSelect) {
   });
 }
 
-/* ================= LOAD FEED ================= */
+/* ================= CREATE POST ================= */
 
-async function loadFeed() {
+if (postBtn) {
+  postBtn.addEventListener("click", async () => {
+    if (!currentUser) {
+      alert("Please login to post.");
+      return;
+    }
+
+    const content = postInput.value.trim();
+    if (!content) return;
+
+    await addDoc(collection(db, "posts"), {
+      authorId: currentUser.uid,
+      authorName: currentUser.displayName || "Technician",
+      content,
+      createdAt: serverTimestamp(),
+      likesCount: 0,
+      commentsCount: 0
+    });
+
+    postInput.value = "";
+  });
+}
+
+/* ================= LOAD FEED (REAL-TIME) ================= */
+
+function loadFeed() {
   if (!feedEl) return;
 
-  feedEl.innerHTML = `<p class="muted">Loading feed…</p>`;
+  feedEl.innerHTML = `<div class="card muted">Loading feed…</div>`;
 
   let q;
 
   if (currentSort === "popular") {
     q = query(
       collection(db, "posts"),
-      orderBy("likes", "desc"),
+      orderBy("likesCount", "desc"),
       limit(20)
     );
   } else {
@@ -82,43 +102,33 @@ async function loadFeed() {
     );
   }
 
-  const snap = await getDocs(q);
-  feedEl.innerHTML = "";
+  onSnapshot(q, (snap) => {
+    feedEl.innerHTML = "";
 
-  if (snap.empty) {
-    feedEl.innerHTML = `<p class="muted">No posts yet.</p>`;
-    return;
-  }
+    if (snap.empty) {
+      feedEl.innerHTML =
+        `<div class="card muted">No posts yet.</div>`;
+      return;
+    }
 
-  for (const d of snap.docs) {
-    const post = d.data();
-    const profile = await getProfile(post.uid);
-    feedEl.appendChild(renderPost(d.id, post, profile));
-  }
-}
-
-/* ================= PROFILE ================= */
-
-async function getProfile(uid) {
-  try {
-    const snap = await getDoc(doc(db, "profiles", uid));
-    return snap.exists() ? snap.data() : {};
-  } catch {
-    return {};
-  }
+    snap.forEach((docSnap) => {
+      const post = docSnap.data();
+      feedEl.appendChild(renderPost(docSnap.id, post));
+    });
+  });
 }
 
 /* ================= RENDER POST ================= */
 
-function renderPost(postId, p, profile) {
+function renderPost(postId, p) {
   const div = document.createElement("div");
   div.className = "card feed-card";
 
-  const isOwner = currentUser && currentUser.uid === p.uid;
+  const isOwner = currentUser && currentUser.uid === p.authorId;
 
   div.innerHTML = `
     <div class="feed-header">
-      <strong>${escapeHTML(p.authorName || "Technician")}</strong>
+      <strong>${escapeHTML(p.authorName)}</strong>
       <span class="muted small">${timeAgo(p.createdAt)}</span>
     </div>
 
@@ -128,20 +138,20 @@ function renderPost(postId, p, profile) {
 
     <div class="feed-actions">
       <button class="likeBtn" data-id="${postId}">
-        👍 <span>${p.likes || 0}</span>
+        ❤️ <span>${p.likesCount || 0}</span>
       </button>
 
-      <button class="commentToggle" data-id="${postId}">
-        💬 Comment
+      <button class="commentToggle">
+        💬 ${p.commentsCount || 0}
       </button>
 
       ${isOwner ? `
-        <button class="editBtn" data-id="${postId}">✏️</button>
-        <button class="deleteBtn" data-id="${postId}">🗑️</button>
+        <button class="editBtn">✏️</button>
+        <button class="deleteBtn">🗑️</button>
       ` : ""}
     </div>
 
-    <div class="comments hidden" id="comments-${postId}">
+    <div class="comments hidden">
       <div class="comment-list"></div>
       <form class="comment-form">
         <input placeholder="Reply with a practical solution…" required />
@@ -150,14 +160,14 @@ function renderPost(postId, p, profile) {
     </div>
   `;
 
-  attachPostEvents(div, postId, p);
+  attachEvents(div, postId, p);
 
   return div;
 }
 
-/* ================= POST EVENTS ================= */
+/* ================= EVENTS ================= */
 
-function attachPostEvents(div, postId, postData) {
+function attachEvents(div, postId, postData) {
 
   const likeBtn = div.querySelector(".likeBtn");
   const commentToggle = div.querySelector(".commentToggle");
@@ -165,96 +175,57 @@ function attachPostEvents(div, postId, postData) {
   const commentList = div.querySelector(".comment-list");
   const commentForm = div.querySelector(".comment-form");
 
-  /* ================= LIKE (PRODUCTION SAFE) ================= */
+  /* ===== LIKE SYSTEM (SCALABLE SUBCOLLECTION) ===== */
 
   likeBtn.onclick = async () => {
     if (!currentUser) {
-      alert("Please login to like posts.");
+      alert("Login to like posts.");
       return;
     }
 
+    const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
     const postRef = doc(db, "posts", postId);
 
-    try {
-      const postSnap = await getDoc(postRef);
-      if (!postSnap.exists()) return;
+    const likeSnap = await getDoc(likeRef);
 
-      const data = postSnap.data();
-
-      const currentLikes = data.likes || 0;
-      const likedBy = data.likedBy || {};
-
-      const alreadyLiked = likedBy[currentUser.uid] === true;
-
-      // Animation
-      likeBtn.style.transform = "scale(1.2)";
-      setTimeout(() => {
-        likeBtn.style.transform = "scale(1)";
-      }, 150);
-
-      // LIKE
-      if (!alreadyLiked) {
-
-        const updatedLikedBy = {
-          ...likedBy,
-          [currentUser.uid]: true
-        };
-
-        await updateDoc(postRef, {
-          likes: currentLikes + 1,
-          likedBy: updatedLikedBy
-        });
-
-        likeBtn.querySelector("span").textContent = currentLikes + 1;
-        likeBtn.classList.add("liked");
-      }
-
-      // UNLIKE (optional future ready)
-      else {
-
-        const updatedLikedBy = { ...likedBy };
-        delete updatedLikedBy[currentUser.uid];
-
-        await updateDoc(postRef, {
-          likes: Math.max(currentLikes - 1, 0),
-          likedBy: updatedLikedBy
-        });
-
-        likeBtn.querySelector("span").textContent = Math.max(currentLikes - 1, 0);
-        likeBtn.classList.remove("liked");
-      }
-
-    } catch (err) {
-      console.error("Like failed:", err);
+    if (likeSnap.exists()) {
+      await deleteDoc(likeRef);
+      await updateDoc(postRef, {
+        likesCount: increment(-1)
+      });
+    } else {
+      await setDoc(likeRef, {
+        createdAt: serverTimestamp()
+      });
+      await updateDoc(postRef, {
+        likesCount: increment(1)
+      });
     }
   };
 
-  /* ================= COMMENT TOGGLE ================= */
+  /* ===== COMMENTS ===== */
 
-  commentToggle.onclick = async () => {
+  commentToggle.onclick = () => {
     commentBox.classList.toggle("hidden");
     if (!commentBox.classList.contains("hidden")) {
-      await loadComments(postId, commentList);
+      loadComments(postId, commentList);
     }
   };
-
-  /* ================= COMMENT SUBMIT ================= */
 
   commentForm.onsubmit = (e) =>
     submitComment(e, postId, commentList);
 
-  /* ================= DELETE ================= */
+  /* ===== DELETE ===== */
 
   const deleteBtn = div.querySelector(".deleteBtn");
   if (deleteBtn) {
     deleteBtn.onclick = async () => {
       if (!confirm("Delete this post?")) return;
       await deleteDoc(doc(db, "posts", postId));
-      loadFeed();
     };
   }
 
-  /* ================= EDIT ================= */
+  /* ===== EDIT ===== */
 
   const editBtn = div.querySelector(".editBtn");
   if (editBtn) {
@@ -265,8 +236,6 @@ function attachPostEvents(div, postId, postData) {
       await updateDoc(doc(db, "posts", postId), {
         content: newContent
       });
-
-      loadFeed();
     };
   }
 }
@@ -274,25 +243,25 @@ function attachPostEvents(div, postId, postData) {
 /* ================= COMMENTS ================= */
 
 async function loadComments(postId, list) {
-  list.innerHTML = `<p class="muted">Loading comments…</p>`;
 
   const q = query(
     collection(db, "posts", postId, "comments"),
     orderBy("createdAt", "asc")
   );
 
-  const snap = await getDocs(q);
-  list.innerHTML = "";
+  onSnapshot(q, (snap) => {
+    list.innerHTML = "";
 
-  if (snap.empty) {
-    list.innerHTML = `<p class="muted">No replies yet.</p>`;
-    return;
-  }
+    if (snap.empty) {
+      list.innerHTML =
+        `<p class="muted">No replies yet.</p>`;
+      return;
+    }
 
-  for (const d of snap.docs) {
-    const c = d.data();
-    list.appendChild(renderComment(c));
-  }
+    snap.forEach((d) => {
+      list.appendChild(renderComment(d.data()));
+    });
+  });
 }
 
 function renderComment(c) {
@@ -300,15 +269,13 @@ function renderComment(c) {
   div.className = "comment-item";
 
   div.innerHTML = `
-    <strong>${escapeHTML(c.authorName || "User")}</strong>
+    <strong>${escapeHTML(c.authorName)}</strong>
     <span class="muted small"> · ${timeAgo(c.createdAt)}</span>
     <p>${escapeHTML(c.content)}</p>
   `;
 
   return div;
 }
-
-/* ================= SUBMIT COMMENT ================= */
 
 async function submitComment(e, postId, list) {
   e.preventDefault();
@@ -321,15 +288,18 @@ async function submitComment(e, postId, list) {
   await addDoc(
     collection(db, "posts", postId, "comments"),
     {
-      uid: currentUser.uid,
+      authorId: currentUser.uid,
       authorName: currentUser.displayName || "User",
       content,
       createdAt: serverTimestamp()
     }
   );
 
+  await updateDoc(doc(db, "posts", postId), {
+    commentsCount: increment(1)
+  });
+
   input.value = "";
-  loadComments(postId, list);
 }
 
 /* ================= HELPERS ================= */
