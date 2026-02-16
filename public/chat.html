@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Chat | InstMates</title>
+
+  <meta name="description"
+        content="Direct chat between technicians on InstMates." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+</head>
+
+<body data-page="chat">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= MAIN ================= -->
+<main class="container auth-required">
+
+  <section class="panel">
+    <h2>Direct Message</h2>
+
+    <!-- MESSAGES -->
+    <div id="messages" class="feed" style="min-height:300px"></div>
+
+    <!-- INPUT -->
+    <form id="chatForm" style="margin-top:12px">
+      <input
+        id="chatInput"
+        placeholder="Type your message…"
+        required />
+      <button class="btn btn-primary full">
+        Send
+      </button>
+    </form>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js"></script>
+<script type="module" src="/assets/js/chat.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ================= AUTH HELPERS ================= */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    /* ================= USERS ================= */
+    match /users/{userId} {
+
+      // ✅ READ: allow logged-in users to list users
+      allow read: if isSignedIn();
+
+      // ✅ WRITE: only owner can update own user doc
+      allow create, update: if isOwner(userId);
+
+      // ❌ NO DELETE
+      allow delete: if false;
+    }
+
+    /* ================= PROFILES ================= */
+    match /profiles/{userId} {
+
+      // ✅ ALL LOGGED-IN USERS CAN SEE PROFILES
+      allow read: if isSignedIn();
+
+      // ✅ ONLY OWNER CAN WRITE
+      allow create, update: if isOwner(userId);
+
+      // ❌ NO DELETE
+      allow delete: if false;
+    }
+
+    /* ================= POSTS ================= */
+    match /posts/{postId} {
+
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.content is string
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.likes == 0
+        && request.resource.data.likedBy == {};
+
+      allow update: if isSignedIn()
+        && request.resource.data.diff(resource.data).changedKeys()
+            .hasOnly(['likes', 'likedBy'])
+        && (
+          (
+            !resource.data.likedBy[request.auth.uid]
+            && request.resource.data.likedBy[request.auth.uid] == true
+            && request.resource.data.likes == resource.data.likes + 1
+          )
+          ||
+          (
+            resource.data.likedBy[request.auth.uid] == true
+            && !request.resource.data.likedBy[request.auth.uid]
+            && request.resource.data.likes == resource.data.likes - 1
+          )
+        );
+
+      allow delete: if false;
+
+      /* ================= COMMENTS ================= */
+      match /comments/{commentId} {
+
+        allow read: if isSignedIn();
+
+        allow create: if isSignedIn()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.content is string
+          && request.resource.data.createdAt is timestamp
+          && request.resource.data.likes == 0
+          && request.resource.data.likedBy == {};
+
+        allow update: if isSignedIn()
+          && request.resource.data.diff(resource.data).changedKeys()
+              .hasOnly(['likes', 'likedBy'])
+          && (
+            (
+              !resource.data.likedBy[request.auth.uid]
+              && request.resource.data.likedBy[request.auth.uid] == true
+              && request.resource.data.likes == resource.data.likes + 1
+            )
+            ||
+            (
+              resource.data.likedBy[request.auth.uid] == true
+              && !request.resource.data.likedBy[request.auth.uid]
+              && request.resource.data.likes == resource.data.likes - 1
+            )
+          );
+
+        allow delete: if false;
+
+        /* ================= REPLIES ================= */
+        match /replies/{replyId} {
+          allow read: if isSignedIn();
+          allow create: if isSignedIn()
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.content is string
+            && request.resource.data.createdAt is timestamp;
+          allow update, delete: if false;
+        }
+      }
+    }
+  }
+}

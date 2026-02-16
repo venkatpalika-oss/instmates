@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4–20 mA Loop Wiring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="field-420ma-wiring">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/signals/4-20ma/index.html">4–20 mA</a><span>›</span>
+  <span class="current">Loop Wiring</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h2>4–20 mA Loop Wiring Types</h2>
+
+  <p class="muted">
+    Transmitters are classified based on how they are powered and how
+    the signal loop is formed.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>Two-Wire (Loop Powered)</h3>
+
+  <!-- SVG -->
+  <svg width="100%" viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="80" width="160" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
+    <text x="120" y="115" text-anchor="middle">2-Wire TX</text>
+
+    <rect x="280" y="80" width="160" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
+    <text x="360" y="115" text-anchor="middle">PLC AI</text>
+
+    <rect x="520" y="80" width="140" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
+    <text x="590" y="115" text-anchor="middle">24 VDC</text>
+
+    <line x1="200" y1="110" x2="280" y2="110" stroke="#000" stroke-width="2"/>
+    <line x1="440" y1="110" x2="520" y2="110" stroke="#000" stroke-width="2"/>
+    <line x1="590" y1="150" x2="120" y2="150" stroke="#000" stroke-width="2"/>
+  </svg>
+
+  <p class="muted">Most common field instrument wiring.</p>
+</section>
+
+<section class="panel">
+  <h3>Three-Wire Transmitter</h3>
+
+  <p class="muted">
+    Separate power return, common signal ground.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>Four-Wire Transmitter</h3>
+
+  <p class="muted">
+    External power supply. Signal loop independent of power.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>Field Rule</h3>
+  <p class="muted">
+    Always confirm wiring type before replacing a transmitter.
+  </p>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+</body>
+</html>

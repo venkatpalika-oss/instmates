@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Your Profile | InstMates</title>
+
+  <meta name="description"
+        content="Edit your InstMates profile and showcase your real field experience." />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+
+  <!-- PAGE-SPECIFIC CSS -->
+  <style>
+    .trouble-card{
+      background:#f8fafc;
+      padding:16px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      margin-bottom:16px;
+    }
+    .trouble-card label{
+      display:block;
+      font-weight:600;
+      margin-top:10px;
+    }
+    .section-note{
+      margin-top:-6px;
+      margin-bottom:12px;
+      font-size:.9rem;
+      color:#64748b;
+    }
+  </style>
+</head>
+
+<body data-page="profile">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<main class="container">
+
+  <section class="panel profile-panel">
+
+    <h2>Your Professional Profile</h2>
+    <p class="muted">
+      This profile represents your real field experience and professional credibility on InstMates.
+    </p>
+
+    <!-- COMPLETION -->
+    <div class="profile-progress">
+      <span>Profile Strength</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="profileProgress" style="width:0%"></div>
+      </div>
+    </div>
+
+    <form id="profileForm">
+
+      <!-- ================= IDENTITY ================= -->
+      <div class="profile-section">
+        <h3>Identity</h3>
+        <p class="section-note">
+          Basic professional information visible on your public profile.
+        </p>
+
+        <div class="form-grid">
+          <div>
+            <label>Full Name</label>
+            <input id="fullName" type="text" required>
+          </div>
+
+          <div>
+            <label>Role</label>
+            <select id="role" required>
+              <option value="">Select role</option>
+              <option>Instrument Technician</option>
+              <option>Analyzer Engineer</option>
+              <option>Supervisor</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Location</label>
+            <input id="location" type="text" placeholder="Country / Region">
+          </div>
+
+          <div>
+            <label>Years of Experience</label>
+            <input id="experienceYears" type="number" min="0">
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= EXPERTISE ================= -->
+      <div class="profile-section">
+        <h3>Technical Expertise</h3>
+        <p class="section-note">
+          Your primary working areas and hands-on technical strengths.
+        </p>
+
+        <div class="form-grid">
+          <div>
+            <label>Primary Domain</label>
+            <select id="primaryDomain">
+              <option value="">Select domain</option>
+              <option>Gas Chromatography</option>
+              <option>CEMS</option>
+              <option>FTIR</option>
+              <option>Field Instrumentation</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Core Skills</label>
+            <input id="skills" type="text"
+                   placeholder="GC, Sampling, Calibration, Maintenance">
+          </div>
+
+          <div>
+            <label>Industries Worked</label>
+            <select id="industries" multiple>
+              <option>Refinery</option>
+              <option>Petrochemical</option>
+              <option>Power Plant</option>
+              <option>Fertilizer</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= EXPERIENCE ================= -->
+      <div class="profile-section">
+        <h3>Field Experience Summary</h3>
+        <p class="section-note">
+          A short summary of your most valuable on-site experience.
+        </p>
+
+        <textarea id="summary" rows="4"
+          placeholder="Shutdowns, commissioning, troubleshooting, audits, reliability improvements"></textarea>
+      </div>
+
+      <!-- ================= MAJOR TROUBLESHOOTING ================= -->
+      <div class="profile-section">
+        <h3>Major Troubleshooting & Breakthroughs</h3>
+        <p class="section-note">
+          Highlight problems you solved that brought recognition, learning, or plant impact.
+        </p>
+
+        <div id="troubleshootingList"></div>
+
+        <button type="button" class="btn btn-ghost" onclick="addTroubleBlock()">
+          + Add Major Troubleshooting
+        </button>
+      </div>
+
+      <!-- ================= ACTION ================= -->
+      <div class="profile-actions">
+        <button class="btn btn-primary" type="submit">
+          Save Profile
+        </button>
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= TROUBLE TEMPLATE ================= -->
+<template id="troubleTemplate">
+  <div class="trouble-card">
+    <label>System / Analyzer</label>
+    <input data-field="system" type="text">
+
+    <label>Problem Faced</label>
+    <textarea data-field="problem" rows="2"></textarea>
+
+    <label>Your Diagnosis / Action</label>
+    <textarea data-field="action" rows="2"></textarea>
+
+    <label>Outcome / Impact</label>
+    <textarea data-field="outcome" rows="2"></textarea>
+
+    <label>Why This Mattered to You</label>
+    <textarea data-field="impact" rows="2"></textarea>
+  </div>
+</template>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script type="module" src="/assets/js/header-auth.js"></script>
+<script type="module" src="/assets/js/profile.js"></script>
+
+<!-- ================= UI HELPERS ================= -->
+<script>
+  function addTroubleBlock(){
+    const tpl = document.getElementById("troubleTemplate");
+    document.getElementById("troubleshootingList")
+      .appendChild(tpl.content.cloneNode(true));
+    updateCompletion();
+  }
+
+  function updateCompletion(){
+    let score = 0;
+    if(fullName.value) score += 20;
+    if(role.value) score += 20;
+    if(skills.value) score += 20;
+    if(summary.value) score += 20;
+    if(document.querySelectorAll(".trouble-card").length) score += 20;
+    document.getElementById("profileProgress").style.width = score + "%";
+  }
+
+  document.addEventListener("input", updateCompletion);
+</script>
+
+</body>
+</html>

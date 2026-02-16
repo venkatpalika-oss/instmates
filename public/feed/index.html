@@ -1,0 +1,141 @@
+<!-- force redeploy -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Feed | InstMates</title>
+
+  <meta name="description"
+        content="InstMates Feed – real field experiences, troubleshooting stories, and knowledge shared by instrument and analyzer technicians." />
+
+  <!-- Global CSS (LOCKED – DO NOT CHANGE) -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+
+  <!-- ✅ Page-level enhancement (non-breaking) -->
+  <style>
+    /* Feed textarea upgrade */
+    #postInput {
+      width: 100%;
+      min-height: 110px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #d0d7de;
+      font-size: 14px;
+      resize: vertical;
+      transition: 0.2s ease;
+      font-family: inherit;
+    }
+
+    #postInput:focus {
+      outline: none;
+      border-color: #0b5ed7;
+      box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
+    }
+
+    /* Prevent spam clicking visual */
+    #postBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Cleaner loading card */
+    .feed .card.muted {
+      text-align: center;
+      padding: 24px;
+    }
+  </style>
+</head>
+
+<body data-page="feed">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <span class="current">Feed</span>
+</nav>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <!-- ================= FEED INTRO ================= -->
+  <section class="panel">
+    <h2>Community Feed</h2>
+    <p class="muted">
+      Field experiences, troubleshooting stories, calibration tips,
+      and real-world lessons shared by technicians.
+    </p>
+  </section>
+
+  <!-- ================= POST COMPOSER ================= -->
+  <section class="panel">
+
+    <textarea id="postInput"
+      maxlength="1000"
+      placeholder="What problem are you facing in the field today?
+Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
+
+    <p class="muted" style="margin-top:6px">
+      Post type: Fault · Question · Solution
+    </p>
+
+    <button id="postBtn" class="btn btn-primary full">
+      Post
+    </button>
+
+  </section>
+
+  <!-- ================= FEED LIST ================= -->
+  <section class="feed grid grid-1">
+
+    <!-- POSTS WILL BE INJECTED HERE BY feed.js -->
+    <div class="card muted">
+      Loading posts…
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+
+<!-- Header / Footer includes -->
+<script src="/assets/js/includes.js"></script>
+
+<!-- Firebase init -->
+<script type="module" src="/assets/js/firebase.js"></script>
+
+<!-- Feed logic -->
+<script type="module" src="/assets/js/feed.js"></script>
+
+<!-- ✅ Safe duplicate-click prevention (non-breaking) -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const postBtn = document.getElementById("postBtn");
+
+    if (postBtn) {
+      postBtn.addEventListener("click", () => {
+        if (postBtn.disabled) return;
+
+        postBtn.disabled = true;
+        postBtn.innerText = "Posting...";
+
+        setTimeout(() => {
+          postBtn.disabled = false;
+          postBtn.innerText = "Post";
+        }, 2000);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://venkatpalika-oss.github.io/instmates/sitemap.xml

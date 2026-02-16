@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4–20 mA Basics | InstMates Field Instrumentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="4–20 mA current loop basics for instrument technicians. Learn why 4–20 mA is used, live zero concept, loop operation, and field relevance." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="field-420ma-basics">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/index.html">Home</a><span>›</span>
+  <a href="/knowledge.html">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/signals/4-20ma/index.html">4–20 mA</a><span>›</span>
+  <span class="current">Basics</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h2>4–20 mA Basics</h2>
+
+  <p class="muted">
+    The 4–20 mA current loop is the most widely used analog signal in
+    industrial instrumentation. It is simple, reliable, noise-resistant,
+    and ideal for harsh plant environments.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>What is a 4–20 mA Signal?</h3>
+
+  <p>
+    A 4–20 mA signal represents a process variable by varying the
+    <strong>current</strong> flowing in a closed loop.
+  </p>
+
+  <ul>
+    <li>4 mA → Minimum process value</li>
+    <li>20 mA → Maximum process value</li>
+  </ul>
+
+  <p class="muted">
+    The same current flows through the transmitter, cables, and receiving device.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>Why Current Instead of Voltage?</h3>
+
+  <ul>
+    <li>Cable resistance does not affect current</li>
+    <li>Better noise immunity</li>
+    <li>Long-distance transmission possible</li>
+    <li>Easy fault detection</li>
+  </ul>
+</section>
+
+<section class="panel">
+  <h3>Why 4 mA and Not 0 mA?</h3>
+
+  <p>
+    4 mA is called <strong>live zero</strong>.
+  </p>
+
+  <ul>
+    <li>4 mA → Valid minimum reading</li>
+    <li>0 mA → Cable break or transmitter failure</li>
+  </ul>
+
+  <p class="muted">
+    This allows technicians to distinguish between a real zero value and a fault.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>Where 4–20 mA Is Used</h3>
+
+  <ul>
+    <li>Pressure transmitters</li>
+    <li>Temperature transmitters</li>
+    <li>Flow and level instruments</li>
+    <li>Gas and liquid analyzers</li>
+  </ul>
+</section>
+
+<section class="panel">
+  <h3>Field Rule</h3>
+
+  <p class="muted">
+    Always measure loop current with a multimeter before adjusting software,
+    scaling, or replacing instruments.
+  </p>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+</body>
+</html>
