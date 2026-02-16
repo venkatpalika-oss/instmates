@@ -9,6 +9,7 @@ import {
   collection,
   getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+console.log("Project ID:", db.app.options.projectId);
 
 const grid = document.getElementById("profilesGrid");
 
