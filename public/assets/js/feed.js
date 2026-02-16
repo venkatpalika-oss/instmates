@@ -1,8 +1,9 @@
 /* =========================================================
-   InstMates – Hybrid Professional Feed
+   InstMates – Hybrid Professional Feed (FINAL PRODUCTION)
+   1 Vote Per User • Real-time • Secure
 ========================================================= */
 
-import { db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
   collection,
@@ -30,11 +31,16 @@ if (postBtn) {
     const content = postInput.value.trim();
     if (!content) return;
 
-    const type = postType.value;
-    const tagsArray = postTags.value
-      .split(",")
+    if (!auth.currentUser) {
+      alert("Please login to post.");
+      return;
+    }
+
+    const type = postType?.value || "question";
+    const tagsArray = postTags?.value
+      ?.split(",")
       .map(t => t.trim())
-      .filter(Boolean);
+      .filter(Boolean) || [];
 
     try {
 
@@ -42,19 +48,21 @@ if (postBtn) {
         content,
         type,
         tags: tagsArray,
+        uid: auth.currentUser.uid,
         createdAt: serverTimestamp(),
         reactions: {
           agree: 0,
           faced: 0,
           helpful: 0
         },
+        votedBy: {},   // 🔥 IMPORTANT
         name: "Technician",
         role: "Instrument Technician",
         photoURL: ""
       });
 
       postInput.value = "";
-      postTags.value = "";
+      if (postTags) postTags.value = "";
 
     } catch (err) {
       console.error("Post error:", err);
@@ -97,6 +105,9 @@ function createPostCard(post) {
   const card = document.createElement("div");
   card.className = "card feed-card";
 
+  const user = auth.currentUser;
+  const hasVoted = user && post.votedBy && post.votedBy[user.uid];
+
   const timeAgo = formatTime(post.createdAt?.toDate?.() || new Date());
 
   const avatarHTML = post.photoURL
@@ -118,7 +129,6 @@ function createPostCard(post) {
   card.innerHTML = `
     <div class="feed-header">
       ${avatarHTML}
-
       <div>
         <strong>${escapeHTML(post.name || "Technician")}</strong>
         <div class="muted small">
@@ -138,31 +148,43 @@ function createPostCard(post) {
     ${tagsHTML}
 
     <div class="feed-actions">
-      <button class="feed-btn react-btn" data-type="agree">
+      <button class="feed-btn react-btn"
+        data-type="agree" ${hasVoted ? "disabled" : ""}>
         👍 Agree (${post.reactions?.agree || 0})
       </button>
 
-      <button class="feed-btn react-btn" data-type="faced">
+      <button class="feed-btn react-btn"
+        data-type="faced" ${hasVoted ? "disabled" : ""}>
         🛠 Faced This (${post.reactions?.faced || 0})
       </button>
 
-      <button class="feed-btn react-btn" data-type="helpful">
+      <button class="feed-btn react-btn"
+        data-type="helpful" ${hasVoted ? "disabled" : ""}>
         💡 Helpful (${post.reactions?.helpful || 0})
       </button>
     </div>
   `;
 
-  /* Reaction logic */
+  /* ================= REACTION LOGIC ================= */
+
   card.querySelectorAll(".react-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
+
+      if (!auth.currentUser) {
+        alert("Login required.");
+        return;
+      }
 
       const reactionType = btn.dataset.type;
       const postRef = doc(db, "posts", post.id);
 
       try {
+
         await updateDoc(postRef, {
-          [`reactions.${reactionType}`]: increment(1)
+          [`reactions.${reactionType}`]: increment(1),
+          [`votedBy.${auth.currentUser.uid}`]: true
         });
+
       } catch (err) {
         console.error("Reaction error:", err);
       }
@@ -176,10 +198,9 @@ function createPostCard(post) {
 /* ================= TYPE BADGE ================= */
 
 function getTypeBadge(type) {
-
   switch(type) {
     case "fault":
-      return `<span style="color:#c62828;font-weight:600;">🔴 Fault Report</span>`;
+      return `<span style="color:#c62828;font-weight:600;">🔴 Fault</span>`;
     case "solution":
       return `<span style="color:#2e7d32;font-weight:600;">✅ Solution</span>`;
     case "calibration":
@@ -187,7 +208,6 @@ function getTypeBadge(type) {
     default:
       return `<span style="color:#f9a825;font-weight:600;">❓ Question</span>`;
   }
-
 }
 
 /* ================= TIME FORMAT ================= */
