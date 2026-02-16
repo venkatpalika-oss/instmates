@@ -1,6 +1,7 @@
 /* =========================================================
    InstMates – Social Technical Feed (FINAL PRODUCTION)
    Infinite Scroll • Verified Badge • Category Filter
+   Slide Animation • Edit/Delete • 1 Vote Per User
 ========================================================= */
 
 import { db, auth } from "./firebase.js";
@@ -29,40 +30,66 @@ let loading = false;
 let selectedCategory = "all";
 let usersCache = {};
 
-/* ================= CATEGORY FILTER ================= */
+/* =========================================================
+   CATEGORY FILTER WITH SLIDE ANIMATION
+========================================================= */
 
 createCategoryFilter();
 
 function createCategoryFilter() {
+
   const wrapper = document.createElement("div");
   wrapper.style.margin = "20px 0";
 
   wrapper.innerHTML = `
-    <button class="filter-btn active" data-type="all">All</button>
-    <button class="filter-btn" data-type="fault">Fault</button>
-    <button class="filter-btn" data-type="question">Question</button>
-    <button class="filter-btn" data-type="solution">Solution</button>
-    <button class="filter-btn" data-type="calibration">Calibration</button>
+    <div class="feed-filters">
+      <button class="filter-btn active" data-type="all">All</button>
+      <button class="filter-btn" data-type="fault">🔴 Fault</button>
+      <button class="filter-btn" data-type="question">❓ Question</button>
+      <button class="filter-btn" data-type="solution">✅ Solution</button>
+      <button class="filter-btn" data-type="calibration">📊 Calibration</button>
+    </div>
   `;
 
   feedContainer.parentNode.insertBefore(wrapper, feedContainer);
 
   wrapper.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+
+    btn.addEventListener("click", async () => {
+
+      if (btn.classList.contains("active")) return;
+
       document.querySelectorAll(".filter-btn")
         .forEach(b => b.classList.remove("active"));
 
       btn.classList.add("active");
       selectedCategory = btn.dataset.type;
 
-      feedContainer.innerHTML = "";
-      lastVisible = null;
-      loadPosts();
+      /* Slide out animation */
+      feedContainer.style.opacity = "0";
+      feedContainer.style.transform = "translateX(20px)";
+      feedContainer.style.transition = "all 0.2s ease";
+
+      setTimeout(async () => {
+
+        feedContainer.innerHTML = "";
+        lastVisible = null;
+        await loadPosts();
+
+        /* Slide in animation */
+        feedContainer.style.transform = "translateX(0)";
+        feedContainer.style.opacity = "1";
+
+      }, 200);
+
     });
+
   });
 }
 
-/* ================= CREATE POST ================= */
+/* =========================================================
+   CREATE POST
+========================================================= */
 
 if (postBtn) {
   postBtn.addEventListener("click", async () => {
@@ -84,7 +111,9 @@ if (postBtn) {
   });
 }
 
-/* ================= LOAD USERS CACHE ================= */
+/* =========================================================
+   LOAD USERS CACHE
+========================================================= */
 
 async function loadUsers() {
   const snapshot = await getDocs(collection(db, "users"));
@@ -93,7 +122,9 @@ async function loadUsers() {
   });
 }
 
-/* ================= LOAD POSTS (PAGINATED) ================= */
+/* =========================================================
+   LOAD POSTS (PAGINATED)
+========================================================= */
 
 async function loadPosts() {
 
@@ -122,6 +153,7 @@ async function loadPosts() {
   }
 
   snapshot.forEach(docSnap => {
+
     const post = docSnap.data();
     post.id = docSnap.id;
 
@@ -134,9 +166,12 @@ async function loadPosts() {
   loading = false;
 }
 
-/* ================= INFINITE SCROLL ================= */
+/* =========================================================
+   INFINITE SCROLL
+========================================================= */
 
 window.addEventListener("scroll", () => {
+
   if (
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 200
@@ -145,7 +180,9 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* ================= CREATE POST CARD ================= */
+/* =========================================================
+   CREATE POST CARD
+========================================================= */
 
 function createPostCard(post) {
 
@@ -182,7 +219,7 @@ function createPostCard(post) {
     </div>
 
     <div class="muted small" style="margin-top:6px;">
-      🔥 ${totalVotes} reactions
+      🔥 ${totalVotes} Technical Reactions
     </div>
 
     <div class="feed-actions">
@@ -210,9 +247,10 @@ function createPostCard(post) {
   /* ================= REACTIONS ================= */
 
   card.querySelectorAll(".react").forEach(btn => {
+
     btn.addEventListener("click", async () => {
 
-      if (!auth.currentUser) return;
+      if (!auth.currentUser || hasVoted) return;
 
       const type = btn.dataset.type;
       const postRef = doc(db, "posts", post.id);
@@ -221,7 +259,10 @@ function createPostCard(post) {
         [`reactions.${type}`]: increment(1),
         [`votedBy.${auth.currentUser.uid}`]: true
       });
+
+      btn.disabled = true;
     });
+
   });
 
   /* ================= EDIT ================= */
@@ -229,6 +270,7 @@ function createPostCard(post) {
   if (isOwner) {
 
     card.querySelector(".edit-btn").addEventListener("click", async () => {
+
       const newContent = prompt("Edit post:", post.content);
       if (!newContent) return;
 
@@ -239,22 +281,29 @@ function createPostCard(post) {
     });
 
     card.querySelector(".delete-btn").addEventListener("click", async () => {
+
       if (!confirm("Delete post?")) return;
+
       await deleteDoc(doc(db, "posts", post.id));
+      card.remove();
     });
   }
 
   return card;
 }
 
-/* ================= INIT ================= */
+/* =========================================================
+   INIT
+========================================================= */
 
 (async () => {
   await loadUsers();
   await loadPosts();
 })();
 
-/* ================= TIME FORMAT ================= */
+/* =========================================================
+   TIME FORMAT
+========================================================= */
 
 function formatTime(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
@@ -265,7 +314,9 @@ function formatTime(date) {
   return "Just now";
 }
 
-/* ================= ESCAPE ================= */
+/* =========================================================
+   ESCAPE
+========================================================= */
 
 function escapeHTML(str) {
   return String(str)
