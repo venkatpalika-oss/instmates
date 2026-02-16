@@ -9,8 +9,8 @@
   <meta name="description"
         content="Browse verified instrument and analyzer technician profiles on InstMates." />
 
-  <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+  <!-- ================= GLOBAL CSS ================= -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
 </head>
 
 <body data-page="profiles">
@@ -20,6 +20,7 @@
 
 <main class="container">
 
+  <!-- ================= PAGE INTRO ================= -->
   <section class="panel">
     <h2>Technician Profiles</h2>
     <p class="muted">
@@ -27,8 +28,25 @@
     </p>
   </section>
 
-  <section id="profilesGrid" class="grid grid-3">
-    <!-- Profiles load here -->
+  <!-- ================= SEARCH BAR ================= -->
+  <section class="panel" style="margin-top:16px;">
+    <input
+      type="text"
+      id="profileSearch"
+      placeholder="Search by name, role, skill, or location..."
+      style="
+        width:100%;
+        padding:12px 14px;
+        border-radius:8px;
+        border:1px solid #ddd;
+        font-size:15px;
+      "
+    />
+  </section>
+
+  <!-- ================= PROFILES GRID ================= -->
+  <section id="profilesGrid" class="grid grid-3" style="margin-top:20px;">
+    <p class="muted">Loading profiles…</p>
   </section>
 
 </main>
@@ -36,8 +54,13 @@
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<script type="module" src="/assets/js/profiles.js"></script>
-<script src="/assets/js/includes.js"></script>
+<!-- ================= SCRIPTS ================= -->
+
+<!-- Profiles Logic (Firestore) -->
+<script type="module" src="/assets/js/profiles.js?v=2026-02-17"></script>
+
+<!-- Header & Footer Includes -->
+<script src="/assets/js/includes.js?v=2026-02-17"></script>
 
 </body>
 </html>

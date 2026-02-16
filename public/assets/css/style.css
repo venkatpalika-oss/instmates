@@ -1878,3 +1878,37 @@ body.auth-in.auth-ready .site-header .auth-in {
   color: var(--brand-primary);
   font-weight: 600;
 }
+.profile-card {
+  text-align: left;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.avatar.placeholder {
+  background: #0b5ed7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.completion-bar {
+  height: 6px;
+  background: #eee;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.completion-fill {
+  height: 100%;
+  background: #4caf50;
+  border-radius: 4px;
+}

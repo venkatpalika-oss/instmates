@@ -1,351 +1,242 @@
-console.log("PHASE 6 ACTIVE");
-
 /* =========================================================
-   InstMates – Feed Logic
-   PHASE 6 – PROFESSIONAL FEED SYSTEM
-   POSTS + COMMENTS + LIKES + EDIT + DELETE + SORT
-   File: assets/js/feed.js
+   InstMates – Hybrid Professional Feed (FINAL PRODUCTION)
+   1 Vote Per User • Real-time • Secure
 ========================================================= */
 
-import { auth, db } from "./firebase.js";
-import { onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { db, auth } from "./firebase.js";
 
 import {
   collection,
+  addDoc,
+  serverTimestamp,
   query,
   orderBy,
-  limit,
-  getDocs,
-  addDoc,
+  onSnapshot,
   doc,
-  getDoc,
   updateDoc,
-  deleteDoc,
-  serverTimestamp
+  increment
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-/* ================= STATE ================= */
-
-let currentUser = null;
-let currentSort = "latest";
-
-/* ================= ELEMENTS ================= */
-
-const feedEl = document.querySelector(".feed");
+const feedContainer = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
-const sortSelect = document.getElementById("sortFeed");
+const postType = document.getElementById("postType");
+const postTags = document.getElementById("postTags");
 
-/* ================= AUTH ================= */
+/* ================= CREATE POST ================= */
 
-onAuthStateChanged(auth, async (user) => {
-  console.log("AUTH USER FROM APP:", user);
-  currentUser = user;
+if (postBtn) {
+  postBtn.addEventListener("click", async () => {
 
-  if (user) {
-    loadFeed();
-  } else {
-    console.log("USER IS NOT LOGGED IN");
-  }
-});
+    const content = postInput.value.trim();
+    if (!content) return;
 
-/* ================= SORT HANDLER ================= */
-
-if (sortSelect) {
-  sortSelect.addEventListener("change", (e) => {
-    currentSort = e.target.value;
-    loadFeed();
-  });
-}
-
-/* ================= LOAD FEED ================= */
-
-async function loadFeed() {
-  if (!feedEl) return;
-
-  feedEl.innerHTML = `<p class="muted">Loading feed…</p>`;
-
-  let q;
-
-  if (currentSort === "popular") {
-    q = query(
-      collection(db, "posts"),
-      orderBy("likes", "desc"),
-      limit(20)
-    );
-  } else {
-    q = query(
-      collection(db, "posts"),
-      orderBy("createdAt", "desc"),
-      limit(20)
-    );
-  }
-
-  const snap = await getDocs(q);
-  feedEl.innerHTML = "";
-
-  if (snap.empty) {
-    feedEl.innerHTML = `<p class="muted">No posts yet.</p>`;
-    return;
-  }
-
-  for (const d of snap.docs) {
-    const post = d.data();
-    const profile = await getProfile(post.uid);
-    feedEl.appendChild(renderPost(d.id, post, profile));
-  }
-}
-
-/* ================= PROFILE ================= */
-
-async function getProfile(uid) {
-  try {
-    const snap = await getDoc(doc(db, "profiles", uid));
-    return snap.exists() ? snap.data() : {};
-  } catch {
-    return {};
-  }
-}
-
-/* ================= RENDER POST ================= */
-
-function renderPost(postId, p, profile) {
-  const div = document.createElement("div");
-  div.className = "card feed-card";
-
-  const isOwner = currentUser && currentUser.uid === p.uid;
-
-  div.innerHTML = `
-    <div class="feed-header">
-      <strong>${escapeHTML(p.authorName || "Technician")}</strong>
-      <span class="muted small">${timeAgo(p.createdAt)}</span>
-    </div>
-
-    <div class="feed-content">
-      ${escapeHTML(p.content)}
-    </div>
-
-    <div class="feed-actions">
-      <button class="likeBtn" data-id="${postId}">
-        👍 <span>${p.likes || 0}</span>
-      </button>
-
-      <button class="commentToggle" data-id="${postId}">
-        💬 Comment
-      </button>
-
-      ${isOwner ? `
-        <button class="editBtn" data-id="${postId}">✏️</button>
-        <button class="deleteBtn" data-id="${postId}">🗑️</button>
-      ` : ""}
-    </div>
-
-    <div class="comments hidden" id="comments-${postId}">
-      <div class="comment-list"></div>
-      <form class="comment-form">
-        <input placeholder="Reply with a practical solution…" required />
-        <button>Post</button>
-      </form>
-    </div>
-  `;
-
-  attachPostEvents(div, postId, p);
-
-  return div;
-}
-
-/* ================= POST EVENTS ================= */
-
-function attachPostEvents(div, postId, postData) {
-
-  const likeBtn = div.querySelector(".likeBtn");
-  const commentToggle = div.querySelector(".commentToggle");
-  const commentBox = div.querySelector(".comments");
-  const commentList = div.querySelector(".comment-list");
-  const commentForm = div.querySelector(".comment-form");
-
-  /* ================= LIKE (PRODUCTION SAFE) ================= */
-
-  likeBtn.onclick = async () => {
-    if (!currentUser) {
-      alert("Please login to like posts.");
+    if (!auth.currentUser) {
+      alert("Please login to post.");
       return;
     }
 
-    const postRef = doc(db, "posts", postId);
+    const type = postType?.value || "question";
+    const tagsArray = postTags?.value
+      ?.split(",")
+      .map(t => t.trim())
+      .filter(Boolean) || [];
 
     try {
-      const postSnap = await getDoc(postRef);
-      if (!postSnap.exists()) return;
 
-      const data = postSnap.data();
-
-      const currentLikes = data.likes || 0;
-      const likedBy = data.likedBy || {};
-
-      const alreadyLiked = likedBy[currentUser.uid] === true;
-
-      // Animation
-      likeBtn.style.transform = "scale(1.2)";
-      setTimeout(() => {
-        likeBtn.style.transform = "scale(1)";
-      }, 150);
-
-      // LIKE
-      if (!alreadyLiked) {
-
-        const updatedLikedBy = {
-          ...likedBy,
-          [currentUser.uid]: true
-        };
-
-        await updateDoc(postRef, {
-          likes: currentLikes + 1,
-          likedBy: updatedLikedBy
-        });
-
-        likeBtn.querySelector("span").textContent = currentLikes + 1;
-        likeBtn.classList.add("liked");
-      }
-
-      // UNLIKE (optional future ready)
-      else {
-
-        const updatedLikedBy = { ...likedBy };
-        delete updatedLikedBy[currentUser.uid];
-
-        await updateDoc(postRef, {
-          likes: Math.max(currentLikes - 1, 0),
-          likedBy: updatedLikedBy
-        });
-
-        likeBtn.querySelector("span").textContent = Math.max(currentLikes - 1, 0);
-        likeBtn.classList.remove("liked");
-      }
-
-    } catch (err) {
-      console.error("Like failed:", err);
-    }
-  };
-
-  /* ================= COMMENT TOGGLE ================= */
-
-  commentToggle.onclick = async () => {
-    commentBox.classList.toggle("hidden");
-    if (!commentBox.classList.contains("hidden")) {
-      await loadComments(postId, commentList);
-    }
-  };
-
-  /* ================= COMMENT SUBMIT ================= */
-
-  commentForm.onsubmit = (e) =>
-    submitComment(e, postId, commentList);
-
-  /* ================= DELETE ================= */
-
-  const deleteBtn = div.querySelector(".deleteBtn");
-  if (deleteBtn) {
-    deleteBtn.onclick = async () => {
-      if (!confirm("Delete this post?")) return;
-      await deleteDoc(doc(db, "posts", postId));
-      loadFeed();
-    };
-  }
-
-  /* ================= EDIT ================= */
-
-  const editBtn = div.querySelector(".editBtn");
-  if (editBtn) {
-    editBtn.onclick = async () => {
-      const newContent = prompt("Edit your post:", postData.content);
-      if (!newContent) return;
-
-      await updateDoc(doc(db, "posts", postId), {
-        content: newContent
+      await addDoc(collection(db, "posts"), {
+        content,
+        type,
+        tags: tagsArray,
+        uid: auth.currentUser.uid,
+        createdAt: serverTimestamp(),
+        reactions: {
+          agree: 0,
+          faced: 0,
+          helpful: 0
+        },
+        votedBy: {},   // 🔥 IMPORTANT
+        name: "Technician",
+        role: "Instrument Technician",
+        photoURL: ""
       });
 
-      loadFeed();
-    };
-  }
+      postInput.value = "";
+      if (postTags) postTags.value = "";
+
+    } catch (err) {
+      console.error("Post error:", err);
+    }
+
+  });
 }
 
-/* ================= COMMENTS ================= */
+/* ================= REAL-TIME FEED ================= */
 
-async function loadComments(postId, list) {
-  list.innerHTML = `<p class="muted">Loading comments…</p>`;
+const postsQuery = query(
+  collection(db, "posts"),
+  orderBy("createdAt", "desc")
+);
 
-  const q = query(
-    collection(db, "posts", postId, "comments"),
-    orderBy("createdAt", "asc")
-  );
+onSnapshot(postsQuery, snapshot => {
 
-  const snap = await getDocs(q);
-  list.innerHTML = "";
+  feedContainer.innerHTML = "";
 
-  if (snap.empty) {
-    list.innerHTML = `<p class="muted">No replies yet.</p>`;
+  if (snapshot.empty) {
+    feedContainer.innerHTML =
+      `<div class="card muted">No posts yet.</div>`;
     return;
   }
 
-  for (const d of snap.docs) {
-    const c = d.data();
-    list.appendChild(renderComment(c));
+  snapshot.forEach(docSnap => {
+    const post = docSnap.data();
+    post.id = docSnap.id;
+
+    const card = createPostCard(post);
+    feedContainer.appendChild(card);
+  });
+
+});
+
+/* ================= CREATE POST CARD ================= */
+
+function createPostCard(post) {
+
+  const card = document.createElement("div");
+  card.className = "card feed-card";
+
+  const user = auth.currentUser;
+  const hasVoted = user && post.votedBy && post.votedBy[user.uid];
+
+  const timeAgo = formatTime(post.createdAt?.toDate?.() || new Date());
+
+  const avatarHTML = post.photoURL
+    ? `<img src="${escapeHTML(post.photoURL)}" class="avatar-sm" />`
+    : `<div class="avatar-sm placeholder">
+         ${(post.name || "T")[0].toUpperCase()}
+       </div>`;
+
+  const badge = getTypeBadge(post.type);
+
+  const tagsHTML = post.tags && post.tags.length
+    ? `<div class="post-tags">
+        ${post.tags.map(tag =>
+          `<span class="tag">#${escapeHTML(tag)}</span>`
+        ).join("")}
+      </div>`
+    : "";
+
+  card.innerHTML = `
+    <div class="feed-header">
+      ${avatarHTML}
+      <div>
+        <strong>${escapeHTML(post.name || "Technician")}</strong>
+        <div class="muted small">
+          ${escapeHTML(post.role || "Technician")} · ${timeAgo}
+        </div>
+      </div>
+    </div>
+
+    <div class="post-type-badge">
+      ${badge}
+    </div>
+
+    <div class="feed-content">
+      ${escapeHTML(post.content)}
+    </div>
+
+    ${tagsHTML}
+
+    <div class="feed-actions">
+      <button class="feed-btn react-btn"
+        data-type="agree" ${hasVoted ? "disabled" : ""}>
+        👍 Agree (${post.reactions?.agree || 0})
+      </button>
+
+      <button class="feed-btn react-btn"
+        data-type="faced" ${hasVoted ? "disabled" : ""}>
+        🛠 Faced This (${post.reactions?.faced || 0})
+      </button>
+
+      <button class="feed-btn react-btn"
+        data-type="helpful" ${hasVoted ? "disabled" : ""}>
+        💡 Helpful (${post.reactions?.helpful || 0})
+      </button>
+    </div>
+  `;
+
+  /* ================= REACTION LOGIC ================= */
+
+  card.querySelectorAll(".react-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+
+      if (!auth.currentUser) {
+        alert("Login required.");
+        return;
+      }
+
+      const reactionType = btn.dataset.type;
+      const postRef = doc(db, "posts", post.id);
+
+      try {
+
+        await updateDoc(postRef, {
+          [`reactions.${reactionType}`]: increment(1),
+          [`votedBy.${auth.currentUser.uid}`]: true
+        });
+
+      } catch (err) {
+        console.error("Reaction error:", err);
+      }
+
+    });
+  });
+
+  return card;
+}
+
+/* ================= TYPE BADGE ================= */
+
+function getTypeBadge(type) {
+  switch(type) {
+    case "fault":
+      return `<span style="color:#c62828;font-weight:600;">🔴 Fault</span>`;
+    case "solution":
+      return `<span style="color:#2e7d32;font-weight:600;">✅ Solution</span>`;
+    case "calibration":
+      return `<span style="color:#1565c0;font-weight:600;">📊 Calibration</span>`;
+    default:
+      return `<span style="color:#f9a825;font-weight:600;">❓ Question</span>`;
   }
 }
 
-function renderComment(c) {
-  const div = document.createElement("div");
-  div.className = "comment-item";
+/* ================= TIME FORMAT ================= */
 
-  div.innerHTML = `
-    <strong>${escapeHTML(c.authorName || "User")}</strong>
-    <span class="muted small"> · ${timeAgo(c.createdAt)}</span>
-    <p>${escapeHTML(c.content)}</p>
-  `;
+function formatTime(date) {
 
-  return div;
+  const seconds = Math.floor((new Date() - date) / 1000);
+
+  const intervals = [
+    { label: "y", seconds: 31536000 },
+    { label: "mo", seconds: 2592000 },
+    { label: "d", seconds: 86400 },
+    { label: "h", seconds: 3600 },
+    { label: "m", seconds: 60 }
+  ];
+
+  for (let i of intervals) {
+    const count = Math.floor(seconds / i.seconds);
+    if (count >= 1) return count + i.label;
+  }
+
+  return "Just now";
 }
 
-/* ================= SUBMIT COMMENT ================= */
-
-async function submitComment(e, postId, list) {
-  e.preventDefault();
-  if (!currentUser) return;
-
-  const input = e.target.querySelector("input");
-  const content = input.value.trim();
-  if (!content) return;
-
-  await addDoc(
-    collection(db, "posts", postId, "comments"),
-    {
-      uid: currentUser.uid,
-      authorName: currentUser.displayName || "User",
-      content,
-      createdAt: serverTimestamp()
-    }
-  );
-
-  input.value = "";
-  loadComments(postId, list);
-}
-
-/* ================= HELPERS ================= */
+/* ================= SAFE ESCAPE ================= */
 
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
-}
-
-function timeAgo(ts) {
-  if (!ts?.toDate) return "Just now";
-  const s = Math.floor((Date.now() - ts.toDate()) / 1000);
-  if (s < 60) return "Just now";
-  if (s < 3600) return `${Math.floor(s / 60)} min ago`;
-  if (s < 86400) return `${Math.floor(s / 3600)} hr ago`;
-  return `${Math.floor(s / 86400)} days ago`;
 }
