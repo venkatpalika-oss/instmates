@@ -16,7 +16,7 @@
 
   <!-- ================= PAGE ENHANCEMENTS (SAFE) ================= -->
   <style>
-    /* Composer upgrade */
+    /* Composer */
     #postInput {
       width: 100%;
       min-height: 120px;
@@ -35,6 +35,15 @@
       box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
     }
 
+    #postTags, #postType {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
     #postBtn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -45,7 +54,6 @@
       padding: 24px;
     }
 
-    /* Optional feed visual polish */
     .feed-card {
       padding: 18px;
       transition: 0.2s ease;
@@ -75,22 +83,41 @@
   <section class="panel">
     <h2>Community Feed</h2>
     <p class="muted">
-      Share real field experience, troubleshooting stories,
-      calibration insights, and analyzer lessons from the plant floor.
+      Share real field experience, troubleshooting cases,
+      calibration insights, and plant-level analyzer knowledge.
     </p>
   </section>
 
-  <!-- ================= POST COMPOSER ================= -->
+  <!-- ================= HYBRID POST COMPOSER ================= -->
   <section class="panel">
 
+    <!-- Post Type -->
+    <select id="postType">
+      <option value="question">❓ Question</option>
+      <option value="fault">🔴 Fault Report</option>
+      <option value="solution">✅ Solution</option>
+      <option value="calibration">📊 Calibration</option>
+    </select>
+
+    <!-- Post Content -->
     <textarea id="postInput"
       maxlength="1000"
-      placeholder="What problem are you facing in the field today?
-Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
+      placeholder="Describe the issue clearly...
+
+Example:
+GC channel 3 showing unstable peaks after maintenance.
+Actions taken: cleaned column, checked carrier gas pressure."></textarea>
+
+    <!-- Tags -->
+    <input
+      type="text"
+      id="postTags"
+      placeholder="Add tags (comma separated) e.g. GC, FID, 4-20mA"
+    />
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
       <small class="muted">
-        Tip: Use tags like #GC #CEMS #Calibration #PLC
+        Use structured posts for better technical discussion.
       </small>
 
       <small class="muted">
@@ -107,7 +134,7 @@ Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
   <!-- ================= FEED LIST ================= -->
   <section class="feed grid grid-1" id="feedContainer">
 
-    <!-- POSTS WILL BE INJECTED HERE BY feed.js -->
+    <!-- POSTS INJECTED BY feed.js -->
     <div class="card muted" id="loadingCard">
       Loading posts…
     </div>
@@ -119,7 +146,7 @@ Example: 4–20 mA stuck at 4 mA after shutdown"></textarea>
 <!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ================= SCRIPTS (ORDER MATTERS) ================= -->
+<!-- ================= SCRIPTS ================= -->
 
 <!-- Header / Footer includes -->
 <script src="/assets/js/includes.js?v=2026-02-17"></script>
