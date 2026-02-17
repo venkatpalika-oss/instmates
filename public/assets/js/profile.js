@@ -10,6 +10,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,          // 🔥 ADDED (REQUIRED)
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -67,7 +68,6 @@ if (form) {
       bio: val("bio"),
       skills: split("skills"),
 
-      // ✅ CRITICAL FIX
       publicProfile: publicProfileCheckbox
         ? publicProfileCheckbox.checked
         : true,
@@ -77,15 +77,23 @@ if (form) {
     };
 
     try {
+      // 🔹 Save profile document
       await setDoc(
         doc(db, "profiles", user.uid),
         {
           ...profile,
-
-          // createdAt only set once
           createdAt: serverTimestamp()
         },
         { merge: true }
+      );
+
+      // 🔥 CRITICAL FIX: Update users collection
+      await updateDoc(
+        doc(db, "users", user.uid),
+        {
+          profileCompleted: true,
+          updatedAt: serverTimestamp()
+        }
       );
 
       alert("Profile saved successfully");

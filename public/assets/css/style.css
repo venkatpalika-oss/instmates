@@ -35,7 +35,7 @@ img{
 
 /* ================= HEADER (FINAL – LOCKED) ================= */
 
-.site-header{
+.siteHeader{
   position:sticky;
   top:0;
   z-index:9999;
@@ -43,7 +43,7 @@ img{
   box-shadow:0 2px 12px rgba(0,0,0,0.18);
 }
 
-.site-header-inner{
+.siteHeader-inner{
   max-width:1200px;
   margin:0 auto;
   padding:12px 16px;
@@ -283,7 +283,7 @@ img{
 
 /* ================= FOOTER ================= */
 
-.site-footer{
+.siteFooter{
   margin-top:40px;
   padding:18px;
   text-align:center;
@@ -301,7 +301,7 @@ img{
 
 @media (max-width: 768px){
 
-  .site-header-inner{
+  .siteHeader-inner{
     padding:10px 12px;
   }
 
@@ -671,23 +671,23 @@ a:hover{
    Footer link cleanup (remove bullets, style links)
 ========================================================= */
 
-.site-footer ul{
+.siteFooter ul{
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.site-footer li{
+.siteFooter li{
   margin: 6px 0;
 }
 
-.site-footer a{
+.siteFooter a{
   color: #1f78b4;
   text-decoration: none;
   font-weight: 600;
 }
 
-.site-footer a:hover{
+.siteFooter a:hover{
   text-decoration: underline;
 }
 /* =========================================================
@@ -695,55 +695,55 @@ a:hover{
 ========================================================= */
 
 /* Footer background like header */
-.site-footer{
+.siteFooter{
   background: #0b3c5d;          /* same as header */
   color: #ffffff;
   border-top: none;
 }
 
 /* Footer headings */
-.site-footer h4{
+.siteFooter h4{
   color: #ffffff;
 }
 
 /* Footer paragraph text */
-.site-footer p{
+.siteFooter p{
   color: #dbe7f3;
 }
 
 /* Footer links */
-.site-footer a{
+.siteFooter a{
   color: #e6f0fa;
   text-decoration: none;
   font-weight: 600;
 }
 
-.site-footer a:hover{
+.siteFooter a:hover{
   color: #ffffff;
   text-decoration: underline;
 }
 
 /* Footer separators */
-.site-footer hr{
+.siteFooter hr{
   border: none;
   border-top: 1px solid rgba(255,255,255,.25);
 }
 
 /* Footer list cleanup (in case not already present) */
-.site-footer ul{
+.siteFooter ul{
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.site-footer li{
+.siteFooter li{
   margin: 6px 0;
 }
 /* =========================================================
    Compact Footer Layout (Header-like, Minimal)
 ========================================================= */
 
-.site-footer{
+.siteFooter{
   background: #0b3c5d;
   color: #ffffff;
 }
@@ -967,7 +967,7 @@ h1, h2, h3, h4{
 ========================================================= */
 
 /* Ensure footer is a full-width block */
-.site-footer{
+.siteFooter{
   display: block;
   width: 100%;
   clear: both;          /* CRITICAL */
@@ -1221,26 +1221,26 @@ body.auth-in.auth-ready .auth-in {
 ========================================================= */
 
 /* Hide header auth buttons until auth is known */
-body:not(.auth-ready) .site-header .auth-in,
-body:not(.auth-ready) .site-header .auth-out {
+body:not(.auth-ready) .siteHeader .auth-in,
+body:not(.auth-ready) .siteHeader .auth-out {
   visibility: hidden;
 }
 
 /* Default hidden (HEADER ONLY) */
-.site-header .auth-in,
-.site-header .auth-out {
+.siteHeader .auth-in,
+.siteHeader .auth-out {
   display: none;
 }
 
 /* Logged OUT */
-body.auth-out.auth-ready .site-header .auth-out {
+body.auth-out.auth-ready .siteHeader .auth-out {
   display: inline-flex;
   gap: 10px;
   visibility: visible;
 }
 
 /* Logged IN */
-body.auth-in.auth-ready .site-header .auth-in {
+body.auth-in.auth-ready .siteHeader .auth-in {
   display: inline-flex;
   gap: 10px;
   visibility: visible;
@@ -1257,12 +1257,12 @@ body.auth-in.auth-ready .site-header .auth-in {
   }
 
   /* HEADER */
-  .site-header {
+  .siteHeader {
     position: sticky;
     top: 0;
   }
 
-  .site-header-inner {
+  .siteHeader-inner {
     flex-direction: column;
     align-items: center;
     gap: 8px;
@@ -1406,8 +1406,8 @@ body.auth-in.auth-ready .site-header .auth-in {
 /* ================= HEADER NAV FINAL NORMALIZATION ================= */
 
 /* Normalize ALL top-level nav items */
-.site-header .main-nav > a,
-.site-header .main-nav .nav-dropdown > .nav-link {
+.siteHeader .main-nav > a,
+.siteHeader .main-nav .nav-dropdown > .nav-link {
   display: inline-flex;
   align-items: center;
   height: 100%;
@@ -1416,19 +1416,19 @@ body.auth-in.auth-ready .site-header .auth-in {
 }
 
 /* Dropdown containers must not affect baseline */
-.site-header .nav-dropdown {
+.siteHeader .nav-dropdown {
   display: inline-flex;
   align-items: center;
 }
 
 /* Account text stays white */
-.site-header .account-link {
+.siteHeader .account-link {
   color: #ffffff !important;
 }
 /* ================= MOBILE HEADER POLISH ================= */
 @media (max-width: 768px) {
 
-  .site-header-inner {
+  .siteHeader-inner {
     flex-wrap: wrap;
     padding: 10px 14px;
   }
