@@ -3,7 +3,7 @@
 // File: /assets/js/includes.js
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadInto(id, url) {
     const el = document.getElementById(id);
@@ -18,33 +18,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔒 ORIGINAL PROJECT STANDARD
-  loadInto("siteHeader", "/includes/header.html");
-  loadInto("siteFooter", "/includes/footer.html");
+  // 🔒 ORIGINAL PROJECT STANDARD (DO NOT CHANGE ORDER)
+  await loadInto("siteHeader", "/includes/header.html");
+  await loadInto("siteFooter", "/includes/footer.html");
+
+  // =====================================================
+  // 📱 MOBILE BOTTOM NAV (GLOBAL INJECTION)
+  // =====================================================
+
+  // Prevent duplicate injection
+  if (!document.querySelector(".mobile-bottom-nav")) {
+
+    const nav = document.createElement("nav");
+    nav.className = "mobile-bottom-nav";
+
+    nav.innerHTML = `
+      <a href="/" data-page="home">
+        <span>🏠</span>
+        <small>Home</small>
+      </a>
+
+      <a href="/feed/" data-page="feed">
+        <span>📰</span>
+        <small>Feed</small>
+      </a>
+
+      <a href="/post.html" class="post-btn">
+        <span>➕</span>
+      </a>
+
+      <a href="/profiles/" data-page="profiles">
+        <span>👥</span>
+        <small>Techs</small>
+      </a>
+
+      <a href="/profile.html" data-page="profile">
+        <span>👤</span>
+        <small>Account</small>
+      </a>
+    `;
+
+    document.body.appendChild(nav);
+
+    // ================= ACTIVE PAGE HIGHLIGHT =================
+    const currentPage = document.body.dataset.page;
+
+    nav.querySelectorAll("a[data-page]").forEach(link => {
+      if (link.dataset.page === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  }
 
 });
-// ================= MOBILE NAV INJECTION =================
-if (!document.querySelector(".mobile-bottom-nav")) {
-
-  const nav = document.createElement("nav");
-  nav.className = "mobile-bottom-nav";
-
-  nav.innerHTML = `
-    <a href="/" data-page="home"><span>🏠</span><small>Home</small></a>
-    <a href="/feed/" data-page="feed"><span>📰</span><small>Feed</small></a>
-    <a href="/post.html" class="post-btn"><span>➕</span></a>
-    <a href="/profiles/" data-page="profiles"><span>👥</span><small>Techs</small></a>
-    <a href="/profile.html" data-page="profile"><span>👤</span><small>Account</small></a>
-  `;
-
-  document.body.appendChild(nav);
-
-  // Active state highlight
-  const currentPage = document.body.dataset.page;
-  nav.querySelectorAll("a[data-page]").forEach(link => {
-    if (link.dataset.page === currentPage) {
-      link.classList.add("active");
-    }
-  });
-}
-
