@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Auth Guard (PHASE 2 – FINAL)
+   InstMates – Auth Guard (FINAL – STABLE VERSION)
    File: assets/js/auth-guard.js
 ========================================================= */
 
@@ -18,6 +18,7 @@ const PUBLIC_PAGES = [
 ];
 
 onAuthStateChanged(auth, async (user) => {
+
   const page = document.body.dataset.page;
 
   // ================= NOT LOGGED IN =================
@@ -30,21 +31,23 @@ onAuthStateChanged(auth, async (user) => {
 
   // ================= LOGGED IN =================
   try {
-    const ref = doc(db, "profiles", user.uid);
-    const snap = await getDoc(ref);
+
+    // 🔥 CHECK PROFILE STATUS FROM USERS COLLECTION (CORRECT SOURCE)
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
     const profileCompleted =
-      snap.exists() && snap.data().profileCompleted === true;
+      userSnap.exists() &&
+      userSnap.data().profileCompleted === true;
 
     // 🚫 Block access until profile is completed
-    if (!profileCompleted && page !== "profile-edit") {
-      window.location.replace("/profile-edit.html");
+    if (!profileCompleted && page !== "profile") {
+      window.location.replace("/profile.html");
       return;
     }
 
-    // 🚫 Prevent going back to login/register
+    // 🚫 Prevent going back to login/register after login
     if (PUBLIC_PAGES.includes(page)) {
-      // ✅ FIXED PATH (was /feed.html)
       window.location.replace("/feed/");
       return;
     }
@@ -52,4 +55,5 @@ onAuthStateChanged(auth, async (user) => {
   } catch (err) {
     console.error("Auth guard profile check failed:", err);
   }
+
 });

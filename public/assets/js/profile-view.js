@@ -1,5 +1,5 @@
 /* =========================================================
-   InstMates – Profile View Logic (READ-ONLY)
+   InstMates – Profile View Logic (READ-ONLY – UPGRADED)
    File: assets/js/profile-view.js
 ========================================================= */
 
@@ -34,25 +34,87 @@ onAuthStateChanged(auth, async (user) => {
     const p = snap.data();
 
     card.innerHTML = `
-      <h2>${escape(p.fullName)}</h2>
+      <h2>${escape(p.fullName || "Technician")}</h2>
 
-      <p class="muted">${escape(p.role)}</p>
+      <p class="muted">${escape(p.role || "")}</p>
 
-      <p style="margin-top:12px;">
-        ${escape(p.bio || "No bio provided.")}
-      </p>
+      ${p.location ? `<p class="muted">📍 ${escape(p.location)}</p>` : ""}
 
-      <div style="margin-top:16px;">
-        <strong>Skills</strong><br>
-        ${(p.skills || [])
-          .map(s => `<span class="tag">${escape(s)}</span>`)
-          .join(" ")}
-      </div>
+      ${p.experienceYears
+        ? `<p class="muted">🕒 ${escape(p.experienceYears)} years experience</p>`
+        : ""
+      }
+
+      ${p.primaryDomain
+        ? `<p class="muted">🔧 ${escape(p.primaryDomain)}</p>`
+        : ""
+      }
+
+      ${
+        Array.isArray(p.industriesWorked) && p.industriesWorked.length > 0
+          ? `
+          <div style="margin-top:16px;">
+            <strong>Industries Worked</strong><br>
+            ${p.industriesWorked
+              .map(ind => `<span class="tag">${escape(ind)}</span>`)
+              .join(" ")}
+          </div>
+          `
+          : ""
+      }
+
+      ${
+        p.summary
+          ? `
+          <div style="margin-top:20px;">
+            <strong>Field Experience Summary</strong>
+            <p style="margin-top:8px;">
+              ${escape(p.summary)}
+            </p>
+          </div>
+          `
+          : ""
+      }
+
+      ${
+        Array.isArray(p.skills) && p.skills.length > 0
+          ? `
+          <div style="margin-top:20px;">
+            <strong>Core Skills</strong><br>
+            ${p.skills
+              .map(s => `<span class="tag">${escape(s)}</span>`)
+              .join(" ")}
+          </div>
+          `
+          : ""
+      }
+
+      ${
+        Array.isArray(p.majorTroubleshooting) &&
+        p.majorTroubleshooting.length > 0
+          ? `
+          <div style="margin-top:24px;">
+            <strong>Major Troubleshooting & Breakthroughs</strong>
+            ${p.majorTroubleshooting
+              .map(item => `
+                <div style="margin-top:12px; padding:12px; background:#f8fafc; border-radius:8px;">
+                  ${item.system ? `<strong>${escape(item.system)}</strong><br>` : ""}
+                  ${item.problem ? `<p><strong>Problem:</strong> ${escape(item.problem)}</p>` : ""}
+                  ${item.action ? `<p><strong>Action:</strong> ${escape(item.action)}</p>` : ""}
+                  ${item.outcome ? `<p><strong>Outcome:</strong> ${escape(item.outcome)}</p>` : ""}
+                  ${item.impact ? `<p><strong>Impact:</strong> ${escape(item.impact)}</p>` : ""}
+                </div>
+              `)
+              .join("")}
+          </div>
+          `
+          : ""
+      }
 
       ${
         user.uid !== uid
           ? `
-          <div style="margin-top:20px;">
+          <div style="margin-top:24px;">
             <button id="startChatBtn" class="btn btn-primary full">
               💬 Message
             </button>

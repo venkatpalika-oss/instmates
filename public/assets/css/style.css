@@ -1964,3 +1964,175 @@ body.auth-in.auth-ready .siteHeader .auth-in {
   filter: blur(3px);
   opacity: 0.6;
 }
+/* =========================================================
+   MOBILE APP-STYLE NAVIGATION
+========================================================= */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .mobile-bottom-nav a {
+    text-decoration: none;
+    color: #334155;
+    font-size: 11px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-bottom-nav span {
+    font-size: 18px;
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
+
+}
+.mobile-bottom-nav a.active {
+  color: #0b5ed7;
+  font-weight: 600;
+}
+
+.mobile-bottom-nav a.active span {
+  transform: scale(1.1);
+}
+
+/* Floating center post button */
+.mobile-bottom-nav .post-btn {
+  position: relative;
+  top: -18px;
+  background: #0b5ed7;
+  color: white;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+@media (max-width: 768px) {
+
+  .nav-links,
+  .header-nav,
+  .desktop-nav {
+    display: none !important;
+  }
+
+}
+@media (max-width: 768px) {
+
+  header,
+  .site-header {
+    padding: 10px 16px;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .feed-composer,
+  #postInput,
+  #postTags,
+  #postType,
+  #postBtn {
+    display: none;
+  }
+
+}
+@media (max-width: 768px) {
+  .crumbs {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+
+  header,
+  .site-header {
+    padding: 8px 16px;
+  }
+
+  header h1,
+  .logo {
+    font-size: 18px;
+  }
+
+}
+.mobile-bottom-nav .post-btn {
+  position: relative;
+  top: -22px; /* slightly raise */
+}
+
+body {
+  padding-bottom: 90px; /* increase safe area */
+}
+@media (max-width: 768px) {
+
+  .filter-row,
+  .feed-filters {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .panel h2 {
+    font-size: 1.2rem;
+  }
+
+  .panel p {
+    font-size: 0.9rem;
+  }
+
+}
+/* =========================================================
+   MOBILE HEADER – CLEAN PRODUCTION VERSION
+========================================================= */
+@media (max-width: 768px) {
+
+  /* Keep header layout stable */
+  .siteHeader-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Hide only desktop navigation links */
+  .siteHeader .main-nav {
+    display: none;
+  }
+
+  /* Keep logo centered properly */
+  .logo {
+    margin: 0 auto;
+  }
+
+}
+
