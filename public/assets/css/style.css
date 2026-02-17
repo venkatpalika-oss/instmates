@@ -2112,3 +2112,27 @@ body {
   }
 
 }
+/* =========================================================
+   MOBILE HEADER – CLEAN PRODUCTION VERSION
+========================================================= */
+@media (max-width: 768px) {
+
+  /* Keep header layout stable */
+  .siteHeader-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Hide only desktop navigation links */
+  .siteHeader .main-nav {
+    display: none;
+  }
+
+  /* Keep logo centered properly */
+  .logo {
+    margin: 0 auto;
+  }
+
+}
+
