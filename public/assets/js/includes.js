@@ -23,3 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
   loadInto("siteFooter", "/includes/footer.html");
 
 });
+// ================= MOBILE NAV INJECTION =================
+if (!document.querySelector(".mobile-bottom-nav")) {
+
+  const nav = document.createElement("nav");
+  nav.className = "mobile-bottom-nav";
+
+  nav.innerHTML = `
+    <a href="/"><span>🏠</span><small>Home</small></a>
+    <a href="/feed/"><span>📰</span><small>Feed</small></a>
+    <a href="/post.html"><span>➕</span><small>Post</small></a>
+    <a href="/profiles/"><span>👥</span><small>Techs</small></a>
+    <a href="/profile.html"><span>👤</span><small>Account</small></a>
+  `;
+
+  document.body.appendChild(nav);
+}
