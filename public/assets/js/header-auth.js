@@ -16,7 +16,7 @@ import {
 function waitForHeader() {
   return new Promise((resolve) => {
     const check = () => {
-      if (document.querySelector(".site-header")) {
+      if (document.querySelector(".siteHeader")) {
         resolve();
       } else {
         requestAnimationFrame(check);
