@@ -1,5 +1,6 @@
 /* =========================================================
-   InstMates - Firebase Authentication (FINAL – STABLE + HOMEPAGE SMART)
+   InstMates - Firebase Authentication
+   FINAL – STABLE + SMART HOMEPAGE + PROFILE MODAL
    File: assets/js/auth.js
 ========================================================= */
 
@@ -73,7 +74,7 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (SMART HOMEPAGE ENABLED)
+   AUTH STATE HANDLER
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
@@ -85,7 +86,7 @@ onAuthStateChanged(auth, async (user) => {
   const path = location.pathname;
 
   /* =====================================================
-     🔥 SMART HOMEPAGE SECTION TOGGLE
+     SMART HOMEPAGE SECTION TOGGLE
   ===================================================== */
 
   const authOutSections = document.querySelectorAll(".auth-out-section");
@@ -122,6 +123,10 @@ onAuthStateChanged(auth, async (user) => {
 
   try {
 
+    /* =====================================================
+       AUTO-HEAL USER DOCUMENT
+    ===================================================== */
+
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
 
@@ -143,6 +148,10 @@ onAuthStateChanged(auth, async (user) => {
     const updatedUserSnap = await getDoc(userRef);
     const userData = updatedUserSnap.data();
 
+    /* =====================================================
+       ENSURE PROFILE DOCUMENT EXISTS
+    ===================================================== */
+
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
@@ -156,6 +165,10 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
+    /* =====================================================
+       PROTECTED PAGES
+    ===================================================== */
+
     const protectedPages = [
       "/explore.html",
       "/community.html",
@@ -166,16 +179,36 @@ onAuthStateChanged(auth, async (user) => {
       "/profiles/index.html"
     ];
 
+    /* =====================================================
+       STRICT PROFILE-FIRST (MODAL SYSTEM)
+    ===================================================== */
+
     if (!userData.profileCompleted) {
-      if (
-        protectedPages.includes(path) ||
-        path === "/login.html" ||
-        path === "/register.html"
-      ) {
-        window.location.href = "/profile.html";
+
+      if (protectedPages.includes(path)) {
+
+        const modal = document.getElementById("profileRequiredModal");
+        const btn = document.getElementById("completeProfileBtn");
+
+        if (modal) {
+          modal.style.display = "flex";
+          document.body.style.overflow = "hidden";
+        }
+
+        if (btn) {
+          btn.addEventListener("click", () => {
+            window.location.href = "/profile.html";
+          });
+        }
+
       }
+
       return;
     }
+
+    /* =====================================================
+       REDIRECT LOGIN/REGISTER IF ALREADY AUTHENTICATED
+    ===================================================== */
 
     if (
       path.endsWith("/login.html") ||

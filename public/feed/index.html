@@ -14,9 +14,7 @@
   <!-- Global CSS (LOCKED – DO NOT CHANGE) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
 
-  <!-- ================= PAGE ENHANCEMENTS (SAFE) ================= -->
   <style>
-    /* Composer */
     #postInput {
       width: 100%;
       min-height: 120px;
@@ -62,13 +60,44 @@
     .feed-card:hover {
       transform: translateY(-2px);
     }
+
+    /* ================= PROFILE REQUIRED MODAL ================= */
+
+    .profile-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .profile-modal-content {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .profile-modal h3 {
+      margin-bottom: 12px;
+    }
+
+    .profile-modal p {
+      margin-bottom: 20px;
+      color: #555;
+    }
   </style>
 </head>
 
 <body data-page="feed">
 
 <!-- ================= HEADER ================= -->
-<div id="siteHeader"></div>
+<div id="site-header"></div>
 
 <!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
@@ -79,7 +108,6 @@
 <!-- ================= MAIN ================= -->
 <main class="container">
 
-  <!-- ================= FEED INTRO ================= -->
   <section class="panel">
     <h2>Community Feed</h2>
     <p class="muted">
@@ -88,10 +116,8 @@
     </p>
   </section>
 
-  <!-- ================= HYBRID POST COMPOSER ================= -->
   <section class="panel">
 
-    <!-- Post Type -->
     <select id="postType">
       <option value="question">❓ Question</option>
       <option value="fault">🔴 Fault Report</option>
@@ -99,7 +125,6 @@
       <option value="calibration">📊 Calibration</option>
     </select>
 
-    <!-- Post Content -->
     <textarea id="postInput"
       maxlength="1000"
       placeholder="Describe the issue clearly...
@@ -108,7 +133,6 @@ Example:
 GC channel 3 showing unstable peaks after maintenance.
 Actions taken: cleaned column, checked carrier gas pressure."></textarea>
 
-    <!-- Tags -->
     <input
       type="text"
       id="postTags"
@@ -119,7 +143,6 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
       <small class="muted">
         Use structured posts for better technical discussion.
       </small>
-
       <small class="muted">
         Max 1000 characters
       </small>
@@ -131,33 +154,40 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
 
   </section>
 
-  <!-- ================= FEED LIST ================= -->
   <section class="feed grid grid-1" id="feedContainer">
-
-    <!-- POSTS INJECTED BY feed.js -->
     <div class="card muted" id="loadingCard">
       Loading posts…
     </div>
-
   </section>
 
 </main>
 
+<!-- ================= PROFILE REQUIRED MODAL ================= -->
+<div id="profileRequiredModal" class="profile-modal">
+  <div class="profile-modal-content">
+    <h3>Complete Your Professional Profile</h3>
+    <p>
+      To access community discussions, please complete your professional profile.
+      This ensures credibility and verified participation.
+    </p>
+    <button id="completeProfileBtn" class="btn btn-primary">
+      Complete Profile
+    </button>
+  </div>
+</div>
+
 <!-- ================= FOOTER ================= -->
-<div id="siteFooter"></div>
+<div id="site-footer"></div>
 
 <!-- ================= SCRIPTS ================= -->
 
-<!-- Header / Footer includes -->
-<script src="/assets/js/includes.js?v=2026-02-17"></script>
+<script src="/assets/js/includes.js?v=2026-02-17" defer></script>
 
-<!-- Firebase init -->
 <script type="module" src="/assets/js/firebase.js?v=2026-02-17"></script>
-
-<!-- Feed logic -->
+<script type="module" src="/assets/js/auth.js?v=2026-02-17"></script>
+<script type="module" src="/assets/js/auth-guard.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/feed.js?v=2026-02-17"></script>
 
-<!-- ================= SAFE DOUBLE-CLICK PROTECTION ================= -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const postBtn = document.getElementById("postBtn");
