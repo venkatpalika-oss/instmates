@@ -1,11 +1,6 @@
 /* =========================================================
-   InstMates - Firebase Authentication (FINAL – STABLE)
+   InstMates - Firebase Authentication (FINAL – STABLE + HOMEPAGE SMART)
    File: assets/js/auth.js
-   SDK: Firebase v9 (Modular)
-   - Firebase app initialized in firebase.js
-   - Auto-heals missing user documents
-   - Guarantees profile document existence
-   - Profile-first onboarding enforced
 ========================================================= */
 
 /* ================= IMPORT SHARED FIREBASE ================= */
@@ -33,7 +28,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* =========================================================
-   REGISTER (PROFILE-FIRST — REQUIRED)
+   REGISTER
 ========================================================= */
 
 window.registerUser = async function (email, password, fullName) {
@@ -74,11 +69,11 @@ window.loginUser = async function (email, password) {
 
 window.logoutUser = async function () {
   await signOut(auth);
-  window.location.href = "/index.html";
+  window.location.href = "/";
 };
 
 /* =========================================================
-   AUTH STATE HANDLER (AUTO-HEAL ENABLED)
+   AUTH STATE HANDLER (SMART HOMEPAGE ENABLED)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
@@ -88,6 +83,27 @@ onAuthStateChanged(auth, async (user) => {
   document.body.classList.toggle("auth-out", !user);
 
   const path = location.pathname;
+
+  /* =====================================================
+     🔥 SMART HOMEPAGE SECTION TOGGLE
+  ===================================================== */
+
+  const authOutSections = document.querySelectorAll(".auth-out-section");
+  const authInSections  = document.querySelectorAll(".auth-in-section");
+
+  if (path === "/" || path === "/index.html") {
+    if (user) {
+      authOutSections.forEach(el => el.style.display = "none");
+      authInSections.forEach(el => el.style.display = "block");
+    } else {
+      authOutSections.forEach(el => el.style.display = "block");
+      authInSections.forEach(el => el.style.display = "none");
+    }
+  }
+
+  /* =====================================================
+     PUBLIC PAGES
+  ===================================================== */
 
   const publicPages = [
     "/",
@@ -106,15 +122,10 @@ onAuthStateChanged(auth, async (user) => {
 
   try {
 
-    /* =====================================================
-       AUTO-HEAL: ENSURE USERS DOCUMENT EXISTS
-    ===================================================== */
-
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-
       await setDoc(userRef, {
         uid: user.uid,
         name: user.displayName || user.email.split("@")[0],
@@ -127,16 +138,10 @@ onAuthStateChanged(auth, async (user) => {
         postsCount: 0,
         createdAt: serverTimestamp()
       });
-
-      console.log("Auto-created missing user document.");
     }
 
     const updatedUserSnap = await getDoc(userRef);
     const userData = updatedUserSnap.data();
-
-    /* =====================================================
-       ENSURE PROFILE DOCUMENT EXISTS
-    ===================================================== */
 
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
@@ -149,11 +154,7 @@ onAuthStateChanged(auth, async (user) => {
         skills: [],
         createdAt: serverTimestamp()
       });
-
-      console.log("Auto-created missing profile document.");
     }
-
-    /* ================= PROTECTED PAGES ================= */
 
     const protectedPages = [
       "/explore.html",
@@ -180,7 +181,7 @@ onAuthStateChanged(auth, async (user) => {
       path.endsWith("/login.html") ||
       path.endsWith("/register.html")
     ) {
-      window.location.href = "/explore.html";
+      window.location.href = "/feed/";
     }
 
   } catch (err) {
