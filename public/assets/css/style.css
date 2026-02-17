@@ -2007,3 +2007,27 @@ body.auth-in.auth-ready .siteHeader .auth-in {
   }
 
 }
+.mobile-bottom-nav a.active {
+  color: #0b5ed7;
+  font-weight: 600;
+}
+
+.mobile-bottom-nav a.active span {
+  transform: scale(1.1);
+}
+
+/* Floating center post button */
+.mobile-bottom-nav .post-btn {
+  position: relative;
+  top: -18px;
+  background: #0b5ed7;
+  color: white;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
