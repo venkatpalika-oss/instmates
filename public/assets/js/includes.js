@@ -5,7 +5,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ================= SAFE LOADER FUNCTION =================
   async function loadInto(id, url) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -19,27 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(`${url} → ${response.status}`);
       }
 
-      const html = await response.text();
-      el.innerHTML = html;
+      el.innerHTML = await response.text();
 
     } catch (error) {
       console.error("Include failed:", error.message);
     }
   }
 
-  // =========================================================
-  // STANDARDIZED ROOT-ABSOLUTE INCLUDES
-  // =========================================================
+  // 🔒 USE ORIGINAL PROJECT STANDARD IDS
+  loadInto("siteHeader", "/includes/header.html");
+  loadInto("siteFooter", "/includes/footer.html");
 
-  // HEADER
-  loadInto("site-header", "/includes/header.html");
-
-  // FOOTER
-  loadInto("site-footer", "/includes/footer.html");
-
-  // OPTIONAL BREADCRUMBS
-  // Loads only if page contains:
-  // <div id="site-breadcrumbs"></div>
-  loadInto("site-breadcrumbs", "/includes/breadcrumbs.html");
+  // Optional breadcrumbs if used
+  loadInto("siteBreadcrumbs", "/includes/breadcrumbs.html");
 
 });
