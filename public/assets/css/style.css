@@ -2059,3 +2059,56 @@ body.auth-in.auth-ready .siteHeader .auth-in {
   }
 
 }
+@media (max-width: 768px) {
+  .crumbs {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+
+  header,
+  .site-header {
+    padding: 8px 16px;
+  }
+
+  header h1,
+  .logo {
+    font-size: 18px;
+  }
+
+}
+.mobile-bottom-nav .post-btn {
+  position: relative;
+  top: -22px; /* slightly raise */
+}
+
+body {
+  padding-bottom: 90px; /* increase safe area */
+}
+@media (max-width: 768px) {
+
+  .filter-row,
+  .feed-filters {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .panel h2 {
+    font-size: 1.2rem;
+  }
+
+  .panel p {
+    font-size: 0.9rem;
+  }
+
+}
