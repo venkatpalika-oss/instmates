@@ -1,6 +1,7 @@
 /* =========================================================
-   InstMates – Hybrid Professional Feed (FINAL PRODUCTION)
-   1 Vote Per User • Real-time • Secure
+   InstMates – Social Technical Feed (FINAL PRODUCTION)
+   Infinite Scroll • Verified Badge • Category Filter
+   Slide Animation • Edit/Delete • 1 Vote Per User
 ========================================================= */
 
 import { db, auth } from "./firebase.js";
@@ -11,94 +12,177 @@ import {
   serverTimestamp,
   query,
   orderBy,
-  onSnapshot,
   doc,
   updateDoc,
-  increment
+  deleteDoc,
+  increment,
+  getDocs,
+  limit,
+  startAfter
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const feedContainer = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
-const postType = document.getElementById("postType");
-const postTags = document.getElementById("postTags");
 
-/* ================= CREATE POST ================= */
+let lastVisible = null;
+let loading = false;
+let selectedCategory = "all";
+let usersCache = {};
+
+/* =========================================================
+   CATEGORY FILTER WITH SLIDE ANIMATION
+========================================================= */
+
+createCategoryFilter();
+
+function createCategoryFilter() {
+
+  const wrapper = document.createElement("div");
+  wrapper.style.margin = "20px 0";
+
+  wrapper.innerHTML = `
+    <div class="feed-filters">
+      <button class="filter-btn active" data-type="all">All</button>
+      <button class="filter-btn" data-type="fault">🔴 Fault</button>
+      <button class="filter-btn" data-type="question">❓ Question</button>
+      <button class="filter-btn" data-type="solution">✅ Solution</button>
+      <button class="filter-btn" data-type="calibration">📊 Calibration</button>
+    </div>
+  `;
+
+  feedContainer.parentNode.insertBefore(wrapper, feedContainer);
+
+  wrapper.querySelectorAll(".filter-btn").forEach(btn => {
+
+    btn.addEventListener("click", async () => {
+
+      if (btn.classList.contains("active")) return;
+
+      document.querySelectorAll(".filter-btn")
+        .forEach(b => b.classList.remove("active"));
+
+      btn.classList.add("active");
+      selectedCategory = btn.dataset.type;
+
+      /* Slide out animation */
+      feedContainer.style.opacity = "0";
+      feedContainer.style.transform = "translateX(20px)";
+      feedContainer.style.transition = "all 0.2s ease";
+
+      setTimeout(async () => {
+
+        feedContainer.innerHTML = "";
+        lastVisible = null;
+        await loadPosts();
+
+        /* Slide in animation */
+        feedContainer.style.transform = "translateX(0)";
+        feedContainer.style.opacity = "1";
+
+      }, 200);
+
+    });
+
+  });
+}
+
+/* =========================================================
+   CREATE POST
+========================================================= */
 
 if (postBtn) {
   postBtn.addEventListener("click", async () => {
 
     const content = postInput.value.trim();
-    if (!content) return;
+    if (!content || !auth.currentUser) return;
 
-    if (!auth.currentUser) {
-      alert("Please login to post.");
-      return;
-    }
+    await addDoc(collection(db, "posts"), {
+      content,
+      uid: auth.currentUser.uid,
+      type: "question",
+      createdAt: serverTimestamp(),
+      editedAt: null,
+      reactions: { agree: 0, faced: 0, helpful: 0 },
+      votedBy: {}
+    });
 
-    const type = postType?.value || "question";
-    const tagsArray = postTags?.value
-      ?.split(",")
-      .map(t => t.trim())
-      .filter(Boolean) || [];
-
-    try {
-
-      await addDoc(collection(db, "posts"), {
-        content,
-        type,
-        tags: tagsArray,
-        uid: auth.currentUser.uid,
-        createdAt: serverTimestamp(),
-        reactions: {
-          agree: 0,
-          faced: 0,
-          helpful: 0
-        },
-        votedBy: {},   // 🔥 IMPORTANT
-        name: "Technician",
-        role: "Instrument Technician",
-        photoURL: ""
-      });
-
-      postInput.value = "";
-      if (postTags) postTags.value = "";
-
-    } catch (err) {
-      console.error("Post error:", err);
-    }
-
+    postInput.value = "";
   });
 }
 
-/* ================= REAL-TIME FEED ================= */
+/* =========================================================
+   LOAD USERS CACHE
+========================================================= */
 
-const postsQuery = query(
-  collection(db, "posts"),
-  orderBy("createdAt", "desc")
-);
+async function loadUsers() {
+  const snapshot = await getDocs(collection(db, "users"));
+  snapshot.forEach(docSnap => {
+    usersCache[docSnap.id] = docSnap.data();
+  });
+}
 
-onSnapshot(postsQuery, snapshot => {
+/* =========================================================
+   LOAD POSTS (PAGINATED)
+========================================================= */
 
-  feedContainer.innerHTML = "";
+async function loadPosts() {
 
-  if (snapshot.empty) {
-    feedContainer.innerHTML =
-      `<div class="card muted">No posts yet.</div>`;
-    return;
+  if (loading) return;
+  loading = true;
+
+  let postsQuery = query(
+    collection(db, "posts"),
+    orderBy("createdAt", "desc"),
+    limit(10)
+  );
+
+  if (lastVisible) {
+    postsQuery = query(
+      collection(db, "posts"),
+      orderBy("createdAt", "desc"),
+      startAfter(lastVisible),
+      limit(10)
+    );
+  }
+
+  const snapshot = await getDocs(postsQuery);
+
+  if (!snapshot.empty) {
+    lastVisible = snapshot.docs[snapshot.docs.length - 1];
   }
 
   snapshot.forEach(docSnap => {
+
     const post = docSnap.data();
     post.id = docSnap.id;
 
-    const card = createPostCard(post);
-    feedContainer.appendChild(card);
+    if (selectedCategory !== "all" &&
+        post.type !== selectedCategory) return;
+
+    feedContainer.appendChild(createPostCard(post));
   });
 
+  loading = false;
+}
+
+/* =========================================================
+   INFINITE SCROLL
+========================================================= */
+
+window.addEventListener("scroll", () => {
+
+  if (
+    window.innerHeight + window.scrollY >=
+    document.body.offsetHeight - 200
+  ) {
+    loadPosts();
+  }
 });
 
-/* ================= CREATE POST CARD ================= */
+/* =========================================================
+   CREATE POST CARD
+========================================================= */
 
 function createPostCard(post) {
 
@@ -106,133 +190,133 @@ function createPostCard(post) {
   card.className = "card feed-card";
 
   const user = auth.currentUser;
+  const isOwner = user && user.uid === post.uid;
   const hasVoted = user && post.votedBy && post.votedBy[user.uid];
 
-  const timeAgo = formatTime(post.createdAt?.toDate?.() || new Date());
-
-  const avatarHTML = post.photoURL
-    ? `<img src="${escapeHTML(post.photoURL)}" class="avatar-sm" />`
-    : `<div class="avatar-sm placeholder">
-         ${(post.name || "T")[0].toUpperCase()}
-       </div>`;
-
-  const badge = getTypeBadge(post.type);
-
-  const tagsHTML = post.tags && post.tags.length
-    ? `<div class="post-tags">
-        ${post.tags.map(tag =>
-          `<span class="tag">#${escapeHTML(tag)}</span>`
-        ).join("")}
-      </div>`
+  const profile = usersCache[post.uid] || {};
+  const verifiedBadge = profile.verified
+    ? `<span style="color:#0b5ed7;font-size:12px;"> ✔ Verified</span>`
     : "";
+
+  const totalVotes =
+    (post.reactions?.agree || 0) +
+    (post.reactions?.faced || 0) +
+    (post.reactions?.helpful || 0);
 
   card.innerHTML = `
     <div class="feed-header">
-      ${avatarHTML}
-      <div>
-        <strong>${escapeHTML(post.name || "Technician")}</strong>
-        <div class="muted small">
-          ${escapeHTML(post.role || "Technician")} · ${timeAgo}
-        </div>
+      <strong>
+        ${escapeHTML(profile.name || "Technician")}
+        ${verifiedBadge}
+      </strong>
+      <div class="muted small">
+        ${formatTime(post.createdAt?.toDate?.() || new Date())}
       </div>
-    </div>
-
-    <div class="post-type-badge">
-      ${badge}
     </div>
 
     <div class="feed-content">
       ${escapeHTML(post.content)}
     </div>
 
-    ${tagsHTML}
+    <div class="muted small" style="margin-top:6px;">
+      🔥 ${totalVotes} Technical Reactions
+    </div>
 
     <div class="feed-actions">
-      <button class="feed-btn react-btn"
-        data-type="agree" ${hasVoted ? "disabled" : ""}>
+      <button class="react" data-type="agree" ${hasVoted ? "disabled" : ""}>
         👍 Agree (${post.reactions?.agree || 0})
       </button>
 
-      <button class="feed-btn react-btn"
-        data-type="faced" ${hasVoted ? "disabled" : ""}>
+      <button class="react" data-type="faced" ${hasVoted ? "disabled" : ""}>
         🛠 Faced This (${post.reactions?.faced || 0})
       </button>
 
-      <button class="feed-btn react-btn"
-        data-type="helpful" ${hasVoted ? "disabled" : ""}>
+      <button class="react" data-type="helpful" ${hasVoted ? "disabled" : ""}>
         💡 Helpful (${post.reactions?.helpful || 0})
       </button>
     </div>
+
+    ${isOwner ? `
+      <div style="margin-top:10px;">
+        <button class="edit-btn">✏ Edit</button>
+        <button class="delete-btn" style="color:red;">🗑 Delete</button>
+      </div>
+    ` : ""}
   `;
 
-  /* ================= REACTION LOGIC ================= */
+  /* ================= REACTIONS ================= */
 
-  card.querySelectorAll(".react-btn").forEach(btn => {
+  card.querySelectorAll(".react").forEach(btn => {
+
     btn.addEventListener("click", async () => {
 
-      if (!auth.currentUser) {
-        alert("Login required.");
-        return;
-      }
+      if (!auth.currentUser || hasVoted) return;
 
-      const reactionType = btn.dataset.type;
+      const type = btn.dataset.type;
       const postRef = doc(db, "posts", post.id);
 
-      try {
+      await updateDoc(postRef, {
+        [`reactions.${type}`]: increment(1),
+        [`votedBy.${auth.currentUser.uid}`]: true
+      });
 
-        await updateDoc(postRef, {
-          [`reactions.${reactionType}`]: increment(1),
-          [`votedBy.${auth.currentUser.uid}`]: true
-        });
-
-      } catch (err) {
-        console.error("Reaction error:", err);
-      }
-
+      btn.disabled = true;
     });
+
   });
+
+  /* ================= EDIT ================= */
+
+  if (isOwner) {
+
+    card.querySelector(".edit-btn").addEventListener("click", async () => {
+
+      const newContent = prompt("Edit post:", post.content);
+      if (!newContent) return;
+
+      await updateDoc(doc(db, "posts", post.id), {
+        content: newContent,
+        editedAt: serverTimestamp()
+      });
+    });
+
+    card.querySelector(".delete-btn").addEventListener("click", async () => {
+
+      if (!confirm("Delete post?")) return;
+
+      await deleteDoc(doc(db, "posts", post.id));
+      card.remove();
+    });
+  }
 
   return card;
 }
 
-/* ================= TYPE BADGE ================= */
+/* =========================================================
+   INIT
+========================================================= */
 
-function getTypeBadge(type) {
-  switch(type) {
-    case "fault":
-      return `<span style="color:#c62828;font-weight:600;">🔴 Fault</span>`;
-    case "solution":
-      return `<span style="color:#2e7d32;font-weight:600;">✅ Solution</span>`;
-    case "calibration":
-      return `<span style="color:#1565c0;font-weight:600;">📊 Calibration</span>`;
-    default:
-      return `<span style="color:#f9a825;font-weight:600;">❓ Question</span>`;
-  }
-}
+(async () => {
+  await loadUsers();
+  await loadPosts();
+})();
 
-/* ================= TIME FORMAT ================= */
+/* =========================================================
+   TIME FORMAT
+========================================================= */
 
 function formatTime(date) {
-
   const seconds = Math.floor((new Date() - date) / 1000);
-
-  const intervals = [
-    { label: "y", seconds: 31536000 },
-    { label: "mo", seconds: 2592000 },
-    { label: "d", seconds: 86400 },
-    { label: "h", seconds: 3600 },
-    { label: "m", seconds: 60 }
-  ];
-
-  for (let i of intervals) {
-    const count = Math.floor(seconds / i.seconds);
-    if (count >= 1) return count + i.label;
-  }
-
+  const hours = Math.floor(seconds / 3600);
+  if (hours >= 1) return hours + "h";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes >= 1) return minutes + "m";
   return "Just now";
 }
 
-/* ================= SAFE ESCAPE ================= */
+/* =========================================================
+   ESCAPE
+========================================================= */
 
 function escapeHTML(str) {
   return String(str)
