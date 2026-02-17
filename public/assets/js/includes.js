@@ -18,11 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 🔒 ORIGINAL PROJECT STANDARD (DO NOT CHANGE AGAIN)
+  // 🔒 ORIGINAL PROJECT STANDARD
   loadInto("siteHeader", "/includes/header.html");
   loadInto("siteFooter", "/includes/footer.html");
-
-  // Optional breadcrumb container
-  loadInto("siteBreadcrumbs", "/includes/breadcrumbs.html");
 
 });
