@@ -99,6 +99,11 @@ function createProfileCard(profile) {
       : ""
     }
 
+    ${profile.primaryDomain
+      ? `<p class="muted">🔧 ${escapeHTML(profile.primaryDomain)}</p>`
+      : ""
+    }
+
     ${Array.isArray(profile.skills) && profile.skills.length > 0
       ? `
         <div class="tags">
@@ -138,15 +143,17 @@ function createProfileCard(profile) {
 
 function getCompletion(profile) {
 
-  let total = 6;
+  let total = 8;
   let score = 0;
 
   if (profile.fullName) score++;
   if (profile.role) score++;
   if (profile.location) score++;
+  if (profile.primaryDomain) score++;
+  if (profile.experienceYears) score++;
   if (profile.skills && profile.skills.length > 0) score++;
-  if (profile.bio) score++;
-  if (profile.photoURL) score++;
+  if (profile.summary) score++;
+  if (profile.majorTroubleshooting && profile.majorTroubleshooting.length > 0) score++;
 
   return Math.round((score / total) * 100);
 }
@@ -164,6 +171,7 @@ if (searchInput) {
         (profile.fullName || "").toLowerCase().includes(term) ||
         (profile.role || "").toLowerCase().includes(term) ||
         (profile.location || "").toLowerCase().includes(term) ||
+        (profile.primaryDomain || "").toLowerCase().includes(term) ||
         (profile.skills || []).join(" ").toLowerCase().includes(term)
       );
 
