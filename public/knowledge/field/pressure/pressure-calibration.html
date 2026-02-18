@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pressure Calibration – Field Procedure | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Step-by-step field procedure for pressure transmitter calibration. Learn isolation, equalization, zero and span adjustment, safety precautions, and common mistakes." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="pressure-calibration">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/pressure/index.html">Pressure Measurement</a><span>›</span>
+  <span class="current">Pressure Calibration</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Pressure Calibration – Field Procedure</h1>
+
+  <p class="muted">
+    Pressure transmitter calibration must always be performed
+    using proper isolation, equalization, and safe handling practices.
+    Most calibration errors occur due to incorrect manifold operation.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Before Starting Calibration</h2>
+
+  <ul class="checklist">
+    <li>Obtain work permit if required</li>
+    <li>Verify process isolation</li>
+    <li>Confirm manifold valve condition</li>
+    <li>Use calibrated pressure source (dead weight tester / pump)</li>
+    <li>Verify loop power (24V DC)</li>
+  </ul>
+
+  <p class="muted">
+    Never attempt calibration without proper isolation.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Step 1 – Safe Isolation</h2>
+
+  <ol class="checklist">
+    <li>Close HP and LP isolation valves</li>
+    <li>Open equalizing valve</li>
+    <li>Ensure transmitter reading drops to zero</li>
+    <li>Vent process pressure safely</li>
+  </ol>
+
+  <p class="muted">
+    Always equalize before disconnecting any impulse line.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Step 2 – Zero Check</h2>
+
+  <ul class="checklist">
+    <li>With equalizing valve open, output should be 4 mA (for 0% LRV)</li>
+    <li>If offset exists, perform zero trim</li>
+    <li>Allow signal to stabilize before adjustment</li>
+  </ul>
+
+  <p>
+    For DP transmitters, zero shift is common after shutdown.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Step 3 – Span Calibration</h2>
+
+  <ol class="checklist">
+    <li>Close equalizing valve</li>
+    <li>Apply known pressure using calibration pump</li>
+    <li>Verify output matches expected mA value</li>
+    <li>Adjust span if required</li>
+  </ol>
+
+  <p>
+    Example:  
+    If range is 0–10 bar, applying 10 bar should produce 20 mA.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Step 4 – Linearity Check</h2>
+
+  <ul class="checklist">
+    <li>Apply 25%, 50%, 75%, and 100% test points</li>
+    <li>Record actual vs expected output</li>
+    <li>Ensure error within acceptable tolerance</li>
+  </ul>
+
+  <p class="muted">
+    Always increase and decrease pressure to check hysteresis.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Calibration Mistakes</h2>
+
+  <ul class="checklist">
+    <li>Adjusting zero without equalizing first</li>
+    <li>Leaving equalizing valve open during span test</li>
+    <li>Using uncalibrated pressure source</li>
+    <li>Ignoring temperature effects</li>
+    <li>Not verifying DCS scaling</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>After Calibration – Restoration</h2>
+
+  <ol class="checklist">
+    <li>Open equalizing valve</li>
+    <li>Slowly open HP and LP isolation valves</li>
+    <li>Close equalizing valve</li>
+    <li>Verify stable reading</li>
+    <li>Confirm DCS value matches field reading</li>
+  </ol>
+
+  <p class="muted">
+    Sudden valve opening can damage sensor diaphragm.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Field Reality</h2>
+
+  <p class="muted">
+    Many transmitters are replaced unnecessarily.
+    In most cases, incorrect manifold handling or impulse imbalance
+    is the true cause of calibration failure.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <a style="padding:10px 14px;border-radius:10px;border:2px solid #0b3c5d;color:#0b3c5d;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/index.html">
+      ← Back to Pressure Hub
+    </a>
+    <a style="padding:10px 14px;border-radius:10px;background:#0b3c5d;color:#fff;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/zero-shift-after-shutdown.html">
+      Related: Zero Shift After Shutdown →
+    </a>
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

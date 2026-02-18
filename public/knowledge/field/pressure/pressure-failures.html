@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pressure Measurement Failures | RCA | InstMates</title>
+  <title>Pressure Measurement Failures | RCA Guide | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Pressure measurement failures RCA for field instrumentation. Diagnose zero shift, unstable readings, slow response, and no signal using practical field checks." />
+        content="Pressure measurement failures RCA for field instrumentation. Diagnose zero shift, unstable readings, slow response, and no signal using practical mechanical-first troubleshooting logic." />
 
-  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 
   <style>
@@ -53,33 +52,31 @@
 
 <body data-page="pressure-failures">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/">Knowledge</a><span>›</span>
   <a href="/knowledge/field/pressure/index.html">Pressure Measurement</a><span>›</span>
-  <span class="current">Pressure Failures</span>
+  <span class="current">Pressure Failures – RCA</span>
 </nav>
 
 <main class="container">
 
-<!-- ================= INTRO ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>Pressure Measurement Failures – RCA</h2>
+  <h1>Pressure Measurement Failures – Root Cause Analysis</h1>
 
   <p class="muted">
-    This page helps technicians troubleshoot pressure measurement problems
-    using real field logic. Always check installation and impulse lines
-    before suspecting the transmitter.
+    This guide follows mechanical-first troubleshooting logic.
+    In most plants, pressure problems originate from impulse lines,
+    manifolds, or installation errors — not transmitter electronics.
   </p>
 </section>
 
-<!-- ================= RCA TABLE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Common Pressure Problems & Root Causes</h3>
+  <h2>Common Pressure Problems & Root Causes</h2>
 
   <table>
     <tr>
@@ -90,143 +87,174 @@
     </tr>
 
     <tr>
-      <td>Zero Shift</td>
+      <td><strong>Zero Shift</strong></td>
       <td>
         Condensate imbalance<br>
         Equalizing valve open<br>
-        Sensor drift
+        Sensor drift after shutdown
       </td>
       <td>
-        Drain both impulse lines<br>
-        Check manifold position<br>
-        Apply zero pressure
+        Equalize manifold<br>
+        Drain impulse legs<br>
+        Verify 4 mA output
       </td>
       <td>
         Balance impulse legs<br>
         Close equalizing valve<br>
-        Perform zero calibration
+        Perform zero trim if required
       </td>
     </tr>
 
     <tr>
-      <td>Unstable / Fluctuating Reading</td>
+      <td><strong>Unstable Reading</strong></td>
       <td>
         Air ingress<br>
         Loose fittings<br>
-        Process turbulence
+        Process flashing<br>
+        Vibration
       </td>
       <td>
         Soap test fittings<br>
-        Inspect impulse slope<br>
-        Observe process trend
+        Inspect slope<br>
+        Observe trend pattern
       </td>
       <td>
         Tighten connections<br>
         Re-route impulse lines<br>
-        Add damping if required
+        Add damping or snubber
       </td>
     </tr>
 
     <tr>
-      <td>Slow Response</td>
+      <td><strong>Slow Response</strong></td>
       <td>
         Plugged impulse line<br>
-        Wax or dust buildup
+        Wax/dust buildup<br>
+        Long impulse routing
       </td>
       <td>
-        Crack impulse valve slowly<br>
+        Crack impulse slowly<br>
         Compare with local gauge
       </td>
       <td>
         Flush impulse line<br>
-        Clean or replace tubing
+        Shorten routing if possible
       </td>
     </tr>
 
     <tr>
-      <td>No Output / Flat Signal</td>
+      <td><strong>No Output (4 mA Flat)</strong></td>
       <td>
         Blocked impulse line<br>
-        Frozen line<br>
-        Power failure
+        Heat tracing failure<br>
+        Loop power failure
       </td>
       <td>
-        Check heat tracing<br>
-        Verify supply voltage<br>
-        Inspect manifold valves
+        Check 24V supply<br>
+        Inspect fuses<br>
+        Verify manifold isolation
       </td>
       <td>
-        Restore heating<br>
+        Restore power<br>
         Clear blockage<br>
-        Restore power
+        Repair heating
       </td>
     </tr>
 
     <tr>
-      <td>High Reading</td>
+      <td><strong>High Reading</strong></td>
       <td>
         Low side blocked<br>
-        Equalizing valve closed during calibration
+        Equalizing valve closed during calibration<br>
+        Incorrect LRV
       </td>
       <td>
-        Crack low side impulse<br>
-        Verify valve sequence
+        Crack LP impulse<br>
+        Verify calibration range
       </td>
       <td>
-        Clear low side line<br>
-        Recalibrate correctly
+        Clear LP blockage<br>
+        Correct scaling
       </td>
     </tr>
 
     <tr>
-      <td>Low Reading</td>
+      <td><strong>Low Reading</strong></td>
       <td>
         High side blocked<br>
-        Leakage on high impulse
+        Leak on HP impulse<br>
+        Incorrect URV
       </td>
       <td>
-        Crack high side impulse<br>
+        Crack HP impulse<br>
         Inspect fittings
       </td>
       <td>
-        Clear high side line<br>
-        Repair leaks
+        Clear HP blockage<br>
+        Repair leakage<br>
+        Correct scaling
       </td>
     </tr>
 
   </table>
 </section>
 
-<!-- ================= FIELD RULE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Golden Field Rule</h3>
+  <h2>Mechanical-First Rule</h2>
+
+  <ul class="checklist">
+    <li>80% issues → impulse lines</li>
+    <li>10% → manifold handling error</li>
+    <li>5% → wiring or loop issue</li>
+    <li>5% → actual transmitter failure</li>
+  </ul>
 
   <p class="muted">
-    If two transmitters fail in the same service, the transmitter is not the problem.
-    Always inspect impulse lines, manifolds, and process conditions first.
+    Replace transmitters only after mechanical causes are eliminated.
   </p>
 </section>
 
-<!-- ================= NAVIGATION ================= -->
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Technical Pages</h2>
+
+  <ul class="checklist">
+    <li>
+      <a href="/knowledge/field/pressure/zero-shift-after-shutdown.html">
+        Zero Shift After Shutdown – Detailed Guide
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-calibration.html">
+        Pressure Calibration – Field Procedure
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-troubleshooting.html">
+        Pressure Troubleshooting – Decision Tree
+      </a>
+    </li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
 <section class="panel">
   <div class="action-row">
     <a class="btn btn-ghost"
-       href="/knowledge/field/pressure/manifold-valves.html">
-      ← Back to Manifold Valves
+       href="/knowledge/field/pressure/index.html">
+      ← Back to Pressure Hub
     </a>
     <a class="btn btn-primary"
-       href="/knowledge/field/pressure/pressure-case-study.html">
-      Next: Pressure Case Study →
+       href="/knowledge/field/pressure/case-study-zero-shift.html">
+      Next: Real Case Study →
     </a>
   </div>
 </section>
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= INCLUDES ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>

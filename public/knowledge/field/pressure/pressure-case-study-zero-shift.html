@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Case Study – Zero Shift After Maintenance | InstMates</title>
+
+  <meta name="description"
+        content="Real field case study of a DP transmitter showing zero shift after maintenance. Root cause analysis, troubleshooting steps, and lessons learned for instrument technicians." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="pressure-case-study-zero-shift">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/pressure/index.html">Pressure</a><span>›</span>
+  <span class="current">Case Study – Zero Shift</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Case Study – Zero Shift After Maintenance</h1>
+  <p class="muted">
+    Real field troubleshooting example from a refinery shutdown activity.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>1️⃣ Background</h2>
+
+  <p>
+    During a scheduled maintenance shutdown, a DP transmitter
+    used for level measurement in a closed vessel was removed
+    for inspection and reinstalled.
+  </p>
+
+  <p>
+    After startup, the transmitter showed a constant
+    +8% reading even though the vessel was empty.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>2️⃣ Initial Observations</h2>
+
+  <ul class="checklist">
+    <li>Process confirmed empty</li>
+    <li>Manifold valves in correct position</li>
+    <li>Reading stable but offset</li>
+    <li>No active alarm in transmitter</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>3️⃣ Diagnostic Steps Taken</h2>
+
+  <ol class="checklist">
+    <li>Closed HP & LP isolation valves</li>
+    <li>Opened equalizing valve</li>
+    <li>Observed reading did NOT return to zero</li>
+    <li>Checked calibration – within tolerance</li>
+  </ol>
+
+  <p class="muted">
+    This confirmed the transmitter electronics were healthy.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>4️⃣ Root Cause Investigation</h2>
+
+  <ul class="checklist">
+    <li>Impulse lines disturbed during removal</li>
+    <li>HP leg contained trapped air pocket</li>
+    <li>LP leg partially filled with condensate</li>
+    <li>Unequal hydrostatic head created false DP</li>
+  </ul>
+
+  <p>
+    Even a small liquid column difference caused measurable offset.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>5️⃣ Corrective Action</h2>
+
+  <ol class="checklist">
+    <li>Both impulse lines fully drained</li>
+    <li>Vent points opened to remove air</li>
+    <li>Impulse routing inspected for slope</li>
+    <li>System re-equalized</li>
+    <li>Reading returned to 0%</li>
+  </ol>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>6️⃣ Technical Lesson</h2>
+
+  <ul class="checklist">
+    <li>Mechanical imbalance can mimic calibration error</li>
+    <li>Zero shift after maintenance is common</li>
+    <li>Always verify impulse condition before trimming zero</li>
+    <li>Never recalibrate blindly</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Technical Pages</h2>
+
+  <ul class="checklist">
+    <li>
+      <a href="/knowledge/field/pressure/zero-shift-after-shutdown.html">
+        Zero Shift After Shutdown – Root Causes
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-calibration.html">
+        Pressure Calibration – Field Procedure
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-troubleshooting.html">
+        Pressure Troubleshooting – Decision Tree
+      </a>
+    </li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zero Shift After Shutdown | Pressure Measurement | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Zero shift after shutdown explained for pressure and DP transmitters. Learn causes, impulse line imbalance, condensation effects, and correct troubleshooting steps." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="pressure-zero-shift">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/pressure/index.html">Pressure Measurement</a><span>›</span>
+  <span class="current">Zero Shift After Shutdown</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Zero Shift After Shutdown – Root Cause Guide</h1>
+
+  <p class="muted">
+    Zero shift after plant shutdown is one of the most common pressure and DP
+    transmitter complaints. In most cases, the transmitter is not faulty —
+    the problem originates from impulse lines and process conditions.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>What Is Zero Shift?</h2>
+
+  <p>
+    Zero shift occurs when a transmitter shows a non-zero reading
+    even though both pressure sides are equalized or at atmospheric reference.
+  </p>
+
+  <ul class="checklist">
+    <li>DP not returning to zero after equalization</li>
+    <li>Level reading incorrect after restart</li>
+    <li>Flow showing bias at no-flow condition</li>
+    <li>Local gauge and DCS value mismatch</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Why Shutdown Causes Zero Shift</h2>
+
+  <p>
+    During shutdown, process pressure, temperature, and phase conditions change.
+    These changes disturb the balance of impulse lines.
+  </p>
+
+  <ul class="checklist">
+    <li>Condensation forming in one impulse leg</li>
+    <li>Evaporation in wet leg systems</li>
+    <li>Thermal contraction of trapped fluid</li>
+    <li>Air ingress through minor leaks</li>
+    <li>Impulse line partial plugging</li>
+  </ul>
+
+  <p class="muted">
+    Even a small liquid height difference between HP and LP legs
+    can create measurable DP error.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Shutdown Scenarios</h2>
+
+  <h3>1️⃣ Steam Service</h3>
+  <ul class="checklist">
+    <li>Condensate imbalance between legs</li>
+    <li>One leg partially draining</li>
+    <li>Unequal cooling rates</li>
+  </ul>
+
+  <h3>2️⃣ Level Transmitters (Closed Vessel)</h3>
+  <ul class="checklist">
+    <li>Wet leg evaporation</li>
+    <li>Vapor pressure changes</li>
+    <li>Seal pot imbalance</li>
+  </ul>
+
+  <h3>3️⃣ Gas Service</h3>
+  <ul class="checklist">
+    <li>Condensation due to cooling</li>
+    <li>Moisture accumulation in low point</li>
+    <li>Blocked vent path</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>How to Confirm It’s Not a Transmitter Fault</h2>
+
+  <ol class="checklist">
+    <li>Close HP and LP isolation valves</li>
+    <li>Open equalizing valve</li>
+    <li>Check if reading becomes zero</li>
+    <li>If zero → transmitter healthy</li>
+    <li>If not zero → check calibration</li>
+  </ol>
+
+  <p class="muted">
+    If equalization corrects the reading,
+    the issue is mechanical imbalance — not electronics.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Field Troubleshooting Sequence</h2>
+
+  <ol class="checklist">
+    <li>Verify manifold valve positions</li>
+    <li>Drain both impulse legs carefully</li>
+    <li>Check slope and routing</li>
+    <li>Inspect for plugging or wax buildup</li>
+    <li>Compare local gauge vs transmitter</li>
+    <li>Re-equalize and monitor stability</li>
+  </ol>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>When Re-Calibration Is Actually Required</h2>
+
+  <ul class="checklist">
+    <li>Zero does not return after equalization</li>
+    <li>Span drift observed during calibration check</li>
+    <li>Sensor diaphragm suspected damaged</li>
+    <li>History of overpressure event</li>
+  </ul>
+
+  <p class="muted">
+    Avoid unnecessary recalibration when the root cause
+    is impulse line imbalance.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Prevention Best Practices</h2>
+
+  <ul class="checklist">
+    <li>Maintain equal impulse leg lengths</li>
+    <li>Insulate both legs equally</li>
+    <li>Provide proper slope (gas vs liquid service)</li>
+    <li>Drain legs before startup after long shutdown</li>
+    <li>Use heat tracing where required</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Field Reality</h2>
+
+  <p class="muted">
+    In most plants, zero shift after shutdown is blamed on transmitters.
+    In reality, over 80% of cases are impulse line related.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div class="action-row" style="display:flex;gap:12px;flex-wrap:wrap;">
+    <a class="btn btn-ghost"
+       style="padding:10px 14px;border-radius:10px;border:2px solid #0b3c5d;color:#0b3c5d;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/manifold-valves.html">
+      ← Back to Manifold Valves
+    </a>
+    <a class="btn btn-primary"
+       style="padding:10px 14px;border-radius:10px;background:#0b3c5d;color:#fff;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/index.html">
+      Back to Pressure Hub →
+    </a>
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>

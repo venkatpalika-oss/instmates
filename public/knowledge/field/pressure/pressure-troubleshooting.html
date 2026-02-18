@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pressure Troubleshooting – Decision Tree Guide | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Complete pressure transmitter troubleshooting decision tree. Diagnose zero shift, unstable readings, impulse line issues, manifold errors, scaling faults, and field failures step-by-step." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="pressure-troubleshooting">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/pressure/index.html">Pressure Measurement</a><span>›</span>
+  <span class="current">Pressure Troubleshooting</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Pressure Troubleshooting – Decision Tree Master Guide</h1>
+
+  <p class="muted">
+    Most pressure problems in plants are mechanical — not electronic.
+    This guide follows a structured decision tree used by experienced
+    field technicians.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>STEP 1 – Identify the Symptom</h2>
+
+  <ul class="checklist">
+    <li>Reading unstable?</li>
+    <li>Zero not returning?</li>
+    <li>Reading higher or lower than expected?</li>
+    <li>No signal (4 mA or 0 mA)?</li>
+    <li>Mismatch between field and DCS?</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>CASE A – Reading Unstable</h2>
+
+  <ol class="checklist">
+    <li>Check impulse line vibration</li>
+    <li>Inspect for loose fittings</li>
+    <li>Verify manifold equalizing valve closed</li>
+    <li>Check for flashing or two-phase flow</li>
+    <li>Confirm stable process pressure</li>
+  </ol>
+
+  <p class="muted">
+    If instability follows ambient temperature change → suspect impulse lines.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>CASE B – Zero Not Returning to 0%</h2>
+
+  <ol class="checklist">
+    <li>Close HP & LP isolation valves</li>
+    <li>Open equalizing valve</li>
+    <li>Check if reading becomes zero</li>
+  </ol>
+
+  <ul class="checklist">
+    <li>If YES → impulse imbalance</li>
+    <li>If NO → calibration required</li>
+  </ul>
+
+  <p>
+    Refer: <a href="/knowledge/field/pressure/zero-shift-after-shutdown.html">
+    Zero Shift After Shutdown</a>
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>CASE C – Reading Too High or Too Low</h2>
+
+  <ol class="checklist">
+    <li>Compare with local pressure gauge</li>
+    <li>Check impulse line plugging</li>
+    <li>Inspect manifold valve position</li>
+    <li>Verify DCS scaling (LRV/URV)</li>
+    <li>Check square root extraction (if flow)</li>
+  </ol>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>CASE D – No Signal (4 mA or 0 mA)</h2>
+
+  <ul class="checklist">
+    <li>Verify loop power (24V DC)</li>
+    <li>Check wiring continuity</li>
+    <li>Inspect terminals for loose connection</li>
+    <li>Confirm transmitter not in fail-safe mode</li>
+    <li>Check for blown fuse in marshalling panel</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>CASE E – Field OK, DCS Wrong</h2>
+
+  <ol class="checklist">
+    <li>Measure mA at transmitter terminals</li>
+    <li>Measure mA at marshalling panel</li>
+    <li>Check analog input scaling</li>
+    <li>Verify engineering units in DCS</li>
+  </ol>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Mechanical vs Electronic Rule</h2>
+
+  <ul class="checklist">
+    <li>80% problems → impulse lines</li>
+    <li>10% → manifold handling</li>
+    <li>5% → wiring issues</li>
+    <li>5% → actual transmitter failure</li>
+  </ul>
+
+  <p class="muted">
+    Always inspect mechanical installation before replacing transmitter.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Golden Field Rules</h2>
+
+  <ul class="checklist">
+    <li>Never calibrate before equalizing</li>
+    <li>Never open isolation valves quickly</li>
+    <li>Always verify gauge vs transmitter</li>
+    <li>Document valve positions before adjustment</li>
+    <li>Think mechanically first</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <a style="padding:10px 14px;border-radius:10px;border:2px solid #0b3c5d;color:#0b3c5d;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/index.html">
+      ← Back to Pressure Hub
+    </a>
+    <a style="padding:10px 14px;border-radius:10px;background:#0b3c5d;color:#fff;font-weight:700;text-decoration:none;"
+       href="/knowledge/field/pressure/pressure-calibration.html">
+      Related: Pressure Calibration →
+    </a>
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+
+</body>
+</html>
