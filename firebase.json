@@ -7,8 +7,7 @@
   },
   "hosting": {
     "public": "public",
-    "cleanUrls": true,
-        "ignore": [
+            "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
