@@ -10,6 +10,54 @@
         content="Complete 4–20 mA loop guide for technicians – working principle, live zero concept, wiring types, scaling, calibration, diagnostics, and field troubleshooting." />
 
   <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- ================= FAQ SCHEMA ================= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+
+    {
+      "@type": "Question",
+      "name": "Why does 4–20 mA use 4 mA instead of 0 mA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "4 mA is used as live zero so that 0 mA can indicate a loop fault or broken wire. This prevents ambiguity between a valid zero measurement and a wiring failure."
+      }
+    },
+
+    {
+      "@type": "Question",
+      "name": "What does 0 mA mean in a 4–20 mA loop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "0 mA usually indicates an open circuit, broken cable, blown fuse, or power supply failure in the loop."
+      }
+    },
+
+    {
+      "@type": "Question",
+      "name": "What does 3.6 mA or 21 mA mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "According to NAMUR NE43, currents below 3.6 mA indicate a fail-low condition, and currents above 21 mA indicate a fail-high or electronics fault condition."
+      }
+    },
+
+    {
+      "@type": "Question",
+      "name": "How do you troubleshoot a 4–20 mA signal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Troubleshooting begins by measuring loop current in series with a multimeter, verifying power supply voltage, checking wiring continuity, and confirming PLC scaling before replacing the transmitter."
+      }
+    }
+
+  ]
+}
+</script>
+<!-- ====================================================== -->
+
 </head>
 
 <body data-page="field-420ma">
