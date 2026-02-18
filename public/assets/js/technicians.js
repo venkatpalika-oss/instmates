@@ -1,10 +1,13 @@
 /* =========================================================
-   InstMates – Technician Directory Logic (FINAL)
+   InstMates – Technician Directory Logic (FINAL ADVANCED)
    File: assets/js/technicians.js
+
    PURPOSE:
    - Load ALL technician profiles
    - Show only completed profiles
    - No artificial limits
+   - Dynamic profile linking
+   - Auth protected
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -20,7 +23,8 @@ import {
 
 /* ================= ELEMENTS ================= */
 
-const listEl = document.getElementById("technicianList");
+// 🔥 FIXED ID to match your HTML
+const listEl = document.getElementById("techniciansList");
 const searchInput = document.getElementById("searchInput");
 
 /* ================= AUTH GATE ================= */
@@ -53,13 +57,12 @@ async function loadTechnicians() {
       return;
     }
 
-    const cards = [];
-    snap.forEach(doc => {
-      cards.push(renderCard(doc.id, doc.data()));
-    });
-
     listEl.innerHTML = "";
-    cards.forEach(c => listEl.appendChild(c));
+
+    snap.forEach(doc => {
+      const card = renderCard(doc.id, doc.data());
+      listEl.appendChild(card);
+    });
 
   } catch (err) {
     console.error("Failed to load technicians:", err);
@@ -89,15 +92,23 @@ function renderCard(uid, p) {
       📍 ${escapeHTML(p.location || "Location not specified")}
     </p>
 
-    ${skills
-      ? `<p class="muted">${escapeHTML(skills)}</p>`
-      : ""
+    ${
+      skills
+        ? `<p class="muted">${escapeHTML(skills)}</p>`
+        : ""
     }
 
-    <a href="/message.html?uid=${uid}"
-       class="btn btn-primary">
-      Message
-    </a>
+    <div class="action-row" style="margin-top:10px">
+      <a href="/technicians/profile.html?id=${uid}"
+         class="btn btn-ghost">
+        View Profile →
+      </a>
+
+      <a href="/message.html?uid=${uid}"
+         class="btn btn-primary">
+        Message
+      </a>
+    </div>
   `;
 
   return card;
