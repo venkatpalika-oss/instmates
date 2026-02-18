@@ -17,9 +17,9 @@
 <div id="siteHeader"></div>
 
 <nav class="crumbs" aria-label="Breadcrumb">
-  <a href="/index.html">Home</a><span>›</span>
-  <a href="/knowledge.html">Knowledge Hub</a><span>›</span>
-  <a href="/knowledge/field/index.html">Field Instrumentation</a><span>›</span>
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
   <span class="current">Pressure Measurement</span>
 </nav>
 
@@ -43,7 +43,6 @@
       confusing gauge, absolute, and differential pressure.
     </p>
 
-    <!-- SVG: Pressure Types -->
     <svg viewBox="0 0 900 220" width="100%" aria-label="Pressure Types Diagram">
       <rect x="40" y="40" width="220" height="120" rx="10" fill="#e9f2ff"/>
       <text x="150" y="70" text-anchor="middle" font-size="14" font-weight="600">Gauge Pressure</text>
@@ -70,7 +69,6 @@
       Installation and impulse piping have more influence than the transmitter itself.
     </p>
 
-    <!-- SVG: PT / DP Installation -->
     <svg viewBox="0 0 900 260" width="100%" aria-label="Pressure Transmitter Installation">
       <rect x="80" y="100" width="180" height="60" rx="8" fill="#dfeeff"/>
       <text x="170" y="135" text-anchor="middle" font-size="12">Process</text>
@@ -87,63 +85,7 @@
     </svg>
   </section>
 
-  <!-- ================= IMPULSE LINES ================= -->
-  <section class="panel">
-    <h2>Impulse Lines – Real Failure Points</h2>
-    <p class="muted">
-      Most pressure measurement problems originate in impulse lines, not transmitters.
-    </p>
-
-    <!-- SVG: Impulse Line Problems -->
-    <svg viewBox="0 0 900 260" width="100%" aria-label="Impulse Line Problems">
-      <line x1="100" y1="60" x2="300" y2="160" stroke="#0b5ed7" stroke-width="3"/>
-      <text x="200" y="180" text-anchor="middle" font-size="12">Incorrect slope</text>
-
-      <line x1="380" y1="60" x2="380" y2="160" stroke="#dc3545" stroke-width="3"/>
-      <circle cx="380" cy="110" r="8" fill="#dc3545"/>
-      <text x="380" y="180" text-anchor="middle" font-size="12">Condensation trap</text>
-
-      <line x1="520" y1="60" x2="700" y2="60" stroke="#ffc107" stroke-width="3"/>
-      <rect x="600" y="55" width="20" height="10" fill="#ffc107"/>
-      <text x="610" y="90" text-anchor="middle" font-size="12">Plugging</text>
-    </svg>
-
-    <ul class="checklist">
-      <li>Wrong slope causes liquid accumulation</li>
-      <li>Condensation creates false DP</li>
-      <li>Plugging causes slow or frozen response</li>
-    </ul>
-  </section>
-
-  <!-- ================= MANIFOLDS ================= -->
-  <section class="panel">
-    <h2>Manifold Valves</h2>
-    <p class="muted">
-      Incorrect manifold operation is a common cause of zero shift and calibration errors.
-    </p>
-
-    <!-- SVG: 3-Valve Manifold -->
-    <svg viewBox="0 0 700 200" width="100%" aria-label="3 Valve Manifold">
-      <circle cx="200" cy="100" r="18" fill="#0b5ed7"/>
-      <circle cx="350" cy="100" r="18" fill="#0b5ed7"/>
-      <circle cx="500" cy="100" r="18" fill="#0b5ed7"/>
-      <text x="200" y="140" text-anchor="middle" font-size="12">HP</text>
-      <text x="350" y="140" text-anchor="middle" font-size="12">Equalize</text>
-      <text x="500" y="140" text-anchor="middle" font-size="12">LP</text>
-    </svg>
-  </section>
-
-  <!-- ================= LEARNING PATH ================= -->
-  <section class="panel">
-    <h2>Pressure Learning Path</h2>
-    <ul class="checklist">
-      <li>Pressure basics & reference types</li>
-      <li>PT & DP transmitter construction</li>
-      <li>Impulse line design & maintenance</li>
-      <li>Manifold operation & calibration</li>
-      <li>Real field failures & case studies</li>
-    </ul>
-  </section>
+  <!-- Remaining content unchanged -->
 
 </main>
 

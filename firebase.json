@@ -13,6 +13,18 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/knowledge.html",
+        "destination": "/knowledge/",
+        "type": 301
+      },
+      {
+        "source": "/technicians.html",
+        "destination": "/technicians/",
+        "type": 301
+      }
     ]
   },
   "functions": [
