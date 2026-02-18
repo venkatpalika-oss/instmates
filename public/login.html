@@ -46,12 +46,27 @@
 
     /* ================= REMEMBER ME ================= */
     .remember-row {
-      display:flex;
-      align-items:center;
-      gap:8px;
-      margin-top:8px;
-      font-size:14px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* 🔥 force left alignment */
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.remember-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.remember-row label {
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
 
     /* =========================================================
        🔥 MICRO-INTERACTIONS (Premium Polish)
