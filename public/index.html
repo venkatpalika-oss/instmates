@@ -66,11 +66,20 @@
       flex-wrap: wrap;
     }
 
+    .hero-video {
+      text-align: center;
+    }
+
     .hero-video video {
       width: 100%;
       max-width: 420px;
       border-radius: 16px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .sound-btn {
+      margin-top: 12px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -79,7 +88,7 @@
 
 <div id="siteHeader"></div>
 
-<!-- ================= AUTH-OUT (MARKETING + AVATAR VIDEO) ================= -->
+<!-- ================= AUTH-OUT ================= -->
 <section class="auth-out-section">
 
   <section class="hero">
@@ -112,11 +121,14 @@
       </div>
 
       <!-- RIGHT AVATAR VIDEO -->
-      <div class="hero-video" style="flex:1;min-width:280px;text-align:center;">
-        <video autoplay muted loop playsinline>
+      <div class="hero-video" style="flex:1;min-width:280px;">
+        <video id="heroVideo" autoplay muted loop playsinline>
           <source src="/assets/videos/avatar.mp4" type="video/mp4">
-          Your browser does not support the video tag.
         </video>
+
+        <button id="soundToggle" class="btn btn-soft sound-btn">
+          🔊 Enable Sound
+        </button>
       </div>
 
     </div>
@@ -150,9 +162,8 @@
 
 </section>
 
-<!-- ================= AUTH-IN DASHBOARD ================= -->
+<!-- ================= AUTH-IN ================= -->
 <section class="auth-in-section">
-
   <section class="hero">
     <div class="hero-inner container">
       <h1>Welcome Back to InstMates</h1>
@@ -167,38 +178,6 @@
       </div>
     </div>
   </section>
-
-  <main class="container">
-    <section class="panel">
-      <h2>Your Technical Network</h2>
-
-      <div class="grid grid-3">
-
-        <div class="card">
-          <h3>🔥 Active Discussions</h3>
-          <p class="muted">
-            Engage with live GC, CEMS and instrumentation troubleshooting threads.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>📚 Structured Knowledge</h3>
-          <p class="muted">
-            Access categorized case studies and analyzer error breakdowns.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>⭐ Build Reputation</h3>
-          <p class="muted">
-            Earn credibility through real field problem-solving contributions.
-          </p>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
 </section>
 
 <div id="siteFooter"></div>
@@ -208,6 +187,15 @@
 <script type="module" src="/assets/js/auth.js"></script>
 
 <script>
+  const video = document.getElementById("heroVideo");
+  const btn = document.getElementById("soundToggle");
+
+  btn.addEventListener("click", () => {
+    video.muted = false;
+    video.play();
+    btn.style.display = "none";
+  });
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js");
   }
