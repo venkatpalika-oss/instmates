@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Technician Profile | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+<body data-page="technician-profile">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+  <a href="/">Home</a><span>›</span>
+  <a href="/technicians/">Technicians</a><span>›</span>
+  <span class="current">Profile</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h1 id="techName">Loading...</h1>
+  <p class="muted" id="techRole"></p>
+</section>
+
+<section class="panel">
+  <h2>Professional Summary</h2>
+  <p id="techSummary"></p>
+</section>
+
+<section class="panel">
+  <h2>Core Expertise</h2>
+  <ul id="techSkills"></ul>
+</section>
+
+<section class="panel">
+  <h2>Experience</h2>
+  <p id="techExperience"></p>
+</section>
+
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost" href="/technicians/">
+      ← Back to Directory
+    </a>
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+
+<script type="module">
+
+import { db } from "/assets/js/firebase.js";
+import { doc, getDoc }
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if (!id) {
+  document.getElementById("techName").innerText = "Profile Not Found";
+} else {
+  const snap = await getDoc(doc(db, "profiles", id));
+
+  if (!snap.exists()) {
+    document.getElementById("techName").innerText = "Profile Not Found";
+  } else {
+    const data = snap.data();
+
+    document.getElementById("techName").innerText = data.name || "";
+    document.getElementById("techRole").innerText = data.role || "";
+    document.getElementById("techSummary").innerText = data.summary || "";
+    document.getElementById("techExperience").innerText = data.experience || "";
+
+    const skillsList = document.getElementById("techSkills");
+    if (data.skills && Array.isArray(data.skills)) {
+      data.skills.forEach(skill => {
+        const li = document.createElement("li");
+        li.textContent = skill;
+        skillsList.appendChild(li);
+      });
+    }
+  }
+}
+
+</script>
+
+<script src="/assets/js/includes.js"></script>
+</body>
+</html>
