@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Why 4–20 mA Uses Live Zero Instead of 0 mA | InstMates</title>
+
+  <meta name="description"
+        content="Why does 4–20 mA use 4 mA as live zero instead of 0 mA? Understand the engineering logic and fault detection philosophy." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="blog-livezero">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+  <a href="/">Home</a><span>›</span>
+  <a href="/blog/">Blog</a><span>›</span>
+  <span class="current">Why Live Zero?</span>
+</nav>
+
+<main class="container">
+
+<article class="panel">
+
+<h1>Why 4–20 mA Uses 4 mA Instead of 0 mA</h1>
+
+<p class="muted">
+A simple design decision that prevents dangerous misinterpretation in industrial plants.
+</p>
+
+<h2>The Problem With 0 mA</h2>
+
+<p>
+If 0 mA represented 0% measurement, how would we detect a broken cable?
+</p>
+
+<ul class="checklist">
+<li>0 mA could mean zero process value</li>
+<li>0 mA could mean transmitter failure</li>
+<li>0 mA could mean wiring open</li>
+</ul>
+
+<p>
+This ambiguity is unacceptable in industrial control systems.
+</p>
+
+<h2>The Live Zero Solution</h2>
+
+<ul class="checklist">
+<li>4 mA = valid 0% measurement</li>
+<li>0 mA = confirmed loop fault</li>
+<li>&lt; 3.6 mA = NAMUR low fault</li>
+<li>&gt; 21 mA = electronics fault</li>
+</ul>
+
+<p>
+This design allows instant fault detection without extra wiring.
+</p>
+
+<h2>Real Plant Scenario</h2>
+
+<p>
+A pressure transmitter shows 0 mA.  
+Operator assumes zero pressure.  
+Pump trips due to safety logic.
+</p>
+
+<p>
+But if 4 mA were live zero, the system would immediately recognize
+0 mA as a fault instead of valid measurement.
+</p>
+
+<p>
+👉 For full technical explanation, read:
+<a href="/knowledge/field/signals/4-20ma/livezero.html">
+Live Zero & NAMUR Explained
+</a>
+</p>
+
+</article>
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

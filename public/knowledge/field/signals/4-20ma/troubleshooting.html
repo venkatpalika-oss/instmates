@@ -13,10 +13,8 @@
 
 <body data-page="field-420ma-troubleshooting">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/">Knowledge</a><span>›</span>
@@ -26,10 +24,8 @@
 
 <main class="container">
 
-<!-- ====================================================== -->
 <section class="panel">
   <h1>4–20 mA Troubleshooting – Master Guide</h1>
-
   <p class="muted">
     This guide helps instrument technicians systematically diagnose
     4–20 mA loop problems using field logic — not guesswork.
@@ -37,88 +33,51 @@
   </p>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Golden Rule Before Troubleshooting</h2>
-
   <ul class="checklist">
     <li>Measure actual loop current with a multimeter</li>
     <li>Do NOT rely only on DCS value</li>
     <li>Confirm transmitter type (2-wire / 3-wire / 4-wire)</li>
     <li>Verify loop power supply voltage</li>
   </ul>
-
   <p class="muted">
     80% of loop issues are wiring, grounding, or power related.
   </p>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Problem 1 – No Signal (0 mA)</h2>
-
   <ul class="checklist">
     <li>Open loop (broken cable)</li>
     <li>Blown fuse</li>
     <li>Power supply failure</li>
     <li>Loose terminal connection</li>
   </ul>
-
-  <h3>Field Check Sequence</h3>
-  <ol class="checklist">
-    <li>Measure supply voltage at transmitter terminals</li>
-    <li>Check continuity of loop wiring</li>
-    <li>Inspect marshalling panel terminals</li>
-    <li>Check intrinsic safety barrier (if installed)</li>
-  </ol>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Problem 2 – Fixed at 4 mA</h2>
-
-  <p>
-    4 mA represents minimum value (live zero).
-  </p>
-
   <ul class="checklist">
     <li>Process variable at minimum</li>
     <li>Sensor disconnected internally</li>
     <li>Transmitter underrange fault</li>
     <li>Configuration scaling mismatch</li>
   </ul>
-
-  <h3>Field Logic</h3>
-  <ul class="checklist">
-    <li>Simulate input if possible</li>
-    <li>Check sensor wiring</li>
-    <li>Review LRV configuration</li>
-  </ul>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Problem 3 – Fixed at 20 mA</h2>
-
   <ul class="checklist">
     <li>Process at maximum range</li>
     <li>Overrange condition</li>
     <li>Short circuit in wiring</li>
     <li>Incorrect scaling in DCS</li>
   </ul>
-
-  <h3>Field Logic</h3>
-  <ul class="checklist">
-    <li>Check URV configuration</li>
-    <li>Inspect for signal short</li>
-    <li>Compare with local indicator</li>
-  </ul>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Problem 4 – Unstable / Fluctuating Signal</h2>
-
   <ul class="checklist">
     <li>Poor grounding</li>
     <li>Shield not terminated correctly</li>
@@ -126,65 +85,20 @@
     <li>Electromagnetic interference</li>
     <li>Power supply ripple</li>
   </ul>
-
-  <h3>Field Checks</h3>
-  <ul class="checklist">
-    <li>Ground shield at one side only</li>
-    <li>Check earth resistance</li>
-    <li>Separate signal cable from power cables</li>
-    <li>Verify stable 24V supply</li>
-  </ul>
 </section>
 
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Problem 5 – Reading Correct Locally but Wrong in DCS</h2>
-
   <ul class="checklist">
     <li>DCS scaling error</li>
-    <li>Incorrect input card type (active/passive)</li>
+    <li>Incorrect input card type</li>
     <li>Ground loop between panels</li>
     <li>Signal drop due to loop resistance</li>
   </ul>
-
-  <h3>Field Logic</h3>
-  <ul class="checklist">
-    <li>Measure current at DCS input</li>
-    <li>Verify LRV / URV in both transmitter and DCS</li>
-    <li>Check loop resistance calculation</li>
-  </ul>
 </section>
 
-<!-- ====================================================== -->
-<section class="panel">
-  <h2>Quick Fault Reference Table</h2>
-
-  <ul class="checklist">
-    <li>0 mA → Open circuit</li>
-    <li>~4 mA steady → Underrange or minimum process</li>
-    <li>~20 mA steady → Overrange or short</li>
-    <li>Random jumps → Shielding / grounding issue</li>
-    <li>Slow drift → Power or sensor instability</li>
-  </ul>
-</section>
-
-<!-- ====================================================== -->
-<section class="panel">
-  <h2>Advanced Checks (Experienced Technicians)</h2>
-
-  <ul class="checklist">
-    <li>Loop resistance calculation (Ohm’s law)</li>
-    <li>Voltage drop across barrier</li>
-    <li>Check for multi-ground points</li>
-    <li>Inspect cable gland moisture ingress</li>
-    <li>Check intrinsic safety compliance</li>
-  </ul>
-</section>
-
-<!-- ====================================================== -->
 <section class="panel">
   <h2>Final Field Rule</h2>
-
   <p class="muted">
     Never replace a transmitter before verifying:
     power, wiring, grounding, scaling, and loop continuity.
@@ -193,6 +107,49 @@
 </section>
 
 <!-- ====================================================== -->
+<!-- RELATED BLOG ARTICLES -->
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Blog Articles</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>
+        <a href="/blog/common-4-20ma-mistakes.html">
+          5 Common 4–20 mA Mistakes in Field Work
+        </a>
+      </h3>
+      <p>
+        Practical mistakes observed during commissioning and maintenance.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>
+        <a href="/blog/loop-check-vs-calibration-explained.html">
+          Loop Check vs Calibration – What Most Get Wrong
+        </a>
+      </h3>
+      <p>
+        Understand the difference before replacing hardware.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>
+        <a href="/blog/why-4-20ma-live-zero.html">
+          Why 4–20 mA Uses Live Zero
+        </a>
+      </h3>
+      <p>
+        Learn how live zero improves fault detection reliability.
+      </p>
+    </div>
+
+  </div>
+</section>
+
 <section class="panel">
   <div class="action-row">
     <a class="btn btn-ghost"
@@ -208,9 +165,8 @@
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
+
 </body>
 </html>
