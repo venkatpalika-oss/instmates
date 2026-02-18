@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Field Instrumentation Knowledge | InstMates</title>
+  <title>Field Instrumentation | InstMates</title>
 
   <meta name="description"
-        content="Field instrumentation knowledge hub for technicians – pressure, flow, level, temperature, 4–20 mA loops, calibration, and real plant behavior." />
+        content="Field instrumentation knowledge for technicians – pressure, flow, 4–20 mA signals, wiring and grounding explained with real plant logic." />
 
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -29,21 +28,14 @@
     <h1>Field Instrumentation</h1>
     <p class="muted">
       Practical field instrumentation knowledge written for technicians.
-      Focused on real plant installations, calibration behavior,
-      wiring practices, impulse lines, grounding, and failure modes —
-      not textbook theory.
-    </p>
-    <p class="muted">
-      This section covers <strong>field instruments only</strong>.
-      Analyzer-related topics such as GC, FTIR, and CEMS
-      are organized separately under the
-      <a href="/knowledge/analyzers/">Analyzers</a> section.
+      Focused on installation behavior, impulse lines, loop integrity,
+      grounding, and real plant failures.
     </p>
   </section>
 
   <!-- CORE MEASUREMENTS -->
   <section class="panel">
-    <h2>Core Measurement Topics</h2>
+    <h2>Core Measurements</h2>
 
     <div class="grid grid-3">
 
@@ -51,9 +43,7 @@
       <div class="card">
         <h3>Pressure Measurement</h3>
         <p class="muted">
-          Pressure fundamentals, PT & DP transmitters,
-          impulse lines, manifolds, calibration,
-          and real field failure behavior.
+          PT & DP transmitters, impulse lines, manifolds and field failures.
         </p>
         <a href="/knowledge/field/pressure/" class="btn btn-soft">
           Open →
@@ -64,89 +54,59 @@
       <div class="card">
         <h3>Flow Measurement</h3>
         <p class="muted">
-          Differential pressure flow, orifice plates,
-          flow transmitters, installation effects,
-          and common flow measurement mistakes.
+          Differential pressure flow, installation effects and troubleshooting.
         </p>
         <a href="/knowledge/field/flow/" class="btn btn-soft">
           Open →
         </a>
       </div>
 
-      <!-- LEVEL -->
+      <!-- 4–20mA Overview -->
       <div class="card">
-        <h3>Level Measurement</h3>
+        <h3>4–20 mA Overview</h3>
         <p class="muted">
-          Level transmitters, displacers, radar,
-          DP level applications, and field challenges.
-        </p>
-        <span class="muted">Coming soon</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SIGNALS & LOOPS -->
-  <section class="panel">
-    <h2>Signals, Wiring & Loops</h2>
-
-    <div class="grid grid-3">
-
-      <!-- 4–20 mA -->
-      <div class="card">
-        <h3>4–20 mA Loops</h3>
-        <p class="muted">
-          Loop fundamentals, live zero concept,
-          2-wire / 3-wire / 4-wire loops,
-          grounding, and troubleshooting.
+          Loop fundamentals and live-zero concept.
         </p>
         <a href="/knowledge/field/4-20ma/" class="btn btn-soft">
           Open →
         </a>
       </div>
 
-      <!-- WIRING & GROUNDING -->
+    </div>
+  </section>
+
+  <!-- SIGNALS CLUSTER -->
+  <section class="panel">
+    <h2>Signals & Loops – Deep Dive</h2>
+
+    <div class="grid grid-2">
+
       <div class="card">
-        <h3>Field Wiring & Grounding</h3>
+        <h3>4–20 mA Signal Guides</h3>
         <p class="muted">
-          Shielding, earthing practices,
-          noise issues, junction boxes,
-          and DCS interface problems.
+          Scaling, diagnostics, wiring, calibration, troubleshooting.
+        </p>
+        <a href="/knowledge/field/signals/4-20ma/" class="btn btn-soft">
+          Open →
+        </a>
+      </div>
+
+      <div class="card">
+        <h3>Wiring & Grounding</h3>
+        <p class="muted">
+          Shielding, earthing practices and noise problems.
         </p>
         <a href="/knowledge/field/wiring-grounding/" class="btn btn-soft">
           Open →
         </a>
       </div>
 
-      <!-- CALIBRATION -->
-      <div class="card">
-        <h3>Calibration Practices</h3>
-        <p class="muted">
-          Field calibration vs bench calibration,
-          loop checks, common mistakes,
-          and audit-safe practices.
-        </p>
-        <span class="muted">Coming soon</span>
-      </div>
-
     </div>
-  </section>
-
-  <!-- HOW TO USE -->
-  <section class="panel">
-    <h2>How to Use This Section</h2>
-    <ul class="checklist">
-      <li>Start with the measurement principle (pressure, flow, level)</li>
-      <li>Understand installation before calibration</li>
-      <li>Use diagrams and field logic, not assumptions</li>
-      <li>Refer to case studies for real failure behavior</li>
-    </ul>
   </section>
 
 </main>
 
 <div id="siteFooter"></div>
-
 <script src="/assets/js/includes.js"></script>
 
 </body>
