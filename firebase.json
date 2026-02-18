@@ -5,13 +5,18 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+
   "hosting": {
     "public": "public",
-            "ignore": [
+    "cleanUrls": true,
+    "trailingSlash": true,
+
+    "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
+
     "redirects": [
       {
         "source": "/knowledge.html",
@@ -23,8 +28,16 @@
         "destination": "/technicians/",
         "type": 301
       }
+    ],
+
+    "rewrites": [
+      {
+        "source": "/technicians/**",
+        "destination": "/technicians/profile.html"
+      }
     ]
   },
+
   "functions": [
     {
       "source": "functions",
