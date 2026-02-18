@@ -2,133 +2,215 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>4–20 mA Troubleshooting Guide | InstMates Knowledge Hub</title>
+  <title>4–20 mA Troubleshooting – Master Guide | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="Complete 4–20 mA troubleshooting master guide for instrument technicians. Diagnose no signal, fixed 4 mA, fixed 20 mA, unstable loops, grounding issues and wiring faults using practical field logic." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
-<body data-page="field-420ma-troubleshoot">
+<body data-page="field-420ma-troubleshooting">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
-  <a href="/knowledge/index.html">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
   <a href="/knowledge/field/signals/4-20ma/index.html">4–20 mA</a><span>›</span>
-  <span class="current">Troubleshooting</span>
+  <span class="current">Troubleshooting Master Guide</span>
 </nav>
 
 <main class="container">
 
-<!-- ================= INTRO ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h1>4–20 mA Troubleshooting Guide</h1>
+  <h1>4–20 mA Troubleshooting – Master Guide</h1>
 
   <p class="muted">
-    Most 4–20 mA loop problems can be diagnosed using a multimeter,
-    logical checks, and an understanding of current behavior.
+    This guide helps instrument technicians systematically diagnose
+    4–20 mA loop problems using field logic — not guesswork.
+    Always measure current first before changing configuration.
   </p>
 </section>
 
-<!-- ================= DECISION TREE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>Decision Tree (Start With Current)</h2>
+  <h2>Golden Rule Before Troubleshooting</h2>
 
-  <!-- Decision Tree SVG (UNCHANGED) -->
-  <svg width="100%" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
-    <rect x="300" y="20" width="160" height="50" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
-    <text x="380" y="50" text-anchor="middle">Measure Loop mA</text>
-
-    <rect x="80" y="120" width="160" height="50" rx="10" fill="#fdecea" stroke="#c0392b"/>
-    <text x="160" y="150" text-anchor="middle">0 mA</text>
-
-    <rect x="300" y="120" width="160" height="50" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
-    <text x="380" y="150" text-anchor="middle">4–20 mA OK</text>
-
-    <rect x="520" y="120" width="160" height="50" rx="10" fill="#fdecea" stroke="#c0392b"/>
-    <text x="600" y="150" text-anchor="middle">&gt;21 mA</text>
-
-    <line x1="380" y1="70" x2="160" y2="120" stroke="#000"/>
-    <line x1="380" y1="70" x2="380" y2="120" stroke="#000"/>
-    <line x1="380" y1="70" x2="600" y2="120" stroke="#000"/>
-
-    <text x="160" y="200" text-anchor="middle" font-size="12">Cable break / no power</text>
-    <text x="380" y="200" text-anchor="middle" font-size="12">Check scaling</text>
-    <text x="600" y="200" text-anchor="middle" font-size="12">Transmitter fault</text>
-  </svg>
-</section>
-
-<!-- ================= CASES ================= -->
-<section class="panel">
-  <h2>Case-Based Troubleshooting</h2>
-
-  <h3>Case 1: 0 mA</h3>
-  <ul>
-    <li>Open circuit or broken cable</li>
-    <li>No loop power</li>
-    <li>Incorrect terminal wiring</li>
-    <li>Failed input card</li>
+  <ul class="checklist">
+    <li>Measure actual loop current with a multimeter</li>
+    <li>Do NOT rely only on DCS value</li>
+    <li>Confirm transmitter type (2-wire / 3-wire / 4-wire)</li>
+    <li>Verify loop power supply voltage</li>
   </ul>
-  <p class="muted">
-    Action: Check supply voltage and continuity before touching the transmitter.
-  </p>
 
-  <h3>Case 2: 4–20 mA but Wrong Reading</h3>
-  <ul>
-    <li>Incorrect range or scaling</li>
-    <li>Process condition misunderstood</li>
-    <li>LRV / URV mismatch</li>
-  </ul>
   <p class="muted">
-    Action: Verify engineering units and scaling in the control system.
-  </p>
-
-  <h3>Case 3: &gt; 21 mA (NAMUR Fault)</h3>
-  <ul>
-    <li>Internal electronics fault</li>
-    <li>Sensor failure</li>
-    <li>Configuration error</li>
-  </ul>
-  <p class="muted">
-    Action: Refer to diagnostics page and transmitter manual.
-  </p>
-
-  <h3>Case 4: Unstable / Fluctuating Signal</h3>
-  <ul>
-    <li>Poor grounding</li>
-    <li>Shield not earthed properly</li>
-    <li>Loose terminals</li>
-    <li>Electrical interference</li>
-  </ul>
-  <p class="muted">
-    Action: Fix wiring and grounding first — never “calibrate out” noise.
+    80% of loop issues are wiring, grounding, or power related.
   </p>
 </section>
 
-<!-- ================= FINAL CHECK ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>Final Verification</h2>
-  <ol>
-    <li>Simulate 4–20 mA signal</li>
-    <li>Confirm PLC / DCS scaling</li>
-    <li>Verify alarms and displays</li>
-    <li>Document findings</li>
+  <h2>Problem 1 – No Signal (0 mA)</h2>
+
+  <ul class="checklist">
+    <li>Open loop (broken cable)</li>
+    <li>Blown fuse</li>
+    <li>Power supply failure</li>
+    <li>Loose terminal connection</li>
+  </ul>
+
+  <h3>Field Check Sequence</h3>
+  <ol class="checklist">
+    <li>Measure supply voltage at transmitter terminals</li>
+    <li>Check continuity of loop wiring</li>
+    <li>Inspect marshalling panel terminals</li>
+    <li>Check intrinsic safety barrier (if installed)</li>
   </ol>
 </section>
 
-<!-- ================= FIELD RULE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>Field Rule</h2>
-  <p class="muted">
-    Never troubleshoot from the control room alone.
-    <strong>Always measure the loop current.</strong>
+  <h2>Problem 2 – Fixed at 4 mA</h2>
+
+  <p>
+    4 mA represents minimum value (live zero).
   </p>
+
+  <ul class="checklist">
+    <li>Process variable at minimum</li>
+    <li>Sensor disconnected internally</li>
+    <li>Transmitter underrange fault</li>
+    <li>Configuration scaling mismatch</li>
+  </ul>
+
+  <h3>Field Logic</h3>
+  <ul class="checklist">
+    <li>Simulate input if possible</li>
+    <li>Check sensor wiring</li>
+    <li>Review LRV configuration</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Problem 3 – Fixed at 20 mA</h2>
+
+  <ul class="checklist">
+    <li>Process at maximum range</li>
+    <li>Overrange condition</li>
+    <li>Short circuit in wiring</li>
+    <li>Incorrect scaling in DCS</li>
+  </ul>
+
+  <h3>Field Logic</h3>
+  <ul class="checklist">
+    <li>Check URV configuration</li>
+    <li>Inspect for signal short</li>
+    <li>Compare with local indicator</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Problem 4 – Unstable / Fluctuating Signal</h2>
+
+  <ul class="checklist">
+    <li>Poor grounding</li>
+    <li>Shield not terminated correctly</li>
+    <li>Loose terminal screws</li>
+    <li>Electromagnetic interference</li>
+    <li>Power supply ripple</li>
+  </ul>
+
+  <h3>Field Checks</h3>
+  <ul class="checklist">
+    <li>Ground shield at one side only</li>
+    <li>Check earth resistance</li>
+    <li>Separate signal cable from power cables</li>
+    <li>Verify stable 24V supply</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Problem 5 – Reading Correct Locally but Wrong in DCS</h2>
+
+  <ul class="checklist">
+    <li>DCS scaling error</li>
+    <li>Incorrect input card type (active/passive)</li>
+    <li>Ground loop between panels</li>
+    <li>Signal drop due to loop resistance</li>
+  </ul>
+
+  <h3>Field Logic</h3>
+  <ul class="checklist">
+    <li>Measure current at DCS input</li>
+    <li>Verify LRV / URV in both transmitter and DCS</li>
+    <li>Check loop resistance calculation</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Quick Fault Reference Table</h2>
+
+  <ul class="checklist">
+    <li>0 mA → Open circuit</li>
+    <li>~4 mA steady → Underrange or minimum process</li>
+    <li>~20 mA steady → Overrange or short</li>
+    <li>Random jumps → Shielding / grounding issue</li>
+    <li>Slow drift → Power or sensor instability</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Advanced Checks (Experienced Technicians)</h2>
+
+  <ul class="checklist">
+    <li>Loop resistance calculation (Ohm’s law)</li>
+    <li>Voltage drop across barrier</li>
+    <li>Check for multi-ground points</li>
+    <li>Inspect cable gland moisture ingress</li>
+    <li>Check intrinsic safety compliance</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Final Field Rule</h2>
+
+  <p class="muted">
+    Never replace a transmitter before verifying:
+    power, wiring, grounding, scaling, and loop continuity.
+    Most “bad transmitters” are actually bad installations.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost"
+       href="/knowledge/field/signals/4-20ma/wiring-types.html">
+      ← Back to Wiring Types
+    </a>
+    <a class="btn btn-primary"
+       href="/knowledge/field/signals/4-20ma/loop-resistance.html">
+      Next: Loop Resistance →
+    </a>
+  </div>
 </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 </body>
 </html>

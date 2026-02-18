@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Live zero concept and NAMUR NE43 fault logic for 4–20 mA signals. Learn how current values indicate faults and diagnostics." />
+        content="Live zero concept and NAMUR NE43 fault logic for 4–20 mA signals. Learn how current values indicate faults, fail-low, fail-high, and diagnostics." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
@@ -24,29 +24,77 @@
 
 <main class="container">
 
+<!-- ===================================================== -->
+<!-- LIVE ZERO INTRO -->
+<!-- ===================================================== -->
+
 <section class="panel">
   <h2>Live Zero Concept</h2>
 
   <p class="muted">
-    The most important design decision in analog signaling is the use of
-    <strong>4 mA as live zero</strong>. This allows fault detection without
-    additional wiring or diagnostics.
+    The use of <strong>4 mA as live zero</strong> is one of the most
+    important engineering decisions in industrial instrumentation.
+    It allows fault detection without additional wires or digital protocols.
   </p>
 </section>
+
+<!-- ===================================================== -->
+<!-- CURRENT SPECTRUM -->
+<!-- ===================================================== -->
+
+<section class="panel">
+  <h3>4–20 mA Current Spectrum</h3>
+
+  <svg viewBox="0 0 900 120" width="100%" style="max-width:900px;">
+    <!-- 0 mA -->
+    <rect x="0" y="40" width="150" height="40" fill="#f8d7da"/>
+    <text x="75" y="65" text-anchor="middle" font-size="13">0 mA (Open Loop)</text>
+
+    <!-- Fault Low -->
+    <rect x="150" y="40" width="150" height="40" fill="#fde2e2"/>
+    <text x="225" y="65" text-anchor="middle" font-size="13">&lt; 3.6 mA</text>
+
+    <!-- Normal -->
+    <rect x="300" y="40" width="400" height="40" fill="#d4edda"/>
+    <text x="500" y="65" text-anchor="middle" font-size="13">4 – 20 mA (Valid Measurement)</text>
+
+    <!-- Fault High -->
+    <rect x="700" y="40" width="200" height="40" fill="#fff3cd"/>
+    <text x="800" y="65" text-anchor="middle" font-size="13">&gt; 21 mA</text>
+
+    <text x="450" y="20" text-anchor="middle" font-size="16">
+      Signal Interpretation Zones
+    </text>
+  </svg>
+
+  <p class="muted">
+    The green zone represents valid process measurement. Red/yellow zones indicate faults.
+  </p>
+</section>
+
+<!-- ===================================================== -->
+<!-- WHY 4 MA -->
+<!-- ===================================================== -->
 
 <section class="panel">
   <h3>Why 4 mA Instead of 0 mA?</h3>
 
   <ul>
-    <li>4 mA = valid minimum measurement</li>
-    <li>0 mA = cable break or dead transmitter</li>
-    <li>Faults are immediately detectable</li>
+    <li>4 mA = valid minimum measurement (LRV)</li>
+    <li>0 mA = broken wire or dead transmitter</li>
+    <li>Power for 2-wire transmitters flows even at zero process</li>
+    <li>Fault detection is built into the signal itself</li>
   </ul>
 
   <p class="muted">
-    With 0–20 mA systems, zero value and fault look identical.
+    In older 0–20 mA systems, zero measurement and cable failure look identical.
+    4–20 mA eliminates that ambiguity.
   </p>
 </section>
+
+<!-- ===================================================== -->
+<!-- NAMUR -->
+<!-- ===================================================== -->
 
 <section class="panel">
   <h3>NAMUR NE43 Signal Levels</h3>
@@ -59,18 +107,62 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>&lt; 3.6 mA</td><td>Sensor fault / underrange</td></tr>
-      <tr><td>4.0 mA</td><td>Lower range value</td></tr>
-      <tr><td>20.0 mA</td><td>Upper range value</td></tr>
-      <tr><td>&gt; 21.0 mA</td><td>Electronics fault / overrange</td></tr>
+      <tr><td>&lt; 3.6 mA</td><td>Sensor fault / underrange (Fail Low)</td></tr>
+      <tr><td>4.0 mA</td><td>Lower range value (Valid)</td></tr>
+      <tr><td>20.0 mA</td><td>Upper range value (Valid)</td></tr>
+      <tr><td>&gt; 21.0 mA</td><td>Electronics fault / overrange (Fail High)</td></tr>
     </tbody>
   </table>
+
+  <p class="muted">
+    NAMUR NE43 standardizes how transmitters communicate fault conditions
+    to PLC/DCS systems.
+  </p>
 </section>
 
-<section class="panel">
-  <h3>Fault Logic Diagram</h3>
+<!-- ===================================================== -->
+<!-- FAIL LOGIC -->
+<!-- ===================================================== -->
 
-  <!-- Inline SVG -->
+<section class="panel">
+  <h3>Fail-Low vs Fail-High Configuration</h3>
+
+  <ul>
+    <li><strong>Fail-Low:</strong> Transmitter drives current &lt; 3.6 mA on fault</li>
+    <li><strong>Fail-High:</strong> Transmitter drives current &gt; 21 mA on fault</li>
+  </ul>
+
+  <p>
+    Configuration depends on process safety philosophy.  
+    Example: In critical pressure systems, fail-high may trigger protective shutdown.
+  </p>
+</section>
+
+<!-- ===================================================== -->
+<!-- DCS LOGIC -->
+<!-- ===================================================== -->
+
+<section class="panel">
+  <h3>How Control Systems Interpret It</h3>
+
+  <ul>
+    <li>DCS typically alarms below 3.8 mA</li>
+    <li>DCS typically alarms above 20.5–21 mA</li>
+    <li>Engineering units may display negative or extreme values</li>
+  </ul>
+
+  <p class="muted">
+    Always verify alarm configuration before concluding transmitter failure.
+  </p>
+</section>
+
+<!-- ===================================================== -->
+<!-- FAULT LOGIC DIAGRAM -->
+<!-- ===================================================== -->
+
+<section class="panel">
+  <h3>Signal Logic Illustration</h3>
+
   <svg width="100%" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
     <rect x="40" y="70" width="180" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
     <text x="130" y="105" text-anchor="middle" font-weight="700">Transmitter</text>
@@ -82,10 +174,14 @@
     <text x="260" y="85" font-size="12">4–20 mA</text>
 
     <text x="350" y="160" text-anchor="middle" font-size="13">
-      0 mA = Fault | 4 mA = Live Zero | &gt;21 mA = Electronics Fault
+      0 mA = Open Loop | 4 mA = Live Zero | &gt;21 mA = Electronics Fault
     </text>
   </svg>
 </section>
+
+<!-- ===================================================== -->
+<!-- FIELD RULE -->
+<!-- ===================================================== -->
 
 <section class="panel">
   <h3>Field Rule</h3>

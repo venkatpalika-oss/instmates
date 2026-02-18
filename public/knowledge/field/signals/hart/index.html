@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>HART Communication Protocol | InstMates</title>
+
+  <meta name="description"
+        content="HART communication protocol explained for field technicians. Understand how digital communication works over 4–20 mA loops." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="field-hart">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <span class="current">HART Communication</span>
+</nav>
+
+<main class="container">
+
+<article class="panel">
+
+<h1>HART Communication Protocol</h1>
+
+<p class="muted">
+Category: Field Instrumentation · Smart Transmitters · Digital Overlay
+</p>
+
+<!-- ====================================================== -->
+<h2>What Is HART?</h2>
+
+<p>
+HART (Highway Addressable Remote Transducer) is a hybrid communication
+protocol that combines traditional <strong>4–20 mA analog signaling</strong>
+with digital data communication.
+</p>
+
+<p>
+It allows technicians to access configuration, diagnostics,
+and device information without interrupting the analog signal.
+</p>
+
+<ul class="checklist">
+<li>Analog signal = process variable</li>
+<li>Digital signal = configuration & diagnostics</li>
+<li>Works over existing 4–20 mA wiring</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>How HART Works</h2>
+
+<p>
+HART uses Frequency Shift Keying (FSK) communication
+superimposed on the 4–20 mA signal.
+</p>
+
+<ul class="checklist">
+<li>1200 Hz = digital “1”</li>
+<li>2200 Hz = digital “0”</li>
+<li>Analog current unaffected</li>
+</ul>
+
+<p class="muted">
+This allows simultaneous analog measurement and digital communication.
+</p>
+
+<!-- ====================================================== -->
+<h2>Why HART Is Important</h2>
+
+<ul class="checklist">
+<li>Remote configuration without removing transmitter</li>
+<li>Access to device diagnostics</li>
+<li>Loop test and trim functions</li>
+<li>Asset management integration</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>HART vs Traditional 4–20 mA</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>4–20 mA</th>
+      <th>HART</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Analog Signal</td>
+      <td>✔ Yes</td>
+      <td>✔ Yes</td>
+    </tr>
+    <tr>
+      <td>Digital Data</td>
+      <td>✖ No</td>
+      <td>✔ Yes</td>
+    </tr>
+    <tr>
+      <td>Device Diagnostics</td>
+      <td>Limited</td>
+      <td>Advanced</td>
+    </tr>
+    <tr>
+      <td>Configuration from Field</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ====================================================== -->
+<h2>Detailed HART Topics</h2>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>HART Wiring & Loop Requirements</h3>
+    <p>Resistor requirements, impedance, and proper connection methods.</p>
+  </div>
+
+  <div class="card">
+    <h3>HART Communicator Usage</h3>
+    <p>How to connect and navigate device parameters.</p>
+  </div>
+
+  <div class="card">
+    <h3>HART Troubleshooting</h3>
+    <p>Common communication failures and diagnostic steps.</p>
+  </div>
+
+  <!-- Coming Soon Card -->
+  <div class="card" style="opacity:0.7; border-style:dashed;">
+    <h3>Advanced HART Diagnostics</h3>
+    <p>Multidrop mode, burst mode, polling address, device variables.</p>
+    <p class="muted"><strong>Coming Soon</strong></p>
+  </div>
+
+</div>
+
+<!-- ====================================================== -->
+<h2>Field Rule</h2>
+
+<p class="muted">
+If you see a smart transmitter, assume HART is available.
+Use digital diagnostics before replacing hardware.
+</p>
+
+</article>
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="4–20 mA scaling and calculation explained for instrument technicians. Convert mA to engineering units with formulas and examples." />
+        content="4–20 mA scaling and calculation explained for instrument technicians. Convert mA to engineering units and engineering units to mA using formulas, worked examples, and field logic." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
@@ -28,31 +28,32 @@
 
 <main class="container">
 
-<!-- ================= INTRO ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>4–20 mA Scaling & Calculation</h2>
+  <h1>4–20 mA Scaling & Calculation</h1>
 
   <p class="muted">
     Scaling converts the 4–20 mA signal into meaningful engineering units
-    such as bar, °C, %, or ppm. Every PLC, DCS, and analyzer system relies
-    on this calculation.
+    such as bar, °C, %, ppm, or flow rate. Every PLC, DCS, and analyzer
+    system depends on correct scaling.
   </p>
 </section>
 
-<!-- ================= BASIC CONCEPT ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Basic Concept</h3>
+  <h2>Basic Concept</h2>
 
-  <ul>
+  <ul class="checklist">
     <li>4 mA = Lower Range Value (LRV)</li>
     <li>20 mA = Upper Range Value (URV)</li>
     <li>Span = URV − LRV</li>
+    <li>Total mA span = 16 mA</li>
   </ul>
 </section>
 
-<!-- ================= FORMULA ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Scaling Formula</h3>
+  <h2>mA → Engineering Units (Forward Calculation)</h2>
 
   <pre>
 Process Value =
@@ -60,23 +61,22 @@ Process Value =
   </pre>
 
   <p class="muted">
-    This formula is universal and works for pressure, temperature,
-    flow, level, and analyzer signals.
+    This formula works for pressure, temperature, flow, level, and analyzers.
   </p>
 </section>
 
-<!-- ================= EXAMPLE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Worked Example</h3>
+  <h2>Worked Example 1 (Simple Range)</h2>
 
   <p>
     Pressure transmitter range: <strong>0–100 bar</strong>
   </p>
 
-  <ul>
-    <li>LRV = 0 bar</li>
-    <li>URV = 100 bar</li>
-    <li>Span = 100 bar</li>
+  <ul class="checklist">
+    <li>LRV = 0</li>
+    <li>URV = 100</li>
+    <li>Span = 100</li>
   </ul>
 
   <p>
@@ -84,30 +84,118 @@ Process Value =
   </p>
 
   <pre>
-(12 − 4) ÷ 16 × 100 = 50 bar
+(12 − 4) ÷ 16 × 100
+= 8 ÷ 16 × 100
+= 50 bar
   </pre>
 </section>
 
-<!-- ================= COMMON ERRORS ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Common Field Errors</h3>
+  <h2>Worked Example 2 (Negative Range)</h2>
 
-  <ul>
-    <li>Wrong LRV / URV entered in PLC</li>
-    <li>Engineering units mismatch</li>
-    <li>4–20 mA reversed (20–4)</li>
-    <li>Scaling done twice (transmitter + PLC)</li>
+  <p>
+    DP transmitter range: <strong>-50 to +50 mbar</strong>
+  </p>
+
+  <ul class="checklist">
+    <li>LRV = -50</li>
+    <li>URV = +50</li>
+    <li>Span = 100</li>
+  </ul>
+
+  <p>
+    If current = <strong>12 mA</strong>:
+  </p>
+
+  <pre>
+(12 − 4) ÷ 16 × 100 + (-50)
+= 50 − 50
+= 0 mbar
+  </pre>
+
+  <p class="muted">
+    Negative ranges are common in DP level and flow applications.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Engineering Units → mA (Reverse Calculation)</h2>
+
+  <pre>
+mA =
+((Process Value − LRV) ÷ Span) × 16 + 4
+  </pre>
+
+  <h3>Example</h3>
+
+  <p>
+    Flow range: 0–200 m³/h  
+    Actual flow = 100 m³/h
+  </p>
+
+  <pre>
+((100 − 0) ÷ 200) × 16 + 4
+= 0.5 × 16 + 4
+= 12 mA
+  </pre>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Quick Percentage Method</h2>
+
+  <p>
+    If signal is at 50% of span:
+  </p>
+
+  <ul class="checklist">
+    <li>50% of 16 mA = 8 mA</li>
+    <li>8 + 4 = 12 mA</li>
+  </ul>
+
+  <p class="muted">
+    Useful for quick field estimations without full calculation.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Field Errors</h2>
+
+  <ul class="checklist">
+    <li>Wrong LRV / URV in PLC</li>
+    <li>Units mismatch (bar vs kPa)</li>
+    <li>4–20 reversed (20–4 configuration)</li>
+    <li>Scaling applied twice (transmitter + DCS)</li>
+    <li>Incorrect square root extraction for DP flow</li>
   </ul>
 </section>
 
-<!-- ================= FIELD RULE ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Field Rule</h3>
+  <h2>Golden Field Rule</h2>
 
   <p class="muted">
-    Always confirm transmitter range before adjusting PLC or DCS scaling.
-    Most “wrong readings” are configuration issues, not hardware faults.
+    Always confirm transmitter range from nameplate or configuration
+    before adjusting PLC/DCS scaling.  
+    Most “wrong readings” are configuration errors — not hardware faults.
   </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost"
+       href="/knowledge/field/signals/4-20ma/troubleshooting.html">
+      ← Back to Troubleshooting
+    </a>
+    <a class="btn btn-primary"
+       href="/knowledge/field/signals/4-20ma/loop-resistance.html">
+      Next: Loop Resistance →
+    </a>
+  </div>
 </section>
 
 </main>
