@@ -4,21 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FTIR Calibration & Validation – Best Practices | InstMates</title>
+  <title>FTIR Calibration & Validation – Zero, Span & Moisture Control | InstMates</title>
 
   <meta name="description"
-        content="FTIR calibration and validation best practices explained for technicians – zero, span, moisture effects, audit readiness, and common calibration mistakes." />
+        content="Practical FTIR calibration and validation guide for plant technicians – zero, span, moisture compensation, audit compliance, and real field mistakes explained." />
 
-  <!-- ================= GLOBAL CSS ================= -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="analyzer">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/index.html">Knowledge</a><span>›</span>
@@ -27,180 +24,204 @@
   <span class="current">Calibration & Validation</span>
 </nav>
 
-<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <article class="panel">
+<article class="panel">
 
-    <h1>FTIR Calibration & Validation – Best Practices</h1>
+<h1>FTIR Calibration & Validation – Field-Proven Best Practices</h1>
 
-    <p class="muted">
-      Category: Analyzer · FTIR · Calibration & Accuracy
-    </p>
+<p class="muted">
+Category: Analyzer · FTIR · Calibration · Validation · Accuracy Control
+</p>
 
-    <!-- ================= INTRO ================= -->
-    <h2>Why FTIR Calibration Is Often Done Wrong</h2>
-    <p>
-      FTIR analyzers rarely fail calibration because the optics are bad.
-      They fail because calibration is performed under conditions
-      that do <strong>not represent real process operation</strong>.
-    </p>
+<!-- ====================================================== -->
+<h2>Why Most FTIR Calibration Errors Are Self-Inflicted</h2>
 
-    <p>
-      Common mistakes include:
-    </p>
-    <ul class="checklist">
-      <li>Using dry calibration gas on wet process streams</li>
-      <li>Ignoring moisture compensation models</li>
-      <li>Calibrating before thermal stabilization</li>
-      <li>Confusing validation with calibration</li>
-    </ul>
+<p>
+FTIR analyzers rarely drift because optics fail.  
+They drift because calibration is performed under
+<strong>conditions that do not represent the real process</strong>.
+</p>
 
-    <!-- ================= DEFINITIONS ================= -->
-    <h2>Calibration vs Validation (Very Important)</h2>
+<ul class="checklist">
+<li>Dry calibration gas used on wet process stream</li>
+<li>Moisture compensation ignored</li>
+<li>Calibration done before thermal stabilization</li>
+<li>Validation confused with recalibration</li>
+<li>Sampling bypassed during span injection</li>
+</ul>
 
-    <h3>Calibration</h3>
-    <p>
-      Calibration adjusts the analyzer response to match a known reference.
-    </p>
-    <ul class="checklist">
-      <li>Changes analyzer response factors</li>
-      <li>Should be done sparingly</li>
-      <li>Incorrect calibration causes long-term error</li>
-    </ul>
+<p class="muted">
+Calibration must simulate process conditions — not laboratory conditions.
+</p>
 
-    <h3>Validation</h3>
-    <p>
-      Validation checks whether the analyzer is still measuring correctly.
-    </p>
-    <ul class="checklist">
-      <li>Does NOT change analyzer parameters</li>
-      <li>Used for audits and routine checks</li>
-      <li>Preferred for regulatory compliance</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>Calibration vs Validation – Critical Difference</h2>
 
-    <p class="muted">
-      Many plants recalibrate when they should only validate.
-    </p>
+<div class="grid-2">
 
-    <!-- ================= PRECONDITIONS ================= -->
-    <h2>Pre-Calibration Conditions (Mandatory)</h2>
-    <ul class="checklist">
-      <li>FTIR fully warmed up and thermally stable</li>
-      <li>Sample system dry and above dew point</li>
-      <li>No active alarms or unstable signals</li>
-      <li>Sampling configuration identical to normal operation</li>
-    </ul>
+<div>
+<h3>Calibration</h3>
+<ul class="checklist">
+<li>Adjusts analyzer response factors</li>
+<li>Modifies stored parameters</li>
+<li>Should be performed only when necessary</li>
+<li>Incorrect calibration causes systematic error</li>
+</ul>
+</div>
 
-    <!-- ================= ZERO ================= -->
-    <h2>Zero Calibration – Best Practices</h2>
-    <p>
-      Zero calibration establishes the analyzer baseline.
-      Errors here affect all subsequent measurements.
-    </p>
+<div>
+<h3>Validation</h3>
+<ul class="checklist">
+<li>Checks analyzer performance</li>
+<li>Does NOT change internal settings</li>
+<li>Required for audits and compliance</li>
+<li>Preferred routine practice</li>
+</ul>
+</div>
 
-    <ul class="checklist">
-      <li>Use clean, dry zero gas (typically N₂ or instrument air)</li>
-      <li>Ensure zero gas temperature matches sample temperature</li>
-      <li>Allow sufficient purge time</li>
-      <li>Do not zero when moisture is present in the cell</li>
-    </ul>
+</div>
 
-    <p class="muted">
-      Zeroing a wet FTIR almost always creates hidden offsets.
-    </p>
+<p class="muted">
+Many plants recalibrate when they should only validate.
+</p>
 
-    <!-- ================= SPAN ================= -->
-    <h2>Span Calibration – Best Practices</h2>
-    <p>
-      Span calibration aligns analyzer response with known concentrations.
-    </p>
+<!-- ====================================================== -->
+<h2>FTIR Calibration Flow (Simplified Logic)</h2>
 
-    <ul class="checklist">
-      <li>Use certified calibration gases</li>
-      <li>Concentration should be within normal operating range</li>
-      <li>Introduce gas through the full sampling system</li>
-      <li>Allow full stabilization before accepting values</li>
-    </ul>
+<svg viewBox="0 0 800 160" style="width:100%;margin:20px 0">
+  <rect x="10" y="50" width="150" height="50" rx="8" fill="#1f2937"/>
+  <text x="85" y="80" fill="white" text-anchor="middle" font-size="14">Warm-up & Stabilize</text>
 
-    <p class="muted">
-      Direct injection at the analyzer bypasses sampling errors
-      and gives false confidence.
-    </p>
+  <rect x="200" y="50" width="150" height="50" rx="8" fill="#334155"/>
+  <text x="275" y="80" fill="white" text-anchor="middle" font-size="14">Zero Gas</text>
 
-    <!-- ================= MOISTURE ================= -->
-    <h2>Moisture Considerations During Calibration</h2>
-    <p>
-      Moisture content during calibration must reflect
-      actual process moisture conditions.
-    </p>
+  <rect x="390" y="50" width="150" height="50" rx="8" fill="#475569"/>
+  <text x="465" y="80" fill="white" text-anchor="middle" font-size="14">Span Gas</text>
 
-    <ul class="checklist">
-      <li>Dry calibration on wet process = bias error</li>
-      <li>Moisture compensation models depend on stability</li>
-      <li>Changing humidity invalidates calibration</li>
-    </ul>
+  <rect x="580" y="50" width="200" height="50" rx="8" fill="#64748b"/>
+  <text x="680" y="80" fill="white" text-anchor="middle" font-size="14">Validation & Trending</text>
 
-    <!-- ================= VALIDATION ================= -->
-    <h2>Routine Validation Strategy</h2>
-    <p>
-      Validation ensures long-term reliability without altering settings.
-    </p>
+  <line x1="160" y1="75" x2="200" y2="75" stroke="#999" stroke-width="2"/>
+  <line x1="350" y1="75" x2="390" y2="75" stroke="#999" stroke-width="2"/>
+  <line x1="540" y1="75" x2="580" y2="75" stroke="#999" stroke-width="2"/>
+</svg>
 
-    <ul class="checklist">
-      <li>Perform zero and span checks at defined intervals</li>
-      <li>Trend validation results, not just pass/fail</li>
-      <li>Investigate drift before recalibrating</li>
-      <li>Document all validation activities</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>Pre-Calibration Conditions (Mandatory)</h2>
 
-    <!-- ================= AFTER MAINT ================= -->
-    <h2>When Re-Calibration Is Actually Required</h2>
-    <ul class="checklist">
-      <li>After optical component replacement</li>
-      <li>After major sampling system modification</li>
-      <li>After firmware or software update</li>
-      <li>After repeated validation failure with known good gases</li>
-    </ul>
+<ul class="checklist">
+<li>Analyzer fully warmed (stable interferogram)</li>
+<li>Optics temperature stabilized</li>
+<li>Sample system above dew point</li>
+<li>No moisture condensation in cell</li>
+<li>No active alarms</li>
+<li>Sampling identical to normal operation</li>
+</ul>
 
-    <!-- ================= FIELD SYMPTOMS ================= -->
-    <h2>Symptoms of Bad Calibration</h2>
-    <ul class="checklist">
-      <li>All gases drifting together</li>
-      <li>Unrealistic correlations between components</li>
-      <li>Consistent bias across operating range</li>
-      <li>Audit failures despite stable readings</li>
-    </ul>
+<p class="muted">
+If the sampling system is unstable, calibration becomes meaningless.
+</p>
 
-    <!-- ================= AUDIT ================= -->
-    <h2>Audit & Compliance Best Practices</h2>
-    <ul class="checklist">
-      <li>Maintain calibration and validation records</li>
-      <li>Keep certificates for all calibration gases</li>
-      <li>Demonstrate validation trend stability</li>
-      <li>Explain moisture handling strategy clearly</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>Zero Calibration – What Technicians Must Watch</h2>
 
-    <p class="muted">
-      Auditors trust stable validation history more than frequent recalibration.
-    </p>
+<ul class="checklist">
+<li>Use clean, dry nitrogen or instrument air</li>
+<li>Zero gas temperature close to sample temperature</li>
+<li>Purge sufficiently before accepting zero</li>
+<li>Never zero when cell contains moisture</li>
+<li>Confirm baseline noise is stable</li>
+</ul>
 
-    <!-- ================= LINKS ================= -->
-    <h2>Related FTIR Pages</h2>
-    <ul class="checklist">
-      <li><a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer – Principles & Maintenance</a></li>
-      <li><a href="/knowledge/analyzers/ftir-sampling-system.html">FTIR Sampling System – Deep Dive</a></li>
-      <li><a href="/knowledge/analyzers/ftir-moisture-cross-interference.html">FTIR Moisture & Cross-Interference</a></li>
-    </ul>
+<p class="muted">
+Zeroing a wet FTIR creates hidden offsets that appear later as span drift.
+</p>
 
-  </article>
+<!-- ====================================================== -->
+<h2>Span Calibration – Correct Method</h2>
 
+<ul class="checklist">
+<li>Use certified, traceable calibration gas</li>
+<li>Concentration within operating range</li>
+<li>Introduce gas through complete sampling path</li>
+<li>Allow full stabilization before storing values</li>
+<li>Record before/after adjustment</li>
+</ul>
+
+<p class="muted">
+Direct analyzer injection bypasses sampling errors and gives false confidence.
+</p>
+
+<!-- ====================================================== -->
+<h2>Moisture Effects During Calibration</h2>
+
+<p>
+FTIR measurement depends on absorption spectra.
+Water vapor significantly affects spectral interpretation.
+</p>
+
+<ul class="checklist">
+<li>Dry calibration on wet process = bias error</li>
+<li>Humidity changes invalidate previous calibration</li>
+<li>Moisture models require stable dew point</li>
+<li>Cell temperature must prevent condensation</li>
+</ul>
+
+<p class="muted">
+Moisture mismatch is the #1 hidden cause of audit failure.
+</p>
+
+<!-- ====================================================== -->
+<h2>When Re-Calibration Is Truly Required</h2>
+
+<ul class="checklist">
+<li>Optical component replacement</li>
+<li>Major sampling system change</li>
+<li>Detector replacement</li>
+<li>Firmware or algorithm update</li>
+<li>Repeated validation failure with certified gas</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Field Symptoms of Incorrect Calibration</h2>
+
+<ul class="checklist">
+<li>All gases drifting in same direction</li>
+<li>Unrealistic correlation between components</li>
+<li>Consistent bias across full range</li>
+<li>Audit failure despite “stable” readings</li>
+<li>Excessive recalibration frequency</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Audit & Compliance Strategy</h2>
+
+<ul class="checklist">
+<li>Maintain full validation history</li>
+<li>Keep calibration gas certificates</li>
+<li>Trend zero & span results</li>
+<li>Document moisture handling approach</li>
+<li>Avoid unnecessary recalibration</li>
+</ul>
+
+<p class="muted">
+Auditors trust stability history more than frequent parameter changes.
+</p>
+
+<!-- ====================================================== -->
+<h2>Related FTIR Resources</h2>
+
+<ul class="checklist">
+<li><a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer – Principles & Maintenance</a></li>
+<li><a href="/knowledge/analyzers/ftir-sampling-system.html">FTIR Sampling System – Design & Control</a></li>
+<li><a href="/knowledge/analyzers/ftir-moisture-cross-interference.html">Moisture & Cross-Interference Explained</a></li>
+</ul>
+
+</article>
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
 
 </body>

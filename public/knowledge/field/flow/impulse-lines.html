@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Impulse Line Installation – DP Flow Accuracy & Field Troubleshooting | InstMates</title>
+
+  <meta name="description"
+        content="Impulse line installation guide for DP flow and pressure transmitters – routing rules, slope direction, condensation effects, blockage issues, and real plant troubleshooting." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="instrumentation">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/flow/">Flow Measurement</a><span>›</span>
+  <span class="current">Impulse Lines</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Impulse Line Installation – Engineering Deep Dive</h1>
+
+  <p class="muted">
+    Field-focused guidance for DP flow and pressure transmitters —
+    installation rules, slope direction, condensation control,
+    and real plant failure patterns.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Why Impulse Lines Are Critical</h2>
+
+  <p>
+    In differential pressure (DP) measurement, impulse lines transmit
+    upstream and downstream pressures from the process to the transmitter.
+  </p>
+
+  <p>
+    Any error in these lines directly affects:
+  </p>
+
+  <ul class="checklist">
+    <li>Measured ΔP accuracy</li>
+    <li>Flow calculation stability</li>
+    <li>Zero reference point</li>
+    <li>Response time</li>
+  </ul>
+
+  <p class="muted">
+    Most DP flow errors are mechanical, not electronic.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Basic Impulse Line Configuration</h2>
+
+  <svg viewBox="0 0 900 260" width="100%" style="margin:16px 0">
+
+    <rect x="150" y="60" width="600" height="60"
+          fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="450" y="95" text-anchor="middle" font-size="14">
+      Process Pipe
+    </text>
+
+    <line x1="300" y1="120" x2="300" y2="200" stroke="#333" stroke-width="2"/>
+    <line x1="600" y1="120" x2="600" y2="200" stroke="#333" stroke-width="2"/>
+
+    <rect x="420" y="200" width="120" height="50"
+          fill="#fdf6e3" stroke="#e0a800"/>
+    <text x="480" y="230" text-anchor="middle" font-size="12">
+      DP Transmitter
+    </text>
+
+  </svg>
+
+  <ul class="checklist">
+    <li>Two lines: High pressure (HP) and Low pressure (LP)</li>
+    <li>Equal length recommended</li>
+    <li>Minimum bends and dead legs</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Slope Rules – Gas vs Liquid Service</h2>
+
+  <h3>For Gas Service</h3>
+  <ul class="checklist">
+    <li>Impulse lines should slope downward toward transmitter</li>
+    <li>Prevents liquid accumulation</li>
+    <li>Avoid low points (liquid traps)</li>
+  </ul>
+
+  <h3>For Liquid Service</h3>
+  <ul class="checklist">
+    <li>Impulse lines should slope upward toward transmitter</li>
+    <li>Prevents vapor pockets</li>
+    <li>Ensure full liquid column in both lines</li>
+  </ul>
+
+  <p class="muted">
+    Incorrect slope creates false high or false low readings.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Condensation & Phase Effects</h2>
+
+  <ul class="checklist">
+    <li>Condensation in gas service causes false high DP</li>
+    <li>Vapor pockets in liquid service cause false low DP</li>
+    <li>Unequal liquid column height causes bias error</li>
+    <li>Temperature difference between lines causes density mismatch</li>
+  </ul>
+
+  <p>
+    Even small liquid accumulation can significantly distort flow calculation.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Field Failure Patterns</h2>
+
+  <ul class="checklist">
+    <li>Plugged impulse line → zero or low reading</li>
+    <li>Leak on LP side → false high flow</li>
+    <li>Leak on HP side → false low flow</li>
+    <li>Manifold valve leakage → unstable DP</li>
+    <li>Unequal impulse length → dynamic error</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Response Time & Dynamic Behavior</h2>
+
+  <ul class="checklist">
+    <li>Long lines increase response delay</li>
+    <li>Small tubing ID increases damping</li>
+    <li>Blockage causes slow trending behavior</li>
+    <li>Air bubbles create oscillation</li>
+  </ul>
+
+  <p class="muted">
+    Slow response is often mistaken for transmitter fault.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Field Troubleshooting Logic</h2>
+
+  <ol class="checklist">
+    <li>Close manifold equalizing valve and check zero</li>
+    <li>Blow impulse lines carefully</li>
+    <li>Inspect for liquid traps or vapor pockets</li>
+    <li>Check slope direction physically</li>
+    <li>Compare local DP with DCS value</li>
+  </ol>
+
+  <p>
+    Always verify mechanical installation before replacing the transmitter.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Preventive Maintenance</h2>
+
+  <ul class="checklist">
+    <li>Quarterly impulse line inspection</li>
+    <li>Check slope integrity</li>
+    <li>Leak testing at fittings</li>
+    <li>Manifold operation check</li>
+    <li>Heat tracing inspection (if applicable)</li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

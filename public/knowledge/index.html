@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Knowledge Hub | InstMates</title>
 
   <meta name="description"
-        content="InstMates Knowledge Hub for instrument and analyzer technicians. Learn field instrumentation, analyzers, calibration, troubleshooting, and real-world failure logic." />
+        content="InstMates Knowledge Hub – structured technical learning paths for instrument and analyzer technicians focused on real plant behavior, diagnostics, and field troubleshooting." />
 
-  <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-26">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="knowledge">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <span class="current">Knowledge Hub</span>
 </nav>
 
-<!-- ================= MAIN ================= -->
 <main class="container">
 
   <!-- ================= INTRO ================= -->
   <section class="panel">
     <h1>Knowledge Hub</h1>
     <p class="muted">
-      Practical learning paths built for instrument and analyzer technicians —
-      focused on real field behavior, not textbook theory.
+      Structured technical learning paths built for instrument and analyzer technicians —
+      focused on real plant behavior, installation logic, diagnostics, and practical troubleshooting.
+    </p>
+    <p class="muted">
+      This hub avoids textbook-only explanations. Every topic is written with field reality in mind —
+      how instruments behave under pressure, temperature variation, poor grounding,
+      aging components, and maintenance errors.
     </p>
   </section>
 
@@ -40,8 +41,8 @@
   <section class="panel">
     <h2>Field Instrumentation</h2>
     <p class="muted">
-      Core fundamentals, installation practices, calibration logic,
-      and troubleshooting used daily in plants.
+      Core measurement principles, loop behavior, installation practices,
+      calibration logic, and failure patterns seen daily in operating plants.
     </p>
 
     <div class="grid grid-3">
@@ -49,10 +50,10 @@
       <div class="card">
         <h3>4–20 mA Fundamentals</h3>
         <p class="muted">
-          Live zero concept, loop power, signal faults,
-          grounding issues, and loop troubleshooting.
+          Live zero concept, loop power, grounding behavior, signal instability,
+          scaling logic, and real loop troubleshooting scenarios.
         </p>
-        <a href="/knowledge/field/4-20ma/index.html" class="btn btn-soft">
+        <a href="/knowledge/field/4-20ma/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -60,10 +61,10 @@
       <div class="card">
         <h3>Pressure Measurement</h3>
         <p class="muted">
-          Transmitters, impulse lines, manifolds,
-          installation errors, and field failures.
+          PT & DP transmitters, impulse line effects, manifold operation,
+          zero shift causes, and common installation mistakes.
         </p>
-        <a href="/knowledge/field/pressure/index.html" class="btn btn-soft">
+        <a href="/knowledge/field/pressure/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -71,10 +72,10 @@
       <div class="card">
         <h3>Calibration & Loop Check</h3>
         <p class="muted">
-          Bench calibration vs loop check,
-          common mistakes, and shutdown best practices.
+          Bench vs field calibration, loop verification methods,
+          common procedural errors, and shutdown best practices.
         </p>
-        <a href="/knowledge/field/calibration/index.html" class="btn btn-soft">
+        <a href="/knowledge/field/signals/4-20ma/calibration.html" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -86,8 +87,9 @@
   <section class="panel">
     <h2>Analyzers</h2>
     <p class="muted">
-      Analyzer fundamentals explained with sampling systems,
-      calibration logic, alarms, and troubleshooting workflows.
+      Analyzer fundamentals explained through sampling systems,
+      detector behavior, alarm logic, calibration drift, and
+      troubleshooting workflows used in real refineries and process plants.
     </p>
 
     <div class="grid grid-3">
@@ -95,10 +97,10 @@
       <div class="card">
         <h3>Gas Chromatograph (GC)</h3>
         <p class="muted">
-          Working principle, columns, detectors,
-          sampling systems, and baseline problems.
+          Working principle, sampling systems, columns, detectors (FID/TCD),
+          baseline instability, retention time shift, and carrier gas issues.
         </p>
-        <a href="/knowledge/analyzers/gc/index.html" class="btn btn-soft">
+        <a href="/knowledge/gc/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -106,10 +108,10 @@
       <div class="card">
         <h3>CEMS</h3>
         <p class="muted">
-          SO₂, NOx, CO, O₂ measurement,
-          probe systems, zero/span drift, and compliance logic.
+          SO₂, NOx, CO, O₂ measurement logic, probe systems,
+          zero/span drift, analyzer faults, and compliance challenges.
         </p>
-        <a href="/knowledge/analyzers/cems/index.html" class="btn btn-soft">
+        <a href="/knowledge/analyzers/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -118,9 +120,10 @@
         <h3>Process Gas Analyzers</h3>
         <p class="muted">
           NDIR, paramagnetic, TDLAS basics,
-          field issues, and stability problems.
+          interference effects, sampling integrity,
+          and long-term stability issues.
         </p>
-        <a href="/knowledge/analyzers/process-gas/index.html" class="btn btn-soft">
+        <a href="/knowledge/analyzers/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -128,12 +131,12 @@
     </div>
   </section>
 
-  <!-- ================= TROUBLESHOOTING ================= -->
+  <!-- ================= TROUBLESHOOTING GUIDES ================= -->
   <section class="panel">
     <h2>Troubleshooting Guides</h2>
     <p class="muted">
-      Decision-tree based troubleshooting —
-      symptoms → checks → root cause → fix.
+      Decision-tree based troubleshooting guides structured as:
+      <strong>symptoms → checks → probable cause → corrective action.</strong>
     </p>
 
     <div class="grid grid-2">
@@ -141,10 +144,10 @@
       <div class="card">
         <h3>Analyzer Fault Logic</h3>
         <p class="muted">
-          Zero/span failure, response issues,
-          alarms, and diagnostic flow.
+          Zero/span failures, response instability, alarm interpretation,
+          detector problems, and diagnostic flow.
         </p>
-        <a href="/knowledge/troubleshooting/analyzers/index.html" class="btn btn-soft">
+        <a href="/case-studies/analyzers/" class="btn btn-soft">
           View Guides
         </a>
       </div>
@@ -152,10 +155,11 @@
       <div class="card">
         <h3>Instrument Loop Faults</h3>
         <p class="muted">
-          Signal saturation, noise, open loops,
-          grounding, and power issues.
+          Signal saturation, noise pickup, open loops,
+          improper grounding, power supply disturbances,
+          and DCS mismatch issues.
         </p>
-        <a href="/knowledge/troubleshooting/loops/index.html" class="btn btn-soft">
+        <a href="/knowledge/field/signals/4-20ma/troubleshooting.html" class="btn btn-soft">
           View Guides
         </a>
       </div>
@@ -163,26 +167,10 @@
     </div>
   </section>
 
-  <!-- ================= CTA ================= -->
-  <section class="panel" style="text-align:center">
-    <h2>Learn the Way Technicians Actually Work</h2>
-    <p class="muted">
-      Built from real plant experience — not copied manuals.
-    </p>
-
-    <a href="/register.html" class="btn btn-primary auth-out">
-      Join InstMates Free
-    </a>
-  </section>
-
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
-<script type="module" src="/assets/js/header-auth.js"></script>
 
 </body>
 </html>

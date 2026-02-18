@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Square Root Extraction – DP Flow Scaling Explained | InstMates</title>
+
+  <meta name="description"
+        content="Square root extraction explained for DP flow measurement – why flow is proportional to the square root of differential pressure, DCS scaling logic, and common field mistakes." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="instrumentation">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/flow/">Flow Measurement</a><span>›</span>
+  <span class="current">Square Root Extraction</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Square Root Extraction – Why DP Flow Is Non-Linear</h1>
+
+  <p class="muted">
+    Understanding the mathematical relationship between differential pressure
+    and flow rate — and how incorrect scaling causes real plant errors.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Why Square Root Is Required</h2>
+
+  <p>
+    Differential pressure flow measurement follows Bernoulli’s principle:
+  </p>
+
+  <p><strong>Flow ∝ √(ΔP)</strong></p>
+
+  <ul class="checklist">
+    <li>ΔP increases with the square of flow</li>
+    <li>If flow doubles, ΔP becomes four times</li>
+    <li>Therefore, square root must be applied</li>
+  </ul>
+
+  <p class="muted">
+    Without square root extraction, flow reading will be incorrect.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Visual Representation</h2>
+
+  <svg viewBox="0 0 900 250" width="100%" style="margin:16px 0">
+
+    <line x1="60" y1="200" x2="860" y2="200" stroke="#333" stroke-width="2"/>
+    <line x1="60" y1="40" x2="60" y2="200" stroke="#333" stroke-width="2"/>
+
+    <path d="M60 200 Q250 120 500 80 T860 50"
+          fill="none"
+          stroke="#0b5ed7"
+          stroke-width="3"/>
+
+    <text x="460" y="230" text-anchor="middle" font-size="12">
+      Differential Pressure (ΔP)
+    </text>
+
+    <text x="20" y="120" transform="rotate(-90 20 120)" font-size="12">
+      Flow Rate
+    </text>
+
+  </svg>
+
+  <p>
+    The relationship is curved — not linear.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Where Square Root Extraction Is Applied</h2>
+
+  <h3>Option 1: In the Transmitter</h3>
+  <ul class="checklist">
+    <li>Transmitter outputs linear flow signal</li>
+    <li>4 mA = 0% flow</li>
+    <li>20 mA = 100% flow</li>
+  </ul>
+
+  <h3>Option 2: In the DCS / PLC</h3>
+  <ul class="checklist">
+    <li>Transmitter sends linear DP signal</li>
+    <li>DCS performs square root calculation</li>
+    <li>Engineering scaling applied afterward</li>
+  </ul>
+
+  <p class="muted">
+    Never apply square root twice.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Field Mistakes</h2>
+
+  <ul class="checklist">
+    <li>Square root enabled in both transmitter and DCS</li>
+    <li>Square root not applied anywhere</li>
+    <li>Wrong low/high DP range configuration</li>
+    <li>Flow scaled as linear DP</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Example – Practical Scenario</h2>
+
+  <p>
+    Suppose:
+  </p>
+
+  <ul class="checklist">
+    <li>DP range: 0–100 mbar</li>
+    <li>Flow range: 0–1000 Nm³/h</li>
+  </ul>
+
+  <p>
+    If ΔP = 25 mbar:
+  </p>
+
+  <p>
+    √(25/100) = √0.25 = 0.5  
+    → Flow = 50% = 500 Nm³/h
+  </p>
+
+  <p class="muted">
+    Without square root, DCS would incorrectly show 25% flow.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Failure Symptoms in Plant</h2>
+
+  <ul class="checklist">
+    <li>Flow looks too low at low DP</li>
+    <li>Control valve behaves abnormally</li>
+    <li>Flow trend not matching process conditions</li>
+    <li>Calibration mismatch between field and DCS</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Troubleshooting Logic</h2>
+
+  <ol class="checklist">
+    <li>Check transmitter configuration (linear DP or linear flow)</li>
+    <li>Check DCS block configuration</li>
+    <li>Confirm only one square root applied</li>
+    <li>Verify LRV and URV match design data</li>
+  </ol>
+
+  <p>
+    Many flow control issues are scaling configuration errors —
+    not hardware failures.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Flow Topics</h2>
+
+  <ul class="checklist">
+    <li><a href="/knowledge/field/flow/impulse-lines.html">Impulse Line Installation</a></li>
+    <li><a href="/knowledge/field/flow/manifold-valves.html">Manifold Valves & Equalization</a></li>
+    <li>DP Flow Troubleshooting Master Guide</li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>
