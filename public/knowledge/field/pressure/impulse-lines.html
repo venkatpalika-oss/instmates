@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Impulse line fundamentals for pressure measurement. Learn wet leg and dry leg systems, slope rules, plugging issues, and real field troubleshooting tips." />
+        content="Impulse line fundamentals for pressure measurement. Learn wet leg and dry leg systems, slope rules for gas and liquid service, plugging issues, and real field troubleshooting tips." />
 
-  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 
   <style>
@@ -62,10 +61,8 @@
 
 <body data-page="impulse-lines">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/">Knowledge</a><span>›</span>
@@ -77,41 +74,42 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Impulse Lines – Wet Leg, Dry Leg & Field Problems</h2>
+  <h1>Impulse Lines – Wet Leg, Dry Leg & Field Failures</h1>
   <p class="muted">
     Impulse lines connect the process to the pressure transmitter.
-    Most pressure measurement errors originate here — not inside the transmitter.
+    In real plant conditions, most pressure and DP errors originate
+    in impulse piping — not inside the transmitter.
   </p>
 </section>
 
 <!-- ================= TYPES ================= -->
 <section class="panel">
-  <h3>Types of Impulse Line Installations</h3>
+  <h2>Types of Impulse Line Installations</h2>
 
   <div class="info-grid">
     <div class="info-box">
       <h3>Wet Leg</h3>
       <p>
-        Used mainly in <strong>closed vessels</strong>.
-        Both impulse lines remain filled with liquid to create a stable reference.
+        Used mainly in <strong>closed vessels</strong> for level measurement.
+        Both legs remain filled with liquid to maintain a constant reference.
       </p>
       <ul>
-        <li>Common in steam & condensate service</li>
-        <li>Requires constant fill level</li>
-        <li>Sensitive to leaks and evaporation</li>
+        <li>Common in steam service</li>
+        <li>Reference leg must stay full</li>
+        <li>Leak or evaporation causes zero shift</li>
       </ul>
     </div>
 
     <div class="info-box">
       <h3>Dry Leg</h3>
       <p>
-        Used in <strong>open tanks</strong>.
-        One side is vented to atmosphere.
+        Used in <strong>open tanks</strong> or vented systems.
+        One side is referenced to atmosphere.
       </p>
       <ul>
-        <li>Simpler installation</li>
-        <li>Condensation is main enemy</li>
-        <li>Incorrect slope causes false readings</li>
+        <li>Simpler configuration</li>
+        <li>Condensation is major issue</li>
+        <li>Improper slope creates reading errors</li>
       </ul>
     </div>
   </div>
@@ -119,18 +117,37 @@
 
 <!-- ================= SLOPE RULES ================= -->
 <section class="panel">
-  <h3>Slope & Routing Rules (Critical)</h3>
+  <h2>Slope & Routing Rules (Service Dependent)</h2>
+
+  <h3>Gas Service</h3>
   <ul>
-    <li>Impulse lines must slope <strong>away from the transmitter</strong></li>
-    <li>Avoid pockets, loops, and dead legs</li>
-    <li>Both legs should be equal length where possible</li>
-    <li>Provide drain and vent points</li>
+    <li>Impulse lines should slope <strong>toward the transmitter</strong></li>
+    <li>Prevents liquid accumulation</li>
+    <li>Avoid low points (liquid traps)</li>
   </ul>
+
+  <h3>Liquid Service</h3>
+  <ul>
+    <li>Impulse lines should slope <strong>away from the transmitter</strong></li>
+    <li>Prevents vapor pockets</li>
+    <li>Maintain full liquid column</li>
+  </ul>
+
+  <h3>Steam Service</h3>
+  <ul>
+    <li>Use condensate pots</li>
+    <li>Ensure equal condensate level in both legs</li>
+    <li>Insulate both impulse lines equally</li>
+  </ul>
+
+  <p class="muted">
+    Incorrect slope is one of the most common field installation mistakes.
+  </p>
 </section>
 
 <!-- ================= FAILURES ================= -->
 <section class="panel">
-  <h3>Common Impulse Line Problems</h3>
+  <h2>Common Impulse Line Problems</h2>
 
   <table>
     <tr>
@@ -140,30 +157,47 @@
     </tr>
     <tr>
       <td>Slow response</td>
-      <td>Plugging or wax buildup</td>
-      <td>Crack impulse line carefully</td>
+      <td>Plugging, wax, debris</td>
+      <td>Blow down impulse line</td>
     </tr>
     <tr>
-      <td>Zero shift</td>
-      <td>Condensate imbalance</td>
-      <td>Drain both legs</td>
+      <td>Zero shift after shutdown</td>
+      <td>Unequal condensate level</td>
+      <td>Drain and re-equalize</td>
+    </tr>
+    <tr>
+      <td>Reading too high</td>
+      <td>LP leg liquid accumulation</td>
+      <td>Check slope & traps</td>
     </tr>
     <tr>
       <td>No reading</td>
-      <td>Frozen or blocked line</td>
-      <td>Check heat tracing</td>
+      <td>Blocked or frozen line</td>
+      <td>Inspect heat tracing</td>
     </tr>
   </table>
 </section>
 
+<!-- ================= TROUBLESHOOTING ================= -->
+<section class="panel">
+  <h2>Troubleshooting Sequence</h2>
+  <ol>
+    <li>Verify manifold valve positions</li>
+    <li>Check impulse line slope visually</li>
+    <li>Blow down both legs safely</li>
+    <li>Confirm no liquid traps or vapor pockets</li>
+    <li>Compare local gauge vs transmitter reading</li>
+  </ol>
+</section>
+
 <!-- ================= FIELD TIPS ================= -->
 <section class="panel">
-  <h3>Field Tips from Experience</h3>
+  <h2>Field Experience Tips</h2>
   <ul>
-    <li>Open impulse valves slowly</li>
-    <li>Flush lines before calibration</li>
     <li>Mark High (H) and Low (L) lines clearly</li>
     <li>Insulate both legs equally</li>
+    <li>Never open valves rapidly</li>
+    <li>Inspect after major shutdowns</li>
   </ul>
 </section>
 
@@ -183,10 +217,7 @@
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= INCLUDES ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>

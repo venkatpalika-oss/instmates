@@ -6,17 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="4–20 mA diagnostics for instrument technicians. Learn fault currents, NAMUR NE43, under-range, over-range, and practical field diagnosis." />
+        content="4–20 mA diagnostics for instrument technicians. Learn fault currents, NAMUR NE43 limits, under-range, over-range, and practical field diagnosis." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="field-420ma-diagnostics">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/index.html">Knowledge Hub</a><span>›</span>
@@ -37,26 +35,56 @@
   </p>
 </section>
 
-<!-- ================= DIAGNOSTIC CONCEPT ================= -->
+<!-- ================= VISUAL CURRENT ZONES ================= -->
+<section class="panel">
+  <h2>Diagnostic Current Zones</h2>
+
+  <svg viewBox="0 0 900 120" width="100%" style="max-width:900px;">
+    <!-- Underrange -->
+    <rect x="0" y="40" width="200" height="40" fill="#f8d7da"/>
+    <text x="100" y="65" text-anchor="middle" font-size="14">&lt; 3.6 mA (Fault)</text>
+
+    <!-- Normal Range -->
+    <rect x="200" y="40" width="500" height="40" fill="#d4edda"/>
+    <text x="450" y="65" text-anchor="middle" font-size="14">4 – 20 mA (Normal Operation)</text>
+
+    <!-- Overrange -->
+    <rect x="700" y="40" width="200" height="40" fill="#fff3cd"/>
+    <text x="800" y="65" text-anchor="middle" font-size="14">&gt; 21 mA (Fault)</text>
+
+    <text x="450" y="20" text-anchor="middle" font-size="16">4–20 mA Diagnostic Spectrum</text>
+  </svg>
+
+  <p class="muted">
+    Any value outside the normal green zone indicates a diagnostic condition.
+  </p>
+</section>
+
+<!-- ================= DIAGNOSTIC PRINCIPLE ================= -->
 <section class="panel">
   <h2>Diagnostic Principle</h2>
 
   <p>
     In a healthy loop, current varies between <strong>4 mA and 20 mA</strong>
-    based on the process value. Any current outside this range indicates
-    an abnormal condition.
+    based on the process value. Currents outside this band are intentionally
+    used by transmitters to indicate abnormal conditions.
   </p>
 
   <ul>
     <li>Current <strong>represents information</strong></li>
-    <li>No current = no information</li>
-    <li>Abnormal current = fault</li>
+    <li>0 mA = loop failure</li>
+    <li>&lt; 3.6 mA = under-range or sensor fault</li>
+    <li>&gt; 21 mA = over-range or electronics fault</li>
   </ul>
 </section>
 
-<!-- ================= NAMUR TABLE ================= -->
+<!-- ================= NAMUR ================= -->
 <section class="panel">
   <h2>NAMUR NE43 Diagnostic Levels</h2>
+
+  <p>
+    NAMUR NE43 standardizes how transmitters signal faults to control systems.
+  </p>
 
   <table class="table">
     <thead>
@@ -69,7 +97,7 @@
     <tbody>
       <tr>
         <td>&lt; 3.6 mA</td>
-        <td>Underrange / Fault</td>
+        <td>Underrange / Low Fault</td>
         <td>Sensor failure, broken cable</td>
       </tr>
       <tr>
@@ -84,11 +112,26 @@
       </tr>
       <tr>
         <td>&gt; 21.0 mA</td>
-        <td>Overrange / Electronics Fault</td>
-        <td>Internal transmitter error</td>
+        <td>Overrange / High Fault</td>
+        <td>Electronics error, configuration issue</td>
       </tr>
     </tbody>
   </table>
+</section>
+
+<!-- ================= DCS INTERPRETATION ================= -->
+<section class="panel">
+  <h2>How DCS Interprets Fault Currents</h2>
+
+  <ul>
+    <li>DCS usually alarms below 3.8 mA</li>
+    <li>DCS usually alarms above 20.5–21 mA</li>
+    <li>Fault type depends on transmitter configuration (fail-low or fail-high)</li>
+  </ul>
+
+  <p class="muted">
+    Always check transmitter configuration before diagnosing electronics failure.
+  </p>
 </section>
 
 <!-- ================= COMMON FAULTS ================= -->
@@ -113,25 +156,42 @@
   <ul>
     <li>Poor grounding or shielding</li>
     <li>Loose terminals</li>
-    <li>Electrical noise</li>
+    <li>Electrical noise interference</li>
   </ul>
 
   <h3>&gt; 21 mA</h3>
   <ul>
     <li>Electronics fault</li>
     <li>Incorrect configuration</li>
-    <li>Transmitter failure</li>
+    <li>Sensor failure</li>
   </ul>
+</section>
+
+<!-- ================= VOLTAGE CHECK ================= -->
+<section class="panel">
+  <h2>Quick Voltage Check Formula</h2>
+
+  <p>
+    If input card resistance = 250 Ω:
+  </p>
+
+  <p>
+    V = I × R  
+  </p>
+
+  <p>
+    At 4 mA → 1.0 V  
+    At 20 mA → 5.0 V
+  </p>
+
+  <p class="muted">
+    Measuring voltage across AI terminals can quickly confirm loop health.
+  </p>
 </section>
 
 <!-- ================= DIAGNOSTIC APPROACH ================= -->
 <section class="panel">
   <h2>Recommended Diagnostic Approach</h2>
-
-  <!-- INLINE SVG FLOW (UNCHANGED) -->
-  <!-- (SVG exactly as you provided – not modified) -->
-
-  <!-- 🔽 SVG REMAINS HERE 🔽 -->
 
   <ol>
     <li>Measure loop current with a multimeter</li>
@@ -155,7 +215,6 @@
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
 <script src="/assets/js/includes.js?v=2026-01-22"></script>

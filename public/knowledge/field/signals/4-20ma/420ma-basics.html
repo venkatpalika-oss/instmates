@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="4–20 mA current loop basics for instrument technicians. Learn why 4–20 mA is used, live zero concept, loop operation, and field relevance." />
+        content="4–20 mA current loop basics for instrument technicians. Learn live zero concept, loop wiring, scaling, signal faults, and practical field troubleshooting." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
@@ -26,8 +26,9 @@
 
 <main class="container">
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>4–20 mA Basics</h2>
+  <h1>4–20 mA Basics – The Foundation of Analog Instrumentation</h1>
 
   <p class="muted">
     The 4–20 mA current loop is the most widely used analog signal in
@@ -36,56 +37,111 @@
   </p>
 </section>
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>What is a 4–20 mA Signal?</h3>
+  <h2>What is a 4–20 mA Signal?</h2>
 
   <p>
     A 4–20 mA signal represents a process variable by varying the
-    <strong>current</strong> flowing in a closed loop.
+    <strong>current</strong> flowing in a closed electrical loop.
   </p>
 
-  <ul>
-    <li>4 mA → Minimum process value</li>
-    <li>20 mA → Maximum process value</li>
+  <ul class="checklist">
+    <li>4 mA → Minimum process value (LRV)</li>
+    <li>20 mA → Maximum process value (URV)</li>
+    <li>Same current flows through entire loop</li>
   </ul>
 
   <p class="muted">
-    The same current flows through the transmitter, cables, and receiving device.
+    Unlike voltage signals, current remains constant even if cable resistance changes.
   </p>
 </section>
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Why Current Instead of Voltage?</h3>
+  <h2>Typical 4–20 mA Loop Diagram</h2>
 
-  <ul>
-    <li>Cable resistance does not affect current</li>
-    <li>Better noise immunity</li>
-    <li>Long-distance transmission possible</li>
-    <li>Easy fault detection</li>
+  <svg viewBox="0 0 900 240" width="100%" style="margin-top:14px">
+
+    <!-- Power Supply -->
+    <rect x="40" y="90" width="160" height="60" rx="10" fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="120" y="125" text-anchor="middle" font-size="13">24V DC Supply</text>
+
+    <!-- Arrow -->
+    <line x1="200" y1="120" x2="300" y2="120" stroke="#333" stroke-width="2"/>
+    <polygon points="300,120 290,115 290,125" fill="#333"/>
+
+    <!-- Transmitter -->
+    <rect x="300" y="80" width="180" height="80" rx="12" fill="#e6f4ea" stroke="#198754"/>
+    <text x="390" y="110" text-anchor="middle" font-size="13">Transmitter</text>
+    <text x="390" y="130" text-anchor="middle" font-size="12">4–20 mA Output</text>
+
+    <!-- Arrow -->
+    <line x1="480" y1="120" x2="600" y2="120" stroke="#333" stroke-width="2"/>
+    <polygon points="600,120 590,115 590,125" fill="#333"/>
+
+    <!-- PLC / DCS -->
+    <rect x="600" y="90" width="200" height="60" rx="10" fill="#fdf6e3" stroke="#e0a800"/>
+    <text x="700" y="125" text-anchor="middle" font-size="13">PLC / DCS Analog Input</text>
+
+    <!-- Return Line -->
+    <line x1="800" y1="120" x2="800" y2="170" stroke="#333" stroke-width="2"/>
+    <line x1="800" y1="170" x2="120" y2="170" stroke="#333" stroke-width="2"/>
+    <line x1="120" y1="170" x2="120" y2="150" stroke="#333" stroke-width="2"/>
+
+  </svg>
+
+  <p class="muted">
+    The loop must remain closed. Any break in the loop causes current to drop to 0 mA.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Why Current Instead of Voltage?</h2>
+
+  <ul class="checklist">
+    <li>Cable resistance does not affect signal accuracy</li>
+    <li>High noise immunity</li>
+    <li>Reliable over long distances (hundreds of meters)</li>
+    <li>Simple fault detection</li>
   </ul>
 </section>
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Why 4 mA and Not 0 mA?</h3>
+  <h2>Why 4 mA and Not 0 mA?</h2>
 
-  <p>
-    4 mA is called <strong>live zero</strong>.
-  </p>
+  <p><strong>4 mA is called Live Zero.</strong></p>
 
-  <ul>
-    <li>4 mA → Valid minimum reading</li>
-    <li>0 mA → Cable break or transmitter failure</li>
+  <ul class="checklist">
+    <li>4 mA → Valid minimum measurement</li>
+    <li>0 mA → Cable break / power loss / transmitter fault</li>
   </ul>
 
   <p class="muted">
-    This allows technicians to distinguish between a real zero value and a fault.
+    Live zero allows technicians to differentiate between a real zero value
+    and a wiring problem.
   </p>
 </section>
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Where 4–20 mA Is Used</h3>
+  <h2>Typical Loop Fault Indications</h2>
 
-  <ul>
+  <ul class="checklist">
+    <li>0 mA → Open circuit</li>
+    <li>Below 3.8 mA → Underrange or fault</li>
+    <li>Above 20.5 mA → Overrange or fault</li>
+    <li>Constant 20 mA → Signal saturation</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Where 4–20 mA Is Used</h2>
+
+  <ul class="checklist">
     <li>Pressure transmitters</li>
     <li>Temperature transmitters</li>
     <li>Flow and level instruments</li>
@@ -93,13 +149,28 @@
   </ul>
 </section>
 
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Field Rule</h3>
+  <h2>Golden Field Rule</h2>
 
   <p class="muted">
-    Always measure loop current with a multimeter before adjusting software,
-    scaling, or replacing instruments.
+    Always measure loop current with a multimeter before adjusting scaling,
+    replacing transmitters, or blaming DCS configuration.
   </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost"
+       href="/knowledge/field/signals/4-20ma/index.html">
+      ← Back to 4–20 mA Overview
+    </a>
+    <a class="btn btn-primary"
+       href="/knowledge/field/signals/4-20ma/troubleshooting.html">
+      Next: 4–20 mA Troubleshooting →
+    </a>
+  </div>
 </section>
 
 </main>

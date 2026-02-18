@@ -6,18 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Pressure transmitter internals explained for field technicians. Learn sensing element, isolation diaphragm, fill fluid, capillary effects, and common PT/DP failure modes with inline SVG." />
+        content="Pressure transmitter internals explained for field technicians. Learn sensing element, isolation diaphragm, fill fluid, capillary effects, DP logic, and common PT/DP failure modes." />
 
-  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
 
 <body data-page="pressure-transmitter">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/">Knowledge</a><span>›</span>
@@ -27,68 +24,139 @@
 
 <main class="container">
 
-<!-- ================= INTRO ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h2>Pressure Transmitters (PT/DP) – Internals & Field Logic</h2>
+  <h1>Pressure Transmitters (PT / DP) – Internals & Field Logic</h1>
 
   <p class="muted">
     A pressure transmitter converts process pressure into a standard signal (typically 4–20 mA).
     Understanding the internal construction helps technicians troubleshoot zero shift,
-    slow response, unstable readings, and DP errors without unnecessary replacements.
+    slow response, unstable readings, and DP errors without unnecessary replacement.
   </p>
 </section>
 
-<!-- ================= SVG : TRANSMITTER CUTAWAY ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Typical Smart Pressure Transmitter – Cutaway View</h3>
+  <h2>Typical Smart Pressure Transmitter – Cutaway View</h2>
 
   <p class="muted">
     Most smart transmitters use an isolation diaphragm and fill fluid to protect the sensor.
-    DP transmitters have two pressure ports (High/Low) connected to the sensing element.
+    DP transmitters have two pressure ports (High / Low) connected to the sensing element.
   </p>
 
   <div class="svg-wrap">
 
-<!-- SVG UNCHANGED -->
-<!-- (intentionally left exactly as you provided) -->
+    <!-- SVG UNCHANGED -->
+    <!-- (kept exactly as you provided) -->
 
   </div>
 </section>
 
-<!-- ================= FIELD MEANING ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>What Technicians Must Remember</h3>
-  <ul class="muted">
-    <li><b>Isolation diaphragm</b> protects the sensor from corrosive / dirty process.</li>
-    <li><b>Fill fluid</b> transfers pressure — temperature changes can cause slight zero shift.</li>
-    <li><b>DP transmitters</b> measure <b>H − L</b>. Wrong tubing causes negative readings.</li>
-    <li>Most “transmitter faults” are actually <b>impulse line</b>, <b>manifold</b>, or <b>process</b> problems.</li>
+  <h2>Main Internal Components Explained</h2>
+
+  <ul class="checklist">
+    <li><strong>Process Connection</strong> – Transfers process pressure into transmitter body.</li>
+    <li><strong>Isolation Diaphragm</strong> – Protects sensing element from corrosive or dirty process.</li>
+    <li><strong>Fill Fluid</strong> – Transfers pressure from diaphragm to sensor; sensitive to temperature change.</li>
+    <li><strong>Sensing Element</strong> – Converts mechanical strain into electrical signal (capacitive/piezoresistive).</li>
+    <li><strong>Electronics Module</strong> – Converts signal to 4–20 mA + digital protocol (HART).</li>
   </ul>
 </section>
 
-<!-- ================= COMMON FIELD ISSUES ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Common Field Issues & Quick Checks</h3>
-  <ul class="muted">
-    <li><b>Zero shift after shutdown</b> → temperature swing, trapped pressure, wet impulse line.</li>
-    <li><b>Sluggish response</b> → plugged impulse line, partially closed manifold, sticky root valve.</li>
-    <li><b>No change in reading</b> → blocked port, closed isolation valve, frozen impulse line.</li>
-    <li><b>High noise</b> → flashing process, vibration, loose wiring/shielding.</li>
-    <li><b>DP wrong sign</b> → H/L swapped, incorrect impulse routing.</li>
+  <h2>DP Transmitter Logic (High – Low)</h2>
+
+  <p>
+    A DP transmitter measures:
+  </p>
+
+  <p><strong>ΔP = P<sub>High</sub> − P<sub>Low</sub></strong></p>
+
+  <ul class="checklist">
+    <li>If High side pressure increases → output increases.</li>
+    <li>If Low side pressure increases → output decreases.</li>
+    <li>If H & L equal → output should be 4 mA (for zero DP).</li>
+    <li>Swapping impulse lines causes negative or inverted readings.</li>
   </ul>
 </section>
 
-<!-- ================= CALIBRATION TIP ================= -->
+<!-- ====================================================== -->
 <section class="panel">
-  <h3>Calibration Tip (Field Practical)</h3>
+  <h2>What Technicians Must Remember</h2>
+
+  <ul class="checklist">
+    <li>Most “transmitter faults” are actually <strong>impulse line</strong> issues.</li>
+    <li>Temperature swings affect fill fluid → small zero shifts possible.</li>
+    <li>Capillary systems are sensitive to unequal heating.</li>
+    <li>Overpressure can permanently damage sensing diaphragm.</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Field Issues & Quick Checks</h2>
+
+  <ul class="checklist">
+    <li><strong>Zero shift after shutdown</strong> → impulse imbalance or temperature contraction.</li>
+    <li><strong>Sluggish response</strong> → plugged impulse line or partially closed manifold.</li>
+    <li><strong>No reading change</strong> → blocked port, closed root valve, frozen line.</li>
+    <li><strong>High noise</strong> → flashing process, vibration, poor shielding.</li>
+    <li><strong>Wrong DP sign</strong> → High/Low swapped.</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Calibration Warning</h2>
+
   <p class="muted">
-    Before calibrating, confirm <b>manifold valve positions</b>,
-    <b>impulse line condition</b>, and <b>process stability</b>.
-    Calibrating a transmitter with installation faults only hides the real problem.
+    Never calibrate before verifying:
+  </p>
+
+  <ul class="checklist">
+    <li>Manifold valve sequence correct</li>
+    <li>Impulse lines clear and balanced</li>
+    <li>Process pressure isolated</li>
+    <li>DCS scaling correct</li>
+  </ul>
+
+  <p class="muted">
+    Calibration cannot fix mechanical installation problems.
   </p>
 </section>
 
-<!-- ================= NAVIGATION ================= -->
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Pressure Topics</h2>
+
+  <ul class="checklist">
+    <li>
+      <a href="/knowledge/field/pressure/impulse-lines.html">
+        Impulse Lines – Installation & Failures
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/manifold-valves.html">
+        Manifold Valves – Equalization Logic
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-calibration.html">
+        Pressure Calibration – Field Procedure
+      </a>
+    </li>
+    <li>
+      <a href="/knowledge/field/pressure/pressure-troubleshooting.html">
+        Pressure Troubleshooting – Decision Tree
+      </a>
+    </li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
 <section class="panel">
   <div class="action-row">
     <a class="btn btn-ghost"
@@ -104,10 +172,7 @@
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= INCLUDES ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>

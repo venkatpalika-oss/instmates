@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Instrumentation Blog | InstMates</title>
+
+  <meta name="description"
+        content="Practical field insights for instrument technicians. Real troubleshooting stories, commissioning tips, 4–20 mA insights, and smart instrumentation knowledge." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="blog">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <span class="current">Blog</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h1>Instrumentation Field Blog</h1>
+
+  <p class="muted">
+    Real plant experiences, troubleshooting logic, commissioning lessons,
+    and practical instrumentation knowledge for technicians.
+  </p>
+</section>
+
+<section class="panel">
+
+<div class="grid">
+
+  <div class="card">
+    <h3>
+      <a href="/blog/why-4-20ma-live-zero.html">
+        Why 4–20 mA Uses Live Zero Instead of 0 mA?
+      </a>
+    </h3>
+    <p>
+      Understand the engineering logic behind live zero and why 0 mA
+      would create dangerous ambiguity in industrial plants.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>
+      <a href="/blog/loop-check-vs-calibration-explained.html">
+        Loop Check vs Calibration – What Most Technicians Get Wrong
+      </a>
+    </h3>
+    <p>
+      A common field mistake that leads to unnecessary transmitter replacement.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>
+      <a href="/blog/common-4-20ma-mistakes.html">
+        5 Common 4–20 mA Mistakes in Field Instrumentation
+      </a>
+    </h3>
+    <p>
+      Practical mistakes observed during commissioning and maintenance.
+    </p>
+  </div>
+
+  <!-- Coming Soon Card -->
+  <div class="card" style="opacity:0.7; border-style:dashed;">
+    <h3>HART Troubleshooting in Real Plants</h3>
+    <p>Communication errors, loop resistance, and diagnostic strategy.</p>
+    <p class="muted"><strong>Coming Soon</strong></p>
+  </div>
+
+</div>
+
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

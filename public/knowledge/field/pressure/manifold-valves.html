@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Manifold valves for pressure transmitters. Learn 3-valve and 5-valve manifolds, isolation and equalization logic, and correct field operation steps." />
+        content="3-valve and 5-valve manifold guide for pressure transmitters. Learn correct isolation, equalization sequence, zeroing procedure, and common field mistakes." />
 
-  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 
   <style>
@@ -62,10 +61,8 @@
 
 <body data-page="manifold-valves">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/">Knowledge</a><span>›</span>
@@ -77,93 +74,132 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Manifold Valves – Isolation & Equalization Logic</h2>
+  <h1>Manifold Valves – Isolation & Equalization Logic</h1>
 
   <p class="muted">
-    Manifold valves allow safe isolation, equalization, and calibration of pressure
-    transmitters. Incorrect valve operation is a common cause of false readings
-    and transmitter damage.
+    Manifold valves allow safe isolation, equalization, venting,
+    and calibration of pressure transmitters.
+    Incorrect valve sequencing is one of the most common causes
+    of zero shift and sensor damage.
   </p>
 </section>
 
 <!-- ================= TYPES ================= -->
 <section class="panel">
-  <h3>Types of Manifold Valves</h3>
+  <h2>Types of Manifold Valves</h2>
 
   <div class="info-grid">
 
     <div class="info-box">
       <h3>3-Valve Manifold</h3>
-      <p>Commonly used with differential pressure transmitters.</p>
       <ul>
-        <li>High-pressure isolation valve</li>
-        <li>Low-pressure isolation valve</li>
+        <li>High-pressure (HP) isolation</li>
+        <li>Low-pressure (LP) isolation</li>
         <li>Equalizing valve</li>
       </ul>
+      <p class="muted">Common for DP transmitters.</p>
     </div>
 
     <div class="info-box">
       <h3>5-Valve Manifold</h3>
-      <p>Used where frequent calibration and venting are required.</p>
       <ul>
-        <li>High & low isolation valves</li>
+        <li>HP & LP isolation</li>
         <li>Equalizing valve</li>
-        <li>High & low vent / drain valves</li>
+        <li>HP vent / drain</li>
+        <li>LP vent / drain</li>
       </ul>
+      <p class="muted">Used for frequent calibration or steam service.</p>
     </div>
 
   </div>
 </section>
 
-<!-- ================= OPERATION LOGIC ================= -->
+<!-- ================= NORMAL CONDITION ================= -->
 <section class="panel">
-  <h3>Correct Operating Logic</h3>
+  <h2>Normal Operating Condition</h2>
 
   <table>
     <tr>
-      <th>Operation</th>
-      <th>Isolation Valves</th>
-      <th>Equalizing Valve</th>
+      <th>Valve</th>
+      <th>Status</th>
     </tr>
     <tr>
-      <td>Normal Operation</td>
-      <td>Open</td>
-      <td>Closed</td>
-    </tr>
-    <tr>
-      <td>Calibration</td>
-      <td>Closed</td>
+      <td>High Pressure Isolation</td>
       <td>Open</td>
     </tr>
     <tr>
-      <td>Transmitter Removal</td>
-      <td>Closed</td>
+      <td>Low Pressure Isolation</td>
       <td>Open</td>
+    </tr>
+    <tr>
+      <td>Equalizing Valve</td>
+      <td>Closed</td>
     </tr>
   </table>
+
+  <p class="muted">
+    Equalizing valve must always remain closed during normal operation.
+  </p>
 </section>
 
-<!-- ================= COMMON MISTAKES ================= -->
+<!-- ================= ZERO CHECK PROCEDURE ================= -->
 <section class="panel">
-  <h3>Common Field Mistakes</h3>
+  <h2>Correct Zero / Equalization Procedure</h2>
+
+  <ol>
+    <li>Close High Pressure isolation valve</li>
+    <li>Close Low Pressure isolation valve</li>
+    <li>Open Equalizing valve slowly</li>
+    <li>Confirm transmitter reads zero</li>
+    <li>Close Equalizing valve</li>
+    <li>Open Low Pressure valve first</li>
+    <li>Open High Pressure valve slowly</li>
+  </ol>
+
+  <p class="muted">
+    Opening HP first during restart can cause sensor shock and span shift.
+  </p>
+</section>
+
+<!-- ================= COMMON FAILURES ================= -->
+<section class="panel">
+  <h2>Common Field Mistakes</h2>
 
   <ul>
-    <li>Opening equalizing valve during normal operation</li>
-    <li>Closing one isolation valve only</li>
-    <li>Fast valve operation causing sensor shock</li>
-    <li>Leaving vent valves slightly open</li>
+    <li>Equalizing valve partially open during operation</li>
+    <li>Opening HP rapidly after maintenance</li>
+    <li>Leaving one isolation valve slightly closed</li>
+    <li>Internal manifold leakage</li>
+    <li>Vent valves not fully tightened</li>
   </ul>
+</section>
+
+<!-- ================= SYMPTOMS ================= -->
+<section class="panel">
+  <h2>Failure Symptoms</h2>
+
+  <ul>
+    <li>DP always near zero</li>
+    <li>Unstable pressure reading</li>
+    <li>Zero drift after calibration</li>
+    <li>Flow reading inconsistent with process</li>
+  </ul>
+
+  <p class="muted">
+    Many transmitter replacements are unnecessary —
+    the problem is often manifold handling.
+  </p>
 </section>
 
 <!-- ================= FIELD TIPS ================= -->
 <section class="panel">
-  <h3>Field Tips from Experience</h3>
+  <h2>Field Experience Tips</h2>
 
   <ul>
-    <li>Operate valves slowly and in sequence</li>
-    <li>Tag valves clearly (H, L, EQ)</li>
-    <li>Verify valve position after maintenance</li>
-    <li>Use equalization before zero calibration</li>
+    <li>Always tag HP, LP, and EQ clearly</li>
+    <li>Operate valves slowly</li>
+    <li>Equalize before zero calibration</li>
+    <li>Verify both legs pressurized before restart</li>
   </ul>
 </section>
 
@@ -175,18 +211,15 @@
       ← Back to Impulse Lines
     </a>
     <a class="btn btn-primary"
-       href="/knowledge/field/pressure/pressure-failures.html">
-      Next: Pressure Failures →
+       href="/knowledge/field/pressure/zero-shift-after-shutdown.html">
+      Next: Zero Shift After Shutdown →
     </a>
   </div>
 </section>
 
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= INCLUDES ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
 
 </body>

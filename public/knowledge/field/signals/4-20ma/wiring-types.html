@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>4–20 mA Wiring – 2-Wire vs 3-Wire vs 4-Wire | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description"
+        content="4–20 mA wiring explained for technicians – difference between 2-wire loop-powered, 3-wire, and 4-wire transmitters with practical field logic and troubleshooting guidance." />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="field-420ma-wiring">
+
+<!-- ================= HEADER ================= -->
+<div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/signals/4-20ma/index.html">4–20 mA</a><span>›</span>
+  <span class="current">Wiring Types</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>4–20 mA Wiring – 2-Wire vs 3-Wire vs 4-Wire</h1>
+
+  <p class="muted">
+    Understanding transmitter wiring types is critical for troubleshooting
+    loop failures, grounding problems, and unexpected signal behavior.
+    Many field mistakes happen because technicians assume
+    all transmitters are loop-powered.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>1️⃣ Two-Wire (Loop-Powered) Transmitter</h2>
+
+  <p>
+    This is the most common industrial configuration.
+    The same two wires provide both power and signal.
+  </p>
+
+  <ul class="checklist">
+    <li>Powered from loop (typically 24V DC)</li>
+    <li>No separate power terminals</li>
+    <li>Simpler installation</li>
+    <li>Most pressure & flow transmitters use this</li>
+  </ul>
+
+  <h3>Typical Wiring</h3>
+
+  <svg viewBox="0 0 900 240" width="100%" style="margin-top:14px">
+
+    <rect x="40" y="90" width="160" height="60" rx="10" fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="120" y="125" text-anchor="middle" font-size="13">24V DC</text>
+
+    <line x1="200" y1="120" x2="320" y2="120" stroke="#333" stroke-width="2"/>
+    <polygon points="320,120 310,115 310,125" fill="#333"/>
+
+    <rect x="320" y="80" width="200" height="80" rx="12" fill="#e6f4ea" stroke="#198754"/>
+    <text x="420" y="115" text-anchor="middle" font-size="13">2-Wire Transmitter</text>
+    <text x="420" y="135" text-anchor="middle" font-size="12">Power + Signal Same Loop</text>
+
+    <line x1="520" y1="120" x2="700" y2="120" stroke="#333" stroke-width="2"/>
+    <polygon points="700,120 690,115 690,125" fill="#333"/>
+
+    <rect x="700" y="90" width="160" height="60" rx="10" fill="#fdf6e3" stroke="#e0a800"/>
+    <text x="780" y="125" text-anchor="middle" font-size="13">PLC / DCS</text>
+
+  </svg>
+
+  <p class="muted">
+    If the loop opens anywhere, current drops to 0 mA.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>2️⃣ Three-Wire Transmitter</h2>
+
+  <p>
+    Three-wire transmitters have a separate power return
+    and a dedicated signal wire.
+  </p>
+
+  <ul class="checklist">
+    <li>Separate power supply required</li>
+    <li>Common in temperature transmitters</li>
+    <li>Better power stability</li>
+    <li>More wiring complexity</li>
+  </ul>
+
+  <h3>Typical Wiring</h3>
+
+  <svg viewBox="0 0 900 240" width="100%" style="margin-top:14px">
+
+    <rect x="40" y="80" width="160" height="80" rx="10" fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="120" y="120" text-anchor="middle" font-size="13">24V DC Supply</text>
+
+    <line x1="200" y1="100" x2="320" y2="100" stroke="#333" stroke-width="2"/>
+    <line x1="200" y1="140" x2="320" y2="140" stroke="#333" stroke-width="2"/>
+
+    <rect x="320" y="70" width="220" height="100" rx="12" fill="#e6f4ea" stroke="#198754"/>
+    <text x="430" y="110" text-anchor="middle" font-size="13">3-Wire Transmitter</text>
+    <text x="430" y="130" text-anchor="middle" font-size="12">Power + Signal Separate</text>
+
+    <line x1="540" y1="120" x2="700" y2="120" stroke="#333" stroke-width="2"/>
+
+    <rect x="700" y="90" width="160" height="60" rx="10" fill="#fdf6e3" stroke="#e0a800"/>
+    <text x="780" y="125" text-anchor="middle" font-size="13">PLC / DCS</text>
+
+  </svg>
+
+  <p class="muted">
+    Loss of signal does not always mean power loss.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>3️⃣ Four-Wire Transmitter</h2>
+
+  <p>
+    Four-wire transmitters have a dedicated power supply
+    and an isolated 4–20 mA output.
+  </p>
+
+  <ul class="checklist">
+    <li>Externally powered (often 230V AC or 24V DC)</li>
+    <li>Output loop is independent</li>
+    <li>Common in analyzers and gas detectors</li>
+    <li>More robust for high-power devices</li>
+  </ul>
+
+  <p class="muted">
+    Even if transmitter is powered, signal loop can fail independently.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Quick Comparison</h2>
+
+  <ul class="checklist">
+    <li><strong>2-Wire:</strong> Most common, loop-powered, simplest</li>
+    <li><strong>3-Wire:</strong> Separate return, moderate complexity</li>
+    <li><strong>4-Wire:</strong> Fully powered, independent output</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Field Troubleshooting Logic</h2>
+
+  <ul class="checklist">
+    <li>No signal on 2-wire → Check loop continuity first</li>
+    <li>No signal on 3-wire → Verify supply voltage</li>
+    <li>Signal fixed at 4 mA → Check underrange or sensor fault</li>
+    <li>Signal fixed at 20 mA → Possible saturation or wiring short</li>
+    <li>Unstable reading → Inspect grounding and shielding</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <div class="action-row">
+    <a class="btn btn-ghost"
+       href="/knowledge/field/signals/4-20ma/basics.html">
+      ← Back to 4–20 mA Basics
+    </a>
+    <a class="btn btn-primary"
+       href="/knowledge/field/signals/4-20ma/troubleshooting.html">
+      Next: 4–20 mA Troubleshooting →
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div id="siteFooter"></div>
+
+<script src="/assets/js/includes.js?v=2026-01-22"></script>
+</body>
+</html>

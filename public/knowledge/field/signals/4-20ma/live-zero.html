@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Live zero concept and NAMUR NE43 fault logic for 4–20 mA signals. Learn how current values indicate faults and diagnostics." />
+        content="Live zero concept and NAMUR NE43 fault logic for 4–20 mA signals. Learn how current values indicate faults, fail-low, fail-high, and diagnostics." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
@@ -26,25 +26,51 @@
 
 <section class="panel">
   <h2>Live Zero Concept</h2>
+  <p class="muted">
+    The use of <strong>4 mA as live zero</strong> is one of the most
+    important engineering decisions in industrial instrumentation.
+    It allows fault detection without additional wires or digital protocols.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>4–20 mA Current Spectrum</h3>
+
+  <svg viewBox="0 0 900 120" width="100%" style="max-width:900px;">
+    <rect x="0" y="40" width="150" height="40" fill="#f8d7da"/>
+    <text x="75" y="65" text-anchor="middle" font-size="13">0 mA (Open Loop)</text>
+
+    <rect x="150" y="40" width="150" height="40" fill="#fde2e2"/>
+    <text x="225" y="65" text-anchor="middle" font-size="13">&lt; 3.6 mA</text>
+
+    <rect x="300" y="40" width="400" height="40" fill="#d4edda"/>
+    <text x="500" y="65" text-anchor="middle" font-size="13">4 – 20 mA (Valid Measurement)</text>
+
+    <rect x="700" y="40" width="200" height="40" fill="#fff3cd"/>
+    <text x="800" y="65" text-anchor="middle" font-size="13">&gt; 21 mA</text>
+
+    <text x="450" y="20" text-anchor="middle" font-size="16">
+      Signal Interpretation Zones
+    </text>
+  </svg>
 
   <p class="muted">
-    The most important design decision in analog signaling is the use of
-    <strong>4 mA as live zero</strong>. This allows fault detection without
-    additional wiring or diagnostics.
+    The green zone represents valid process measurement. Red/yellow zones indicate faults.
   </p>
 </section>
 
 <section class="panel">
   <h3>Why 4 mA Instead of 0 mA?</h3>
-
   <ul>
-    <li>4 mA = valid minimum measurement</li>
-    <li>0 mA = cable break or dead transmitter</li>
-    <li>Faults are immediately detectable</li>
+    <li>4 mA = valid minimum measurement (LRV)</li>
+    <li>0 mA = broken wire or dead transmitter</li>
+    <li>Power for 2-wire transmitters flows even at zero process</li>
+    <li>Fault detection is built into the signal itself</li>
   </ul>
 
   <p class="muted">
-    With 0–20 mA systems, zero value and fault look identical.
+    In older 0–20 mA systems, zero measurement and cable failure look identical.
+    4–20 mA eliminates that ambiguity.
   </p>
 </section>
 
@@ -59,32 +85,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>&lt; 3.6 mA</td><td>Sensor fault / underrange</td></tr>
-      <tr><td>4.0 mA</td><td>Lower range value</td></tr>
-      <tr><td>20.0 mA</td><td>Upper range value</td></tr>
-      <tr><td>&gt; 21.0 mA</td><td>Electronics fault / overrange</td></tr>
+      <tr><td>&lt; 3.6 mA</td><td>Sensor fault / underrange (Fail Low)</td></tr>
+      <tr><td>4.0 mA</td><td>Lower range value (Valid)</td></tr>
+      <tr><td>20.0 mA</td><td>Upper range value (Valid)</td></tr>
+      <tr><td>&gt; 21.0 mA</td><td>Electronics fault / overrange (Fail High)</td></tr>
     </tbody>
   </table>
+
+  <p class="muted">
+    NAMUR NE43 standardizes how transmitters communicate fault conditions
+    to PLC/DCS systems.
+  </p>
 </section>
 
 <section class="panel">
-  <h3>Fault Logic Diagram</h3>
-
-  <!-- Inline SVG -->
-  <svg width="100%" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
-    <rect x="40" y="70" width="180" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
-    <text x="130" y="105" text-anchor="middle" font-weight="700">Transmitter</text>
-
-    <rect x="300" y="70" width="180" height="60" rx="10" fill="#eef6fb" stroke="#0b3c5d"/>
-    <text x="390" y="105" text-anchor="middle" font-weight="700">PLC / DCS</text>
-
-    <line x1="220" y1="100" x2="300" y2="100" stroke="#000" stroke-width="2"/>
-    <text x="260" y="85" font-size="12">4–20 mA</text>
-
-    <text x="350" y="160" text-anchor="middle" font-size="13">
-      0 mA = Fault | 4 mA = Live Zero | &gt;21 mA = Electronics Fault
-    </text>
-  </svg>
+  <h3>Fail-Low vs Fail-High Configuration</h3>
+  <ul>
+    <li><strong>Fail-Low:</strong> Transmitter drives current &lt; 3.6 mA on fault</li>
+    <li><strong>Fail-High:</strong> Transmitter drives current &gt; 21 mA on fault</li>
+  </ul>
 </section>
 
 <section class="panel">
@@ -95,9 +114,43 @@
   </p>
 </section>
 
+<!-- ====================================================== -->
+<!-- RELATED BLOG ARTICLES -->
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Blog Articles</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>
+        <a href="/blog/why-4-20ma-live-zero.html">
+          Why 4–20 mA Uses Live Zero Instead of 0 mA
+        </a>
+      </h3>
+      <p>
+        Engineering reasoning behind live zero and built-in fault detection.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>
+        <a href="/blog/common-4-20ma-mistakes.html">
+          5 Common 4–20 mA Mistakes in Field Work
+        </a>
+      </h3>
+      <p>
+        Real-world errors that lead to wrong signal interpretation.
+      </p>
+    </div>
+
+  </div>
+</section>
+
 </main>
 
 <div id="siteFooter"></div>
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
+
 </body>
 </html>

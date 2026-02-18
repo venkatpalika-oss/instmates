@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Pressure measurement basics for field instrumentation technicians. Learn absolute, gauge, differential pressure with real plant examples." />
+        content="Pressure measurement basics for field instrumentation technicians. Learn absolute, gauge, and differential pressure with real plant examples and practical field understanding." />
 
-  <!-- GLOBAL CSS (ROOT-ABSOLUTE – HEALTHY) -->
+  <!-- GLOBAL CSS -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 
   <style>
@@ -81,18 +81,18 @@
 
 <!-- ================= INTRO ================= -->
 <section class="panel">
-  <h2>Pressure Basics – What Every Technician Must Know</h2>
+  <h1>Pressure Basics – What Every Technician Must Know</h1>
 
   <p class="muted">
     Pressure measurement is the foundation of level, flow, and many safety systems.
-    Understanding pressure types correctly prevents wrong installation,
-    wrong range selection, and false alarms.
+    Understanding pressure reference correctly prevents wrong installation,
+    incorrect calibration, and false alarms.
   </p>
 </section>
 
 <!-- ================= TYPES OF PRESSURE ================= -->
 <section class="panel">
-  <h3>Types of Pressure</h3>
+  <h2>Types of Pressure</h2>
 
   <div class="info-grid">
 
@@ -101,7 +101,7 @@
       <p>Measured relative to a perfect vacuum.</p>
       <ul>
         <li>Includes atmospheric pressure</li>
-        <li>Used in vacuum and low-pressure systems</li>
+        <li>Used in vacuum systems</li>
         <li>Symbol: P<sub>abs</sub></li>
       </ul>
     </div>
@@ -129,9 +129,24 @@
   </div>
 </section>
 
+<!-- ================= RELATIONSHIP ================= -->
+<section class="panel">
+  <h2>Relationship Between Pressure Types</h2>
+
+  <ul>
+    <li>P<sub>abs</sub> = P<sub>g</sub> + P<sub>atm</sub></li>
+    <li>ΔP = P<sub>high</sub> − P<sub>low</sub></li>
+  </ul>
+
+  <p class="muted">
+    If atmospheric pressure is ignored during calibration or range selection,
+    measurement errors are guaranteed.
+  </p>
+</section>
+
 <!-- ================= PLANT EXAMPLES ================= -->
 <section class="panel">
-  <h3>Real Plant Examples</h3>
+  <h2>Real Plant Examples</h2>
 
   <table>
     <tr>
@@ -140,19 +155,19 @@
       <th>Reason</th>
     </tr>
     <tr>
-      <td>Storage Tank</td>
+      <td>Open Storage Tank</td>
       <td>Gauge</td>
-      <td>Open to atmosphere</td>
+      <td>Vent to atmosphere</td>
     </tr>
     <tr>
-      <td>Reactor Vessel</td>
-      <td>Absolute / Gauge</td>
-      <td>Depends on vacuum presence</td>
+      <td>Vacuum Reactor</td>
+      <td>Absolute</td>
+      <td>Requires true vacuum reference</td>
     </tr>
     <tr>
       <td>Orifice Flow</td>
       <td>Differential</td>
-      <td>Flow ∝ ΔP</td>
+      <td>Flow proportional to ΔP</td>
     </tr>
     <tr>
       <td>Filter Monitoring</td>
@@ -164,19 +179,19 @@
 
 <!-- ================= COMMON MISTAKES ================= -->
 <section class="panel">
-  <h3>Common Beginner Mistakes</h3>
+  <h2>Common Beginner Mistakes</h2>
 
   <ul>
     <li>Using gauge transmitter where absolute is required</li>
-    <li>Wrong pressure range selection</li>
-    <li>Ignoring atmospheric reference</li>
+    <li>Selecting incorrect pressure range</li>
+    <li>Ignoring atmospheric reference during testing</li>
     <li>Confusing DP with gauge pressure</li>
   </ul>
 </section>
 
 <!-- ================= GOLDEN RULE ================= -->
 <section class="panel">
-  <h3>Golden Rule</h3>
+  <h2>Golden Rule</h2>
 
   <p class="muted">
     If you don’t understand what the pressure reference is,
@@ -184,18 +199,28 @@
   </p>
 </section>
 
-<!-- ================= NAVIGATION ================= -->
+<!-- ================= CONTINUE LEARNING ================= -->
 <section class="panel">
+  <h2>Continue Learning</h2>
+
   <div class="action-row">
     <a class="btn btn-ghost"
        href="/knowledge/field/pressure/index.html">
       ← Back to Pressure Overview
     </a>
+
     <a class="btn btn-primary"
-       href="/knowledge/field/pressure/pressure-transmitter.html">
-      Next: Pressure Transmitters →
+       href="/knowledge/field/pressure/impulse-lines.html">
+      Next: Impulse Lines →
     </a>
   </div>
+
+  <p class="muted" style="margin-top:14px;">
+    Recommended:
+    <a href="/knowledge/field/pressure/manifold-valves.html">Manifold Valves</a> ·
+    <a href="/knowledge/field/pressure/pressure-calibration.html">Calibration</a> ·
+    <a href="/knowledge/field/pressure/pressure-troubleshooting.html">Troubleshooting</a>
+  </p>
 </section>
 
 </main>

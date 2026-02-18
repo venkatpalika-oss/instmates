@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="description"
-        content="Step-by-step 4–20 mA calibration procedure for field instrumentation technicians. Loop check, zero, span, and verification explained." />
+        content="Step-by-step 4–20 mA calibration procedure for field instrumentation technicians. Loop check, zero, span, verification, tolerance calculation and field mistakes explained." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
 </head>
@@ -24,15 +24,40 @@
 
 <main class="container">
 
+<!-- ================= INTRO ================= -->
 <section class="panel">
   <h2>4–20 mA Calibration Procedure</h2>
-
   <p class="muted">
     Calibration ensures that the transmitter output accurately represents
     the process value across the entire 4–20 mA range.
   </p>
 </section>
 
+<!-- ================= LOOP DIAGRAM ================= -->
+<section class="panel">
+  <h3>Typical Calibration Loop Setup</h3>
+
+  <svg viewBox="0 0 800 200" width="100%" style="max-width:800px;">
+    <rect x="40" y="60" width="120" height="60" fill="none" stroke="#333" stroke-width="2"/>
+    <text x="100" y="95" text-anchor="middle" font-size="14">24 VDC</text>
+
+    <rect x="280" y="60" width="140" height="60" fill="none" stroke="#333" stroke-width="2"/>
+    <text x="350" y="95" text-anchor="middle" font-size="14">Transmitter</text>
+
+    <rect x="560" y="60" width="140" height="60" fill="none" stroke="#333" stroke-width="2"/>
+    <text x="630" y="95" text-anchor="middle" font-size="14">mA Meter</text>
+
+    <line x1="160" y1="90" x2="280" y2="90" stroke="#333" stroke-width="2"/>
+    <line x1="420" y1="90" x2="560" y2="90" stroke="#333" stroke-width="2"/>
+    <line x1="700" y1="90" x2="700" y2="150" stroke="#333" stroke-width="2"/>
+    <line x1="700" y1="150" x2="40" y2="150" stroke="#333" stroke-width="2"/>
+    <line x1="40" y1="150" x2="40" y2="120" stroke="#333" stroke-width="2"/>
+  </svg>
+
+  <p class="muted">Loop must always be measured in series.</p>
+</section>
+
+<!-- ================= REQUIRED TOOLS ================= -->
 <section class="panel">
   <h3>Required Tools</h3>
   <ul>
@@ -43,6 +68,7 @@
   </ul>
 </section>
 
+<!-- ================= PROCEDURE ================= -->
 <section class="panel">
   <h3>Step 1 – Isolate the Instrument</h3>
   <ul>
@@ -63,9 +89,7 @@
 
 <section class="panel">
   <h3>Step 3 – Zero Adjustment (4 mA)</h3>
-  <p>
-    Apply the lower range value (LRV) using the process calibrator.
-  </p>
+  <p>Apply the lower range value (LRV).</p>
   <ul>
     <li>Expected output: <strong>4.00 mA</strong></li>
     <li>Adjust zero if required</li>
@@ -74,9 +98,7 @@
 
 <section class="panel">
   <h3>Step 4 – Span Adjustment (20 mA)</h3>
-  <p>
-    Apply the upper range value (URV).
-  </p>
+  <p>Apply the upper range value (URV).</p>
   <ul>
     <li>Expected output: <strong>20.00 mA</strong></li>
     <li>Adjust span if required</li>
@@ -92,12 +114,72 @@
   </ul>
 </section>
 
+<!-- ================= TOLERANCE ================= -->
+<section class="panel">
+  <h3>Calibration Tolerance Calculation</h3>
+
+  <p>If transmitter accuracy = ±0.5% of span:</p>
+  <p><strong>Span = 16 mA (20 – 4)</strong></p>
+  <p>0.5% of 16 mA = 0.08 mA</p>
+
+  <p>
+    Acceptable 4 mA range = 3.92 to 4.08 mA<br>
+    Acceptable 20 mA range = 19.92 to 20.08 mA
+  </p>
+</section>
+
+<!-- ================= COMMON MISTAKES ================= -->
+<section class="panel">
+  <h3>Common Field Mistakes</h3>
+  <ul>
+    <li>Calibrating without isolating impulse lines</li>
+    <li>Measuring mA in parallel (wrong method)</li>
+    <li>Ignoring power supply instability</li>
+    <li>Not documenting as-found condition</li>
+    <li>Forgetting damping configuration reset</li>
+  </ul>
+</section>
+
+<!-- ================= FIELD RULE ================= -->
 <section class="panel">
   <h3>Field Rule</h3>
   <p class="muted">
     Never calibrate a transmitter before confirming correct loop wiring
-    and power supply stability.
+    and stable power supply. Calibration does not fix wiring errors.
   </p>
+</section>
+
+<!-- ====================================================== -->
+<!-- RELATED BLOG ARTICLES -->
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Blog Articles</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>
+        <a href="/blog/loop-check-vs-calibration-explained.html">
+          Loop Check vs Calibration – What Most Get Wrong
+        </a>
+      </h3>
+      <p>
+        Understand why calibration alone cannot confirm signal integrity.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>
+        <a href="/blog/common-4-20ma-mistakes.html">
+          5 Common 4–20 mA Mistakes in Field Work
+        </a>
+      </h3>
+      <p>
+        Practical field errors observed during commissioning.
+      </p>
+    </div>
+
+  </div>
 </section>
 
 </main>
