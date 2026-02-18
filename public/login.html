@@ -3,24 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Login | InstMates</title>
 
-  <meta name="description"
-        content="Login to InstMates – the professional platform for instrument and analyzer technicians." />
-
-  <!-- Global CSS (ROOT SAFE) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22">
+
+  <style>
+    /* ================= STATUS MESSAGE ================= */
+    .auth-status {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 22px;
+      transition: all .3s ease;
+    }
+
+    .auth-status.error {
+      color: #dc3545;
+      animation: shake .4s ease;
+    }
+
+    .auth-status.success {
+      color: #198754;
+      animation: successPulse .6s ease;
+    }
+
+    /* ================= SPINNER ================= */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin .6s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ================= REMEMBER ME ================= */
+    .remember-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* 🔥 force left alignment */
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.remember-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.remember-row label {
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+    /* =========================================================
+       🔥 MICRO-INTERACTIONS (Premium Polish)
+    ========================================================= */
+
+    /* Panel smooth appearance */
+    .auth-panel {
+      animation: fadeInUp .6s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Input focus animation */
+    .auth-form input {
+      transition: all .2s ease;
+    }
+
+    .auth-form input:focus {
+      outline: none;
+      border-color: #0b5ed7;
+      box-shadow: 0 0 0 3px rgba(11,94,215,.15);
+      transform: translateY(-1px);
+    }
+
+    /* Button press feel */
+    #loginBtn {
+      transition: all .15s ease;
+    }
+
+    #loginBtn:active {
+      transform: scale(.97);
+    }
+
+    /* Shake animation */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Success pulse animation */
+    @keyframes successPulse {
+      0% { transform: scale(.95); opacity: .7; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
 </head>
 
 <body data-page="login">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= MAIN ================= -->
 <main class="container">
-
   <section class="panel auth-panel">
     <h2>Login to InstMates</h2>
 
@@ -36,9 +141,17 @@
         <input type="password" required>
       </label>
 
-      <button class="btn btn-primary full" type="submit">
+      <!-- Remember Me -->
+      <div class="remember-row">
+        <input type="checkbox" id="rememberMe" checked>
+        <label for="rememberMe">Remember me</label>
+      </div>
+
+      <button id="loginBtn" class="btn btn-primary full" type="submit">
         Login
       </button>
+
+      <div id="authStatus" class="auth-status"></div>
 
     </form>
 
@@ -52,48 +165,50 @@
     </p>
 
   </section>
-
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<!-- ===================================================== -->
-<!-- ================= SCRIPTS (ORDER LOCKED) ================= -->
-<!-- ===================================================== -->
-
-<!-- 1️⃣ HEADER + FOOTER INCLUDES -->
+<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js?v=2026-01-22"></script>
-
-<!-- 2️⃣ GLOBAL AUTH GUARD (REDIRECTS AFTER LOGIN) -->
 <script type="module" src="/assets/js/auth-guard.js"></script>
-
-<!-- 3️⃣ HEADER AUTH UI -->
 <script type="module" src="/assets/js/header-auth.js"></script>
-
-<!-- 4️⃣ AUTH CORE -->
 <script type="module" src="/assets/js/auth.js"></script>
 
-<!-- 5️⃣ LOGIN HANDLER (PAGE SPECIFIC ONLY) -->
 <script type="module">
   window.handleLogin = async function (e) {
     e.preventDefault();
 
-    const email = e.target.querySelector('input[type="email"]').value;
-    const password = e.target.querySelector('input[type="password"]').value;
+    const form = e.target;
+    const email = form.querySelector('input[type="email"]').value;
+    const password = form.querySelector('input[type="password"]').value;
+    const remember = document.getElementById("rememberMe").checked;
+
+    const btn = document.getElementById("loginBtn");
+    const status = document.getElementById("authStatus");
+
+    status.textContent = "";
+    status.className = "auth-status";
+
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span>Signing in...`;
 
     try {
-      await window.loginUser(email, password);
+      await window.loginUser(email, password, remember);
 
-      /*
-        IMPORTANT:
-        - Do NOT redirect here
-        - auth-guard.js will handle navigation based on profile state
-        - Prevents Enter-key 404 issues
-      */
+      status.textContent = "✓ Login successful!";
+      status.classList.add("success");
+
+      setTimeout(() => {
+        // auth-guard.js will redirect automatically
+      }, 600);
 
     } catch (err) {
-      alert(err.message);
+      status.textContent = err.message || "Login failed.";
+      status.classList.add("error");
+
+      btn.disabled = false;
+      btn.textContent = "Login";
     }
   };
 </script>

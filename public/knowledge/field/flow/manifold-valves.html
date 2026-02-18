@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Manifold Valves & Equalization Logic – DP Transmitter Guide | InstMates</title>
+
+  <meta name="description"
+        content="Complete guide to 3-valve and 5-valve manifolds for DP transmitters – isolation, equalization logic, zeroing procedure, and field troubleshooting." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="instrumentation">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/flow/">Flow Measurement</a><span>›</span>
+  <span class="current">Manifold Valves</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>Manifold Valves & Equalization Logic</h1>
+
+  <p class="muted">
+    Field-focused guide for DP transmitters —
+    understanding isolation valves, equalizing valves,
+    and correct zeroing procedures.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>What Is a Manifold Valve?</h2>
+
+  <p>
+    A manifold valve assembly connects impulse lines
+    to a differential pressure transmitter.
+  </p>
+
+  <ul class="checklist">
+    <li>Isolates transmitter from process</li>
+    <li>Allows safe maintenance</li>
+    <li>Enables zero equalization</li>
+    <li>Prevents pressure shock</li>
+  </ul>
+
+  <p class="muted">
+    Incorrect manifold operation is a common cause of false readings.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Types of Manifolds</h2>
+
+  <h3>3-Valve Manifold</h3>
+  <ul class="checklist">
+    <li>High-pressure isolation valve</li>
+    <li>Low-pressure isolation valve</li>
+    <li>Equalizing valve</li>
+  </ul>
+
+  <h3>5-Valve Manifold</h3>
+  <ul class="checklist">
+    <li>HP isolation</li>
+    <li>LP isolation</li>
+    <li>Equalizing valve</li>
+    <li>HP vent/drain</li>
+    <li>LP vent/drain</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Basic 3-Valve Configuration</h2>
+
+  <svg viewBox="0 0 900 260" width="100%" style="margin:16px 0">
+
+    <rect x="150" y="50" width="200" height="40"
+          fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="250" y="75" text-anchor="middle" font-size="12">
+      High Pressure Line
+    </text>
+
+    <rect x="550" y="50" width="200" height="40"
+          fill="#eef3f9" stroke="#0b5ed7"/>
+    <text x="650" y="75" text-anchor="middle" font-size="12">
+      Low Pressure Line
+    </text>
+
+    <line x1="250" y1="90" x2="250" y2="150" stroke="#333" stroke-width="2"/>
+    <line x1="650" y1="90" x2="650" y2="150" stroke="#333" stroke-width="2"/>
+
+    <rect x="350" y="150" width="200" height="60"
+          fill="#fdf6e3" stroke="#e0a800"/>
+    <text x="450" y="185" text-anchor="middle" font-size="12">
+      DP Transmitter
+    </text>
+
+    <line x1="250" y1="120" x2="650" y2="120"
+          stroke="#dc3545" stroke-width="2"/>
+    <text x="450" y="110" text-anchor="middle" font-size="12" fill="#dc3545">
+      Equalizing Valve
+    </text>
+
+  </svg>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Correct Equalization Procedure (Zero Check)</h2>
+
+  <ol class="checklist">
+    <li>Close HP and LP isolation valves</li>
+    <li>Open equalizing valve slowly</li>
+    <li>Confirm transmitter reads zero</li>
+    <li>Close equalizing valve</li>
+    <li>Reopen LP valve first</li>
+    <li>Reopen HP valve slowly</li>
+  </ol>
+
+  <p class="muted">
+    Opening HP first can cause pressure shock and zero shift.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Common Field Mistakes</h2>
+
+  <ul class="checklist">
+    <li>Equalizing valve left partially open</li>
+    <li>HP valve opened too quickly</li>
+    <li>Incorrect isolation sequence</li>
+    <li>Manifold internal leakage</li>
+    <li>Blocked vent/drain port</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Failure Patterns & Symptoms</h2>
+
+  <ul class="checklist">
+    <li>Zero drift after maintenance</li>
+    <li>Flow reading unstable after startup</li>
+    <li>DP always near zero despite flow</li>
+    <li>Sudden jump after equalization</li>
+  </ul>
+
+  <p>
+    Many transmitter replacements are unnecessary —
+    the problem is often manifold handling.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Safety Considerations</h2>
+
+  <ul class="checklist">
+    <li>Always depressurize before venting</li>
+    <li>Use proper PPE</li>
+    <li>Beware of high-temperature service</li>
+    <li>Confirm process isolation before maintenance</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Preventive Maintenance</h2>
+
+  <ul class="checklist">
+    <li>Operate equalizing valve periodically</li>
+    <li>Check for internal leakage</li>
+    <li>Inspect packing and seals</li>
+    <li>Verify zero stability during shutdown</li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

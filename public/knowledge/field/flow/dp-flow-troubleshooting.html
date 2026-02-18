@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DP Flow Troubleshooting – Complete Field Guide | InstMates</title>
+
+  <meta name="description"
+        content="Complete troubleshooting guide for differential pressure (DP) flow measurement – impulse line problems, manifold errors, square root scaling, transmitter faults, and DCS configuration issues." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="instrumentation">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
+  <a href="/knowledge/field/flow/">Flow Measurement</a><span>›</span>
+  <span class="current">DP Flow Troubleshooting</span>
+</nav>
+
+<main class="container">
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h1>DP Flow Troubleshooting – Complete Field Guide</h1>
+
+  <p class="muted">
+    Step-by-step troubleshooting logic for differential pressure flow measurement —
+    from impulse lines to DCS scaling.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Step 1 – Identify the Symptom</h2>
+
+  <ul class="checklist">
+    <li>Flow reading too high</li>
+    <li>Flow reading too low</li>
+    <li>Flow unstable or oscillating</li>
+    <li>Flow zero despite process running</li>
+    <li>Flow mismatch between field and DCS</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Symptom: Flow Reading Too High</h2>
+
+  <ul class="checklist">
+    <li>Liquid accumulation in LP impulse line (gas service)</li>
+    <li>Leak on LP side</li>
+    <li>Equalizing valve partially open</li>
+    <li>Incorrect square root configuration</li>
+    <li>Impulse line unequal elevation</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Symptom: Flow Reading Too Low</h2>
+
+  <ul class="checklist">
+    <li>Leak on HP side</li>
+    <li>Plugged impulse line</li>
+    <li>Vapor pocket in liquid service</li>
+    <li>Manifold isolation not fully open</li>
+    <li>DP range incorrectly configured</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Symptom: Flow Zero but Process Running</h2>
+
+  <ul class="checklist">
+    <li>Both impulse lines blocked</li>
+    <li>Equalizing valve open</li>
+    <li>Manifold isolation closed</li>
+    <li>Transmitter failed</li>
+    <li>DCS scaling error</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Symptom: Unstable or Oscillating Flow</h2>
+
+  <ul class="checklist">
+    <li>Air bubbles in impulse lines</li>
+    <li>Loose fittings</li>
+    <li>Vibration affecting transmitter</li>
+    <li>Regulator pressure fluctuation</li>
+    <li>Improper damping configuration</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Mechanical Checks (Always First)</h2>
+
+  <ol class="checklist">
+    <li>Inspect impulse line routing and slope</li>
+    <li>Check manifold valve positions</li>
+    <li>Leak test both HP and LP sides</li>
+    <li>Blow impulse lines carefully</li>
+    <li>Verify no liquid traps or vapor pockets</li>
+  </ol>
+
+  <p class="muted">
+    Mechanical errors are responsible for most DP problems.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Transmitter Configuration Checks</h2>
+
+  <ul class="checklist">
+    <li>Verify LRV and URV</li>
+    <li>Confirm square root extraction location</li>
+    <li>Check damping value</li>
+    <li>Review calibration date</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>DCS / PLC Checks</h2>
+
+  <ul class="checklist">
+    <li>Square root applied only once</li>
+    <li>Scaling matches transmitter range</li>
+    <li>Engineering unit conversion correct</li>
+    <li>Input card functioning normally</li>
+  </ul>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Quick Diagnostic Table</h2>
+
+  <table style="width:100%;border-collapse:collapse">
+    <tr style="background:#f5f7fa">
+      <th style="padding:8px;text-align:left">Symptom</th>
+      <th style="padding:8px;text-align:left">Likely Cause</th>
+    </tr>
+    <tr>
+      <td style="padding:8px">High Flow</td>
+      <td style="padding:8px">LP leak or liquid accumulation</td>
+    </tr>
+    <tr>
+      <td style="padding:8px">Low Flow</td>
+      <td style="padding:8px">HP leak or blockage</td>
+    </tr>
+    <tr>
+      <td style="padding:8px">Zero Flow</td>
+      <td style="padding:8px">Equalizing valve open</td>
+    </tr>
+    <tr>
+      <td style="padding:8px">Oscillation</td>
+      <td style="padding:8px">Air bubbles or vibration</td>
+    </tr>
+  </table>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Golden Rule</h2>
+
+  <p>
+    Before replacing a transmitter:
+  </p>
+
+  <ul class="checklist">
+    <li>Check impulse lines</li>
+    <li>Check manifold</li>
+    <li>Check scaling logic</li>
+    <li>Then consider electronics</li>
+  </ul>
+
+  <p class="muted">
+    In most cases, the transmitter is not the problem.
+  </p>
+</section>
+
+<!-- ====================================================== -->
+<section class="panel">
+  <h2>Related Flow Guides</h2>
+
+  <ul class="checklist">
+    <li><a href="/knowledge/field/flow/impulse-lines.html">Impulse Line Installation</a></li>
+    <li><a href="/knowledge/field/flow/manifold-valves.html">Manifold Valves & Equalization</a></li>
+    <li><a href="/knowledge/field/flow/square-root-extraction.html">Square Root Extraction</a></li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>

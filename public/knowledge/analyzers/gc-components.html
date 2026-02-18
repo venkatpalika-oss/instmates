@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>GC Components – Detailed Explanation | InstMates</title>
+  <title>Gas Chromatograph (GC) Components – Sampling, Columns, Detectors & Field Failures | InstMates</title>
 
   <meta name="description"
-        content="Detailed explanation of Gas Chromatograph components – sampling system, carrier gas, columns, oven, detectors, and common field failures." />
+        content="Complete Gas Chromatograph components guide – sampling system, carrier gas, columns, oven, detectors, electronics, utilities, and common field troubleshooting scenarios." />
 
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -26,63 +26,199 @@
 
 <main class="container">
 
-  <article class="panel">
+<article class="panel">
 
-    <h1>Gas Chromatograph Components – Deep Dive</h1>
-    <p class="muted">Technician-focused reference for field troubleshooting</p>
+<h1>Gas Chromatograph (GC) Components – Engineering Deep Dive</h1>
 
-    <h2>1. Sampling System</h2>
-    <ul class="checklist">
-      <li>Sample probes, filters, and conditioning</li>
-      <li>Pressure regulation critical for repeatability</li>
-      <li>Leaks cause retention time and area errors</li>
-      <li>Condensation causes negative or distorted peaks</li>
-    </ul>
+<p class="muted">
+Category: Analyzer · Gas Chromatography · Hardware & Utilities
+</p>
 
-    <h2>2. Carrier Gas System</h2>
-    <ul class="checklist">
-      <li>Gas purity directly affects baseline stability</li>
-      <li>Moisture damages columns and detectors</li>
-      <li>Pressure fluctuation shifts retention time</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>System-Level Understanding</h2>
 
-    <h2>3. Columns</h2>
-    <ul class="checklist">
-      <li>Packed vs capillary columns</li>
-      <li>Column aging reduces resolution</li>
-      <li>Temperature overshoot damages stationary phase</li>
-    </ul>
+<p>
+A Gas Chromatograph is not just a column and detector.
+It is a complete integrated system involving:
+</p>
 
-    <h2>4. Column Oven</h2>
-    <ul class="checklist">
-      <li>Controls separation speed</li>
-      <li>Uneven heating causes peak distortion</li>
-      <li>Oven trips common after power recovery</li>
-    </ul>
+<ul class="checklist">
+<li>Sampling system</li>
+<li>Carrier gas control</li>
+<li>Column separation hardware</li>
+<li>Detector module</li>
+<li>Electronics and integration</li>
+<li>Utilities (power, gases, air)</li>
+</ul>
 
-    <h2>5. Detectors</h2>
-    <ul class="checklist">
-      <li>FID – sensitive to hydrocarbons</li>
-      <li>TCD – permanent gases</li>
-      <li>ECD – trace-level compounds</li>
-      <li>Noise often caused by grounding or power issues</li>
-    </ul>
+<p class="muted">
+In most plant incidents, instability originates from utilities or sampling — not the core analyzer.
+</p>
 
-    <h2>6. Electronics & Control</h2>
-    <ul class="checklist">
-      <li>Signal processing and peak integration</li>
-      <li>Firmware affects calibration behavior</li>
-      <li>Power disturbances lead to false alarms</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>1. Sampling System</h2>
 
-    <h2>Field Reality</h2>
-    <p class="muted">
-      In most plant incidents, GC failures originate from
-      sampling systems and utilities — not the analyzer core.
-    </p>
+<p>
+The sampling system determines repeatability and retention stability.
+Any variation in pressure, temperature, or composition directly affects results.
+</p>
 
-  </article>
+<ul class="checklist">
+<li>Representative sample extraction</li>
+<li>Pressure regulation critical for repeatability</li>
+<li>Leaks cause retention time and peak area errors</li>
+<li>Condensation creates negative or distorted peaks</li>
+<li>Dead volume increases response time</li>
+</ul>
 
+<p><strong>Field Tip:</strong> If retention time shifts randomly, check sampling pressure first.</p>
+
+<!-- ====================================================== -->
+<h2>2. Carrier Gas System</h2>
+
+<p>
+Carrier gas is the mobile phase driving separation.
+Its purity and pressure stability directly influence chromatogram quality.
+</p>
+
+<ul class="checklist">
+<li>Typical purity: 99.999%</li>
+<li>Moisture contamination damages columns</li>
+<li>Pressure fluctuation shifts retention time</li>
+<li>Flow instability reduces separation resolution</li>
+</ul>
+
+<p class="muted">
+Baseline drift is often caused by carrier gas contamination.
+</p>
+
+<!-- ====================================================== -->
+<h2>3. Columns</h2>
+
+<p>
+The column is the heart of separation.
+It defines selectivity and resolution.
+</p>
+
+<ul class="checklist">
+<li>Packed vs capillary columns</li>
+<li>Stationary phase determines interaction strength</li>
+<li>Column aging reduces resolution</li>
+<li>Temperature overshoot damages stationary phase</li>
+<li>Contamination causes tailing peaks</li>
+</ul>
+
+<p><strong>Key Concept:</strong> Retention time = function of temperature + pressure + column condition.</p>
+
+<!-- ====================================================== -->
+<h2>4. Column Oven</h2>
+
+<ul class="checklist">
+<li>Maintains stable separation temperature</li>
+<li>Temperature ramping used for multi-component analysis</li>
+<li>Uneven heating causes peak distortion</li>
+<li>Oven trips common after power recovery</li>
+<li>Thermocouple drift affects retention accuracy</li>
+</ul>
+
+<p class="muted">
+Even ±1°C variation can shift retention time noticeably.
+</p>
+
+<!-- ====================================================== -->
+<h2>5. Detectors</h2>
+
+<h3>Flame Ionization Detector (FID)</h3>
+<ul class="checklist">
+<li>Highly sensitive to hydrocarbons</li>
+<li>Requires hydrogen and air supply</li>
+<li>Flame instability causes noise</li>
+</ul>
+
+<h3>Thermal Conductivity Detector (TCD)</h3>
+<ul class="checklist">
+<li>Measures change in thermal conductivity</li>
+<li>Suitable for permanent gases</li>
+<li>Sensitive to flow variation</li>
+</ul>
+
+<h3>Electron Capture Detector (ECD)</h3>
+<ul class="checklist">
+<li>Used for trace electronegative compounds</li>
+<li>Highly sensitive but delicate</li>
+<li>Requires radiation safety compliance</li>
+</ul>
+
+<p class="muted">
+Detector noise is often electrical grounding related.
+</p>
+
+<!-- ====================================================== -->
+<h2>6. Electronics & Signal Processing</h2>
+
+<ul class="checklist">
+<li>Peak detection and integration algorithms</li>
+<li>Response factor storage</li>
+<li>Auto-calibration logic</li>
+<li>Firmware impacts integration accuracy</li>
+<li>Power disturbances create false alarms</li>
+</ul>
+
+<p>
+Modern GCs rely heavily on software stability.
+</p>
+
+<!-- ====================================================== -->
+<h2>7. Utilities – Often Overlooked</h2>
+
+<ul class="checklist">
+<li>Instrument air (dry and oil-free)</li>
+<li>Hydrogen supply stability</li>
+<li>Stable electrical grounding</li>
+<li>UPS backup for oven stability</li>
+</ul>
+
+<p class="muted">
+Utility fluctuations are silent GC killers.
+</p>
+
+<!-- ====================================================== -->
+<h2>Common Field Failure Patterns</h2>
+
+<ul class="checklist">
+<li>Retention time shift → pressure or temperature issue</li>
+<li>Baseline drift → carrier gas contamination</li>
+<li>Peak tailing → column contamination</li>
+<li>Random noise → grounding problem</li>
+<li>Negative peaks → condensation in sampling system</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Preventive Maintenance Strategy</h2>
+
+<ul class="checklist">
+<li>Quarterly leak test</li>
+<li>Carrier gas moisture monitoring</li>
+<li>Column performance trending</li>
+<li>Detector flame inspection (FID)</li>
+<li>Grounding continuity check</li>
+</ul>
+
+<p>
+Preventive maintenance reduces unexpected shutdowns and recalibration events.
+</p>
+
+<!-- ====================================================== -->
+<h2>Related GC Pages</h2>
+
+<ul class="checklist">
+<li><a href="/knowledge/analyzers/gc-basics.html">GC Basics – Working Principle</a></li>
+<li>GC Sampling System – Deep Dive</li>
+<li>GC Retention Time Shift Troubleshooting</li>
+<li>GC Calibration & Response Factor Control</li>
+</ul>
+
+</article>
 </main>
 
 <div id="siteFooter"></div>

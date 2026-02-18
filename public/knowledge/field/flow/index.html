@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Flow Measurement Fundamentals | InstMates</title>
+  <title>Flow Measurement Fundamentals – DP, Mag, Vortex & Field Troubleshooting | InstMates</title>
 
   <meta name="description"
-        content="Flow measurement fundamentals for field instrumentation technicians – DP flow, orifice plates, transmitters, installation effects, and real plant issues." />
+        content="Complete flow measurement fundamentals for field technicians – differential pressure flow, impulse lines, magnetic flowmeters, vortex, mass flowmeters, installation effects, and troubleshooting." />
 
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -25,43 +25,181 @@
 
 <main class="container">
 
+  <!-- ====================================================== -->
   <section class="panel">
-    <h1>Flow Measurement – Fundamentals</h1>
+    <h1>Flow Measurement – Engineering Fundamentals</h1>
     <p class="muted">
-      Practical flow measurement knowledge for technicians,
-      focused on installation effects, impulse lines,
-      transmitter behavior, and real plant problems.
+      Practical flow measurement knowledge for field technicians and engineers —
+      focused on installation effects, impulse line behavior,
+      transmitter response, and real plant problems.
     </p>
   </section>
 
+  <!-- ====================================================== -->
   <section class="panel">
-    <h2>Common Flow Measurement Methods</h2>
+    <h2>Major Flow Measurement Technologies</h2>
+
     <ul class="checklist">
-      <li>Differential pressure (orifice, venturi, flow nozzle)</li>
-      <li>Magnetic flowmeters</li>
-      <li>Vortex flowmeters</li>
-      <li>Mass flowmeters (Coriolis, thermal)</li>
+      <li>Differential Pressure (Orifice, Venturi, Flow Nozzle)</li>
+      <li>Magnetic Flowmeters (Electromagnetic)</li>
+      <li>Vortex Flowmeters</li>
+      <li>Mass Flowmeters (Coriolis, Thermal)</li>
+      <li>Ultrasonic Flowmeters</li>
+    </ul>
+
+    <p class="muted">
+      Each technology behaves differently under real plant conditions.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Differential Pressure (DP) Flow – Core Principle</h2>
+
+    <p>
+      DP flow measurement is based on Bernoulli’s principle.
+      A restriction creates a pressure drop proportional to the square of flow.
+    </p>
+
+    <svg viewBox="0 0 900 240" width="100%" style="margin:16px 0">
+
+      <rect x="50" y="110" width="150" height="40" fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="125" y="135" text-anchor="middle" font-size="12">Upstream Pressure (P1)</text>
+
+      <rect x="350" y="90" width="80" height="80" fill="#fdf6e3" stroke="#e0a800"/>
+      <text x="390" y="135" text-anchor="middle" font-size="12">Orifice</text>
+
+      <rect x="650" y="110" width="150" height="40" fill="#eef3f9" stroke="#0b5ed7"/>
+      <text x="725" y="135" text-anchor="middle" font-size="12">Downstream Pressure (P2)</text>
+
+      <line x1="200" y1="130" x2="350" y2="130" stroke="#333" stroke-width="2"/>
+      <line x1="430" y1="130" x2="650" y2="130" stroke="#333" stroke-width="2"/>
+
+    </svg>
+
+    <ul class="checklist">
+      <li>Flow ∝ √(P1 − P2)</li>
+      <li>Impulse line condition affects ΔP accuracy</li>
+      <li>Incorrect tapping causes systematic bias</li>
+      <li>Square root extraction required in DCS</li>
+    </ul>
+
+    <p class="muted">
+      Most DP flow errors are installation-related, not transmitter faults.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Installation & Impulse Line Effects</h2>
+
+    <ul class="checklist">
+      <li>Impulse line slope critical for gas vs liquid service</li>
+      <li>Condensation causes false high/low readings</li>
+      <li>Plugged lines cause slow response</li>
+      <li>Manifold leakage creates unstable DP</li>
+      <li>Unequal impulse line lengths introduce error</li>
+    </ul>
+
+    <p>
+      Flow measurement is highly sensitive to mechanical installation quality.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Magnetic Flowmeters – Field Notes</h2>
+
+    <ul class="checklist">
+      <li>Requires conductive fluid</li>
+      <li>Grounding rings critical</li>
+      <li>Empty pipe detection important</li>
+      <li>Liner damage causes erratic readings</li>
     </ul>
   </section>
 
+  <!-- ====================================================== -->
   <section class="panel">
-    <h2>Differential Pressure (DP) Flow – Field Reality</h2>
+    <h2>Vortex Flowmeters – Common Issues</h2>
+
     <ul class="checklist">
-      <li>Impulse line routing affects accuracy</li>
-      <li>Condensation causes false low or high flow</li>
-      <li>Incorrect tapping orientation creates bias</li>
-      <li>Manifold leakage causes unstable readings</li>
+      <li>Low flow instability</li>
+      <li>Vibration interference</li>
+      <li>Steam quality affects signal</li>
+      <li>Improper straight run length reduces accuracy</li>
     </ul>
   </section>
 
+  <!-- ====================================================== -->
   <section class="panel">
-    <h2>Common Field Problems</h2>
+    <h2>Mass Flowmeters (Coriolis) – Field Reality</h2>
+
     <ul class="checklist">
-      <li>Flow reading changes with ambient temperature</li>
+      <li>Highly accurate but vibration sensitive</li>
+      <li>Two-phase flow causes instability</li>
+      <li>Density measurement used for diagnostics</li>
+      <li>Mounting support affects performance</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Common Flow Field Problems</h2>
+
+    <ul class="checklist">
+      <li>Flow changes with ambient temperature</li>
       <li>Zero shift after shutdown</li>
-      <li>Flow stable locally but wrong at DCS</li>
+      <li>Flow stable locally but incorrect in DCS</li>
       <li>Plugged impulse lines</li>
+      <li>Improper square root scaling</li>
     </ul>
+
+    <p class="muted">
+      Always verify mechanical installation before replacing transmitters.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+    <!-- ====================================================== -->
+  <section class="panel">
+    <h2>DP Flow Deep Dive Topics</h2>
+
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>Installation & Hardware</h3>
+        <ul class="checklist">
+          <li>
+            <a href="/knowledge/field/flow/impulse-lines.html">
+              Impulse Line Installation – Engineering Guide
+            </a>
+          </li>
+          <li>
+            <a href="/knowledge/field/flow/manifold-valves.html">
+              Manifold Valves & Equalization Logic
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Scaling & Troubleshooting</h3>
+        <ul class="checklist">
+          <li>
+            <a href="/knowledge/field/flow/square-root-extraction.html">
+              Square Root Extraction Explained
+            </a>
+          </li>
+          <li>
+            <a href="/knowledge/field/flow/dp-flow-troubleshooting.html">
+              DP Flow Troubleshooting – Master Guide
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
   </section>
 
 </main>

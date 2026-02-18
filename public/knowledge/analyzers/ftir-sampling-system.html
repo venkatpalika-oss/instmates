@@ -4,21 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FTIR Sampling System – Deep Dive | InstMates</title>
+  <title>FTIR Sampling System – Design, Dew Point Control & Troubleshooting | InstMates</title>
 
   <meta name="description"
-        content="FTIR analyzer sampling system explained for technicians – probes, heated lines, filters, gas cells, moisture control, common failures, and troubleshooting." />
+        content="Complete FTIR sampling system guide for plant technicians – probe design, heated lines, dew point control, pressure stability, moisture prevention, and field troubleshooting." />
 
-  <!-- ================= GLOBAL CSS ================= -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body data-page="analyzer">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
   <a href="/knowledge/index.html">Knowledge</a><span>›</span>
@@ -27,182 +24,198 @@
   <span class="current">FTIR Sampling System</span>
 </nav>
 
-<!-- ================= MAIN ================= -->
 <main class="container">
 
-  <article class="panel">
+<article class="panel">
 
-    <h1>FTIR Sampling System – Deep Dive</h1>
+<h1>FTIR Sampling System – Engineering Deep Dive</h1>
 
-    <p class="muted">
-      Category: Analyzer · FTIR · Sampling System
-    </p>
+<p class="muted">
+Category: Analyzer · FTIR · Sampling · Moisture Control · Dew Point Management
+</p>
 
-    <!-- ================= INTRO ================= -->
-    <h2>Why the FTIR Sampling System Is Critical</h2>
-    <p>
-      FTIR analyzers are extremely sensitive to
-      <strong>moisture, temperature, pressure, and contamination</strong>.
-      Even a perfectly calibrated FTIR analyzer will give
-      unreliable results if the sampling system is poorly designed or maintained.
-    </p>
+<!-- ====================================================== -->
+<h2>Why the Sampling System Determines FTIR Accuracy</h2>
 
-    <p>
-      In real plant installations, most FTIR issues originate from:
-    </p>
-    <ul class="checklist">
-      <li>Condensation in sample lines or gas cell</li>
-      <li>Improper heating or insulation</li>
-      <li>Moisture interference and cross-sensitivity</li>
-      <li>Leakage and ambient air ingress</li>
-    </ul>
+<p>
+An FTIR analyzer is only as reliable as the gas entering its optical cell.
+Even a perfectly calibrated instrument will produce false readings if the
+sampling system is unstable.
+</p>
 
-    <!-- ================= SAMPLING FLOW ================= -->
-    <h2>Typical FTIR Sampling Flow</h2>
+<p>
+In real plant environments, over 70% of FTIR issues originate from sampling hardware — not the analyzer optics.
+</p>
 
-    <svg viewBox="0 0 980 260" width="100%" role="img"
-         aria-label="FTIR Sampling System Flow Diagram"
-         style="margin:16px 0">
+<ul class="checklist">
+<li>Condensation inside probe or lines</li>
+<li>Inadequate heating control</li>
+<li>Leaks and ambient air ingress</li>
+<li>Pressure instability</li>
+<li>Particulate contamination</li>
+</ul>
 
-      <!-- Process -->
-      <rect x="20" y="110" width="170" height="60" rx="8"
-            fill="#eef3f9" stroke="#0b5ed7"/>
-      <text x="105" y="145" text-anchor="middle" font-size="14">
-        Process Gas
-      </text>
+<p class="muted">
+If readings change with weather, time of day, or ambient temperature, suspect sampling first.
+</p>
 
-      <!-- Arrow -->
-      <line x1="190" y1="140" x2="250" y2="140" stroke="#333" stroke-width="2"/>
-      <polygon points="250,140 240,135 240,145" fill="#333"/>
+<!-- ====================================================== -->
+<h2>Typical FTIR Sampling Flow</h2>
 
-      <!-- Probe -->
-      <rect x="250" y="90" width="160" height="100" rx="8"
-            fill="#fdf6e3" stroke="#e0a800"/>
-      <text x="330" y="125" text-anchor="middle" font-size="14">
-        Heated Probe
-      </text>
-      <text x="330" y="145" text-anchor="middle" font-size="12" fill="#555">
-        Moisture Control
-      </text>
+<svg viewBox="0 0 980 260" width="100%" style="margin:16px 0">
 
-      <!-- Arrow -->
-      <line x1="410" y1="140" x2="470" y2="140" stroke="#333" stroke-width="2"/>
-      <polygon points="470,140 460,135 460,145" fill="#333"/>
+  <rect x="20" y="110" width="170" height="60" rx="8"
+        fill="#eef3f9" stroke="#0b5ed7"/>
+  <text x="105" y="145" text-anchor="middle" font-size="14">Process Gas</text>
 
-      <!-- Heated Line -->
-      <rect x="470" y="110" width="160" height="60" rx="8"
-            fill="#ffecec" stroke="#dc3545"/>
-      <text x="550" y="135" text-anchor="middle" font-size="14">
-        Heated Sample Line
-      </text>
+  <line x1="190" y1="140" x2="250" y2="140" stroke="#333" stroke-width="2"/>
+  <polygon points="250,140 240,135 240,145" fill="#333"/>
 
-      <!-- Arrow -->
-      <line x1="630" y1="140" x2="690" y2="140" stroke="#333" stroke-width="2"/>
-      <polygon points="690,140 680,135 680,145" fill="#333"/>
+  <rect x="250" y="90" width="160" height="100" rx="8"
+        fill="#fdf6e3" stroke="#e0a800"/>
+  <text x="330" y="125" text-anchor="middle" font-size="14">Heated Probe</text>
+  <text x="330" y="145" text-anchor="middle" font-size="12" fill="#555">Extract & Prevent Condensation</text>
 
-      <!-- Filter -->
-      <rect x="690" y="110" width="130" height="60" rx="8"
-            fill="#eef3f9" stroke="#0b5ed7"/>
-      <text x="755" y="145" text-anchor="middle" font-size="14">
-        Filter
-      </text>
+  <line x1="410" y1="140" x2="470" y2="140" stroke="#333" stroke-width="2"/>
+  <polygon points="470,140 460,135 460,145" fill="#333"/>
 
-      <!-- Arrow -->
-      <line x1="820" y1="140" x2="880" y2="140" stroke="#333" stroke-width="2"/>
-      <polygon points="880,140 870,135 870,145" fill="#333"/>
+  <rect x="470" y="110" width="160" height="60" rx="8"
+        fill="#ffecec" stroke="#dc3545"/>
+  <text x="550" y="135" text-anchor="middle" font-size="14">Heated Line</text>
 
-      <!-- FTIR -->
-      <rect x="880" y="90" width="170" height="100" rx="8"
-            fill="#f5f7fa" stroke="#0b5ed7"/>
-      <text x="965" y="125" text-anchor="middle" font-size="14">
-        FTIR Gas Cell
-      </text>
-      <text x="965" y="145" text-anchor="middle" font-size="12" fill="#555">
-        Optical Measurement
-      </text>
-    </svg>
+  <line x1="630" y1="140" x2="690" y2="140" stroke="#333" stroke-width="2"/>
+  <polygon points="690,140 680,135 680,145" fill="#333"/>
 
-    <!-- ================= COMPONENTS ================= -->
-    <h2>Key FTIR Sampling System Components</h2>
+  <rect x="690" y="110" width="130" height="60" rx="8"
+        fill="#eef3f9" stroke="#0b5ed7"/>
+  <text x="755" y="145" text-anchor="middle" font-size="14">Filter</text>
 
-    <h3>1. Sample Probe</h3>
-    <ul class="checklist">
-      <li>Must extract representative gas</li>
-      <li>Often heated to prevent condensation</li>
-      <li>Plugging causes slow response and dilution</li>
-      <li>Incorrect insertion depth leads to false readings</li>
-    </ul>
+  <line x1="820" y1="140" x2="880" y2="140" stroke="#333" stroke-width="2"/>
+  <polygon points="880,140 870,135 870,145" fill="#333"/>
 
-    <h3>2. Heated Sample Lines</h3>
-    <p>
-      Heated lines are <strong>mandatory</strong> for most FTIR applications.
-    </p>
-    <ul class="checklist">
-      <li>Temperature must stay above gas dew point</li>
-      <li>Cold spots cause intermittent condensation</li>
-      <li>Power loss results in immediate measurement errors</li>
-    </ul>
+  <rect x="880" y="90" width="170" height="100" rx="8"
+        fill="#f5f7fa" stroke="#0b5ed7"/>
+  <text x="965" y="125" text-anchor="middle" font-size="14">FTIR Gas Cell</text>
+  <text x="965" y="145" text-anchor="middle" font-size="12" fill="#555">Optical Measurement</text>
 
-    <h3>3. Filters</h3>
-    <ul class="checklist">
-      <li>Protect optical gas cell from particulates</li>
-      <li>Partial choking affects pressure stability</li>
-      <li>Wet filters cause adsorption and cross-interference</li>
-    </ul>
+</svg>
 
-    <h3>4. Gas Cell</h3>
-    <ul class="checklist">
-      <li>Optical path length determines sensitivity</li>
-      <li>Moisture film on windows reduces IR transmission</li>
-      <li>Condensation causes drifting or false high readings</li>
-    </ul>
+<!-- ====================================================== -->
+<h2>Critical Engineering Principle: Dew Point Margin</h2>
 
-    <h3>5. Pressure & Flow Control</h3>
-    <ul class="checklist">
-      <li>Stable pressure improves spectral repeatability</li>
-      <li>Leaks introduce ambient air</li>
-      <li>Incorrect flow affects residence time in cell</li>
-    </ul>
+<p>
+The most important rule in FTIR sampling:
+</p>
 
-    <!-- ================= COMMON FAILURES ================= -->
-    <h2>Common FTIR Sampling Failures in Plants</h2>
-    <ul class="checklist">
-      <li>Condensation during night or winter operation</li>
-      <li>Heater controller failure</li>
-      <li>Moisture masking gas absorption bands</li>
-      <li>Leaks at fittings and probes</li>
-      <li>Sample dilution due to ambient ingress</li>
-    </ul>
+<p><strong>All sampling components must operate above the maximum gas dew point.</strong></p>
 
-    <!-- ================= TROUBLESHOOTING ================= -->
-    <h2>Field Troubleshooting Sequence</h2>
-    <ol class="checklist">
-      <li>Confirm probe and line temperatures</li>
-      <li>Check dew point versus heater setpoint</li>
-      <li>Inspect filters for moisture or blockage</li>
-      <li>Leak test the entire sampling path</li>
-      <li>Review FTIR spectrum for water interference</li>
-    </ol>
+<ul class="checklist">
+<li>Heater setpoint must exceed highest expected moisture dew point</li>
+<li>No cold spots along line routing</li>
+<li>No low-point condensate traps</li>
+<li>Insulation integrity must be maintained</li>
+</ul>
 
-    <p class="muted">
-      If FTIR readings change with ambient temperature,
-      humidity, or time of day, suspect the sampling system first.
-    </p>
+<p class="muted">
+Condensation inside the line instantly changes gas composition.
+</p>
 
-    <!-- ================= LINKS ================= -->
-    <h2>Related FTIR Pages</h2>
-    <ul class="checklist">
-      <li><a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer – Principles & Maintenance</a></li>
-    </ul>
+<!-- ====================================================== -->
+<h2>Sampling Components Explained</h2>
 
-  </article>
+<h3>1. Sample Probe</h3>
+<ul class="checklist">
+<li>Must extract representative gas stream</li>
+<li>Incorrect insertion depth causes stratification error</li>
+<li>Plugging reduces flow and delays response</li>
+<li>Heated probe prevents water dropout</li>
+</ul>
 
+<h3>2. Heated Sample Line</h3>
+<ul class="checklist">
+<li>Temperature must be uniform along full length</li>
+<li>Damaged insulation creates hidden cold spots</li>
+<li>Power interruptions create immediate moisture error</li>
+</ul>
+
+<h3>3. Particulate Filter</h3>
+<ul class="checklist">
+<li>Protects optical windows</li>
+<li>Choking alters pressure and flow</li>
+<li>Wet filters adsorb soluble gases (NH₃, HCl)</li>
+</ul>
+
+<h3>4. Pressure & Flow Regulation</h3>
+<ul class="checklist">
+<li>Stable pressure improves spectral consistency</li>
+<li>Low flow increases residence time</li>
+<li>Leaks introduce ambient air dilution</li>
+<li>Pressure fluctuations distort absorption calculations</li>
+</ul>
+
+<h3>5. Optical Gas Cell</h3>
+<ul class="checklist">
+<li>Path length defines sensitivity</li>
+<li>Window contamination reduces IR transmission</li>
+<li>Condensation causes false high or drifting values</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Advanced Failure Modes</h2>
+
+<ul class="checklist">
+<li>Moisture slug entering cell after heater cycling</li>
+<li>Intermittent heater relay failure</li>
+<li>Hidden micro-leaks at Swagelok fittings</li>
+<li>Sample dilution from negative pressure zones</li>
+<li>Incorrect probe material causing adsorption</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Field Troubleshooting Workflow</h2>
+
+<ol class="checklist">
+<li>Verify probe and line temperatures physically (not just controller display)</li>
+<li>Compare heater setpoint with actual dew point</li>
+<li>Inspect insulation continuity</li>
+<li>Leak test entire sampling path</li>
+<li>Inspect filters for moisture saturation</li>
+<li>Check pressure stability at analyzer inlet</li>
+<li>Review raw FTIR spectrum for water peaks</li>
+</ol>
+
+<p class="muted">
+Sampling issues often appear during night, winter, or rainy conditions.
+</p>
+
+<!-- ====================================================== -->
+<h2>Preventive Maintenance Strategy</h2>
+
+<ul class="checklist">
+<li>Quarterly insulation inspection</li>
+<li>Routine leak testing</li>
+<li>Filter replacement based on pressure drop trend</li>
+<li>Annual dew point margin verification</li>
+<li>Heater load current monitoring</li>
+</ul>
+
+<p>
+Preventive sampling maintenance reduces false recalibration events.
+</p>
+
+<!-- ====================================================== -->
+<h2>Related FTIR Resources</h2>
+
+<ul class="checklist">
+<li><a href="/knowledge/analyzers/ftir-analyzer.html">FTIR Analyzer – Principles & Maintenance</a></li>
+<li><a href="/knowledge/analyzers/ftir-moisture-cross-interference.html">Moisture & Cross-Interference Explained</a></li>
+<li><a href="/knowledge/analyzers/ftir-calibration-validation.html">Calibration & Validation Strategy</a></li>
+</ul>
+
+</article>
 </main>
 
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
-
-<!-- ================= SCRIPTS ================= -->
 <script src="/assets/js/includes.js"></script>
 
 </body>

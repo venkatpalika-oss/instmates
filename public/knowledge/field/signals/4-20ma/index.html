@@ -1,127 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>4–20 mA Signal Fundamentals | InstMates Knowledge Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>4–20 mA Signal – Working Principle, Wiring & Troubleshooting | InstMates</title>
 
   <meta name="description"
-        content="4–20 mA current loop fundamentals for field instrumentation technicians. Learn live zero, loop wiring, scaling, diagnostics, calibration, and troubleshooting." />
+        content="Complete 4–20 mA loop guide for technicians – working principle, live zero concept, wiring types, scaling, calibration, and field troubleshooting." />
 
-  <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
-
-  <style>
-    .fi-grid{
-      display:grid;
-      gap:16px;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      margin-top:16px;
-    }
-    .fi-card{
-      background:#ffffff;
-      border:1px solid rgba(0,0,0,0.12);
-      border-radius:16px;
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-    .fi-card h3{ margin:0 0 6px; }
-    .fi-card p{ margin:0 0 12px; opacity:.85; }
-    .fi-tag{
-      display:inline-block;
-      font-size:12px;
-      padding:4px 8px;
-      border-radius:999px;
-      background:#eef6fb;
-      color:#0b3c5d;
-      font-weight:700;
-      margin-bottom:8px;
-      width:fit-content;
-    }
-    .fi-btn{
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:10px;
-      text-decoration:none;
-      background:#0b3c5d;
-      color:#ffffff;
-      font-weight:700;
-      text-align:center;
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
-<body data-page="field-420ma">
+<body data-page="field">
 
 <div id="siteHeader"></div>
 
 <nav class="crumbs" aria-label="Breadcrumb">
   <a href="/">Home</a><span>›</span>
-  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/">Knowledge</a><span>›</span>
+  <a href="/knowledge/field/">Field Instrumentation</a><span>›</span>
   <span class="current">4–20 mA Signal</span>
 </nav>
 
 <main class="container">
 
-<section class="panel">
-  <h1>4–20 mA Signal – Field Instrumentation</h1>
+<article class="panel">
 
-  <p class="muted">
-    The 4–20 mA current loop is the backbone of industrial instrumentation.
-    It is used to transmit pressure, temperature, flow, level, and analyzer
-    measurements reliably across long distances and harsh plant environments.
-  </p>
-</section>
+<h1>4–20 mA Signal – Complete Field Guide</h1>
 
-<section class="panel">
-  <h2>4–20 mA Learning Path</h2>
+<p class="muted">
+Category: Field Instrumentation · Analog Signals · Control Systems
+</p>
 
-  <div class="fi-grid">
-    <!-- Your existing cards remain unchanged -->
-  </div>
-</section>
+<!-- ====================================================== -->
+<h2>What Is a 4–20 mA Signal?</h2>
 
-<section class="panel">
-  <h2>4–20 mA Related Guides</h2>
+<p>
+The 4–20 mA signal is the most widely used analog signal standard
+in industrial instrumentation.
+</p>
 
-  <ul>
-    <li><a href="/knowledge/field/signals/4-20ma/420ma-basics.html">4–20 mA Basics</a></li>
-    <li><a href="/knowledge/field/signals/4-20ma/live-zero.html">Live Zero & NAMUR NE43</a></li>
-    <li><a href="/knowledge/field/signals/4-20ma/loop-wiring.html">Loop Wiring (2 / 3 / 4 Wire)</a></li>
-    <li><a href="/knowledge/field/signals/4-20ma/diagnostics.html">Diagnostics & Faults</a></li>
-    <li><a href="/knowledge/field/signals/4-20ma/troubleshooting.html">Troubleshooting Guide</a></li>
-  </ul>
-</section>
+<p>
+Instead of transmitting voltage, the system transmits <strong>current</strong>.
+Current is less affected by cable resistance, noise, and long-distance wiring.
+</p>
 
-<section class="panel">
-  <h2>Discuss This Topic</h2>
+<ul class="checklist">
+<li>4 mA = 0% (Live Zero)</li>
+<li>20 mA = 100%</li>
+<li>Used in transmitters, PLCs, DCS systems</li>
+</ul>
 
-  <p class="muted">
-    Have you faced issues with 4–20 mA loops in real plant conditions?
-    Share your troubleshooting experience or ask a practical question.
-  </p>
+<p class="muted">
+If your plant has transmitters, it has 4–20 mA loops.
+</p>
 
-  <a class="btn btn-primary"
-     href="/feed/?topic=4-20ma&title=4–20 mA Signal Fundamentals">
-    Discuss in Community
-  </a>
-</section>
+<!-- ====================================================== -->
+<h2>Why 4 mA Instead of 0 mA?</h2>
 
-<section class="panel">
-  <h2>Field Rule</h2>
+<p>
+The system uses 4 mA as the minimum value to detect faults.
+</p>
 
-  <p class="muted">
-    If a 4–20 mA loop is wrong, always verify the loop current with a multimeter
-    before blaming the transmitter, PLC, or DCS configuration.
-  </p>
-</section>
+<ul class="checklist">
+<li>0 mA = loop open / broken wire</li>
+<li>4 mA = valid 0% measurement</li>
+<li>Improves fault detection reliability</li>
+</ul>
 
+<p class="muted">
+This is called the "Live Zero" concept.
+</p>
+
+<!-- ====================================================== -->
+<h2>Basic 4–20 mA Loop Wiring</h2>
+
+<svg viewBox="0 0 800 240" width="100%" style="margin:16px 0">
+
+  <rect x="50" y="90" width="150" height="60" rx="8"
+        fill="#eef3f9" stroke="#0b5ed7"/>
+  <text x="125" y="125" text-anchor="middle" font-size="14">
+    Power Supply
+  </text>
+
+  <line x1="200" y1="120" x2="320" y2="120" stroke="#333" stroke-width="2"/>
+  <polygon points="320,120 310,115 310,125" fill="#333"/>
+
+  <rect x="320" y="70" width="180" height="100" rx="8"
+        fill="#fdf6e3" stroke="#e0a800"/>
+  <text x="410" y="110" text-anchor="middle" font-size="14">
+    Transmitter
+  </text>
+  <text x="410" y="130" text-anchor="middle" font-size="12" fill="#555">
+    4–20 mA Output
+  </text>
+
+  <line x1="500" y1="120" x2="620" y2="120" stroke="#333" stroke-width="2"/>
+  <polygon points="620,120 610,115 610,125" fill="#333"/>
+
+  <rect x="620" y="90" width="150" height="60" rx="8"
+        fill="#eef3f9" stroke="#0b5ed7"/>
+  <text x="695" y="125" text-anchor="middle" font-size="14">
+    PLC / DCS
+  </text>
+
+</svg>
+
+<p>
+The current flows through all devices in series.
+Any break in the loop stops the current.
+</p>
+
+<!-- ====================================================== -->
+<h2>Types of 4–20 mA Loops</h2>
+
+<h3>1. Loop-Powered (2-Wire)</h3>
+<ul class="checklist">
+<li>Power and signal share same wires</li>
+<li>Common in pressure and temperature transmitters</li>
+<li>Lower wiring cost</li>
+</ul>
+
+<h3>2. 4-Wire (Externally Powered)</h3>
+<ul class="checklist">
+<li>Separate power supply</li>
+<li>Higher output capability</li>
+<li>Used for analyzers and complex devices</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Scaling Concept</h2>
+
+<p>
+The PLC converts current into engineering units.
+</p>
+
+Example:
+
+<ul class="checklist">
+<li>4 mA = 0 bar</li>
+<li>20 mA = 100 bar</li>
+<li>12 mA = 50 bar</li>
+</ul>
+
+<p>
+Incorrect scaling causes mismatch between field and control room readings.
+</p>
+
+<!-- ====================================================== -->
+<h2>Common Field Problems</h2>
+
+<ul class="checklist">
+<li>Loop open (0 mA)</li>
+<li>Constant 3.6 mA or 21 mA (NAMUR fault)</li>
+<li>Ground loop noise</li>
+<li>Loose terminal causing intermittent signal</li>
+<li>PLC input card failure</li>
+</ul>
+
+<!-- ====================================================== -->
+<h2>Basic Troubleshooting Logic</h2>
+
+<ol class="checklist">
+<li>Measure loop current using multimeter in series</li>
+<li>Verify power supply voltage</li>
+<li>Check transmitter output locally</li>
+<li>Inspect wiring continuity</li>
+<li>Confirm PLC scaling configuration</li>
+</ol>
+
+<p class="muted">
+Always isolate field, wiring, and control system step-by-step.
+</p>
+
+<!-- ====================================================== -->
+<h2>Advanced Topics (Coming Next)</h2>
+
+<ul class="checklist">
+<li><a href="/knowledge/field/signals/4-20ma/wiring.html">Loop Wiring & Grounding</a></li>
+<li><a href="/knowledge/field/signals/4-20ma/calibration.html">4–20 mA Calibration</a></li>
+<li><a href="/knowledge/field/signals/4-20ma/troubleshooting.html">Advanced Troubleshooting</a></li>
+<li><a href="/knowledge/field/signals/4-20ma/scaling-calculation.html">Scaling Calculations</a></li>
+</ul>
+
+</article>
 </main>
 
 <div id="siteFooter"></div>
-
-<script src="/assets/js/includes.js?v=2026-01-22"></script>
+<script src="/assets/js/includes.js"></script>
 
 </body>
 </html>

@@ -14,7 +14,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  setPersistence
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 /* ================= FIRESTORE IMPORTS ================= */
@@ -62,8 +65,15 @@ window.registerUser = async function (email, password, fullName) {
 
 /* ================= LOGIN ================= */
 
-window.loginUser = async function (email, password) {
-  return signInWithEmailAndPassword(auth, email, password);
+window.loginUser = async function (email, password, remember = true) {
+
+  await setPersistence(
+    auth,
+    remember ? browserLocalPersistence : browserSessionPersistence
+  );
+
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  return cred;
 };
 
 /* ================= LOGOUT ================= */
@@ -109,7 +119,7 @@ onAuthStateChanged(auth, async (user) => {
   const publicPages = [
     "/",
     "/index.html",
-    "/knowledge.html",
+    "/knowledge/",
     "/about.html"
   ];
 
@@ -207,7 +217,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     /* =====================================================
-       REDIRECT LOGIN/REGISTER IF ALREADY AUTHENTICATED
+       REDIRECT LOGIN/REGISTER IF AUTHENTICATED
     ===================================================== */
 
     if (
