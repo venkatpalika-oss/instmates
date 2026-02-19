@@ -1,6 +1,6 @@
 // =========================================================
 // InstMates – ROOT DOMAIN INCLUDE HANDLER (LOCKED STANDARD)
-// File: /assets/js/includes.js
+// File: //assets/js/includes.js
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
