@@ -1,6 +1,7 @@
 /* =========================================================
-   InstMates – Technician Directory (ADVANCED)
+   InstMates – Technician Directory (ADVANCED - SHOW ALL)
    Clean URLs + Profile Image + Verification Badge
+   No profileCompleted filter
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -9,8 +10,6 @@ import { onAuthStateChanged }
 
 import {
   collection,
-  query,
-  where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -29,7 +28,7 @@ onAuthStateChanged(auth, (user) => {
   loadTechnicians();
 });
 
-/* ================= LOAD ================= */
+/* ================= LOAD ALL ================= */
 
 async function loadTechnicians() {
   if (!listEl) return;
@@ -37,12 +36,9 @@ async function loadTechnicians() {
   listEl.innerHTML = `<p class="muted">Loading technicians…</p>`;
 
   try {
-    const q = query(
-      collection(db, "profiles"),
-      where("profileCompleted", "==", true)
-    );
 
-    const snap = await getDocs(q);
+    // 🔥 LOAD ALL PROFILES (NO FILTER)
+    const snap = await getDocs(collection(db, "profiles"));
 
     if (snap.empty) {
       listEl.innerHTML = `<p class="muted">No technicians found.</p>`;
@@ -65,6 +61,7 @@ async function loadTechnicians() {
 /* ================= CARD ================= */
 
 function renderCard(uid, p) {
+
   const card = document.createElement("div");
   card.className = "card";
 
@@ -74,6 +71,7 @@ function renderCard(uid, p) {
 
   const slug = createSlug(p.fullName || "technician");
 
+  // Clean URL (rewrite handles this)
   const profileURL = `/technicians/${slug}?id=${uid}`;
 
   card.innerHTML = `
@@ -88,7 +86,7 @@ function renderCard(uid, p) {
           ${escapeHTML(p.fullName || "Technician")}
           ${
             p.verified
-              ? `<span style="color:#0d6efd;font-size:14px">✔ Verified</span>`
+              ? `<span style="color:#0d6efd;font-size:14px;margin-left:6px">✔ Verified</span>`
               : ""
           }
         </h3>

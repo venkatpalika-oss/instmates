@@ -32,7 +32,7 @@
 
     "rewrites": [
       {
-        "source": "/technicians/**",
+        "source": "/technicians/:uid",
         "destination": "/technicians/profile.html"
       }
     ]
