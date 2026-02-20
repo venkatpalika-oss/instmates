@@ -1,13 +1,7 @@
 /* =========================================================
-   InstMates – Technician Directory Logic (FINAL ADVANCED)
-   File: assets/js/technicians.js
-
-   PURPOSE:
-   - Load ALL technician profiles
-   - Show only completed profiles
-   - No artificial limits
-   - Dynamic profile linking
-   - Auth protected
+   InstMates – Technician Directory (ADVANCED - SHOW ALL)
+   Clean URLs + Profile Image + Verification Badge
+   No profileCompleted filter
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -16,18 +10,15 @@ import { onAuthStateChanged }
 
 import {
   collection,
-  query,
-  where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
 
-// 🔥 FIXED ID to match your HTML
 const listEl = document.getElementById("techniciansList");
 const searchInput = document.getElementById("searchInput");
 
-/* ================= AUTH GATE ================= */
+/* ================= AUTH ================= */
 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
@@ -37,7 +28,7 @@ onAuthStateChanged(auth, (user) => {
   loadTechnicians();
 });
 
-/* ================= LOAD TECHNICIANS ================= */
+/* ================= LOAD ALL ================= */
 
 async function loadTechnicians() {
   if (!listEl) return;
@@ -45,12 +36,9 @@ async function loadTechnicians() {
   listEl.innerHTML = `<p class="muted">Loading technicians…</p>`;
 
   try {
-    const q = query(
-      collection(db, "profiles"),
-      where("profileCompleted", "==", true)
-    );
 
-    const snap = await getDocs(q);
+    // 🔥 LOAD ALL PROFILES (NO FILTER)
+    const snap = await getDocs(collection(db, "profiles"));
 
     if (snap.empty) {
       listEl.innerHTML = `<p class="muted">No technicians found.</p>`;
@@ -60,20 +48,20 @@ async function loadTechnicians() {
     listEl.innerHTML = "";
 
     snap.forEach(doc => {
-      const card = renderCard(doc.id, doc.data());
-      listEl.appendChild(card);
+      listEl.appendChild(renderCard(doc.id, doc.data()));
     });
 
   } catch (err) {
-    console.error("Failed to load technicians:", err);
+    console.error(err);
     listEl.innerHTML =
       `<p class="muted">Failed to load technicians.</p>`;
   }
 }
 
-/* ================= RENDER CARD ================= */
+/* ================= CARD ================= */
 
 function renderCard(uid, p) {
+
   const card = document.createElement("div");
   card.className = "card";
 
@@ -81,31 +69,50 @@ function renderCard(uid, p) {
     ? p.skills.join(", ")
     : "";
 
+  const slug = createSlug(p.fullName || "technician");
+
+  // Clean URL (rewrite handles this)
+  const profileURL = `/technicians/${slug}?id=${uid}`;
+
   card.innerHTML = `
-    <h3>${escapeHTML(p.fullName || "Technician")}</h3>
+    <div style="display:flex;align-items:center;gap:12px">
 
-    <p class="muted">
-      ${escapeHTML(p.role || "Instrument Technician")}
-    </p>
+      <img src="${p.photoURL || "/assets/img/default-avatar.png"}"
+           alt="Profile"
+           style="width:60px;height:60px;border-radius:50%;object-fit:cover">
 
-    <p class="muted">
-      📍 ${escapeHTML(p.location || "Location not specified")}
-    </p>
+      <div>
+        <h3 style="margin:0">
+          ${escapeHTML(p.fullName || "Technician")}
+          ${
+            p.verified
+              ? `<span style="color:#0d6efd;font-size:14px;margin-left:6px">✔ Verified</span>`
+              : ""
+          }
+        </h3>
+
+        <p class="muted" style="margin:4px 0">
+          ${escapeHTML(p.role || "Instrument Technician")}
+        </p>
+
+        <p class="muted" style="margin:0">
+          📍 ${escapeHTML(p.location || "Location not specified")}
+        </p>
+      </div>
+    </div>
 
     ${
       skills
-        ? `<p class="muted">${escapeHTML(skills)}</p>`
+        ? `<p class="muted" style="margin-top:10px">${escapeHTML(skills)}</p>`
         : ""
     }
 
-    <div class="action-row" style="margin-top:10px">
-      <a href="/technicians/profile.html?id=${uid}"
-         class="btn btn-ghost">
+    <div class="action-row" style="margin-top:12px">
+      <a href="${profileURL}" class="btn btn-ghost">
         View Profile →
       </a>
 
-      <a href="/message.html?uid=${uid}"
-         class="btn btn-primary">
+      <a href="/message.html?uid=${uid}" class="btn btn-primary">
         Message
       </a>
     </div>
@@ -137,4 +144,11 @@ function escapeHTML(str) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+function createSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }

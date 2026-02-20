@@ -4,52 +4,25 @@
   <meta charset="UTF-8" />
   <title>Technician Profile | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/assets/css/style.css" />
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-20" />
 </head>
 
 <body data-page="technician-profile">
 
 <div id="siteHeader"></div>
 
-<nav class="crumbs">
-  <a href="/">Home</a><span>›</span>
-  <a href="/technicians/">Technicians</a><span>›</span>
-  <span class="current">Profile</span>
-</nav>
-
 <main class="container">
 
-<section class="panel">
-  <h1 id="techName">Loading...</h1>
-  <p class="muted" id="techRole"></p>
-</section>
-
-<section class="panel">
-  <h2>Professional Summary</h2>
-  <p id="techSummary"></p>
-</section>
-
-<section class="panel">
-  <h2>Core Expertise</h2>
-  <ul id="techSkills"></ul>
-</section>
-
-<section class="panel">
-  <h2>Experience</h2>
-  <p id="techExperience"></p>
-</section>
-
-<section class="panel">
-  <div class="action-row">
-    <a class="btn btn-ghost" href="/technicians/">
-      ← Back to Directory
-    </a>
-  </div>
+<section id="profileContainer" class="panel">
+  <p class="muted">Loading profile…</p>
 </section>
 
 </main>
 
 <div id="siteFooter"></div>
+
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
 
 <script type="module">
 
@@ -57,37 +30,100 @@ import { db } from "/assets/js/firebase.js";
 import { doc, getDoc }
 from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const container = document.getElementById("profileContainer");
 
-if (!id) {
-  document.getElementById("techName").innerText = "Profile Not Found";
+const params = new URLSearchParams(window.location.search);
+const uid = params.get("id");
+
+if (!uid) {
+  container.innerHTML = "<p class='muted'>Profile not found.</p>";
 } else {
-  const snap = await getDoc(doc(db, "profiles", id));
+  loadProfile(uid);
+}
+
+async function loadProfile(uid) {
+
+  const snap = await getDoc(doc(db, "profiles", uid));
 
   if (!snap.exists()) {
-    document.getElementById("techName").innerText = "Profile Not Found";
-  } else {
-    const data = snap.data();
+    container.innerHTML = "<p class='muted'>Profile not found.</p>";
+    return;
+  }
 
-    document.getElementById("techName").innerText = data.name || "";
-    document.getElementById("techRole").innerText = data.role || "";
-    document.getElementById("techSummary").innerText = data.summary || "";
-    document.getElementById("techExperience").innerText = data.experience || "";
+  const p = snap.data();
 
-    const skillsList = document.getElementById("techSkills");
-    if (data.skills && Array.isArray(data.skills)) {
-      data.skills.forEach(skill => {
-        const li = document.createElement("li");
-        li.textContent = skill;
-        skillsList.appendChild(li);
-      });
+  // Load Signature Case if verified
+  let signatureCaseHTML = "";
+
+  if (p.isVerified && p.signatureCaseId) {
+
+    const caseSnap = await getDoc(
+      doc(db, "signatureCases", p.signatureCaseId)
+    );
+
+    if (caseSnap.exists()) {
+
+      const c = caseSnap.data();
+
+      signatureCaseHTML = `
+        <hr style="margin:30px 0">
+
+        <h3>🏅 Signature Case</h3>
+
+        <div style="background:#f8f9fa;padding:16px;border-radius:10px">
+
+          <h4>${c.title}</h4>
+
+          <p><strong>Problem:</strong><br>
+          ${c.problem || ""}</p>
+
+          <p><strong>Corrective Action:</strong><br>
+          ${c.actionTaken || ""}</p>
+
+          <p><strong>Result:</strong><br>
+          ${c.result || ""}</p>
+
+        </div>
+      `;
     }
   }
+
+  container.innerHTML = `
+    <div style="text-align:center">
+
+      <img src="${p.profileImageURL || "/assets/img/default-avatar.png"}"
+           style="width:120px;height:120px;border-radius:50%;object-fit:cover">
+
+      <h2>
+        ${p.fullName || "Technician"}
+        ${
+          p.isVerified
+            ? `<span style="color:#0d6efd;font-size:16px;margin-left:8px">✔ Verified</span>`
+            : ""
+        }
+      </h2>
+
+      <p class="muted">${p.headline || ""}</p>
+      <p class="muted">📍 ${p.location || ""}</p>
+
+    </div>
+
+    <hr style="margin:20px 0">
+
+    <h3>About</h3>
+    <p>${p.bio || "No description provided."}</p>
+
+    ${
+      Array.isArray(p.skills) && p.skills.length
+        ? `<h3>Skills</h3><p>${p.skills.join(", ")}</p>`
+        : ""
+    }
+
+    ${signatureCaseHTML}
+  `;
 }
 
 </script>
 
-<script src="/assets/js/includes.js"></script>
 </body>
 </html>

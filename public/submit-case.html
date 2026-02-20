@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Submit Case Study | InstMates</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-20">
 </head>
 
 <body data-page="submit-case">
@@ -15,42 +15,45 @@
 <main class="container">
 
   <section class="panel">
-    <h2>Submit a Case Study</h2>
+    <h2>🏅 Submit Your Signature Case</h2>
 
-    <form class="auth-form">
+    <!-- STATUS MESSAGE -->
+    <div id="caseStatusMessage" class="muted" style="margin-bottom:16px;"></div>
+
+    <form id="signatureCaseForm" class="auth-form">
 
       <label>
         Case Title
-        <input type="text" placeholder="GC baseline drift after calibration" required>
+        <input type="text" id="caseTitle" required>
       </label>
 
       <label>
         Analyzer / System
-        <input type="text" placeholder="GC, CEMS, FTIR, Instrumentation">
+        <input type="text" id="casePlantType">
       </label>
 
       <label>
         Problem Description
-        <textarea rows="4" required></textarea>
+        <textarea id="caseProblem" rows="4" required></textarea>
       </label>
 
       <label>
         Root Cause
-        <textarea rows="3"></textarea>
+        <textarea id="caseRootCause" rows="3"></textarea>
       </label>
 
       <label>
         Corrective Action
-        <textarea rows="3"></textarea>
+        <textarea id="caseAction" rows="3"></textarea>
       </label>
 
       <label>
         Lessons Learned
-        <textarea rows="3"></textarea>
+        <textarea id="caseResult" rows="3"></textarea>
       </label>
 
-      <button class="btn btn-primary full">
-        Submit Case
+      <button id="submitCaseBtn" class="btn btn-primary full" type="submit">
+        Submit for Verification
       </button>
 
     </form>
@@ -59,7 +62,154 @@
 </main>
 
 <div id="siteFooter"></div>
-<script src="assets/js/includes.js"></script>
+
+<!-- ================= FIREBASE LOGIC ================= -->
+<script type="module">
+
+import { auth, db } from "/assets/js/firebase.js";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+import { onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+const form = document.getElementById("signatureCaseForm");
+const statusBox = document.getElementById("caseStatusMessage");
+const submitBtn = document.getElementById("submitCaseBtn");
+
+let currentUser = null;
+let currentCaseId = null;
+let currentStatus = null;
+
+/* ================= AUTH CHECK ================= */
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "/login.html";
+    return;
+  }
+
+  currentUser = user;
+
+  await loadUserCase();
+});
+
+/* ================= LOAD EXISTING CASE ================= */
+async function loadUserCase() {
+
+  const q = query(
+    collection(db, "signatureCases"),
+    where("uid", "==", currentUser.uid)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    statusBox.innerText = "No case submitted yet.";
+    return;
+  }
+
+  const docSnap = snap.docs[0];
+  const data = docSnap.data();
+
+  currentCaseId = docSnap.id;
+  currentStatus = data.status;
+
+  // Fill form
+  document.getElementById("caseTitle").value = data.title || "";
+  document.getElementById("casePlantType").value = data.plantType || "";
+  document.getElementById("caseProblem").value = data.problem || "";
+  document.getElementById("caseRootCause").value = data.rootCause || "";
+  document.getElementById("caseAction").value = data.actionTaken || "";
+  document.getElementById("caseResult").value = data.result || "";
+
+  applyStatusState();
+}
+
+/* ================= APPLY STATUS STATE ================= */
+function applyStatusState() {
+
+  if (!currentStatus) return;
+
+  if (currentStatus === "pending") {
+    disableForm();
+    statusBox.innerHTML = "🔒 Case under review. Editing disabled.";
+  }
+
+  if (currentStatus === "approved") {
+    disableForm();
+    statusBox.innerHTML = "✅ Case approved. You are now verified.";
+  }
+
+  if (currentStatus === "rejected") {
+    statusBox.innerHTML = "❌ Case rejected. Please update and resubmit.";
+  }
+}
+
+function disableForm() {
+  form.querySelectorAll("input, textarea, button")
+      .forEach(el => el.disabled = true);
+}
+
+/* ================= SUBMIT LOGIC ================= */
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!currentUser) return;
+
+  const caseData = {
+    uid: currentUser.uid,
+    title: document.getElementById("caseTitle").value,
+    plantType: document.getElementById("casePlantType").value,
+    problem: document.getElementById("caseProblem").value,
+    rootCause: document.getElementById("caseRootCause").value,
+    actionTaken: document.getElementById("caseAction").value,
+    result: document.getElementById("caseResult").value,
+    status: "pending",
+    updatedAt: serverTimestamp(),
+    createdAt: serverTimestamp()
+  };
+
+  try {
+
+    if (!currentCaseId) {
+
+      const docRef = await addDoc(
+        collection(db, "signatureCases"),
+        caseData
+      );
+
+      currentCaseId = docRef.id;
+
+    } else {
+
+      await updateDoc(
+        doc(db, "signatureCases", currentCaseId),
+        caseData
+      );
+    }
+
+    currentStatus = "pending";
+    applyStatusState();
+
+  } catch (err) {
+    console.error(err);
+    statusBox.innerText = "Error submitting case.";
+  }
+
+});
+
+</script>
+
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
 
 </body>
 </html>

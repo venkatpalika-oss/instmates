@@ -23,8 +23,6 @@
   <meta name="theme-color" content="#0b5ed7">
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Global CSS -->
@@ -60,48 +58,83 @@
     .auth-in-section {
       display: none;
     }
+
+    .hero-split {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-video {
+      text-align: center;
+    }
+
+    .hero-video video {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .sound-btn {
+      margin-top: 12px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body data-page="home">
 
-<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
-<!-- ================= AUTH-OUT (LOCKED MARKETING PAGE) ================= -->
+<!-- ================= AUTH-OUT ================= -->
 <section class="auth-out-section">
 
-  <!-- HERO -->
   <section class="hero">
-    <div class="hero-inner container">
+    <div class="hero-inner container hero-split">
 
-      <h1>
-        The Social Technical Platform for
-        Instrument & Analyzer Engineers
-      </h1>
+      <!-- LEFT TEXT -->
+      <div style="flex:1;min-width:280px;">
+        <h1>
+          The Social Technical Platform for
+          Instrument & Analyzer Engineers
+        </h1>
 
-      <p class="hero-tagline">
-        Real breakdowns · Real plant fixes · Verified technicians
-      </p>
+        <p class="hero-tagline">
+          Real breakdowns · Real plant fixes · Verified technicians
+        </p>
 
-      <p class="hero-sub">
-        A private network where field engineers share live troubleshooting cases,
-        GC errors, CEMS failures, calibration problems, and real plant recovery lessons.
-      </p>
+        <p class="hero-sub">
+          A private network where field engineers share live troubleshooting cases,
+          GC errors, CEMS failures, calibration problems, and real plant recovery lessons.
+        </p>
 
-      <div class="hero-actions">
-        <a href="/register.html" class="btn btn-hero auth-out">Join Free</a>
-        <a href="/login.html" class="btn btn-soft">Login</a>
+        <div class="hero-actions">
+          <a href="/register.html" class="btn btn-hero">Join Free</a>
+          <a href="/login.html" class="btn btn-soft">Login</a>
+        </div>
+
+        <p class="muted" style="margin-top:10px;">
+          🔒 Feed access requires login
+        </p>
       </div>
 
-      <p class="muted" style="margin-top:10px;">
-        🔒 Feed access requires login
-      </p>
+      <!-- RIGHT AVATAR VIDEO -->
+      <div class="hero-video" style="flex:1;min-width:280px;">
+        <video id="heroVideo" autoplay muted loop playsinline>
+          <source src="/assets/videos/avatar.mp4" type="video/mp4">
+        </video>
+
+        <button id="soundToggle" class="btn btn-soft sound-btn">
+          🔊 Enable Sound
+        </button>
+      </div>
 
     </div>
   </section>
 
-  <!-- GATED FEED PREVIEW -->
+  <!-- GATED PREVIEW -->
   <section class="panel highlight-login">
 
     <h2>🔐 Live Technical Discussions</h2>
@@ -128,18 +161,12 @@
   </section>
 
 </section>
-<!-- END AUTH-OUT -->
 
-
-
-<!-- ================= AUTH-IN (LOGGED-IN DASHBOARD) ================= -->
+<!-- ================= AUTH-IN ================= -->
 <section class="auth-in-section">
-
   <section class="hero">
     <div class="hero-inner container">
-
       <h1>Welcome Back to InstMates</h1>
-
       <p class="hero-sub">
         Continue discussions, explore case studies, and grow your technical authority.
       </p>
@@ -149,59 +176,26 @@
         <a href="/knowledge/" class="btn btn-ghost">Knowledge Hub</a>
         <a href="/profiles/" class="btn btn-ghost">Technician Directory</a>
       </div>
-
     </div>
   </section>
-
-  <main class="container">
-
-    <section class="panel">
-      <h2>Your Technical Network</h2>
-
-      <div class="grid grid-3">
-
-        <div class="card">
-          <h3>🔥 Active Discussions</h3>
-          <p class="muted">
-            Engage with live GC, CEMS and instrumentation troubleshooting threads.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>📚 Structured Knowledge</h3>
-          <p class="muted">
-            Access categorized case studies and analyzer error breakdowns.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>⭐ Build Reputation</h3>
-          <p class="muted">
-            Earn credibility through real field problem-solving contributions.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
 </section>
-<!-- END AUTH-IN -->
 
-
-
-<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-
-
-<!-- ================= GLOBAL SCRIPTS ================= -->
-<script src="/assets/js/includes.js" defer></script>
+<script src="//assets/js/includes.js" defer></script>
 <script type="module" src="/assets/js/header-auth.js"></script>
 <script type="module" src="/assets/js/auth.js"></script>
 
 <script>
+  const video = document.getElementById("heroVideo");
+  const btn = document.getElementById("soundToggle");
+
+  btn.addEventListener("click", () => {
+    video.muted = false;
+    video.play();
+    btn.style.display = "none";
+  });
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js");
   }

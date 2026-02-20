@@ -4,7 +4,7 @@ const CORE_ASSETS = [
   "/",
   "/index.html",
   "/assets/css/style.css",
-  "/assets/js/includes.js"
+  "//assets/js/includes.js"
 ];
 
 self.addEventListener("install", event => {
