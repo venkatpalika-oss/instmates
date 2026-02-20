@@ -2,6 +2,7 @@
    InstMates – Social Technical Feed (FINAL PRODUCTION)
    Infinite Scroll • Verified Badge • Category Filter
    Slide Animation • Edit/Delete • 1 Vote Per User
+   UPDATED: Post Type Selector Support (SAFE EXTENSION)
 ========================================================= */
 
 import { db, auth } from "./firebase.js";
@@ -24,6 +25,7 @@ import {
 const feedContainer = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
+const postTypeSelect = document.getElementById("postType");
 
 let lastVisible = null;
 let loading = false;
@@ -65,7 +67,6 @@ function createCategoryFilter() {
       btn.classList.add("active");
       selectedCategory = btn.dataset.type;
 
-      /* Slide out animation */
       feedContainer.style.opacity = "0";
       feedContainer.style.transform = "translateX(20px)";
       feedContainer.style.transition = "all 0.2s ease";
@@ -76,7 +77,6 @@ function createCategoryFilter() {
         lastVisible = null;
         await loadPosts();
 
-        /* Slide in animation */
         feedContainer.style.transform = "translateX(0)";
         feedContainer.style.opacity = "1";
 
@@ -97,10 +97,12 @@ if (postBtn) {
     const content = postInput.value.trim();
     if (!content || !auth.currentUser) return;
 
+    const selectedType = postTypeSelect?.value || "question";
+
     await addDoc(collection(db, "posts"), {
       content,
       uid: auth.currentUser.uid,
-      type: "question",
+      type: selectedType,
       createdAt: serverTimestamp(),
       editedAt: null,
       reactions: { agree: 0, faced: 0, helpful: 0 },
@@ -244,8 +246,6 @@ function createPostCard(post) {
     ` : ""}
   `;
 
-  /* ================= REACTIONS ================= */
-
   card.querySelectorAll(".react").forEach(btn => {
 
     btn.addEventListener("click", async () => {
@@ -264,8 +264,6 @@ function createPostCard(post) {
     });
 
   });
-
-  /* ================= EDIT ================= */
 
   if (isOwner) {
 

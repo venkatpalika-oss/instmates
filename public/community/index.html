@@ -8,20 +8,25 @@
   <meta name="description"
         content="Ask and answer real instrumentation and analyzer questions from real plant experience." />
 
+  <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-20" />
 </head>
 
 <body data-page="community">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
 
+<!-- ================= BREADCRUMBS ================= -->
 <nav class="crumbs">
   <a href="/">Home</a><span>›</span>
   <span class="current">Community</span>
 </nav>
 
+<!-- ================= MAIN ================= -->
 <main class="container">
 
+  <!-- INTRO -->
   <section class="panel">
     <h1>Community Q&A</h1>
     <p class="muted">
@@ -29,55 +34,39 @@
     </p>
   </section>
 
+  <!-- ASK BUTTON -->
   <section class="panel">
     <div class="action-row">
-      <a href="/question.html" class="btn btn-primary">
+      <a href="/feed/" class="btn btn-primary">
         Ask a Question
       </a>
     </div>
   </section>
 
-  <section class="panel">
-    <p class="muted">Recent Questions</p>
-
-    <div class="grid">
-
-      <div class="card">
-        <h3>
-          <a href="#">GC baseline drifting after column change</a>
-        </h3>
-        <p class="muted">
-          After replacing GC column, baseline drift observed...
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>
-          <a href="#">CEMS SO₂ analyzer showing zero intermittently</a>
-        </h3>
-        <p class="muted">
-          SO₂ analyzer drops to zero and recovers...
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>
-          <a href="#">DP transmitter fluctuating during startup</a>
-        </h3>
-        <p class="muted">
-          Readings unstable during plant startup...
-        </p>
-      </div>
-
+  <!-- QUESTION FEED -->
+  <section class="feed grid grid-1" id="feedContainer">
+    <div class="card muted">
+      Loading questions…
     </div>
-
   </section>
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
 
-<script src="//assets/js/includes.js"></script>
+<!-- ================= SCRIPTS ================= -->
+
+<script src="/assets/js/includes.js?v=2026-02-20" defer></script>
+<script src="/assets/js/mobile-header.js" defer></script>
+
+<script>
+  /* Force question-only mode BEFORE feed.js loads */
+  window.selectedCategory = "question";
+</script>
+
+<script type="module" src="/assets/js/firebase.js?v=2026-02-20"></script>
+<script type="module" src="/assets/js/feed.js?v=2026-02-20"></script>
 
 </body>
 </html>

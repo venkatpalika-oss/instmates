@@ -1,7 +1,7 @@
 /* =========================================================
    InstMates – Header Auth UI
    FINAL, HARDENED, NO FLICKER + DROPDOWN
-   File: assets/js/header-auth.js
+   File: assets/js/
 ========================================================= */
 
 import { auth } from "./firebase.js";
@@ -48,7 +48,7 @@ function waitForHeader() {
       const logoutBtn   = document.getElementById("logoutBtn");
 
       if (profileLink) {
-        profileLink.href = `/profile-view.html?uid=${user.uid}`;
+        profileLink.href = `/profile.html?uid=${user.uid}`;
       } else {
         console.warn("HeaderAuth: #myProfileLink not found");
       }

@@ -125,7 +125,7 @@ function createProfileCard(profile) {
 
     <div class="action-row" style="margin-top:12px;">
       <a class="btn btn-ghost"
-         href="/profile-view.html?uid=${uid}">
+         href="/profile.html?uid=${uid}"
          View Profile
       </a>
 

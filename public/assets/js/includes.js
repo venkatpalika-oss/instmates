@@ -1,6 +1,6 @@
 // =========================================================
 // InstMates – ROOT DOMAIN INCLUDE HANDLER (LOCKED STANDARD)
-// File: //assets/js/includes.js
+// File: /assets/js/includes.js
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -23,10 +23,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadInto("siteFooter", "/includes/footer.html");
 
   // =====================================================
+  // 🔐 GLOBAL AUTH LOGIC LOADER (NEW)
+  // =====================================================
+
+  // Prevent duplicate auth loading
+  if (!document.body.dataset.authLoaded) {
+
+    const headerAuth = document.createElement("script");
+    headerAuth.type = "module";
+    headerAuth.src = "/assets/js/";
+    document.body.appendChild(headerAuth);
+
+    const coreAuth = document.createElement("script");
+    coreAuth.type = "module";
+    coreAuth.src = "/assets/js/auth.js";
+    document.body.appendChild(coreAuth);
+
+    document.body.dataset.authLoaded = "true";
+  }
+
+  // =====================================================
   // 📱 MOBILE BOTTOM NAV (GLOBAL INJECTION)
   // =====================================================
 
-  // Prevent duplicate injection
   if (!document.querySelector(".mobile-bottom-nav")) {
 
     const nav = document.createElement("nav");
@@ -60,7 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.body.appendChild(nav);
 
-    // ================= ACTIVE PAGE HIGHLIGHT =================
     const currentPage = document.body.dataset.page;
 
     nav.querySelectorAll("a[data-page]").forEach(link => {
