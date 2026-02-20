@@ -10,7 +10,15 @@
 
 <body data-page="technician-profile">
 
+<!-- ================= HEADER ================= -->
 <div id="siteHeader"></div>
+
+<!-- ================= BREADCRUMBS ================= -->
+<nav class="crumbs">
+  <a href="/">Home</a><span>›</span>
+  <a href="/profiles/">Profiles</a><span>›</span>
+  <span class="current">Technician Profile</span>
+</nav>
 
 <main class="container">
 
@@ -20,7 +28,10 @@
 
 </main>
 
+<!-- ================= FOOTER ================= -->
 <div id="siteFooter"></div>
+
+<!-- ================= SCRIPTS ================= -->
 
 <script src="/assets/js/includes.js?v=2026-02-20"></script>
 
@@ -52,7 +63,6 @@ async function loadProfile(uid) {
 
   const p = snap.data();
 
-  // Load Signature Case if verified
   let signatureCaseHTML = "";
 
   if (p.isVerified && p.signatureCaseId) {
