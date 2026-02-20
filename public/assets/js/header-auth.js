@@ -1,7 +1,7 @@
 /* =========================================================
    InstMates – Header Auth UI
    FINAL, HARDENED, NO FLICKER + DROPDOWN
-   File: assets/js/header-auth.js
+   File: assets/js/
 ========================================================= */
 
 import { auth } from "./firebase.js";
