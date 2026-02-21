@@ -61,13 +61,15 @@
         <a href="/community/">Community</a>
 
         <div class="nav-dropdown">
-          <span class="nav-link">Knowledge ▾</span>
+          <button type="button" class="nav-link dropdown-toggle">
+            Knowledge ▾
+          </button>
           <div class="dropdown-menu">
             <a href="/knowledge/">Knowledge Home</a>
             <a href="/knowledge/field/">Field Instrumentation</a>
             <a href="/knowledge/analyzers/">Analyzers</a>
             <a href="/case-studies/">Case Studies</a>
-            <a href="/blog/">Blog</a> <!-- ✅ Added Blog -->
+            <a href="/blog/">Blog</a>
           </div>
         </div>
 
@@ -75,9 +77,11 @@
         <a href="/feed/">Feed</a>
 
         <div class="nav-dropdown user-menu">
-          <span class="nav-link account-link" id="userMenuBtn">
+          <button type="button"
+                  class="nav-link account-link"
+                  id="userMenuBtn">
             Account ▾
-          </span>
+          </button>
           <div class="dropdown-menu">
             <a href="#" id="myProfileLink">View Profile</a>
             <a href="#" id="editProfileLink">Edit Profile</a>
@@ -95,3 +99,29 @@
 
   </div>
 </header>
+
+<!-- ================= DROPDOWN SCRIPT ================= -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const dropdownToggles = document.querySelectorAll(".dropdown-toggle, #userMenuBtn");
+
+    dropdownToggles.forEach(btn => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        const parent = this.closest(".nav-dropdown");
+        parent.classList.toggle("open");
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (e) {
+      document.querySelectorAll(".nav-dropdown").forEach(drop => {
+        if (!drop.contains(e.target)) {
+          drop.classList.remove("open");
+        }
+      });
+    });
+
+  });
+</script>
