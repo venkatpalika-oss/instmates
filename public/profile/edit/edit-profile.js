@@ -14,7 +14,7 @@ const changePhotoBtn = document.getElementById("changePhotoBtn");
 const deletePhotoBtn = document.getElementById("deletePhotoBtn");
 const toast = document.getElementById("toast");
 
-let cropper;
+let cropper = null;
 let croppedBlob = null;
 let existingPhotoURL = null;
 
@@ -62,44 +62,77 @@ changePhotoBtn.addEventListener("click", () => {
   fileInput.click();
 });
 
+/* ================= FILE INPUT LISTENER (FIXED VERSION) ================= */
+
 fileInput.addEventListener("change", (e) => {
+
   const file = e.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
+
   reader.onload = () => {
+
+    // 🔴 Hide preview while cropping
+    preview.style.display = "none";
+
+    // 🔴 Destroy existing cropper if exists
+    if (cropper) {
+      cropper.destroy();
+      cropper = null;
+    }
+
     cropImage.src = reader.result;
     cropContainer.style.display = "block";
 
-    if (cropper) cropper.destroy();
-
     cropper = new Cropper(cropImage, {
       aspectRatio: 1,
-      viewMode: 1
+      viewMode: 1,
+      autoCropArea: 0.8,
+      movable: true,
+      zoomable: true,
+      scalable: false,
+      rotatable: false,
+      responsive: true,
+      background: false,
+      guides: true
     });
   };
+
   reader.readAsDataURL(file);
 });
 
 /* ================= CROP IMAGE ================= */
 
 cropBtn.addEventListener("click", () => {
+
   if (!cropper) return;
 
   cropper.getCroppedCanvas({
     width: 300,
-    height: 300
+    height: 300,
+    imageSmoothingQuality: "high"
   }).toBlob((blob) => {
+
     croppedBlob = blob;
+
     preview.src = URL.createObjectURL(blob);
     preview.style.display = "block";
+
+    // 🔴 Hide crop area
     cropContainer.style.display = "none";
-  });
+
+    // 🔴 Destroy cropper instance
+    cropper.destroy();
+    cropper = null;
+
+  }, "image/jpeg", 0.9);
 });
 
 /* ================= DELETE PHOTO ================= */
 
 deletePhotoBtn.addEventListener("click", async () => {
+
   const user = auth.currentUser;
   if (!user) return;
 
@@ -114,6 +147,7 @@ deletePhotoBtn.addEventListener("click", async () => {
     preview.style.display = "none";
     deletePhotoBtn.style.display = "none";
     existingPhotoURL = null;
+    croppedBlob = null;
 
     showToast("Profile photo deleted");
 
@@ -126,6 +160,7 @@ deletePhotoBtn.addEventListener("click", async () => {
 /* ================= PROFILE COMPLETION ================= */
 
 function calculateCompletion(data) {
+
   let total = 6;
   let score = 0;
 
@@ -142,6 +177,7 @@ function calculateCompletion(data) {
 /* ================= SAVE PROFILE ================= */
 
 form.addEventListener("submit", async (e) => {
+
   e.preventDefault();
 
   const user = auth.currentUser;
