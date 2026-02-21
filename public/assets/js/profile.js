@@ -1,6 +1,8 @@
 /* =========================================================
-   InstMates – Profile Logic (PHASE 2 – FINAL, CLEAN)
+   InstMates – Profile Logic (PHASE 3 – NESTED SCHEMA SAFE)
    File: assets/js/profile.js
+   Compatible with FINAL nested Firestore structure
+   Does NOT break existing architecture
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -36,38 +38,54 @@ onAuthStateChanged(auth, async (user) => {
 
     const data = snap.data();
 
-    setVal("fullName", data.fullName);
-    setVal("role", data.role);
-    setVal("location", data.location);
-    setVal("experienceYears", data.experienceYears);
-    setVal("primaryDomain", data.primaryDomain);
-    setVal("summary", data.summary);
-    setVal("skills", (data.skills || []).join(", "));
+    /* ================= BASIC INFO ================= */
 
-    // Load industries (multi-select)
+    setVal("fullName", data.basicInfo?.fullName);
+    setVal("role", data.basicInfo?.headline);
+    setVal("location", data.basicInfo?.location);
+    setVal("experienceYears", data.basicInfo?.experienceYears);
+
+    /* ================= PROFESSIONAL ================= */
+
+    setVal("primaryDomain", data.professional?.specialization);
+
+    // Convert array to comma string for UI
+    setVal("skills",
+      (data.professional?.analyzersWorked || []).join(", ")
+    );
+
+    /* ================= INDUSTRIES ================= */
+
     const industriesSelect = document.getElementById("industries");
-    if (industriesSelect && data.industriesWorked) {
+    if (industriesSelect && data.professional?.plantType) {
       Array.from(industriesSelect.options).forEach(option => {
-        option.selected = data.industriesWorked.includes(option.value);
+        option.selected =
+          option.value === data.professional.plantType;
       });
     }
 
-    // Load troubleshooting blocks
-    if (data.majorTroubleshooting && Array.isArray(data.majorTroubleshooting)) {
-      data.majorTroubleshooting.forEach(item => {
-        addTroubleBlock();
-        const lastCard = document.querySelectorAll(".trouble-card");
-        const card = lastCard[lastCard.length - 1];
-        card.querySelectorAll("[data-field]").forEach(field => {
-          field.value = item[field.dataset.field] || "";
-        });
-      });
+    /* ================= ACHIEVEMENT ================= */
+
+    if (data.achievement) {
+      addTroubleBlock();
+      const lastCard = document.querySelectorAll(".trouble-card");
+      const card = lastCard[lastCard.length - 1];
+
+      card.querySelector("[data-field='title']").value =
+        data.achievement.title || "";
+
+      card.querySelector("[data-field='description']").value =
+        data.achievement.description || "";
+
+      card.querySelector("[data-field='impact']").value =
+        data.achievement.impact || "";
     }
 
-    // Public profile flag
+    /* ================= PROFILE STATUS ================= */
+
     if (publicProfileCheckbox) {
       publicProfileCheckbox.checked =
-        data.publicProfile !== false;
+        data.profileStatus?.isPublic !== false;
     }
 
   } catch (err) {
@@ -84,52 +102,72 @@ if (form) {
     const user = auth.currentUser;
     if (!user) return;
 
-    // Collect industries
-    const industriesSelect = document.getElementById("industries");
-    const industries = industriesSelect
-      ? Array.from(industriesSelect.selectedOptions).map(o => o.value)
-      : [];
+    /* ================= COLLECT INDUSTRIES ================= */
 
-    // Collect troubleshooting entries
-    const troubles = [];
-    document.querySelectorAll(".trouble-card").forEach(card => {
-      const obj = {};
-      card.querySelectorAll("[data-field]").forEach(field => {
-        obj[field.dataset.field] = field.value.trim();
+    const industriesSelect = document.getElementById("industries");
+    const plantType = industriesSelect
+      ? industriesSelect.value
+      : "";
+
+    /* ================= COLLECT ACHIEVEMENT ================= */
+
+    let achievement = {
+      title: "",
+      description: "",
+      impact: ""
+    };
+
+    const troubleCard = document.querySelector(".trouble-card");
+    if (troubleCard) {
+      troubleCard.querySelectorAll("[data-field]").forEach(field => {
+        achievement[field.dataset.field] =
+          field.value.trim();
       });
-      troubles.push(obj);
-    });
+    }
+
+    /* ================= BUILD FINAL STRUCTURE ================= */
 
     const profile = {
-      uid: user.uid,
-      fullName: val("fullName"),
-      role: val("role"),
-      location: val("location"),
-      experienceYears: val("experienceYears"),
-      primaryDomain: val("primaryDomain"),
-      industriesWorked: industries,
-      summary: val("summary"),
-      skills: split("skills"),
-      majorTroubleshooting: troubles,
-      publicProfile: publicProfileCheckbox
-        ? publicProfileCheckbox.checked
-        : true,
-      profileCompleted: true,
-      updatedAt: serverTimestamp()
+      basicInfo: {
+        fullName: val("fullName"),
+        headline: val("role"),
+        company: "", // kept for future use
+        experienceYears: Number(val("experienceYears")) || 0,
+        location: val("location"),
+        profilePhoto: ""
+      },
+
+      professional: {
+        specialization: val("primaryDomain"),
+        plantType: plantType,
+        analyzersWorked: split("skills"),
+        certifications: []
+      },
+
+      achievement: achievement,
+
+      profileStatus: {
+        completionPercent: 100,
+        isPublic: publicProfileCheckbox
+          ? publicProfileCheckbox.checked
+          : true,
+        lastUpdated: serverTimestamp()
+      },
+
+      createdAt: serverTimestamp()
     };
 
     try {
-      // Save profile collection
+      /* ================= SAVE PROFILE ================= */
+
       await setDoc(
         doc(db, "profiles", user.uid),
-        {
-          ...profile,
-          createdAt: serverTimestamp()
-        },
+        profile,
         { merge: true }
       );
 
-      // Update users collection (CRITICAL)
+      /* ================= UPDATE USERS COLLECTION ================= */
+
       await updateDoc(
         doc(db, "users", user.uid),
         {

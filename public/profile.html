@@ -44,7 +44,7 @@ from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 const container = document.getElementById("profileContainer");
 
 const params = new URLSearchParams(window.location.search);
-const uid = params.get("id");
+const uid = params.get("uid");
 
 if (!uid) {
   container.innerHTML = "<p class='muted'>Profile not found.</p>";
