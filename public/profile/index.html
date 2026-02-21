@@ -57,8 +57,6 @@ async function loadProfile(uid) {
   }
 
   const p = snap.data();
-console.log("Loaded profile:", p);
-console.log("Basic info:", basic);
 
   const basic = p.basicInfo || {};
   const professional = p.professional || {};
@@ -110,10 +108,16 @@ console.log("Basic info:", basic);
   /* ================= SKILLS ================= */
 
   const skillsHTML = Array.isArray(professional.analyzersWorked) &&
-                     professional.analyzersWorked.length
-    ? `<h3>Analyzers Worked</h3>
-       <p>${professional.analyzersWorked.join(", ")}</p>`
-    : "";
+                   professional.analyzersWorked.length
+  ? `
+     <h3>Analyzers Worked</h3>
+     <div class="tag-container">
+       ${professional.analyzersWorked.map(a =>
+         `<span class="tech-tag">${a}</span>`
+       ).join("")}
+     </div>
+    `
+  : "";
 
   /* ================= ACHIEVEMENT ================= */
 
