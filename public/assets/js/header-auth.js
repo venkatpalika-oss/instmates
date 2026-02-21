@@ -35,7 +35,7 @@ function waitForHeader() {
   // Hide header actions until auth resolves (extra safety)
   document.body.classList.remove("auth-ready", "auth-in", "auth-out");
 
-  const user = auth.currentUser;
+  onAuthStateChanged(auth, async (user) => {
 
     // Reset auth state
     document.body.classList.remove("auth-in", "auth-out");
@@ -48,7 +48,7 @@ function waitForHeader() {
       const logoutBtn   = document.getElementById("logoutBtn");
 
       if (profileLink) {
-        profileLink.href = `//profile/?uid=${user.uid}`;
+        profileLink.href = `/profile.html?uid=${user.uid}`;
       } else {
         console.warn("HeaderAuth: #myProfileLink not found");
       }

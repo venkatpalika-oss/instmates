@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates - Firebase Authentication
-   FINAL – STABLE + SMART HOMEPAGE + PROFILE ROUTING FIX
+   FINAL – CLEAN + DROPDOWN FIX + PROFILE SAFE
    File: assets/js/auth.js
 ========================================================= */
 
@@ -52,7 +52,6 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
-  // Create minimal profile (new schema safe)
   await setDoc(doc(db, "profiles", cred.user.uid), {
     basicInfo: {
       fullName: fullName,
@@ -71,9 +70,7 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
-  // ✅ FIXED redirect
   window.location.href = `/profile/?uid=${cred.user.uid}`;
-
   return cred;
 };
 
@@ -86,8 +83,7 @@ window.loginUser = async function (email, password, remember = true) {
     remember ? browserLocalPersistence : browserSessionPersistence
   );
 
-  const cred = await signInWithEmailAndPassword(auth, email, password);
-  return cred;
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
 /* ================= LOGOUT ================= */
@@ -98,10 +94,12 @@ window.logoutUser = async function () {
 };
 
 /* =========================================================
-   AUTH STATE HANDLER
+   AUTH STATE HANDLER (ONLY ONE)
 ========================================================= */
 
 onAuthStateChanged(auth, async (user) => {
+
+  /* ================= BODY STATE ================= */
 
   document.body.classList.add("auth-ready");
   document.body.classList.toggle("auth-in", !!user);
@@ -109,9 +107,33 @@ onAuthStateChanged(auth, async (user) => {
 
   const path = location.pathname;
 
-  /* =====================================================
-     SMART HOMEPAGE TOGGLE
-  ===================================================== */
+  /* ================= HEADER DROPDOWN FIX ================= */
+
+  const profileLink = document.getElementById("myProfileLink");
+  const editLink = document.getElementById("editProfileLink");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (user) {
+
+    if (profileLink) {
+      profileLink.href = `/profile/?uid=${user.uid}`;
+    }
+
+    if (editLink) {
+      editLink.href = `/profile/edit/`;
+    }
+
+    if (logoutBtn) {
+      logoutBtn.onclick = async (e) => {
+        e.preventDefault();
+        await signOut(auth);
+        window.location.href = "/";
+      };
+    }
+
+  }
+
+  /* ================= SMART HOMEPAGE TOGGLE ================= */
 
   const authOutSections = document.querySelectorAll(".auth-out-section");
   const authInSections  = document.querySelectorAll(".auth-in-section");
@@ -126,9 +148,7 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  /* =====================================================
-     PUBLIC PAGES
-  ===================================================== */
+  /* ================= PUBLIC PAGES ================= */
 
   const publicPages = [
     "/",
@@ -138,29 +158,11 @@ onAuthStateChanged(auth, async (user) => {
   ];
 
   if (publicPages.includes(path)) return;
-
   if (!user) return;
 
   try {
 
-    /* =====================================================
-       FIX DROPDOWN PROFILE LINKS
-    ===================================================== */
-
-    const profileLink = document.getElementById("myProfileLink");
-    const editLink = document.getElementById("editProfileLink");
-
-    if (profileLink) {
-      profileLink.href = `/profile/?uid=${user.uid}`;
-    }
-
-    if (editLink) {
-      editLink.href = `/profile/?uid=${user.uid}`;
-    }
-
-    /* =====================================================
-       AUTO-HEAL USER DOCUMENT
-    ===================================================== */
+    /* ================= AUTO-HEAL USER ================= */
 
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
@@ -183,9 +185,7 @@ onAuthStateChanged(auth, async (user) => {
     const updatedUserSnap = await getDoc(userRef);
     const userData = updatedUserSnap.data();
 
-    /* =====================================================
-       ENSURE PROFILE EXISTS
-    ===================================================== */
+    /* ================= ENSURE PROFILE EXISTS ================= */
 
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
@@ -210,9 +210,7 @@ onAuthStateChanged(auth, async (user) => {
       });
     }
 
-    /* =====================================================
-       PROFILE COMPLETION MODAL
-    ===================================================== */
+    /* ================= PROFILE COMPLETION MODAL ================= */
 
     const protectedPages = [
       "/explore.html",
@@ -241,9 +239,7 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    /* =====================================================
-       REDIRECT LOGIN IF AUTHENTICATED
-    ===================================================== */
+    /* ================= REDIRECT LOGIN IF AUTHENTICATED ================= */
 
     if (
       path.endsWith("/login.html") ||
@@ -255,6 +251,7 @@ onAuthStateChanged(auth, async (user) => {
   } catch (err) {
     console.error("Auth state error:", err);
   }
+
 });
 
 /* =========================================================

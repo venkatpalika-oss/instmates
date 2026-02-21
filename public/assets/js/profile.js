@@ -91,7 +91,7 @@ const user = auth.currentUser;
   } catch (err) {
     console.error("Profile load error:", err);
   }
-});
+;
 
 /* ================= SAVE PROFILE ================= */
 
