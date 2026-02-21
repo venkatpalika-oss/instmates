@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates - Firebase Authentication
-   FINAL – STABLE + SMART HOMEPAGE + PROFILE MODAL
+   FINAL – STABLE + SMART HOMEPAGE + PROFILE ROUTING FIX
    File: assets/js/auth.js
 ========================================================= */
 
@@ -36,6 +36,7 @@ import {
 ========================================================= */
 
 window.registerUser = async function (email, password, fullName) {
+
   const cred = await createUserWithEmailAndPassword(auth, email, password);
 
   await setDoc(doc(db, "users", cred.user.uid), {
@@ -51,15 +52,28 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
+  // Create minimal profile (new schema safe)
   await setDoc(doc(db, "profiles", cred.user.uid), {
-    fullName: fullName,
-    role: "Technician",
-    bio: "",
-    skills: [],
+    basicInfo: {
+      fullName: fullName,
+      headline: "Technician",
+      location: ""
+    },
+    professional: {
+      specialization: "",
+      analyzersWorked: []
+    },
+    achievement: {},
+    profileStatus: {
+      isPublic: true,
+      completionPercent: 10
+    },
     createdAt: serverTimestamp()
   });
 
-  window.location.href = "//profile/";
+  // ✅ FIXED redirect
+  window.location.href = `/profile/?uid=${cred.user.uid}`;
+
   return cred;
 };
 
@@ -96,7 +110,7 @@ onAuthStateChanged(auth, async (user) => {
   const path = location.pathname;
 
   /* =====================================================
-     SMART HOMEPAGE SECTION TOGGLE
+     SMART HOMEPAGE TOGGLE
   ===================================================== */
 
   const authOutSections = document.querySelectorAll(".auth-out-section");
@@ -123,15 +137,26 @@ onAuthStateChanged(auth, async (user) => {
     "/about.html"
   ];
 
-  if (publicPages.includes(path)) {
-    return;
-  }
+  if (publicPages.includes(path)) return;
 
-  if (!user) {
-    return;
-  }
+  if (!user) return;
 
   try {
+
+    /* =====================================================
+       FIX DROPDOWN PROFILE LINKS
+    ===================================================== */
+
+    const profileLink = document.getElementById("myProfileLink");
+    const editLink = document.getElementById("editProfileLink");
+
+    if (profileLink) {
+      profileLink.href = `/profile/?uid=${user.uid}`;
+    }
+
+    if (editLink) {
+      editLink.href = `/profile/?uid=${user.uid}`;
+    }
 
     /* =====================================================
        AUTO-HEAL USER DOCUMENT
@@ -159,7 +184,7 @@ onAuthStateChanged(auth, async (user) => {
     const userData = updatedUserSnap.data();
 
     /* =====================================================
-       ENSURE PROFILE DOCUMENT EXISTS
+       ENSURE PROFILE EXISTS
     ===================================================== */
 
     const profileRef = doc(db, "profiles", user.uid);
@@ -167,16 +192,26 @@ onAuthStateChanged(auth, async (user) => {
 
     if (!profileSnap.exists()) {
       await setDoc(profileRef, {
-        fullName: userData.name || user.email.split("@")[0],
-        role: "Technician",
-        bio: "",
-        skills: [],
+        basicInfo: {
+          fullName: userData.name || user.email.split("@")[0],
+          headline: "Technician",
+          location: ""
+        },
+        professional: {
+          specialization: "",
+          analyzersWorked: []
+        },
+        achievement: {},
+        profileStatus: {
+          isPublic: true,
+          completionPercent: 10
+        },
         createdAt: serverTimestamp()
       });
     }
 
     /* =====================================================
-       PROTECTED PAGES
+       PROFILE COMPLETION MODAL
     ===================================================== */
 
     const protectedPages = [
@@ -184,40 +219,30 @@ onAuthStateChanged(auth, async (user) => {
       "/community.html",
       "/post.html",
       "/feed/",
-      "/feed/index.html",
-      "/profiles/",
-      "/profiles/index.html"
+      "/profiles/"
     ];
 
-    /* =====================================================
-       STRICT PROFILE-FIRST (MODAL SYSTEM)
-    ===================================================== */
+    if (!userData.profileCompleted && protectedPages.includes(path)) {
 
-    if (!userData.profileCompleted) {
+      const modal = document.getElementById("profileRequiredModal");
+      const btn = document.getElementById("completeProfileBtn");
 
-      if (protectedPages.includes(path)) {
+      if (modal) {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
 
-        const modal = document.getElementById("profileRequiredModal");
-        const btn = document.getElementById("completeProfileBtn");
-
-        if (modal) {
-          modal.style.display = "flex";
-          document.body.style.overflow = "hidden";
-        }
-
-        if (btn) {
-          btn.addEventListener("click", () => {
-            window.location.href = "//profile/";
-          });
-        }
-
+      if (btn) {
+        btn.onclick = () => {
+          window.location.href = `/profile/?uid=${user.uid}`;
+        };
       }
 
       return;
     }
 
     /* =====================================================
-       REDIRECT LOGIN/REGISTER IF AUTHENTICATED
+       REDIRECT LOGIN IF AUTHENTICATED
     ===================================================== */
 
     if (
