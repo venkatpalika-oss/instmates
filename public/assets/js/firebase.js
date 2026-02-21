@@ -1,6 +1,20 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+/* =========================================================
+   InstMates – Firebase Configuration (FINAL STABLE)
+========================================================= */
+
+import { initializeApp, getApps } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+import { getAuth } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+import { getFirestore } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+import { getStorage } 
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+/* ================= YOUR REAL CONFIG ================= */
 
 const firebaseConfig = {
   apiKey: "AIzaSyACIzIFjHxZnKXmwCyIttcgdmzmVEsjo0o",
@@ -12,7 +26,18 @@ const firebaseConfig = {
   measurementId: "G-L57QYT7H9F"
 };
 
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+/* ================= INITIALIZE APP SAFELY ================= */
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const app = getApps().length
+  ? getApps()[0]
+  : initializeApp(firebaseConfig);
+
+/* ================= SERVICES ================= */
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+/* ================= EXPORT ================= */
+
+export { auth, db, storage };
