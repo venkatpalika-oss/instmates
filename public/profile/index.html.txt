@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-22" />
 </head>
 
-<body data-page="profile">
+<body data-page="technician-profile">
 
 <div id="siteHeader"></div>
 
 <nav class="crumbs">
   <a href="/">Home</a><span>›</span>
-  <a href="/technicians/">Profiles</a><span>›</span>
+  <a href="/profiles/">Profiles</a><span>›</span>
   <span class="current">Technician Profile</span>
 </nav>
 
@@ -28,9 +28,10 @@
 
 <div id="siteFooter"></div>
 
-<script src="/assets/js/includes.js?v=3"></script>
+<script src="/assets/js/includes.js?v=2026-02-22"></script>
 
 <script type="module">
+
 import { db } from "/assets/js/firebase.js";
 import { doc, getDoc }
 from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -57,8 +58,6 @@ async function loadProfile(uid) {
 
   const p = snap.data();
 
-  /* ================= SAFE NESTED ACCESS ================= */
-
   const basic = p.basicInfo || {};
   const professional = p.professional || {};
   const achievement = p.achievement || {};
@@ -69,83 +68,104 @@ async function loadProfile(uid) {
     return;
   }
 
+  /* ================= SIGNATURE CASE ================= */
+
+  let signatureCaseHTML = "";
+
+  if (p.isVerified && p.signatureCaseId) {
+
+    const caseSnap = await getDoc(
+      doc(db, "signatureCases", p.signatureCaseId)
+    );
+
+    if (caseSnap.exists()) {
+
+      const c = caseSnap.data();
+
+      signatureCaseHTML = `
+        <hr style="margin:30px 0">
+
+        <h3>🏅 Signature Case</h3>
+
+        <div style="background:#f8f9fa;padding:16px;border-radius:10px">
+
+          <h4>${c.title}</h4>
+
+          <p><strong>Problem:</strong><br>
+          ${c.problem || ""}</p>
+
+          <p><strong>Corrective Action:</strong><br>
+          ${c.actionTaken || ""}</p>
+
+          <p><strong>Result:</strong><br>
+          ${c.result || ""}</p>
+
+        </div>
+      `;
+    }
+  }
+
   /* ================= SKILLS ================= */
 
-  const skillsArray = professional.analyzersWorked || [];
-
-  const skillsHTML = skillsArray.length
-    ? `<div class="tags">
-        ${skillsArray.map(skill =>
-          `<span class="tag">${escapeHTML(skill)}</span>`
-        ).join("")}
-       </div>`
-    : "<p class='muted'>No analyzers listed.</p>";
+  const skillsHTML = Array.isArray(professional.analyzersWorked) &&
+                     professional.analyzersWorked.length
+    ? `<h3>Analyzers Worked</h3>
+       <p>${professional.analyzersWorked.join(", ")}</p>`
+    : "";
 
   /* ================= ACHIEVEMENT ================= */
 
-  const troubleshootingHTML = achievement.title
-    ? `<div class="card" style="margin-top:15px;">
-         <h4>${escapeHTML(achievement.title)}</h4>
-         <p>${escapeHTML(achievement.description || "")}</p>
-         <p><strong>Impact:</strong> ${escapeHTML(achievement.impact || "")}</p>
-       </div>`
-    : "<p class='muted'>No major troubleshooting added.</p>";
+  const achievementHTML = achievement.title
+    ? `
+       <hr style="margin:20px 0">
+       <h3>Major Troubleshooting Case</h3>
+       <div style="background:#f8f9fa;padding:16px;border-radius:10px">
+         <h4>${achievement.title}</h4>
+         <p><strong>Description:</strong><br>${achievement.description || ""}</p>
+         <p><strong>Impact:</strong><br>${achievement.impact || ""}</p>
+       </div>
+      `
+    : "";
 
   container.innerHTML = `
+    <div style="text-align:center">
 
-  <!-- HERO SECTION -->
-  <div style="text-align:center;padding:30px 0">
+      <img src="${basic.profilePhoto || "/assets/img/default-avatar.png"}"
+           style="width:120px;height:120px;border-radius:50%;object-fit:cover">
 
-    <img src="${basic.profilePhoto || "/assets/images/default-avatar.png"}"
-         style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 5px 20px rgba(0,0,0,0.15)">
+      <h2>
+        ${basic.fullName || "Technician"}
+        ${
+          p.isVerified
+            ? `<span style="color:#0d6efd;font-size:16px;margin-left:8px">✔ Verified</span>`
+            : ""
+        }
+      </h2>
 
-    <h1 style="margin-top:15px">
-      ${escapeHTML(basic.fullName || "Technician")}
-    </h1>
+      <p class="muted">${basic.headline || ""}</p>
+      <p class="muted">📍 ${basic.location || ""}</p>
+      <p class="muted">${basic.experienceYears || 0} Years Experience</p>
 
-    <p class="muted">${escapeHTML(basic.headline || "")}</p>
-    <p class="muted">📍 ${escapeHTML(basic.location || "")}</p>
-    <p class="muted">${basic.experienceYears || 0} Years Experience</p>
+    </div>
 
-    <a href="/message/?to=${uid}" class="btn btn-primary" style="margin-top:15px">
-      Message
-    </a>
+    <hr style="margin:20px 0">
 
-  </div>
+    <h3>Specialization</h3>
+    <p>${professional.specialization || "Not specified"}</p>
 
-  <hr>
+    <hr style="margin:20px 0">
 
-  <!-- SPECIALIZATION -->
-  <h3>Specialization</h3>
-  <p>${escapeHTML(professional.specialization || "Not specified")}</p>
+    <h3>Plant Type</h3>
+    <p>${professional.plantType || "Not specified"}</p>
 
-  <hr>
+    ${skillsHTML}
 
-  <!-- PLANT TYPE -->
-  <h3>Plant Type</h3>
-  <p>${escapeHTML(professional.plantType || "Not specified")}</p>
+    ${achievementHTML}
 
-  <hr>
-
-  <!-- ANALYZERS -->
-  <h3>Analyzers Worked</h3>
-  ${skillsHTML}
-
-  <hr>
-
-  <!-- MAJOR TROUBLESHOOTING -->
-  <h3>Major Troubleshooting Case</h3>
-  ${troubleshootingHTML}
-
+    ${signatureCaseHTML}
   `;
 }
 
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
 </script>
 
 </body>
