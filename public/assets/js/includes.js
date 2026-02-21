@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <small>Techs</small>
       </a>
 
-      <a href="/profile.html" data-page="profile">
+      <a href="//profile/" data-page="profile">
         <span>👤</span>
         <small>Account</small>
       </a>

@@ -59,7 +59,7 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
-  window.location.href = "/profile.html";
+  window.location.href = "//profile/";
   return cred;
 };
 
@@ -207,7 +207,7 @@ onAuthStateChanged(auth, async (user) => {
 
         if (btn) {
           btn.addEventListener("click", () => {
-            window.location.href = "/profile.html";
+            window.location.href = "//profile/";
           });
         }
 

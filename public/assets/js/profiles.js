@@ -1,6 +1,6 @@
 /* =========================================================
    InstMates – Profiles Directory (Production Version)
-   Updated: View Profile button + Safe Structure Fix
+   FINAL: Supports OLD + NEW Schema + Folder Routing Safe
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -33,11 +33,19 @@ async function loadProfiles() {
     allProfiles = [];
 
     snap.forEach(docSnap => {
+
       const profile = docSnap.data();
       profile.uid = docSnap.id;
 
-      // Only show public profiles
-      if (profile.publicProfile === false) return;
+      const status = profile.profileStatus || {};
+
+      // Support both new + old public flags
+      const isPublic =
+        status.isPublic !== undefined
+          ? status.isPublic
+          : profile.publicProfile !== false;
+
+      if (isPublic === false) return;
 
       allProfiles.push(profile);
     });
@@ -64,7 +72,7 @@ function renderProfiles(list) {
 
   list.forEach(profile => {
     const card = createProfileCard(profile);
-    grid.appendChild(card);
+    if (card) grid.appendChild(card);
   });
 }
 
@@ -74,46 +82,66 @@ function createProfileCard(profile) {
 
   const uid = profile.uid;
   const safeUID = encodeURIComponent(uid);
+
+  const basic = profile.basicInfo || {};
+  const professional = profile.professional || {};
+  const achievement = profile.achievement || {};
+  const status = profile.profileStatus || {};
+
+  // ===== BACKWARD COMPATIBILITY =====
+
+  const fullName =
+    basic.fullName ||
+    profile.fullName ||
+    "Technician";
+
+  const role =
+    basic.headline ||
+    profile.role ||
+    "Instrument / Analyzer Technician";
+
+  const location =
+    basic.location ||
+    profile.location ||
+    "";
+
+  const specialization =
+    professional.specialization ||
+    profile.primaryDomain ||
+    "";
+
+  const photo =
+    basic.profilePhoto ||
+    profile.photoURL ||
+    "";
+
   const completion = getCompletion(profile);
 
   const card = document.createElement("div");
   card.className = "card profile-card";
 
-  const avatarHTML = profile.photoURL
-    ? `<img src="${escapeHTML(profile.photoURL)}"
+  const avatarHTML = photo
+    ? `<img src="${escapeHTML(photo)}"
             class="avatar"
             alt="Avatar" />`
     : `<div class="avatar placeholder">
-         ${(profile.fullName || "T")[0].toUpperCase()}
+         ${fullName[0].toUpperCase()}
        </div>`;
 
   card.innerHTML = `
     ${avatarHTML}
 
-    <h3>${escapeHTML(profile.fullName || "Technician")}</h3>
+    <h3>${escapeHTML(fullName)}</h3>
 
-    <p class="muted">
-      ${escapeHTML(profile.role || "Instrument / Analyzer Technician")}
-    </p>
+    <p class="muted">${escapeHTML(role)}</p>
 
-    ${profile.location
-      ? `<p class="muted">📍 ${escapeHTML(profile.location)}</p>`
+    ${location
+      ? `<p class="muted">📍 ${escapeHTML(location)}</p>`
       : ""
     }
 
-    ${profile.primaryDomain
-      ? `<p class="muted">🔧 ${escapeHTML(profile.primaryDomain)}</p>`
-      : ""
-    }
-
-    ${Array.isArray(profile.skills) && profile.skills.length > 0
-      ? `
-        <div class="tags">
-          ${profile.skills
-            .map(skill => `<span class="tag">${escapeHTML(skill)}</span>`)
-            .join("")}
-        </div>
-      `
+    ${specialization
+      ? `<p class="muted">🔧 ${escapeHTML(specialization)}</p>`
       : ""
     }
 
@@ -125,10 +153,11 @@ function createProfileCard(profile) {
     </div>
     <small class="muted">${completion}% profile complete</small>
 
-    <div class="action-row" style="margin-top:12px; display:flex; gap:10px; justify-content:center;">
-      
+    <div class="action-row"
+         style="margin-top:12px; display:flex; gap:10px; justify-content:center;">
+
       <a class="btn btn-ghost"
-         href="/profile.html?uid=${safeUID}">
+         href="/profile/?uid=${safeUID}">
          View Profile
       </a>
 
@@ -147,17 +176,27 @@ function createProfileCard(profile) {
 
 function getCompletion(profile) {
 
-  let total = 8;
+  const basic = profile.basicInfo || {};
+  const professional = profile.professional || {};
+  const achievement = profile.achievement || {};
+
+  let total = 6;
   let score = 0;
 
-  if (profile.fullName) score++;
-  if (profile.role) score++;
-  if (profile.location) score++;
-  if (profile.primaryDomain) score++;
-  if (profile.experienceYears) score++;
-  if (profile.skills && profile.skills.length > 0) score++;
-  if (profile.summary) score++;
-  if (profile.majorTroubleshooting && profile.majorTroubleshooting.length > 0) score++;
+  if (basic.fullName || profile.fullName) score++;
+  if (basic.headline || profile.role) score++;
+  if (basic.location || profile.location) score++;
+  if (professional.specialization || profile.primaryDomain) score++;
+
+  if (
+    (professional.analyzersWorked && professional.analyzersWorked.length > 0) ||
+    (profile.skills && profile.skills.length > 0)
+  ) score++;
+
+  if (
+    achievement.title ||
+    profile.majorTroubleshooting
+  ) score++;
 
   return Math.round((score / total) * 100);
 }
@@ -171,12 +210,21 @@ if (searchInput) {
 
     const filtered = allProfiles.filter(profile => {
 
+      const basic = profile.basicInfo || {};
+      const professional = profile.professional || {};
+
       return (
-        (profile.fullName || "").toLowerCase().includes(term) ||
-        (profile.role || "").toLowerCase().includes(term) ||
-        (profile.location || "").toLowerCase().includes(term) ||
-        (profile.primaryDomain || "").toLowerCase().includes(term) ||
-        (profile.skills || []).join(" ").toLowerCase().includes(term)
+        (basic.fullName || profile.fullName || "")
+          .toLowerCase().includes(term) ||
+
+        (basic.headline || profile.role || "")
+          .toLowerCase().includes(term) ||
+
+        (basic.location || profile.location || "")
+          .toLowerCase().includes(term) ||
+
+        (professional.specialization || profile.primaryDomain || "")
+          .toLowerCase().includes(term)
       );
 
     });
