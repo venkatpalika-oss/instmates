@@ -1,5 +1,6 @@
 /* =========================================================
    InstMates – Profiles Directory (Production Version)
+   Updated: View Profile button + Safe Structure Fix
 ========================================================= */
 
 import { db } from "./firebase.js";
@@ -72,6 +73,7 @@ function renderProfiles(list) {
 function createProfileCard(profile) {
 
   const uid = profile.uid;
+  const safeUID = encodeURIComponent(uid);
   const completion = getCompletion(profile);
 
   const card = document.createElement("div");
@@ -123,16 +125,18 @@ function createProfileCard(profile) {
     </div>
     <small class="muted">${completion}% profile complete</small>
 
-    <div class="action-row" style="margin-top:12px;">
+    <div class="action-row" style="margin-top:12px; display:flex; gap:10px; justify-content:center;">
+      
       <a class="btn btn-ghost"
-         href="/profile.html?uid=${uid}"
+         href="/profile.html?uid=${safeUID}">
          View Profile
       </a>
 
       <a class="btn btn-primary"
-         href="/message.html?to=${uid}">
+         href="/message.html?to=${safeUID}">
          Message
       </a>
+
     </div>
   `;
 
