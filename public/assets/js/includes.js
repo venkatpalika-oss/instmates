@@ -27,12 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =====================================================
 
   // Prevent duplicate auth loading
-  if (!document.body.dataset.authLoaded) {
-
-    const headerAuth = document.createElement("script");
-    headerAuth.type = "module";
-    headerAuth.src = "/assets/js/";
-    document.body.appendChild(headerAuth);
+    if (!document.body.dataset.authLoaded) {
 
     const coreAuth = document.createElement("script");
     coreAuth.type = "module";
