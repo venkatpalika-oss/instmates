@@ -2,6 +2,7 @@ import { auth, db, storage } from "/assets/js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import Cropper from "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.esm.js";
 
 const form = document.getElementById("editProfileForm");
 const fileInput = document.getElementById("profilePhoto");
