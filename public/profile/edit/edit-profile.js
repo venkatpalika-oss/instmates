@@ -1,7 +1,8 @@
 import { auth, db, storage } from "/assets/js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import Cropper from "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.esm.js";
 
 const form = document.getElementById("editProfileForm");
 const fileInput = document.getElementById("profilePhoto");
@@ -9,35 +10,57 @@ const preview = document.getElementById("imagePreview");
 const cropImage = document.getElementById("cropImage");
 const cropContainer = document.getElementById("cropContainer");
 const cropBtn = document.getElementById("cropBtn");
+const changePhotoBtn = document.getElementById("changePhotoBtn");
+const deletePhotoBtn = document.getElementById("deletePhotoBtn");
 const toast = document.getElementById("toast");
 
 let cropper;
 let croppedBlob = null;
+let existingPhotoURL = null;
 
 /* ================= TOAST ================= */
 
 function showToast(message, type = "success") {
   toast.innerHTML = message;
-  toast.style.position = "fixed";
-  toast.style.bottom = "30px";
-  toast.style.right = "30px";
-  toast.style.padding = "12px 18px";
-  toast.style.borderRadius = "8px";
-  toast.style.color = "#fff";
   toast.style.background = type === "success" ? "#28a745" : "#dc3545";
-  toast.style.opacity = "0";
-  toast.style.transition = "opacity 0.5s ease";
-
-  setTimeout(() => {
-    toast.style.opacity = "1";
-  }, 100);
+  toast.style.opacity = "1";
 
   setTimeout(() => {
     toast.style.opacity = "0";
   }, 4000);
 }
 
-/* ================= IMAGE PREVIEW ================= */
+/* ================= LOAD PROFILE ================= */
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) return;
+
+  const snap = await getDoc(doc(db, "profiles", user.uid));
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+
+  document.getElementById("fullName").value = data.basicInfo?.fullName || "";
+  document.getElementById("headline").value = data.basicInfo?.headline || "";
+  document.getElementById("location").value = data.basicInfo?.location || "";
+  document.getElementById("specialization").value = data.professional?.specialization || "";
+  document.getElementById("analyzersWorked").value =
+    (data.professional?.analyzersWorked || []).join(", ");
+
+  existingPhotoURL = data.basicInfo?.profilePhoto || null;
+
+  if (existingPhotoURL) {
+    preview.src = existingPhotoURL;
+    preview.style.display = "block";
+    deletePhotoBtn.style.display = "inline-block";
+  }
+});
+
+/* ================= CHANGE PHOTO ================= */
+
+changePhotoBtn.addEventListener("click", () => {
+  fileInput.click();
+});
 
 fileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -58,7 +81,7 @@ fileInput.addEventListener("change", (e) => {
   reader.readAsDataURL(file);
 });
 
-/* ================= CROP ================= */
+/* ================= CROP IMAGE ================= */
 
 cropBtn.addEventListener("click", () => {
   if (!cropper) return;
@@ -72,6 +95,32 @@ cropBtn.addEventListener("click", () => {
     preview.style.display = "block";
     cropContainer.style.display = "none";
   });
+});
+
+/* ================= DELETE PHOTO ================= */
+
+deletePhotoBtn.addEventListener("click", async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    const storageRef = ref(storage, `profilePhotos/${user.uid}`);
+    await deleteObject(storageRef);
+
+    await updateDoc(doc(db, "profiles", user.uid), {
+      "basicInfo.profilePhoto": null
+    });
+
+    preview.style.display = "none";
+    deletePhotoBtn.style.display = "none";
+    existingPhotoURL = null;
+
+    showToast("Profile photo deleted");
+
+  } catch (err) {
+    console.error(err);
+    showToast("Error deleting photo", "error");
+  }
 });
 
 /* ================= PROFILE COMPLETION ================= */
@@ -114,7 +163,7 @@ form.addEventListener("submit", async (e) => {
       .map(s => s.trim())
       .filter(Boolean);
 
-    let photoURL = null;
+    let photoURL = existingPhotoURL;
 
     if (croppedBlob) {
       const storageRef = ref(storage, `profilePhotos/${user.uid}`);
@@ -127,7 +176,7 @@ form.addEventListener("submit", async (e) => {
         fullName,
         headline,
         location,
-        ...(photoURL && { profilePhoto: photoURL })
+        profilePhoto: photoURL
       },
       professional: {
         specialization,

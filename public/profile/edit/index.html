@@ -67,6 +67,13 @@
       background: linear-gradient(90deg, #4caf50, #2e7d32);
       transition: width 0.5s ease;
     }
+
+    .photo-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 
@@ -92,8 +99,21 @@
       <label>Location</label>
       <input type="text" id="location" />
 
+      <!-- ================= PROFILE PHOTO ================= -->
+
       <label>Profile Photo</label>
-      <input type="file" id="profilePhoto" accept="image/*" />
+
+      <div class="photo-actions">
+        <input type="file" id="profilePhoto" accept="image/*" hidden />
+
+        <button type="button" id="changePhotoBtn" class="btn btn-ghost">
+          Change Photo
+        </button>
+
+        <button type="button" id="deletePhotoBtn" class="btn btn-danger" style="display:none;">
+          Delete Photo
+        </button>
+      </div>
 
       <!-- Preview -->
       <div class="image-preview">
@@ -108,7 +128,9 @@
         </button>
       </div>
 
-      <h3 style="margin-top:20px;">Professional</h3>
+      <!-- ================= PROFESSIONAL ================= -->
+
+      <h3 style="margin-top:25px;">Professional</h3>
 
       <label>Specialization</label>
       <input type="text" id="specialization" />
@@ -116,7 +138,8 @@
       <label>Analyzers Worked (comma separated)</label>
       <input type="text" id="analyzersWorked" />
 
-      <!-- Completion -->
+      <!-- ================= COMPLETION ================= -->
+
       <div class="completion-box">
         Profile Completion: <span id="completionPercent">0%</span>
         <div class="completion-bar">
@@ -140,11 +163,6 @@
 
 <!-- Scripts -->
 <script src="/assets/js/includes.js"></script>
-
-<!-- Cropper JS -->
-<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
-
-<!-- Edit Profile Logic -->
 <script type="module" src="/profile/edit/edit-profile.js"></script>
 
 </body>
