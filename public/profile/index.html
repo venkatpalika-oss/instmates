@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Technician Profile | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-22-3" />
+
+  <style>
+    /* ===== HERO ===== */
+    .profile-hero {
+      display:flex;
+      gap:25px;
+      align-items:center;
+      margin-bottom:30px;
+      flex-wrap:wrap;
+      background:#f4f8fb;
+      padding:25px;
+      border-radius:16px;
+      transition:0.3s ease;
+    }
+    .profile-hero:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .profile-avatar {
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      object-fit:cover;
+      border:4px solid #fff;
+      box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .headline { margin:5px 0; font-weight:500; }
+
+    /* ===== VERIFIED BADGE ===== */
+    .verified-badge {
+      display:inline-block;
+      margin-left:10px;
+      padding:4px 10px;
+      font-size:12px;
+      background:#e7f1ff;
+      color:#0d6efd;
+      border-radius:20px;
+      font-weight:500;
+    }
+
+    /* ===== PROFILE STRENGTH ===== */
+    .profile-strength-wrapper {
+      margin-top:10px;
+      max-width:350px;
+    }
+    .profile-strength-header {
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      margin-bottom:6px;
+      color:#555;
+    }
+    .profile-strength-bar {
+      height:8px;
+      background:#e0e0e0;
+      border-radius:20px;
+      overflow:hidden;
+    }
+    .profile-strength-fill {
+      height:100%;
+      background:linear-gradient(90deg,#28a745,#0d6efd);
+      border-radius:20px;
+      transition:width 0.4s ease;
+    }
+
+    /* ===== RELIABILITY ===== */
+    .reliability-section {
+      display:flex;
+      gap:20px;
+      margin-bottom:30px;
+      flex-wrap:wrap;
+    }
+    .metric-card {
+      flex:1;
+      min-width:160px;
+      background:#fff;
+      padding:22px;
+      border-radius:14px;
+      text-align:center;
+      transition:0.25s ease;
+      box-shadow:0 6px 20px rgba(0,0,0,0.05);
+      border:1px solid #eef2f6;
+    }
+    .metric-card:hover {
+      transform:translateY(-4px);
+    }
+    .metric-card h2 {
+      margin:0;
+      color:#0d6efd;
+      font-size:24px;
+    }
+
+    /* ===== GRID ===== */
+    .profile-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+    }
+    @media(max-width:900px){
+      .profile-grid { grid-template-columns:1fr; }
+    }
+
+    /* ===== TAGS ===== */
+    .tech-tag {
+      display:inline-block;
+      background:#e7f1ff;
+      color:#0d6efd;
+      padding:6px 12px;
+      margin:4px 8px 4px 0;
+      border-radius:20px;
+      font-size:13px;
+    }
+
+    /* ===== CASE CARD ===== */
+    .case-card {
+      background:#fff;
+      padding:22px;
+      border-radius:14px;
+      box-shadow:0 8px 25px rgba(0,0,0,0.06);
+      border-left:4px solid #0d6efd;
+    }
+
+    /* ===== SKILL BARS ===== */
+    .skill-bar {
+      margin-bottom:12px;
+    }
+    .skill-bar span {
+      font-size:13px;
+      display:block;
+      margin-bottom:4px;
+    }
+    .skill-bar-track {
+      height:6px;
+      background:#e0e0e0;
+      border-radius:10px;
+      overflow:hidden;
+    }
+    .skill-bar-fill {
+      height:100%;
+      background:#0d6efd;
+    }
+
+    /* ===== AUTHORITY SCORE ===== */
+    .authority-box {
+      background:#fff;
+      padding:20px;
+      border-radius:14px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.05);
+      margin-top:25px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body data-page="technician-profile">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+  <a href="/">Home</a><span>›</span>
+  <a href="/profiles/">Profiles</a><span>›</span>
+  <span class="current">Technician Profile</span>
+</nav>
+
+<main class="container">
+<section id="profileContainer" class="panel">
+  <p class="muted">Loading profile…</p>
+</section>
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-22-3"></script>
+
+<script type="module">
+import { db } from "/assets/js/firebase.js";
+import { doc, getDoc }
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const container = document.getElementById("profileContainer");
+const uid = new URLSearchParams(window.location.search).get("uid");
+
+if (!uid) {
+  container.innerHTML = "<p class='muted'>Profile not found.</p>";
+} else {
+  loadProfile(uid);
+}
+
+async function loadProfile(uid) {
+
+  const snap = await getDoc(doc(db, "profiles", uid));
+  if (!snap.exists()) {
+    container.innerHTML = "<p class='muted'>Profile not found.</p>";
+    return;
+  }
+
+  const p = snap.data();
+  const basic = p.basicInfo || {};
+  const professional = p.professional || {};
+  const achievement = p.achievement || {};
+  const status = p.profileStatus || {};
+
+  if (status.isPublic === false) {
+    container.innerHTML = "<p class='muted'>This profile is private.</p>";
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="profile-hero">
+      <img src="${basic.profilePhoto || "/assets/img/default-avatar.png"}"
+           class="profile-avatar">
+
+      <div>
+        <h1>
+          ${basic.fullName || "Technician"}
+          ${p.isVerified ? `<span class="verified-badge">✔ Verified</span>` : ""}
+        </h1>
+        <p class="headline">${basic.headline || ""}</p>
+        <p class="muted">📍 ${basic.location || ""} | ⏳ ${basic.experienceYears || 0} Years Experience</p>
+
+        <div class="profile-strength-wrapper">
+          <div class="profile-strength-header">
+            <span>Profile Strength</span>
+            <span>${status.completionPercent || 0}%</span>
+          </div>
+          <div class="profile-strength-bar">
+            <div class="profile-strength-fill"
+                 style="width:${status.completionPercent || 0}%">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reliability-section">
+      <div class="metric-card">
+        <h2 class="counter" data-target="99.2">0</h2>
+        <p>Analyzer Uptime</p>
+      </div>
+      <div class="metric-card">
+        <h2 class="counter" data-target="6">0</h2>
+        <p>Shutdowns Supported</p>
+      </div>
+      <div class="metric-card">
+        <h2 class="counter" data-target="84">0</h2>
+        <p>Breakdowns Resolved</p>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div>
+        <h3>Specialization</h3>
+        <p>${professional.specialization || "Not specified"}</p>
+
+        <h3>Plant Type</h3>
+        <p>${professional.plantType || "Not specified"}</p>
+
+        ${
+          Array.isArray(professional.analyzersWorked) && professional.analyzersWorked.length
+          ? `<h3>Analyzers Worked</h3>
+             ${professional.analyzersWorked.map(a => `
+               <div class="skill-bar">
+                 <span>${a}</span>
+                 <div class="skill-bar-track">
+                   <div class="skill-bar-fill" style="width:80%"></div>
+                 </div>
+               </div>
+             `).join("")}`
+          : ""
+        }
+
+        <div class="authority-box">
+          <h3>Authority Score</h3>
+          <h2>${status.completionPercent || 0}/100</h2>
+        </div>
+      </div>
+
+      <div>
+        ${
+          achievement.title
+          ? `<h3>Signature Case</h3>
+             <div class="case-card">
+               <h4>${achievement.title}</h4>
+               <p><strong>Description:</strong><br>${achievement.description || ""}</p>
+               <p><strong>Impact:</strong><br>${achievement.impact || ""}</p>
+             </div>`
+          : ""
+        }
+      </div>
+    </div>
+  `;
+
+  /* ===== COUNTER ANIMATION ===== */
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    const target = parseFloat(counter.getAttribute('data-target'));
+    const increment = target / 60;
+    let current = 0;
+    const update = () => {
+      current += increment;
+      if (current < target) {
+        counter.innerText = target % 1 !== 0 ? current.toFixed(1) : Math.floor(current);
+        requestAnimationFrame(update);
+      } else {
+        counter.innerText = target % 1 !== 0 ? target.toFixed(1) : target;
+      }
+    };
+    update();
+  });
+}
+</script>
+
+</body>
+</html>

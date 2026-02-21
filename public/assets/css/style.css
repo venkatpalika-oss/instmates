@@ -2135,4 +2135,220 @@ body {
   }
 
 }
+/* ===== Analyzer Tags ===== */
 
+.tag-container {
+  margin-top: 8px;
+}
+
+.tech-tag {
+  display: inline-block;
+  background: #e7f1ff;
+  color: #0d6efd;
+  padding: 6px 12px;
+  margin: 4px 8px 4px 0;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.tech-tag:hover {
+  background: #0d6efd;
+  color: #fff;
+}
+/* ===== Reliability Dashboard ===== */
+
+.reliability-section {
+  margin-top: 25px;
+}
+
+.reliability-section h3 {
+  margin-bottom: 15px;
+}
+
+.reliability-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.metric-card {
+  flex: 1;
+  min-width: 150px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.metric-card h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #0d6efd;
+}
+
+.metric-card p {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}/* ===== Profile Strength ===== */
+
+.profile-strength-wrapper {
+  margin-top: 15px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-strength-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.profile-strength-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.profile-strength-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #0d6efd);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}/* ===== PROFILE HERO ===== */
+
+.profile-hero {
+  display:flex;
+  gap:25px;
+  align-items:center;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+  background:#f4f8fb;
+  padding:25px;
+  border-radius:16px;
+}
+
+.profile-avatar {
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid white;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.profile-right h1 {
+  margin:0;
+}
+
+.headline {
+  font-weight:500;
+  margin:5px 0;
+}
+
+/* ===== PROFILE STRENGTH ===== */
+
+.profile-strength-wrapper {
+  margin-top:10px;
+  max-width:350px;
+}
+
+.profile-strength-header {
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-bottom:6px;
+  color:#555;
+}
+
+.profile-strength-bar {
+  height:8px;
+  background:#e0e0e0;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.profile-strength-fill {
+  height:100%;
+  background:linear-gradient(90deg,#28a745,#0d6efd);
+  border-radius:20px;
+}
+
+/* ===== RELIABILITY ===== */
+
+.reliability-section {
+  display:flex;
+  gap:20px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+
+.metric-card {
+  flex:1;
+  min-width:160px;
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  text-align:center;
+  transition:0.25s ease;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  border:1px solid #eef2f6;
+}
+
+.metric-card h2 {
+  margin:0;
+  color:#0d6efd;
+}
+
+.metric-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* ===== GRID ===== */
+
+.profile-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+@media(max-width:900px){
+  .profile-grid {
+    grid-template-columns:1fr;
+  }
+}
+
+/* ===== TAGS ===== */
+
+.tech-tag {
+  display:inline-block;
+  background:#e7f1ff;
+  color:#0d6efd;
+  padding:6px 12px;
+  margin:4px 8px 4px 0;
+  border-radius:20px;
+  font-size:13px;
+}
+
+/* ===== CASE CARD ===== */
+
+.case-card {
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+  border-left:4px solid #0d6efd;
+}
