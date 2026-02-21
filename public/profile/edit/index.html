@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Profile | InstMates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+
+<body data-page="profile">
+
+<div id="siteHeader"></div>
+
+<main class="container">
+  <section class="panel">
+
+    <h1>Edit Profile</h1>
+
+    <form id="editProfileForm">
+
+      <h3>Basic Information</h3>
+
+      <label>Full Name</label>
+      <input type="text" id="fullName" required />
+
+      <label>Headline</label>
+      <input type="text" id="headline" />
+
+      <label>Location</label>
+      <input type="text" id="location" />
+
+      <label>Profile Photo</label>
+      <input type="file" id="profilePhoto" accept="image/*" />
+
+      <h3>Professional</h3>
+
+      <label>Specialization</label>
+      <input type="text" id="specialization" />
+
+      <label>Analyzers Worked (comma separated)</label>
+      <input type="text" id="analyzersWorked" />
+
+      <button type="submit" class="btn btn-primary">
+        Save Profile
+      </button>
+
+    </form>
+
+  </section>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="/assets/js/includes.js"></script>
+<script type="module" src="./edit-profile.js"></script>
+
+</body>
+</html>

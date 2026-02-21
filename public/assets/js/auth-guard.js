@@ -17,14 +17,14 @@ const PUBLIC_PAGES = [
   "register"
 ];
 
-const user = auth.currentUser;
+onAuthStateChanged(auth, async (user) => {
 
   const page = document.body.dataset.page;
 
   // ================= NOT LOGGED IN =================
   if (!user) {
     if (!PUBLIC_PAGES.includes(page)) {
-      window.location.replace("/login.html");
+      window.location.replace("/login/");
     }
     return;
   }
@@ -32,7 +32,7 @@ const user = auth.currentUser;
   // ================= LOGGED IN =================
   try {
 
-    // 🔥 CHECK PROFILE STATUS FROM USERS COLLECTION (CORRECT SOURCE)
+    // 🔥 CHECK PROFILE STATUS FROM USERS COLLECTION
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
 
@@ -42,7 +42,7 @@ const user = auth.currentUser;
 
     // 🚫 Block access until profile is completed
     if (!profileCompleted && page !== "profile") {
-      window.location.replace("//profile/");
+      window.location.replace(`/profile/?uid=${user.uid}`);
       return;
     }
 
