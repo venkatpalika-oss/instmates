@@ -4,10 +4,73 @@
   <meta charset="UTF-8" />
   <title>Edit Profile | InstMates</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Global CSS -->
   <link rel="stylesheet" href="/assets/css/style.css" />
+
+  <!-- Cropper CSS -->
+  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+
+  <style>
+    .image-preview {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .image-preview img {
+      max-width: 200px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    #cropContainer {
+      margin-top: 20px;
+      display: none;
+    }
+
+    #cropContainer img {
+      max-width: 100%;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 14px 20px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+
+    .completion-box {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f5f7fa;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .completion-bar {
+      height: 8px;
+      background: #e1e6ec;
+      border-radius: 10px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .completion-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4caf50, #2e7d32);
+      transition: width 0.5s ease;
+    }
+  </style>
 </head>
 
-<body data-page="profile">
+<body data-page="profile-edit">
 
 <div id="siteHeader"></div>
 
@@ -32,7 +95,20 @@
       <label>Profile Photo</label>
       <input type="file" id="profilePhoto" accept="image/*" />
 
-      <h3>Professional</h3>
+      <!-- Preview -->
+      <div class="image-preview">
+        <img id="imagePreview" />
+      </div>
+
+      <!-- Crop Container -->
+      <div id="cropContainer">
+        <img id="cropImage" />
+        <button type="button" id="cropBtn" class="btn btn-primary" style="margin-top:10px;">
+          Crop Image
+        </button>
+      </div>
+
+      <h3 style="margin-top:20px;">Professional</h3>
 
       <label>Specialization</label>
       <input type="text" id="specialization" />
@@ -40,7 +116,15 @@
       <label>Analyzers Worked (comma separated)</label>
       <input type="text" id="analyzersWorked" />
 
-      <button type="submit" class="btn btn-primary">
+      <!-- Completion -->
+      <div class="completion-box">
+        Profile Completion: <span id="completionPercent">0%</span>
+        <div class="completion-bar">
+          <div class="completion-fill" id="completionFill"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="margin-top:20px;">
         Save Profile
       </button>
 
@@ -51,8 +135,17 @@
 
 <div id="siteFooter"></div>
 
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Scripts -->
 <script src="/assets/js/includes.js"></script>
-<script type="module" src="./edit-profile.js"></script>
+
+<!-- Cropper JS -->
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+
+<!-- Edit Profile Logic -->
+<script type="module" src="/profile/edit/edit-profile.js"></script>
 
 </body>
 </html>
