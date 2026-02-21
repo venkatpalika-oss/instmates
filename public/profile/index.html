@@ -57,6 +57,8 @@ async function loadProfile(uid) {
   }
 
   const p = snap.data();
+console.log("Loaded profile:", p);
+console.log("Basic info:", basic);
 
   const basic = p.basicInfo || {};
   const professional = p.professional || {};
