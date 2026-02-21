@@ -24,7 +24,7 @@ const publicProfileCheckbox =
 
 /* ================= LOAD PROFILE ================= */
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
   if (!user) {
     window.location.replace("/login.html");
     return;

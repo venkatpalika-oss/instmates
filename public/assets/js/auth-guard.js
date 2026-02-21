@@ -17,7 +17,7 @@ const PUBLIC_PAGES = [
   "register"
 ];
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
 
   const page = document.body.dataset.page;
 

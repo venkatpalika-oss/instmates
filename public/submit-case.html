@@ -90,7 +90,7 @@ let currentCaseId = null;
 let currentStatus = null;
 
 /* ================= AUTH CHECK ================= */
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
 
   if (!user) {
     window.location.href = "/login.html";

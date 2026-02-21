@@ -35,7 +35,7 @@ function waitForHeader() {
   // Hide header actions until auth resolves (extra safety)
   document.body.classList.remove("auth-ready", "auth-in", "auth-out");
 
-  onAuthStateChanged(auth, async (user) => {
+  const user = auth.currentUser;
 
     // Reset auth state
     document.body.classList.remove("auth-in", "auth-out");
