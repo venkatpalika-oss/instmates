@@ -24,7 +24,7 @@ let chatId = null;
 const params = new URLSearchParams(window.location.search);
 const otherUid = params.get("uid");
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
   if (!user || !otherUid) return;
 
   currentUser = user;

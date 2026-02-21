@@ -17,7 +17,7 @@ const PUBLIC_PAGES = [
   "register"
 ];
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
 
   const page = document.body.dataset.page;
 
@@ -42,7 +42,7 @@ onAuthStateChanged(auth, async (user) => {
 
     // 🚫 Block access until profile is completed
     if (!profileCompleted && page !== "profile") {
-      window.location.replace("/profile.html");
+      window.location.replace("//profile/");
       return;
     }
 

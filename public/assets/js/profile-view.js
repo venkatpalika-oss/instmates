@@ -13,7 +13,7 @@ import {
 
 const card = document.getElementById("profileCard");
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
   if (!user) return;
 
   const uid = new URLSearchParams(window.location.search).get("uid");

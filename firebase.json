@@ -19,6 +19,16 @@
 
     "redirects": [
       {
+        "source": "/profile.html",
+        "destination": "/profile/",
+        "type": 301
+      },
+      {
+        "source": "/profiles.html",
+        "destination": "/profiles/",
+        "type": 301
+      },
+      {
         "source": "/knowledge.html",
         "destination": "/knowledge/",
         "type": 301
@@ -33,7 +43,7 @@
     "rewrites": [
       {
         "source": "/technicians/:uid",
-        "destination": "/technicians/profile.html"
+        "destination": "/profile/"
       }
     ]
   },

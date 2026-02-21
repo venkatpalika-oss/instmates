@@ -35,7 +35,7 @@ async function getUserName(uid) {
   return "Unknown User";
 }
 
-onAuthStateChanged(auth, async (user) => {
+const user = auth.currentUser;
   if (!user) {
     window.location.href = "/login.html";
     return;
