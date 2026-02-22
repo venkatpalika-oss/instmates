@@ -1,13 +1,13 @@
 /* =========================================================
-   InstMates – Social Technical Feed (FINAL PRO STABLE)
+   InstMates – Social Technical Feed (FINAL PRO + ATTACHMENTS)
    Real-time Posts
    Reactions (Agree / FacedThis / Helpful)
    Edit / Delete
-   Category Filter Ready
-   LIVE Comments (Optimized)
+   LIVE Comments
+   Image / Video / PDF Attachments (20MB max)
 ========================================================= */
 
-import { db, auth } from "./firebase.js";
+import { db, auth, storage } from "./firebase.js";
 
 import {
   collection,
@@ -24,12 +24,19 @@ import {
   limit
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
 /* ================= ELEMENTS ================= */
 
 const feedContainer = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 const postTypeSelect = document.getElementById("postType");
+const fileInput = document.getElementById("fileInput");
 
 /* ================= STATE ================= */
 
@@ -38,21 +45,53 @@ let usersCache = {};
 let unsubscribePosts = null;
 
 /* =========================================================
-   CREATE POST
+   CREATE POST (WITH ATTACHMENT SUPPORT)
 ========================================================= */
 
 if (postBtn) {
   postBtn.addEventListener("click", async () => {
 
     const content = postInput.value.trim();
-    if (!content || !auth.currentUser) return;
+    const file = fileInput?.files[0];
 
-    const selectedType = postTypeSelect?.value || "question";
+    if (!content && !file) return;
+    if (!auth.currentUser) return;
+
+    let attachment = null;
+
+    if (file) {
+
+      if (file.size > 20 * 1024 * 1024) {
+        alert("Maximum file size is 20MB");
+        return;
+      }
+
+      const filePath =
+        `postAttachments/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
+
+      const storageRef = ref(storage, filePath);
+
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      let type = "file";
+
+      if (file.type.startsWith("image/")) type = "image";
+      else if (file.type.startsWith("video/")) type = "video";
+      else if (file.type === "application/pdf") type = "pdf";
+
+      attachment = {
+        url: downloadURL,
+        type,
+        name: file.name
+      };
+    }
 
     await addDoc(collection(db, "posts"), {
-      content,
+      content: content || "",
       uid: auth.currentUser.uid,
-      type: selectedType,
+      type: postTypeSelect?.value || "question",
+      attachment: attachment || null,
       createdAt: serverTimestamp(),
       editedAt: null,
       reactions: { agree: 0, faced: 0, helpful: 0 },
@@ -60,6 +99,7 @@ if (postBtn) {
     });
 
     postInput.value = "";
+    if (fileInput) fileInput.value = "";
   });
 }
 
@@ -107,7 +147,7 @@ function listenPosts() {
 }
 
 /* =========================================================
-   CREATE POST CARD
+   CREATE POST CARD (ALL FEATURES PRESERVED)
 ========================================================= */
 
 function createPostCard(post) {
@@ -129,6 +169,39 @@ function createPostCard(post) {
   const hasVoted =
     user && post.votedBy && post.votedBy[user.uid];
 
+  /* ---------- ATTACHMENT RENDER ---------- */
+
+  let attachmentHTML = "";
+
+  if (post.attachment) {
+
+    if (post.attachment.type === "image") {
+      attachmentHTML = `
+        <img src="${post.attachment.url}"
+             style="width:100%;margin-top:10px;border-radius:6px;">
+      `;
+    }
+
+    else if (post.attachment.type === "video") {
+      attachmentHTML = `
+        <video controls
+               style="width:100%;margin-top:10px;border-radius:6px;">
+          <source src="${post.attachment.url}">
+        </video>
+      `;
+    }
+
+    else if (post.attachment.type === "pdf") {
+      attachmentHTML = `
+        <div style="margin-top:10px;">
+          📄 <a href="${post.attachment.url}" target="_blank">
+          ${escapeHTML(post.attachment.name)}
+          </a>
+        </div>
+      `;
+    }
+  }
+
   card.innerHTML = `
     <div class="feed-header">
       <strong>${escapeHTML(userName)}</strong>
@@ -139,6 +212,7 @@ function createPostCard(post) {
 
     <div class="feed-content">
       ${escapeHTML(post.content)}
+      ${attachmentHTML}
     </div>
 
     <div class="muted small" style="margin-top:6px;">
@@ -165,7 +239,9 @@ function createPostCard(post) {
       <div class="comments-list"></div>
 
       <div style="margin-top:10px;">
-        <input type="text" class="comment-input" placeholder="Write a comment..." style="width:75%;padding:6px;">
+        <input type="text" class="comment-input"
+               placeholder="Write a comment..."
+               style="width:75%;padding:6px;">
         <button class="comment-btn">Post</button>
       </div>
     </div>
@@ -219,7 +295,7 @@ function createPostCard(post) {
     });
   }
 
-/* ================= LIVE COMMENTS ================= */
+/* ================= COMMENTS ================= */
 
   const commentsSection = card.querySelector(".comments-section");
   const toggleBtn = card.querySelector(".toggle-comments");
@@ -232,7 +308,6 @@ function createPostCard(post) {
   toggleBtn.addEventListener("click", () => {
 
     const isHidden = commentsSection.style.display === "none";
-
     commentsSection.style.display = isHidden ? "block" : "none";
 
     if (isHidden && !unsubscribeComments) {
