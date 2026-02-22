@@ -78,9 +78,14 @@ img{
   color:#ffffff;
   font-weight:700;
   padding:6px 4px;
-  opacity:0.9;
+  opacity:1; /* remove faded look */
 }
-
+/* Active nav link */
+.main-nav a.active{
+  background:rgba(255,255,255,0.15);
+  padding:6px 10px;
+  border-radius:6px;
+}
 .main-nav a:hover{
   opacity:1;
   text-decoration:underline;
