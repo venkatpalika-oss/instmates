@@ -6,31 +6,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-22" />
 
   <!-- Cropper CSS -->
-  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.css" rel="stylesheet"/>
 
   <style>
+
+    /* ================= IMAGE PREVIEW ================= */
+
     .image-preview {
       margin-top: 15px;
       text-align: center;
     }
 
     .image-preview img {
-      max-width: 200px;
-      border-radius: 10px;
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #e5e9f0;
       display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
+    /* ================= CROP CONTAINER ================= */
 
     #cropContainer {
       margin-top: 20px;
       display: none;
+      max-width: 420px;
     }
 
     #cropContainer img {
-      max-width: 100%;
+      width: 100%;
+      max-height: 420px;
     }
+
+    #cropContainer p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    /* ================= TOAST ================= */
 
     #toast {
       position: fixed;
@@ -41,32 +60,37 @@
       color: #fff;
       font-weight: 500;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
       z-index: 9999;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
+    /* ================= COMPLETION ================= */
+
     .completion-box {
-      margin-top: 15px;
-      padding: 10px;
-      background: #f5f7fa;
-      border-radius: 8px;
+      margin-top: 20px;
+      padding: 14px;
+      background: #f8fafc;
+      border-radius: 10px;
       font-size: 14px;
     }
 
     .completion-bar {
-      height: 8px;
-      background: #e1e6ec;
-      border-radius: 10px;
-      margin-top: 6px;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      margin-top: 8px;
       overflow: hidden;
     }
 
     .completion-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #4caf50, #2e7d32);
+      background: linear-gradient(90deg, #22c55e, #16a34a);
       transition: width 0.5s ease;
     }
+
+    /* ================= PHOTO ACTIONS ================= */
 
     .photo-actions {
       display: flex;
@@ -74,6 +98,13 @@
       margin-top: 10px;
       flex-wrap: wrap;
     }
+
+    @media (max-width: 600px) {
+      #cropContainer {
+        max-width: 100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -87,6 +118,8 @@
     <h1>Edit Profile</h1>
 
     <form id="editProfileForm">
+
+      <!-- ================= BASIC INFO ================= -->
 
       <h3>Basic Information</h3>
 
@@ -115,22 +148,23 @@
         </button>
       </div>
 
-      <!-- Preview -->
+      <!-- Circular Preview -->
       <div class="image-preview">
-        <img id="imagePreview" />
+        <img id="imagePreview" alt="Profile Preview" />
       </div>
 
-      <!-- Crop Container -->
+      <!-- Crop Area -->
       <div id="cropContainer">
-        <img id="cropImage" />
-        <button type="button" id="cropBtn" class="btn btn-primary" style="margin-top:10px;">
+        <p>Drag to reposition. Scroll to zoom. Final image will be square.</p>
+        <img id="cropImage" alt="Crop Image" />
+        <button type="button" id="cropBtn" class="btn btn-primary" style="margin-top:12px;">
           Crop Image
         </button>
       </div>
 
       <!-- ================= PROFESSIONAL ================= -->
 
-      <h3 style="margin-top:25px;">Professional</h3>
+      <h3 style="margin-top:30px;">Professional</h3>
 
       <label>Specialization</label>
       <input type="text" id="specialization" />
@@ -141,13 +175,16 @@
       <!-- ================= COMPLETION ================= -->
 
       <div class="completion-box">
-        Profile Completion: <span id="completionPercent">0%</span>
+        Profile Completion:
+        <strong><span id="completionPercent">0%</span></strong>
         <div class="completion-bar">
           <div class="completion-fill" id="completionFill"></div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" style="margin-top:20px;">
+      <!-- ================= SAVE ================= -->
+
+      <button type="submit" class="btn btn-primary" style="margin-top:25px;">
         Save Profile
       </button>
 
@@ -161,9 +198,10 @@
 <!-- Toast -->
 <div id="toast"></div>
 
-<!-- Scripts -->
-<script src="/assets/js/includes.js"></script>
-<script type="module" src="/profile/edit/edit-profile.js"></script>
+<!-- ================= SCRIPTS (ONLY REQUIRED ON THIS PAGE) ================= -->
+
+<script src="/assets/js/includes.js?v=2026-02-22"></script>
+<script type="module" src="/profile/edit/edit-profile.js?v=2026-02-22"></script>
 
 </body>
 </html>

@@ -1,8 +1,7 @@
 /* =========================================================
-   InstMates – Social Technical Feed (FINAL PRODUCTION)
-   Infinite Scroll • Verified Badge • Category Filter
-   Slide Animation • Edit/Delete • 1 Vote Per User
-   UPDATED: Post Type Selector Support (SAFE EXTENSION)
+   InstMates – Social Technical Feed (PRODUCTION PLUS)
+   Real-time • Optimistic UI • Spinner • Skeleton
+   Double-click protection • Smooth animation
 ========================================================= */
 
 import { db, auth } from "./firebase.js";
@@ -19,7 +18,7 @@ import {
   increment,
   getDocs,
   limit,
-  startAfter
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const feedContainer = document.getElementById("feedContainer");
@@ -27,13 +26,13 @@ const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 const postTypeSelect = document.getElementById("postType");
 
-let lastVisible = null;
-let loading = false;
 let selectedCategory = "all";
 let usersCache = {};
+let unsubscribe = null;
+let isPosting = false;
 
 /* =========================================================
-   CATEGORY FILTER WITH SLIDE ANIMATION
+   CATEGORY FILTER
 ========================================================= */
 
 createCategoryFilter();
@@ -57,7 +56,7 @@ function createCategoryFilter() {
 
   wrapper.querySelectorAll(".filter-btn").forEach(btn => {
 
-    btn.addEventListener("click", async () => {
+    btn.addEventListener("click", () => {
 
       if (btn.classList.contains("active")) return;
 
@@ -67,49 +66,70 @@ function createCategoryFilter() {
       btn.classList.add("active");
       selectedCategory = btn.dataset.type;
 
-      feedContainer.style.opacity = "0";
-      feedContainer.style.transform = "translateX(20px)";
-      feedContainer.style.transition = "all 0.2s ease";
-
-      setTimeout(async () => {
-
-        feedContainer.innerHTML = "";
-        lastVisible = null;
-        await loadPosts();
-
-        feedContainer.style.transform = "translateX(0)";
-        feedContainer.style.opacity = "1";
-
-      }, 200);
-
+      listenPosts(); // reload live listener
     });
-
   });
 }
 
 /* =========================================================
-   CREATE POST
+   CREATE POST (Optimistic + Spinner + Double-click Safe)
 ========================================================= */
 
 if (postBtn) {
   postBtn.addEventListener("click", async () => {
 
+    if (isPosting) return; // prevent double click
+    isPosting = true;
+
     const content = postInput.value.trim();
-    if (!content || !auth.currentUser) return;
+    if (!content || !auth.currentUser) {
+      isPosting = false;
+      return;
+    }
 
     const selectedType = postTypeSelect?.value || "question";
 
-    await addDoc(collection(db, "posts"), {
+    // Spinner
+    const originalText = postBtn.innerText;
+    postBtn.innerText = "Posting...";
+    postBtn.disabled = true;
+
+    // Optimistic UI
+    const tempPost = {
+      id: "temp-" + Date.now(),
       content,
       uid: auth.currentUser.uid,
       type: selectedType,
-      createdAt: serverTimestamp(),
-      editedAt: null,
+      createdAt: new Date(),
       reactions: { agree: 0, faced: 0, helpful: 0 },
-      votedBy: {}
-    });
+      votedBy: {},
+      optimistic: true
+    };
+
+    const optimisticCard = createPostCard(tempPost);
+    optimisticCard.style.opacity = "0.6";
+    feedContainer.prepend(optimisticCard);
 
     postInput.value = "";
+
+    try {
+      await addDoc(collection(db, "posts"), {
+        content,
+        uid: auth.currentUser.uid,
+        type: selectedType,
+        createdAt: serverTimestamp(),
+        editedAt: null,
+        reactions: { agree: 0, faced: 0, helpful: 0 },
+        votedBy: {}
+      });
+    } catch (err) {
+      console.error(err);
+      optimisticCard.remove();
+    }
+
+    postBtn.innerText = originalText;
+    postBtn.disabled = false;
+    isPosting = false;
   });
 }
 
@@ -125,62 +145,52 @@ async function loadUsers() {
 }
 
 /* =========================================================
-   LOAD POSTS (PAGINATED)
+   REAL-TIME LISTENER (No refresh ever needed)
 ========================================================= */
 
-async function loadPosts() {
+function listenPosts() {
 
-  if (loading) return;
-  loading = true;
+  if (unsubscribe) unsubscribe();
 
-  let postsQuery = query(
+  showSkeleton();
+
+  const postsQuery = query(
     collection(db, "posts"),
     orderBy("createdAt", "desc"),
-    limit(10)
+    limit(20)
   );
 
-  if (lastVisible) {
-    postsQuery = query(
-      collection(db, "posts"),
-      orderBy("createdAt", "desc"),
-      startAfter(lastVisible),
-      limit(10)
-    );
-  }
+  unsubscribe = onSnapshot(postsQuery, snapshot => {
 
-  const snapshot = await getDocs(postsQuery);
+    feedContainer.innerHTML = "";
 
-  if (!snapshot.empty) {
-    lastVisible = snapshot.docs[snapshot.docs.length - 1];
-  }
+    snapshot.forEach(docSnap => {
 
-  snapshot.forEach(docSnap => {
+      const post = docSnap.data();
+      post.id = docSnap.id;
 
-    const post = docSnap.data();
-    post.id = docSnap.id;
+      if (selectedCategory !== "all" &&
+          post.type !== selectedCategory) return;
 
-    if (selectedCategory !== "all" &&
-        post.type !== selectedCategory) return;
+      const card = createPostCard(post);
+      card.classList.add("fade-in");
+      feedContainer.appendChild(card);
+    });
 
-    feedContainer.appendChild(createPostCard(post));
   });
-
-  loading = false;
 }
 
 /* =========================================================
-   INFINITE SCROLL
+   SKELETON LOADER
 ========================================================= */
 
-window.addEventListener("scroll", () => {
-
-  if (
-    window.innerHeight + window.scrollY >=
-    document.body.offsetHeight - 200
-  ) {
-    loadPosts();
-  }
-});
+function showSkeleton() {
+  feedContainer.innerHTML = `
+    <div class="feed-card" style="opacity:.5;height:80px;margin-bottom:15px;"></div>
+    <div class="feed-card" style="opacity:.4;height:80px;margin-bottom:15px;"></div>
+    <div class="feed-card" style="opacity:.3;height:80px;"></div>
+  `;
+}
 
 /* =========================================================
    CREATE POST CARD
@@ -207,18 +217,13 @@ function createPostCard(post) {
 
   card.innerHTML = `
     <div class="feed-header">
-      <strong>
-        ${escapeHTML(profile.name || "Technician")}
-        ${verifiedBadge}
-      </strong>
+      <strong>${escapeHTML(profile.name || "Technician")} ${verifiedBadge}</strong>
       <div class="muted small">
-        ${formatTime(post.createdAt?.toDate?.() || new Date())}
+        ${formatTime(post.createdAt?.toDate?.() || post.createdAt)}
       </div>
     </div>
 
-    <div class="feed-content">
-      ${escapeHTML(post.content)}
-    </div>
+    <div class="feed-content">${escapeHTML(post.content)}</div>
 
     <div class="muted small" style="margin-top:6px;">
       🔥 ${totalVotes} Technical Reactions
@@ -228,11 +233,9 @@ function createPostCard(post) {
       <button class="react" data-type="agree" ${hasVoted ? "disabled" : ""}>
         👍 Agree (${post.reactions?.agree || 0})
       </button>
-
       <button class="react" data-type="faced" ${hasVoted ? "disabled" : ""}>
         🛠 Faced This (${post.reactions?.faced || 0})
       </button>
-
       <button class="react" data-type="helpful" ${hasVoted ? "disabled" : ""}>
         💡 Helpful (${post.reactions?.helpful || 0})
       </button>
@@ -259,10 +262,7 @@ function createPostCard(post) {
         [`reactions.${type}`]: increment(1),
         [`votedBy.${auth.currentUser.uid}`]: true
       });
-
-      btn.disabled = true;
     });
-
   });
 
   if (isOwner) {
@@ -283,7 +283,6 @@ function createPostCard(post) {
       if (!confirm("Delete post?")) return;
 
       await deleteDoc(doc(db, "posts", post.id));
-      card.remove();
     });
   }
 
@@ -296,12 +295,10 @@ function createPostCard(post) {
 
 (async () => {
   await loadUsers();
-  await loadPosts();
+  listenPosts();
 })();
 
-/* =========================================================
-   TIME FORMAT
-========================================================= */
+/* ========================================================= */
 
 function formatTime(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
@@ -311,10 +308,6 @@ function formatTime(date) {
   if (minutes >= 1) return minutes + "m";
   return "Just now";
 }
-
-/* =========================================================
-   ESCAPE
-========================================================= */
 
 function escapeHTML(str) {
   return String(str)
