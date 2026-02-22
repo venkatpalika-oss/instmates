@@ -1,7 +1,10 @@
 /* =========================================================
-   InstMates – Social Technical Feed (PRODUCTION PLUS)
-   Real-time • Optimistic UI • Spinner • Skeleton
-   Double-click protection • Smooth animation
+   InstMates – Social Technical Feed (FINAL PRO STABLE)
+   Real-time Posts
+   Reactions (Agree / FacedThis / Helpful)
+   Edit / Delete
+   Category Filter Ready
+   LIVE Comments (Optimized)
 ========================================================= */
 
 import { db, auth } from "./firebase.js";
@@ -17,119 +20,46 @@ import {
   deleteDoc,
   increment,
   getDocs,
-  limit,
-  onSnapshot
+  onSnapshot,
+  limit
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+/* ================= ELEMENTS ================= */
 
 const feedContainer = document.getElementById("feedContainer");
 const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 const postTypeSelect = document.getElementById("postType");
 
+/* ================= STATE ================= */
+
 let selectedCategory = "all";
 let usersCache = {};
-let unsubscribe = null;
-let isPosting = false;
+let unsubscribePosts = null;
 
 /* =========================================================
-   CATEGORY FILTER
-========================================================= */
-
-createCategoryFilter();
-
-function createCategoryFilter() {
-
-  const wrapper = document.createElement("div");
-  wrapper.style.margin = "20px 0";
-
-  wrapper.innerHTML = `
-    <div class="feed-filters">
-      <button class="filter-btn active" data-type="all">All</button>
-      <button class="filter-btn" data-type="fault">🔴 Fault</button>
-      <button class="filter-btn" data-type="question">❓ Question</button>
-      <button class="filter-btn" data-type="solution">✅ Solution</button>
-      <button class="filter-btn" data-type="calibration">📊 Calibration</button>
-    </div>
-  `;
-
-  feedContainer.parentNode.insertBefore(wrapper, feedContainer);
-
-  wrapper.querySelectorAll(".filter-btn").forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-      if (btn.classList.contains("active")) return;
-
-      document.querySelectorAll(".filter-btn")
-        .forEach(b => b.classList.remove("active"));
-
-      btn.classList.add("active");
-      selectedCategory = btn.dataset.type;
-
-      listenPosts(); // reload live listener
-    });
-  });
-}
-
-/* =========================================================
-   CREATE POST (Optimistic + Spinner + Double-click Safe)
+   CREATE POST
 ========================================================= */
 
 if (postBtn) {
   postBtn.addEventListener("click", async () => {
 
-    if (isPosting) return; // prevent double click
-    isPosting = true;
-
     const content = postInput.value.trim();
-    if (!content || !auth.currentUser) {
-      isPosting = false;
-      return;
-    }
+    if (!content || !auth.currentUser) return;
 
     const selectedType = postTypeSelect?.value || "question";
 
-    // Spinner
-    const originalText = postBtn.innerText;
-    postBtn.innerText = "Posting...";
-    postBtn.disabled = true;
-
-    // Optimistic UI
-    const tempPost = {
-      id: "temp-" + Date.now(),
+    await addDoc(collection(db, "posts"), {
       content,
       uid: auth.currentUser.uid,
       type: selectedType,
-      createdAt: new Date(),
+      createdAt: serverTimestamp(),
+      editedAt: null,
       reactions: { agree: 0, faced: 0, helpful: 0 },
-      votedBy: {},
-      optimistic: true
-    };
-
-    const optimisticCard = createPostCard(tempPost);
-    optimisticCard.style.opacity = "0.6";
-    feedContainer.prepend(optimisticCard);
+      votedBy: {}
+    });
 
     postInput.value = "";
-
-    try {
-      await addDoc(collection(db, "posts"), {
-        content,
-        uid: auth.currentUser.uid,
-        type: selectedType,
-        createdAt: serverTimestamp(),
-        editedAt: null,
-        reactions: { agree: 0, faced: 0, helpful: 0 },
-        votedBy: {}
-      });
-    } catch (err) {
-      console.error(err);
-      optimisticCard.remove();
-    }
-
-    postBtn.innerText = originalText;
-    postBtn.disabled = false;
-    isPosting = false;
   });
 }
 
@@ -145,14 +75,12 @@ async function loadUsers() {
 }
 
 /* =========================================================
-   REAL-TIME LISTENER (No refresh ever needed)
+   REAL-TIME POSTS LISTENER
 ========================================================= */
 
 function listenPosts() {
 
-  if (unsubscribe) unsubscribe();
-
-  showSkeleton();
+  if (unsubscribePosts) unsubscribePosts();
 
   const postsQuery = query(
     collection(db, "posts"),
@@ -160,7 +88,7 @@ function listenPosts() {
     limit(20)
   );
 
-  unsubscribe = onSnapshot(postsQuery, snapshot => {
+  unsubscribePosts = onSnapshot(postsQuery, snapshot => {
 
     feedContainer.innerHTML = "";
 
@@ -173,23 +101,9 @@ function listenPosts() {
           post.type !== selectedCategory) return;
 
       const card = createPostCard(post);
-      card.classList.add("fade-in");
       feedContainer.appendChild(card);
     });
-
   });
-}
-
-/* =========================================================
-   SKELETON LOADER
-========================================================= */
-
-function showSkeleton() {
-  feedContainer.innerHTML = `
-    <div class="feed-card" style="opacity:.5;height:80px;margin-bottom:15px;"></div>
-    <div class="feed-card" style="opacity:.4;height:80px;margin-bottom:15px;"></div>
-    <div class="feed-card" style="opacity:.3;height:80px;"></div>
-  `;
 }
 
 /* =========================================================
@@ -203,27 +117,29 @@ function createPostCard(post) {
 
   const user = auth.currentUser;
   const isOwner = user && user.uid === post.uid;
-  const hasVoted = user && post.votedBy && post.votedBy[user.uid];
 
   const profile = usersCache[post.uid] || {};
-  const verifiedBadge = profile.verified
-    ? `<span style="color:#0b5ed7;font-size:12px;"> ✔ Verified</span>`
-    : "";
+  const userName = profile.name || "Technician";
 
   const totalVotes =
     (post.reactions?.agree || 0) +
     (post.reactions?.faced || 0) +
     (post.reactions?.helpful || 0);
 
+  const hasVoted =
+    user && post.votedBy && post.votedBy[user.uid];
+
   card.innerHTML = `
     <div class="feed-header">
-      <strong>${escapeHTML(profile.name || "Technician")} ${verifiedBadge}</strong>
+      <strong>${escapeHTML(userName)}</strong>
       <div class="muted small">
-        ${formatTime(post.createdAt?.toDate?.() || post.createdAt)}
+        ${formatTime(post.createdAt?.toDate?.() || new Date())}
       </div>
     </div>
 
-    <div class="feed-content">${escapeHTML(post.content)}</div>
+    <div class="feed-content">
+      ${escapeHTML(post.content)}
+    </div>
 
     <div class="muted small" style="margin-top:6px;">
       🔥 ${totalVotes} Technical Reactions
@@ -233,12 +149,25 @@ function createPostCard(post) {
       <button class="react" data-type="agree" ${hasVoted ? "disabled" : ""}>
         👍 Agree (${post.reactions?.agree || 0})
       </button>
+
       <button class="react" data-type="faced" ${hasVoted ? "disabled" : ""}>
         🛠 Faced This (${post.reactions?.faced || 0})
       </button>
+
       <button class="react" data-type="helpful" ${hasVoted ? "disabled" : ""}>
         💡 Helpful (${post.reactions?.helpful || 0})
       </button>
+
+      <button class="toggle-comments">💬 Comments</button>
+    </div>
+
+    <div class="comments-section" style="display:none;margin-top:10px;">
+      <div class="comments-list"></div>
+
+      <div style="margin-top:10px;">
+        <input type="text" class="comment-input" placeholder="Write a comment..." style="width:75%;padding:6px;">
+        <button class="comment-btn">Post</button>
+      </div>
     </div>
 
     ${isOwner ? `
@@ -249,11 +178,13 @@ function createPostCard(post) {
     ` : ""}
   `;
 
+/* ================= REACTIONS ================= */
+
   card.querySelectorAll(".react").forEach(btn => {
 
     btn.addEventListener("click", async () => {
 
-      if (!auth.currentUser || hasVoted) return;
+      if (!auth.currentUser) return;
 
       const type = btn.dataset.type;
       const postRef = doc(db, "posts", post.id);
@@ -264,6 +195,8 @@ function createPostCard(post) {
       });
     });
   });
+
+/* ================= EDIT / DELETE ================= */
 
   if (isOwner) {
 
@@ -285,6 +218,74 @@ function createPostCard(post) {
       await deleteDoc(doc(db, "posts", post.id));
     });
   }
+
+/* ================= LIVE COMMENTS ================= */
+
+  const commentsSection = card.querySelector(".comments-section");
+  const toggleBtn = card.querySelector(".toggle-comments");
+  const commentsList = card.querySelector(".comments-list");
+  const commentBtn = card.querySelector(".comment-btn");
+  const commentInput = card.querySelector(".comment-input");
+
+  let unsubscribeComments = null;
+
+  toggleBtn.addEventListener("click", () => {
+
+    const isHidden = commentsSection.style.display === "none";
+
+    commentsSection.style.display = isHidden ? "block" : "none";
+
+    if (isHidden && !unsubscribeComments) {
+
+      const commentsQuery = query(
+        collection(db, "posts", post.id, "comments"),
+        orderBy("createdAt", "asc")
+      );
+
+      unsubscribeComments = onSnapshot(commentsQuery, snapshot => {
+
+        commentsList.innerHTML = "";
+
+        snapshot.forEach(docSnap => {
+
+          const comment = docSnap.data();
+          const commentUser =
+            usersCache[comment.uid]?.name ||
+            comment.uid.substring(0, 6);
+
+          const commentDiv = document.createElement("div");
+          commentDiv.style.marginBottom = "6px";
+
+          commentDiv.innerHTML = `
+            <strong>${escapeHTML(commentUser)}</strong>:
+            ${escapeHTML(comment.content)}
+            <span class="muted small">
+              • ${formatTime(comment.createdAt?.toDate?.() || new Date())}
+            </span>
+          `;
+
+          commentsList.appendChild(commentDiv);
+        });
+      });
+    }
+  });
+
+  commentBtn.addEventListener("click", async () => {
+
+    const content = commentInput.value.trim();
+    if (!content || !auth.currentUser) return;
+
+    await addDoc(
+      collection(db, "posts", post.id, "comments"),
+      {
+        content,
+        uid: auth.currentUser.uid,
+        createdAt: serverTimestamp()
+      }
+    );
+
+    commentInput.value = "";
+  });
 
   return card;
 }
