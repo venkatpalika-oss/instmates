@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Flash Point Analyzer – Troubleshooting Decision Tree | InstMates</title>
+
+  <meta name="description"
+        content="Flash point analyzer troubleshooting guide – low flash results, no ignition, heating instability, temperature overshoot, ASTM D93 issues and structured diagnostic logic for lab technicians." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzers-flash-troubleshooting">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/flash-point-analyzer/">Flash Point Analyzer</a><span>›</span>
+  <span class="current">Troubleshooting</span>
+</nav>
+
+<main class="container">
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h1>Flash Point Analyzer – Troubleshooting Decision Tree</h1>
+    <p class="muted">
+      Flash point deviations are usually caused by heating rate errors,
+      ignition system failure, contamination, or sensor drift.
+      Use this structured logic before recalibration.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Problem 1 – Flash Point Reading Too Low</h2>
+
+    <ol class="checklist">
+      <li>Check for light hydrocarbon contamination</li>
+      <li>Verify sample storage conditions</li>
+      <li>Confirm heating ramp rate matches ASTM</li>
+      <li>Inspect temperature sensor calibration</li>
+      <li>Check ignition timing interval</li>
+    </ol>
+
+    <p class="muted">
+      Even 1–2% contamination of lighter fraction can reduce flash point significantly.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Problem 2 – No Flash Detected</h2>
+
+    <ol class="checklist">
+      <li>Check ignition source (spark/flame)</li>
+      <li>Verify ignition energy output</li>
+      <li>Inspect sample volume correctness</li>
+      <li>Confirm temperature sensor reading accuracy</li>
+      <li>Ensure lid closure in closed-cup method</li>
+    </ol>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Problem 3 – Temperature Overshoot</h2>
+
+    <ul class="checklist">
+      <li>Heating controller PID instability</li>
+      <li>Faulty RTD or thermocouple</li>
+      <li>Improper heating ramp configuration</li>
+      <li>Loose sensor contact</li>
+    </ul>
+
+    <p class="muted">
+      Overshoot directly affects ASTM compliance.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Problem 4 – Poor Repeatability</h2>
+
+    <ul class="checklist">
+      <li>Inconsistent sample stirring</li>
+      <li>Variable ignition interval</li>
+      <li>Improper cleaning between samples</li>
+      <li>Drafts or airflow in lab</li>
+      <li>Non-certified reference material</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Decision Flow Summary</h2>
+
+    <svg viewBox="0 0 900 300" width="100%">
+      <rect x="300" y="30" width="300" height="50" rx="10" fill="#e9f2ff"/>
+      <text x="450" y="60" text-anchor="middle" font-size="13">Flash Result Abnormal</text>
+
+      <rect x="150" y="130" width="250" height="50" rx="10" fill="#e9f2ff"/>
+      <text x="275" y="160" text-anchor="middle" font-size="12">Check Heating Rate</text>
+
+      <rect x="500" y="130" width="250" height="50" rx="10" fill="#e9f2ff"/>
+      <text x="625" y="160" text-anchor="middle" font-size="12">Check Ignition System</text>
+
+      <line x1="450" y1="80" x2="275" y2="130" stroke="#333" stroke-width="2"/>
+      <line x1="450" y1="80" x2="625" y2="130" stroke="#333" stroke-width="2"/>
+    </svg>
+
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>

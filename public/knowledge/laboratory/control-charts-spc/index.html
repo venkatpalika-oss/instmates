@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Control Charts & Statistical Process Control (SPC) – Laboratory Guide | InstMates</title>
+
+  <meta name="description"
+        content="Control charts and statistical process control (SPC) for laboratory analyzers – X-bar charts, R charts, control limits, trend detection, Westgard rules and quality monitoring for ISO 17025 labs." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzers-control-charts-spc">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <span class="current">Control Charts & SPC</span>
+</nav>
+
+<main class="container">
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h1>Control Charts & Statistical Process Control (SPC)</h1>
+    <p class="muted">
+      Statistical Process Control (SPC) ensures laboratory measurement
+      systems remain stable, repeatable, and compliant with ISO 17025 requirements.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>What is a Control Chart?</h2>
+
+    <ul class="checklist">
+      <li>Graphical monitoring tool</li>
+      <li>Tracks measurement over time</li>
+      <li>Detects drift and instability</li>
+      <li>Separates random vs systematic error</li>
+    </ul>
+
+    <svg viewBox="0 0 900 200" width="100%">
+      <line x1="100" y1="100" x2="800" y2="100" stroke="#333" stroke-width="2"/>
+      <line x1="100" y1="60" x2="800" y2="60" stroke="#999" stroke-dasharray="6"/>
+      <line x1="100" y1="140" x2="800" y2="140" stroke="#999" stroke-dasharray="6"/>
+      <text x="820" y="65" font-size="12">UCL</text>
+      <text x="820" y="105" font-size="12">Mean</text>
+      <text x="820" y="145" font-size="12">LCL</text>
+    </svg>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Main Types of Control Charts</h2>
+
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>X-bar Chart</h3>
+        <ul class="checklist">
+          <li>Monitors process mean</li>
+          <li>Used for replicate samples</li>
+          <li>Detects drift over time</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>R Chart</h3>
+        <ul class="checklist">
+          <li>Monitors variability</li>
+          <li>Shows spread of results</li>
+          <li>Detects instability in repeatability</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Control Limit Calculation</h2>
+
+    <ul class="checklist">
+      <li>Mean (x̄)</li>
+      <li>Standard deviation (σ)</li>
+      <li>Upper Control Limit (UCL = x̄ + 3σ)</li>
+      <li>Lower Control Limit (LCL = x̄ − 3σ)</li>
+    </ul>
+
+    <p class="muted">
+      3-sigma limits capture 99.7% of normal distribution.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Westgard Rules (Quality Control Rules)</h2>
+
+    <ul class="checklist">
+      <li>1-2s warning rule</li>
+      <li>1-3s rejection rule</li>
+      <li>2-2s rule</li>
+      <li>R-4s rule</li>
+      <li>4-1s rule</li>
+      <li>10x rule (systematic bias)</li>
+    </ul>
+
+    <p class="muted">
+      Violation of rules indicates need for corrective action.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Common SPC Signals</h2>
+
+    <ul class="checklist">
+      <li>Trend (7 points increasing/decreasing)</li>
+      <li>Sudden shift</li>
+      <li>Point outside control limits</li>
+      <li>Increased variability</li>
+    </ul>
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>

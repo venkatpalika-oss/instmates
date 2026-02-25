@@ -42,6 +42,23 @@
       font-size: 14px;
     }
 
+    #fileInput {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px dashed #d0d7de;
+      background: #f8fbff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    #fileNote {
+      font-size: 12px;
+      margin-top: 6px;
+      color: #666;
+    }
+
     #postBtn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -139,6 +156,17 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
       placeholder="Add tags (comma separated) e.g. GC, FID, 4-20mA"
     />
 
+    <!-- ===== ATTACHMENT INPUT ===== -->
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/*,video/*,application/pdf"
+    />
+
+    <div id="fileNote">
+      Optional attachment (Image / Video / PDF) · Max 20MB
+    </div>
+
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
       <small class="muted">
         Use structured posts for better technical discussion.
@@ -187,7 +215,6 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
 <script type="module" src="/assets/js/firebase.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/auth-guard.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/feed.js?v=2026-02-17"></script>
-
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {

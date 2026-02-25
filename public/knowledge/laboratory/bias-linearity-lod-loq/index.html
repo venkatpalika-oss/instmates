@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bias vs Linearity vs LOD & LOQ – Laboratory Technical Guide | InstMates</title>
+
+  <meta name="description"
+        content="Comprehensive explanation of bias, linearity, detection limit (LOD) and quantification limit (LOQ) for laboratory analyzers with formulas, examples and ISO 17025 context." />
+
+  <meta name="keywords"
+        content="Bias in laboratory analysis, Linearity validation, LOD calculation, LOQ formula, ISO 17025 validation, Method validation parameters, Detection limit formula, Analytical chemistry fundamentals" />
+
+  <link rel="canonical" href="https://instmates.com/knowledge/analyzers/laboratory/bias-linearity-lod-loq/">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- ================= JSON-LD: TechArticle ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Bias vs Linearity vs Detection Limit (LOD / LOQ)",
+    "description": "Technical guide explaining bias, linearity, LOD and LOQ with formulas and ISO 17025 context.",
+    "author": {
+      "@type": "Organization",
+      "name": "InstMates"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "InstMates"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://instmates.com/knowledge/analyzers/laboratory/bias-linearity-lod-loq/"
+    },
+    "articleSection": "Laboratory Analyzers",
+    "datePublished": "2026-02-25",
+    "dateModified": "2026-02-25",
+    "keywords": [
+      "Bias",
+      "Linearity",
+      "LOD",
+      "LOQ",
+      "ISO 17025",
+      "Method Validation"
+    ]
+  }
+  </script>
+
+  <!-- ================= JSON-LD: Breadcrumb ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://instmates.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Knowledge Hub",
+        "item": "https://instmates.com/knowledge/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Analyzers",
+        "item": "https://instmates.com/knowledge/analyzers/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Laboratory Analyzers",
+        "item": "https://instmates.com/knowledge/analyzers/laboratory/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "name": "Bias, Linearity & LOD/LOQ",
+        "item": "https://instmates.com/knowledge/analyzers/laboratory/bias-linearity-lod-loq/"
+      }
+    ]
+  }
+  </script>
+
+</head>
+
+<body data-page="analyzers-bias-linearity-lod-loq">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <span class="current">Bias, Linearity & LOD/LOQ</span>
+</nav>
+
+<main class="container">
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h1>Bias vs Linearity vs Detection Limit (LOD / LOQ)</h1>
+    <p class="muted">
+      These three parameters are critical in method validation under ISO 17025
+      and determine the reliability and performance of laboratory analyzers.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>1. Bias (Systematic Error)</h2>
+
+    <p class="muted">
+      Bias represents the difference between the measured value and the true value.
+    </p>
+
+    <div class="card">
+      <p><strong>Bias = Measured Value − True Value</strong></p>
+      <p><strong>% Bias = (Bias / True Value) × 100</strong></p>
+    </div>
+
+    <p>Example:</p>
+    <div class="card">
+      <p>True value = 1.00 %</p>
+      <p>Measured value = 1.03 %</p>
+      <p>Bias = +0.03 %</p>
+      <p>% Bias = 3 %</p>
+    </div>
+
+    <ul class="checklist">
+      <li>Caused by calibration drift</li>
+      <li>Improper standard preparation</li>
+      <li>Detector misalignment</li>
+      <li>Systematic temperature effects</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>2. Linearity</h2>
+
+    <p class="muted">
+      Linearity indicates how well the instrument response corresponds
+      to concentration across a specified range.
+    </p>
+
+    <div class="card">
+      <p>Linear regression: y = mx + c</p>
+      <p>Coefficient of determination: R² ≥ 0.995 (typical lab requirement)</p>
+    </div>
+
+    <ul class="checklist">
+      <li>Evaluate minimum 5 calibration levels</li>
+      <li>Check residual plots</li>
+      <li>Verify no curvature</li>
+      <li>Ensure detector not saturated</li>
+    </ul>
+
+    <p class="muted">
+      Poor linearity leads to inaccurate quantification even if precision is good.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>3. Detection Limit (LOD)</h2>
+
+    <p class="muted">
+      LOD is the lowest concentration that can be reliably detected
+      but not necessarily quantified.
+    </p>
+
+    <div class="card">
+      <p><strong>LOD = 3.3 × (σ / S)</strong></p>
+      <p>σ = Standard deviation of response</p>
+      <p>S = Slope of calibration curve</p>
+    </div>
+
+    <ul class="checklist">
+      <li>Based on signal-to-noise ratio (~3:1)</li>
+      <li>Below this level → result unreliable</li>
+      <li>Used in environmental & trace analysis</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>4. Limit of Quantification (LOQ)</h2>
+
+    <p class="muted">
+      LOQ is the lowest concentration that can be quantified
+      with acceptable precision and accuracy.
+    </p>
+
+    <div class="card">
+      <p><strong>LOQ = 10 × (σ / S)</strong></p>
+    </div>
+
+    <ul class="checklist">
+      <li>Signal-to-noise ratio ~10:1</li>
+      <li>Ensures acceptable RSD%</li>
+      <li>Must be validated experimentally</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Comparison Summary</h2>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <h3>Bias</h3>
+        <p>Systematic deviation from true value.</p>
+      </div>
+
+      <div class="card">
+        <h3>Linearity</h3>
+        <p>Consistency of response across concentration range.</p>
+      </div>
+
+      <div class="card">
+        <h3>LOD / LOQ</h3>
+        <p>Lowest detectable and quantifiable limits.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Common Validation Mistakes</h2>
+
+    <ul class="checklist">
+      <li>Confusing precision with bias</li>
+      <li>Accepting high R² without residual analysis</li>
+      <li>Estimating LOD without statistical basis</li>
+      <li>Using outdated calibration slope</li>
+    </ul>
+
+    <p class="muted">
+      Proper method validation ensures defensible laboratory results during audits.
+    </p>
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>
