@@ -1,7 +1,8 @@
 /* =========================================================
-   InstMates – Profile Logic (PHASE 3 – NESTED SCHEMA SAFE)
+   InstMates – Profile Logic (PHASE 4 – AUTO STATS ENABLED)
    File: assets/js/profile.js
    Compatible with FINAL nested Firestore structure
+   Auto-calculates dynamic stats per user
    Does NOT break existing architecture
 ========================================================= */
 
@@ -13,7 +14,11 @@ import {
   getDoc,
   setDoc,
   updateDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 /* ================= ELEMENTS ================= */
@@ -22,9 +27,52 @@ const form = document.getElementById("profileForm");
 const publicProfileCheckbox =
   document.getElementById("publicProfile");
 
+/* ================= AUTO CALCULATE STATS ================= */
+
+async function calculateUserStats(uid) {
+  try {
+    const postsRef = collection(db, "posts");
+
+    const q = query(postsRef, where("uid", "==", uid));
+    const snap = await getDocs(q);
+
+    let totalCases = 0;
+    let resolved = 0;
+    let shutdowns = 0;
+
+    snap.forEach(docSnap => {
+      const post = docSnap.data();
+      totalCases++;
+
+      if (post.status === "solved") resolved++;
+      if (post.type === "shutdown") shutdowns++;
+    });
+
+    const uptime =
+      totalCases > 0
+        ? ((resolved / totalCases) * 100).toFixed(1)
+        : 0;
+
+    return {
+      uptime: Number(uptime),
+      shutdowns: shutdowns,
+      breakdowns: resolved
+    };
+
+  } catch (err) {
+    console.error("Stats calculation error:", err);
+    return {
+      uptime: 0,
+      shutdowns: 0,
+      breakdowns: 0
+    };
+  }
+}
+
 /* ================= LOAD PROFILE ================= */
 
-const user = auth.currentUser;
+onAuthStateChanged(auth, async (user) => {
+
   if (!user) {
     window.location.replace("/login.html");
     return;
@@ -49,7 +97,6 @@ const user = auth.currentUser;
 
     setVal("primaryDomain", data.professional?.specialization);
 
-    // Convert array to comma string for UI
     setVal("skills",
       (data.professional?.analyzersWorked || []).join(", ")
     );
@@ -88,10 +135,20 @@ const user = auth.currentUser;
         data.profileStatus?.isPublic !== false;
     }
 
+    /* ================= AUTO UPDATE STATS ================= */
+
+    const stats = await calculateUserStats(user.uid);
+
+    await setDoc(
+      doc(db, "profiles", user.uid),
+      { stats: stats },
+      { merge: true }
+    );
+
   } catch (err) {
     console.error("Profile load error:", err);
   }
-;
+});
 
 /* ================= SAVE PROFILE ================= */
 
@@ -102,14 +159,10 @@ if (form) {
     const user = auth.currentUser;
     if (!user) return;
 
-    /* ================= COLLECT INDUSTRIES ================= */
-
     const industriesSelect = document.getElementById("industries");
     const plantType = industriesSelect
       ? industriesSelect.value
       : "";
-
-    /* ================= COLLECT ACHIEVEMENT ================= */
 
     let achievement = {
       title: "",
@@ -125,13 +178,11 @@ if (form) {
       });
     }
 
-    /* ================= BUILD FINAL STRUCTURE ================= */
-
     const profile = {
       basicInfo: {
         fullName: val("fullName"),
         headline: val("role"),
-        company: "", // kept for future use
+        company: "",
         experienceYears: Number(val("experienceYears")) || 0,
         location: val("location"),
         profilePhoto: ""
@@ -158,15 +209,12 @@ if (form) {
     };
 
     try {
-      /* ================= SAVE PROFILE ================= */
 
       await setDoc(
         doc(db, "profiles", user.uid),
         profile,
         { merge: true }
       );
-
-      /* ================= UPDATE USERS COLLECTION ================= */
 
       await updateDoc(
         doc(db, "users", user.uid),
