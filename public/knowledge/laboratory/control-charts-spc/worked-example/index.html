@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Control Chart Worked Example – Numerical SPC Guide | InstMates</title>
+
+  <meta name="description"
+        content="Worked numerical example of control chart calculation for laboratory analyzers – mean, standard deviation, control limits, and interpretation of out-of-control conditions." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzers-control-chart-example">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/control-charts-spc/">Control Charts & SPC</a><span>›</span>
+  <span class="current">Worked Example</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+  <h1>Control Chart – Full Worked Example</h1>
+  <p class="muted">Example based on QC sample run daily for 10 days.</p>
+</section>
+
+<section class="panel">
+  <h2>Step 1 – QC Data (%)</h2>
+
+  <div class="card">
+    <p>1.24, 1.26, 1.25, 1.27, 1.23, 1.28, 1.26, 1.25, 1.29, 1.24</p>
+  </div>
+
+  <p><strong>Mean (x̄) = 1.257 %</strong></p>
+  <p><strong>Standard Deviation (σ) = 0.018 %</strong></p>
+</section>
+
+<section class="panel">
+  <h2>Step 2 – Control Limits</h2>
+
+  <ul class="checklist">
+    <li>UCL = x̄ + 3σ = 1.257 + (3 × 0.018) = 1.311 %</li>
+    <li>LCL = x̄ − 3σ = 1.257 − (3 × 0.018) = 1.203 %</li>
+  </ul>
+
+  <p class="muted">Any point outside these limits indicates loss of control.</p>
+</section>
+
+<section class="panel">
+  <h2>Interpretation</h2>
+
+  <ul class="checklist">
+    <li>All points within limits → Stable process</li>
+    <li>One point above 1.311 → Out-of-control</li>
+    <li>7 consecutive increasing values → Trend</li>
+  </ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Measurement Uncertainty – Laboratory Technical Guide | InstMates</title>
+
+  <meta name="description"
+        content="Complete guide to measurement uncertainty for laboratory analyzers – Type A & Type B uncertainty, calculation methods, combined uncertainty, expanded uncertainty, ISO 17025 compliance and practical examples." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzers-measurement-uncertainty">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <span class="current">Measurement Uncertainty</span>
+</nav>
+
+<main class="container">
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h1>Measurement Uncertainty – Complete Technical Guide</h1>
+    <p class="muted">
+      Measurement uncertainty defines the doubt that exists about a measurement result.
+      Under ISO 17025, laboratories must estimate and report uncertainty
+      to ensure traceability and reliability of analytical results.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Why Measurement Uncertainty Matters</h2>
+
+    <ul class="checklist">
+      <li>Required for ISO 17025 compliance</li>
+      <li>Defines reliability of lab results</li>
+      <li>Helps compare results between laboratories</li>
+      <li>Supports audit and regulatory inspections</li>
+      <li>Prevents false acceptance or rejection of product</li>
+    </ul>
+
+    <p class="muted">
+      A measurement without uncertainty is incomplete.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Types of Measurement Uncertainty</h2>
+
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>Type A (Statistical)</h3>
+        <ul class="checklist">
+          <li>Based on repeated measurements</li>
+          <li>Standard deviation method</li>
+          <li>Calculated using statistical analysis</li>
+          <li>Represents random error</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Type B (Non-Statistical)</h3>
+        <ul class="checklist">
+          <li>Calibration certificate data</li>
+          <li>Manufacturer specifications</li>
+          <li>Instrument resolution limits</li>
+          <li>Environmental effects</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Uncertainty Calculation Steps</h2>
+
+    <ol class="checklist">
+      <li>Identify all uncertainty sources</li>
+      <li>Quantify Type A components (standard deviation)</li>
+      <li>Quantify Type B components</li>
+      <li>Convert to standard uncertainty</li>
+      <li>Calculate combined uncertainty (root sum square)</li>
+      <li>Apply coverage factor (k=2 typical)</li>
+      <li>Report expanded uncertainty</li>
+    </ol>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Combined Uncertainty Formula</h2>
+
+    <p class="muted">
+      Combined standard uncertainty is calculated using root sum square method:
+    </p>
+
+    <svg viewBox="0 0 900 120" width="100%">
+      <rect x="200" y="30" width="500" height="60" rx="12" fill="#e9f2ff"/>
+      <text x="450" y="65" text-anchor="middle" font-size="16">
+        u_c = √(u₁² + u₂² + u₃² + ...)
+      </text>
+    </svg>
+
+    <p style="margin-top:14px;">
+      Expanded uncertainty:
+      <strong>U = k × u<sub>c</sub></strong>
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Practical Example – GC Analysis</h2>
+
+    <ul class="checklist">
+      <li>Repeatability uncertainty (Type A)</li>
+      <li>Calibration standard uncertainty</li>
+      <li>Instrument resolution uncertainty</li>
+      <li>Temperature control variation</li>
+      <li>Integration software uncertainty</li>
+    </ul>
+
+    <p class="muted">
+      Each component must be converted to standard uncertainty before combination.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Common Mistakes in Uncertainty Estimation</h2>
+
+    <ul class="checklist">
+      <li>Ignoring Type B components</li>
+      <li>Using incorrect coverage factor</li>
+      <li>Failing to update after instrument maintenance</li>
+      <li>Not validating uncertainty model</li>
+      <li>Copy-paste uncertainty without recalculation</li>
+    </ul>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Reporting Format Example</h2>
+
+    <div class="card">
+      <p>
+        Example Result:
+        <br><br>
+        Benzene concentration = 1.25 % ± 0.03 % (k = 2, 95% confidence)
+      </p>
+    </div>
+
+    <p class="muted">
+      Always state coverage factor and confidence level.
+    </p>
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>

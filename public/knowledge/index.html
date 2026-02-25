@@ -4,12 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Knowledge Hub | InstMates</title>
+  <title>Knowledge Hub | Instrumentation & Analyzer Learning Paths | InstMates</title>
 
   <meta name="description"
-        content="InstMates Knowledge Hub – structured technical learning paths for instrument and analyzer technicians focused on real plant behavior, diagnostics, and field troubleshooting." />
+        content="InstMates Knowledge Hub – structured technical learning paths for instrument and analyzer technicians covering field instrumentation, laboratory analyzers, calibration, ISO 17025, SPC, and real plant troubleshooting." />
+
+  <meta name="keywords"
+        content="instrumentation knowledge, analyzer training, laboratory analyzers, ISO 17025, measurement uncertainty, control charts, GC fundamentals, field troubleshooting, calibration guide" />
+
+  <link rel="canonical" href="https://instmates.com/knowledge/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Knowledge Hub | InstMates">
+  <meta property="og:description" content="Technical learning paths for instrumentation and analyzer professionals.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://instmates.com/knowledge/">
 
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- ================= STRUCTURED DATA ================= -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "InstMates Knowledge Hub",
+    "url": "https://instmates.com/knowledge/",
+    "description": "Structured technical learning paths for instrument and analyzer technicians.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "InstMates"
+    },
+    "hasPart": [
+      {
+        "@type": "WebPage",
+        "name": "Field Instrumentation",
+        "url": "https://instmates.com/knowledge/field/"
+      },
+      {
+        "@type": "WebPage",
+        "name": "Process Analyzers",
+        "url": "https://instmates.com/knowledge/analyzers/"
+      },
+      {
+        "@type": "WebPage",
+        "name": "Laboratory Analyzers",
+        "url": "https://instmates.com/knowledge/analyzers/laboratory/"
+      }
+    ]
+  }
+  </script>
+
 </head>
 
 <body data-page="knowledge">
@@ -40,44 +84,34 @@
   <!-- ================= FIELD INSTRUMENTATION ================= -->
   <section class="panel">
     <h2>Field Instrumentation</h2>
-    <p class="muted">
-      Core measurement principles, loop behavior, installation practices,
-      calibration logic, and failure patterns seen daily in operating plants.
-    </p>
 
     <div class="grid grid-3">
 
       <div class="card">
         <h3>4–20 mA Fundamentals</h3>
         <p class="muted">
-          Live zero concept, loop power, grounding behavior, signal instability,
-          scaling logic, and real loop troubleshooting scenarios.
+          Live zero concept, loop power, grounding behavior,
+          scaling logic, and troubleshooting scenarios.
         </p>
-        <a href="/knowledge/field/signals/4-20ma/" class="btn btn-soft">
-          Explore
-        </a>
+        <a href="/knowledge/field/signals/4-20ma/" class="btn btn-soft">Explore</a>
       </div>
 
       <div class="card">
         <h3>Pressure Measurement</h3>
         <p class="muted">
-          PT & DP transmitters, impulse line effects, manifold operation,
-          zero shift causes, and common installation mistakes.
+          PT & DP transmitters, impulse effects,
+          zero shift causes, and installation mistakes.
         </p>
-        <a href="/knowledge/field/pressure/" class="btn btn-soft">
-          Explore
-        </a>
+        <a href="/knowledge/field/pressure/" class="btn btn-soft">Explore</a>
       </div>
 
       <div class="card">
         <h3>Calibration & Loop Check</h3>
         <p class="muted">
-          Bench vs field calibration, loop verification methods,
-          common procedural errors, and shutdown best practices.
+          Field calibration logic, loop verification,
+          and shutdown best practices.
         </p>
-        <a href="/knowledge/field/signals/4-20ma/calibration.html" class="btn btn-soft">
-          Explore
-        </a>
+        <a href="/knowledge/field/signals/4-20ma/calibration.html" class="btn btn-soft">Explore</a>
       </div>
 
     </div>
@@ -85,45 +119,80 @@
 
   <!-- ================= ANALYZERS ================= -->
   <section class="panel">
-    <h2>Analyzers</h2>
-    <p class="muted">
-      Analyzer fundamentals explained through sampling systems,
-      detector behavior, alarm logic, calibration drift, and
-      troubleshooting workflows used in real refineries and process plants.
-    </p>
+    <h2>Process Analyzers</h2>
 
     <div class="grid grid-3">
 
       <div class="card">
         <h3>Gas Chromatograph (GC)</h3>
         <p class="muted">
-          Working principle, sampling systems, columns, detectors (FID/TCD),
-          baseline instability, retention time shift, and carrier gas issues.
+          Sampling systems, columns, detectors,
+          retention time shift, and baseline instability.
         </p>
-        <a href="/knowledge/gc/" class="btn btn-soft">
-          Explore
-        </a>
+        <a href="/knowledge/gc/" class="btn btn-soft">Explore</a>
       </div>
 
       <div class="card">
         <h3>CEMS</h3>
         <p class="muted">
-          SO₂, NOx, CO, O₂ measurement logic, probe systems,
-          zero/span drift, analyzer faults, and compliance challenges.
+          Emission monitoring logic, zero/span drift,
+          and compliance challenges.
         </p>
-        <a href="/knowledge/analyzers/" class="btn btn-soft">
-          Explore
-        </a>
+        <a href="/knowledge/analyzers/" class="btn btn-soft">Explore</a>
       </div>
 
       <div class="card">
         <h3>Process Gas Analyzers</h3>
         <p class="muted">
-          NDIR, paramagnetic, TDLAS basics,
-          interference effects, sampling integrity,
-          and long-term stability issues.
+          NDIR, paramagnetic, TDLAS fundamentals
+          and sampling integrity.
         </p>
-        <a href="/knowledge/analyzers/" class="btn btn-soft">
+        <a href="/knowledge/analyzers/" class="btn btn-soft">Explore</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= LABORATORY ANALYZERS ================= -->
+  <section class="panel">
+    <h2>Laboratory Analyzers</h2>
+    <p class="muted">
+      Laboratory-focused analytical systems covering flash point,
+      ISO 17025 compliance, method validation, measurement uncertainty,
+      SPC and statistical quality control.
+    </p>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <h3>Flash Point & ASTM Methods</h3>
+        <p class="muted">
+          D93, D56 methods, troubleshooting,
+          heating rate control and compliance logic.
+        </p>
+        <a href="/knowledge/analyzers/laboratory/flash-point-analyzer/" class="btn btn-soft">
+          Explore
+        </a>
+      </div>
+
+      <div class="card">
+        <h3>Calibration & Validation</h3>
+        <p class="muted">
+          Measurement uncertainty, bias,
+          linearity, LOD/LOQ and validation workflow.
+        </p>
+        <a href="/knowledge/analyzers/laboratory/calibration-master-guide/" class="btn btn-soft">
+          Explore
+        </a>
+      </div>
+
+      <div class="card">
+        <h3>ISO 17025 & SPC</h3>
+        <p class="muted">
+          Control charts, audit preparation,
+          clause breakdown and compliance strategy.
+        </p>
+        <a href="/knowledge/analyzers/laboratory/iso-17025-audit-preparation/" class="btn btn-soft">
           Explore
         </a>
       </div>
@@ -134,30 +203,23 @@
   <!-- ================= TROUBLESHOOTING GUIDES ================= -->
   <section class="panel">
     <h2>Troubleshooting Guides</h2>
-    <p class="muted">
-      Decision-tree based troubleshooting guides structured as:
-      <strong>symptoms → checks → probable cause → corrective action.</strong>
-    </p>
 
     <div class="grid grid-2">
 
       <div class="card">
         <h3>Analyzer Fault Logic</h3>
         <p class="muted">
-          Zero/span failures, response instability, alarm interpretation,
-          detector problems, and diagnostic flow.
+          Zero/span failures, detector issues,
+          and structured diagnostic flows.
         </p>
-        <a href="/case-studies/analyzers/" class="btn btn-soft">
-          View Guides
-        </a>
+        <a href="/case-studies/analyzers/" class="btn btn-soft">View Guides</a>
       </div>
 
       <div class="card">
         <h3>Instrument Loop Faults</h3>
         <p class="muted">
-          Signal saturation, noise pickup, open loops,
-          improper grounding, power supply disturbances,
-          and DCS mismatch issues.
+          Noise pickup, open loops,
+          grounding and DCS mismatch.
         </p>
         <a href="/knowledge/field/signals/4-20ma/troubleshooting.html" class="btn btn-soft">
           View Guides

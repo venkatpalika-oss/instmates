@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Measurement Uncertainty – Full Worked Numerical Example | InstMates</title>
+
+  <meta name="description"
+        content="Step-by-step worked example of measurement uncertainty calculation for laboratory analyzers – Type A, Type B, combined uncertainty, expanded uncertainty, and final reporting format." />
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body data-page="analyzers-uncertainty-example">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="/">Home</a><span>›</span>
+  <a href="/knowledge/">Knowledge Hub</a><span>›</span>
+  <a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/">Laboratory Analyzers</a><span>›</span>
+  <a href="/knowledge/analyzers/laboratory/measurement-uncertainty/">Measurement Uncertainty</a><span>›</span>
+  <span class="current">Worked Example</span>
+</nav>
+
+<main class="container">
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h1>Measurement Uncertainty – Full Worked Numerical Example</h1>
+    <p class="muted">
+      This example demonstrates step-by-step uncertainty calculation
+      for a GC analysis result under ISO 17025 methodology.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 1 – Measurement Data (Repeatability)</h2>
+
+    <p>Five replicate GC measurements of Benzene concentration (%):</p>
+
+    <div class="card">
+      <p>1.24, 1.27, 1.25, 1.26, 1.23</p>
+    </div>
+
+    <p><strong>Mean (x̄):</strong> 1.25 %</p>
+    <p><strong>Standard Deviation (s):</strong> 0.015 %</p>
+
+    <p class="muted">
+      This is Type A uncertainty (statistical).
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 2 – Convert to Standard Uncertainty (Type A)</h2>
+
+    <p>Standard uncertainty:</p>
+
+    <div class="card">
+      <p>u<sub>A</sub> = s / √n</p>
+      <p>u<sub>A</sub> = 0.015 / √5</p>
+      <p>u<sub>A</sub> = 0.0067 %</p>
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 3 – Identify Type B Uncertainty Sources</h2>
+
+    <ul class="checklist">
+      <li>Calibration standard uncertainty = 0.010 %</li>
+      <li>Instrument resolution uncertainty = 0.005 %</li>
+      <li>Temperature variation effect = 0.004 %</li>
+    </ul>
+
+    <p>Convert all to standard uncertainty (already standard values).</p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 4 – Combined Standard Uncertainty</h2>
+
+    <p>Use Root Sum Square (RSS) method:</p>
+
+    <svg viewBox="0 0 900 120" width="100%">
+      <rect x="200" y="30" width="500" height="60" rx="12" fill="#e9f2ff"/>
+      <text x="450" y="65" text-anchor="middle" font-size="16">
+        u_c = √(0.0067² + 0.010² + 0.005² + 0.004²)
+      </text>
+    </svg>
+
+    <p style="margin-top:14px;">
+      u<sub>c</sub> = 0.013 % (combined standard uncertainty)
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 5 – Expanded Uncertainty</h2>
+
+    <p>Apply coverage factor k = 2 (95% confidence):</p>
+
+    <div class="card">
+      <p>U = k × u<sub>c</sub></p>
+      <p>U = 2 × 0.013</p>
+      <p>U = 0.026 %</p>
+    </div>
+
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Step 6 – Final Reported Result</h2>
+
+    <div class="card">
+      <p>
+        Benzene Concentration = 1.25 % ± 0.03 %  
+        (k = 2, 95% confidence level)
+      </p>
+    </div>
+
+    <p class="muted">
+      Rounded expanded uncertainty to two significant digits.
+    </p>
+  </section>
+
+  <!-- ====================================================== -->
+  <section class="panel">
+    <h2>Important Notes</h2>
+
+    <ul class="checklist">
+      <li>Always include coverage factor (k)</li>
+      <li>State confidence level</li>
+      <li>Recalculate after calibration change</li>
+      <li>Update uncertainty after method modification</li>
+    </ul>
+
+    <p class="muted">
+      Measurement uncertainty strengthens lab credibility during audits.
+    </p>
+  </section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js?v=2026-02-20"></script>
+
+</body>
+</html>
