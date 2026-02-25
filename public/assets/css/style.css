@@ -2356,4 +2356,26 @@ body {
   border-radius:14px;
   box-shadow:0 8px 25px rgba(0,0,0,0.06);
   border-left:4px solid #0d6efd;
+}/* =========================================================
+   FIX: Knowledge Dropdown Button Visual Normalization
+========================================================= */
+
+/* Make Knowledge dropdown match other nav links */
+.siteHeader .main-nav .nav-dropdown > .nav-link {
+  padding: 6px 4px;
+  font-weight: 700;
+  color: #ffffff;
+  background: transparent;
+  opacity: 1;
+}
+
+/* Remove compressed alignment override */
+.siteHeader .main-nav > a,
+.siteHeader .main-nav .nav-dropdown > .nav-link {
+  line-height: normal;
+}
+
+/* Optional subtle hover consistency */
+.siteHeader .main-nav .nav-dropdown > .nav-link:hover {
+  text-decoration: underline;
 }
