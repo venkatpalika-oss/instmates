@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Elemental Analyzer (CHNS) – Advanced Principle & Calculations | InstMates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Advanced engineering guide to CHNS Elemental Analyzer including combustion chemistry, gas separation, detector response, calibration curves, calculation examples and ISO 17025 compliance." />
+
+<link rel="canonical" href="https://www.instmates.com/knowledge/analyzers/laboratory/elemental-analyzer/" />
+<link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="elemental-analyzer">
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+<a href="/">Home</a><span>›</span>
+<a href="/knowledge/">Knowledge</a><span>›</span>
+<a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+<a href="/knowledge/analyzers/laboratory/">Laboratory</a><span>›</span>
+<span class="current">Elemental Analyzer</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+<h1>CHNS Elemental Analyzer – Engineering Deep Dive</h1>
+
+<p>
+CHNS analyzers determine elemental composition via complete combustion,
+gas conversion, chromatographic separation and thermal conductivity detection.
+</p>
+</section>
+
+<section class="panel">
+<h2>Combustion Chemistry</h2>
+
+<p>
+At ~1000°C in pure oxygen:
+</p>
+
+<ul>
+<li>C → CO₂</li>
+<li>H → H₂O</li>
+<li>N → NOx → N₂ (after reduction)</li>
+<li>S → SO₂</li>
+</ul>
+
+<p>
+A copper reduction column removes excess oxygen and converts NOx to N₂.
+</p>
+</section>
+
+<section class="panel">
+<h2>Detector Principle (TCD)</h2>
+
+<p>
+Thermal Conductivity Detector measures change in thermal conductivity
+between reference gas and sample gas.
+</p>
+
+<p>
+Signal ∝ concentration of evolved gas.
+</p>
+</section>
+
+<section class="panel">
+<h2>Calibration Curve</h2>
+
+<p>
+Area = m × Mass + b
+</p>
+
+<p>
+Example:
+<br> Area = 25000
+<br> Calibration slope (m) = 20000
+<br> Intercept = 500
+</p>
+
+<p>
+Mass = (Area − b) / m  
+Mass = (25000 − 500)/20000  
+Mass = 1.225 mg
+</p>
+</section>
+
+<section class="panel">
+<h2>Precision & Uncertainty</h2>
+
+<p>
+%RSD = (Standard Deviation / Mean) × 100
+</p>
+
+<p>
+ISO 17025 requires:
+</p>
+
+<ul>
+<li>Certified reference material validation</li>
+<li>Blank correction</li>
+<li>Drift correction</li>
+<li>Uncertainty budget documentation</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Troubleshooting Flow</h2>
+
+<svg viewBox="0 0 900 220" width="100%">
+<rect x="60" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+<text x="180" y="75" text-anchor="middle">Low Nitrogen?</text>
+<rect x="360" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+<text x="480" y="75" text-anchor="middle">Check Reduction Tube</text>
+<line x1="300" y1="70" x2="360" y2="70" stroke="#333" stroke-width="2"/>
+</svg>
+
+<ul>
+<li>Incomplete combustion → Furnace temperature</li>
+<li>Drift → Gas leak</li>
+<li>Unstable baseline → Detector contamination</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Laboratory Hub</h2>
+<a href="/knowledge/analyzers/laboratory/">
+Laboratory Analyzers – Engineering Fundamentals
+</a>
+</section>
+
+</main>
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+</body>
+</html>

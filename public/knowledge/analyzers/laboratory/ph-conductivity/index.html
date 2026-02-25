@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>pH & Conductivity Laboratory Systems | InstMates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Comprehensive guide to laboratory pH meters and conductivity systems including Nernst equation, temperature compensation, cell constant calculation, worked examples, troubleshooting and ISO 17025 compliance." />
+
+<link rel="canonical" href="https://www.instmates.com/knowledge/analyzers/laboratory/ph-conductivity/" />
+<link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+</head>
+
+<body data-page="ph-conductivity">
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+<a href="/">Home</a><span>›</span>
+<a href="/knowledge/">Knowledge</a><span>›</span>
+<a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+<a href="/knowledge/analyzers/laboratory/">Laboratory</a><span>›</span>
+<span class="current">pH & Conductivity</span>
+</nav>
+
+<main class="container">
+
+<!-- ================= ORIGINAL CONTENT (UNCHANGED) ================= -->
+
+<section class="panel">
+<h1>pH Laboratory Systems</h1>
+<p>
+pH measurement is based on the Nernst equation.
+</p>
+
+<p>
+E = E₀ − (0.0591 × pH) at 25°C
+</p>
+
+<p>
+Slope must be ~59 mV per pH unit at 25°C.
+</p>
+</section>
+
+<section class="panel">
+<h2>Calibration Example</h2>
+<p>
+Buffer 7 → 0 mV  
+Buffer 4 → +177 mV  
+Slope = 59 mV/pH → acceptable
+</p>
+</section>
+
+<section class="panel">
+<h1>Conductivity Systems</h1>
+<p>
+Conductivity depends on ionic mobility.
+</p>
+
+<p>
+κ = G × K
+</p>
+
+<p>
+Where:
+<br> κ = Conductivity
+<br> G = Conductance
+<br> K = Cell constant
+</p>
+</section>
+
+<section class="panel">
+<h2>Troubleshooting</h2>
+<ul>
+<li>Drift → Dirty electrode</li>
+<li>Slow response → Aging membrane</li>
+<li>Unstable conductivity → Air bubbles</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Laboratory Hub</h2>
+<a href="/knowledge/analyzers/laboratory/">
+Laboratory Analyzers – Engineering Fundamentals
+</a>
+</section>
+
+<!-- ================= NEW ADVANCED CONTENT BELOW ================= -->
+
+<section class="panel">
+<h2>pH – Full Nernst Equation (Engineering Form)</h2>
+
+<p>
+E = E₀ − (2.303 RT / nF) × pH
+</p>
+
+<p>
+Where:
+<br> R = Gas constant
+<br> T = Absolute temperature (K)
+<br> n = number of electrons (1 for H⁺)
+<br> F = Faraday constant
+</p>
+
+<p>
+At 25°C, slope = 59.16 mV per pH unit.
+</p>
+</section>
+
+<section class="panel">
+<h2>pH Slope Validation Calculation</h2>
+
+<p>
+Measured slope = 57 mV  
+Theoretical slope = 59.16 mV
+</p>
+
+<p>
+Slope % = (57 / 59.16) × 100  
+Slope % = 96.3%
+</p>
+
+<p>
+Acceptable range under laboratory control: 95–105%.
+</p>
+</section>
+
+<section class="panel">
+<h2>Offset Check (Zero Point)</h2>
+
+<p>
+At pH 7:
+Expected potential ≈ 0 mV (±30 mV)
+</p>
+
+<p>
+Deviation beyond ±30 mV indicates:
+</p>
+
+<ul>
+<li>Reference junction clogging</li>
+<li>Electrolyte depletion</li>
+<li>Aging reference system</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>pH Troubleshooting Flow</h2>
+
+<svg viewBox="0 0 900 240" width="100%">
+  <rect x="60" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="180" y="75" text-anchor="middle">Drifting Reading?</text>
+
+  <rect x="360" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="480" y="75" text-anchor="middle">Clean Electrode</text>
+
+  <rect x="660" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="780" y="75" text-anchor="middle">Check Reference Fill</text>
+
+  <line x1="300" y1="70" x2="360" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="600" y1="70" x2="660" y2="70" stroke="#333" stroke-width="2"/>
+</svg>
+
+<ul>
+<li>No slope → Glass membrane crack</li>
+<li>Slow response → Dehydrated bulb</li>
+<li>Noise → Ground loop issue</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Conductivity – Worked Engineering Example</h2>
+
+<p>
+Measured resistance = 2000 Ω  
+Conductance G = 1 / 2000 = 0.0005 S  
+Cell constant K = 1.0 cm⁻¹
+</p>
+
+<p>
+κ = G × K  
+κ = 0.0005 × 1.0  
+κ = 500 µS/cm
+</p>
+</section>
+
+<section class="panel">
+<h2>Temperature Compensation</h2>
+
+<p>
+κ₂₅ = κT / [1 + α(T − 25)]
+</p>
+
+<p>
+Where:
+<br> α ≈ 0.02 /°C for many aqueous systems
+</p>
+
+<p>
+Example:
+<br> κ at 35°C = 600 µS/cm  
+<br> κ₂₅ = 600 / [1 + 0.02(35 − 25)]  
+<br> κ₂₅ = 600 / 1.2 = 500 µS/cm
+</p>
+</section>
+
+<section class="panel">
+<h2>Cell Constant Verification</h2>
+
+<p>
+K = κ_standard / G_measured
+</p>
+
+<p>
+This must be verified periodically using certified KCl solution.
+</p>
+</section>
+
+<section class="panel">
+<h2>ISO 17025 Laboratory Control Points</h2>
+
+<ul>
+<li>Daily buffer verification (pH 4, 7, 10)</li>
+<li>Conductivity standard verification</li>
+<li>Temperature probe validation</li>
+<li>Electrode maintenance log</li>
+<li>Uncertainty estimation documentation</li>
+</ul>
+</section>
+
+</main>
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+</body>
+</html>

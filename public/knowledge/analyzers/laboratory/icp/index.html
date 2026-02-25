@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ICP Spectroscopy – Principle & Applications | InstMates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="ICP spectroscopy working principle, plasma generation, detectors, calculations, troubleshooting and ISO 17025 laboratory applications." />
+
+<link rel="canonical" href="https://www.instmates.com/knowledge/analyzers/laboratory/icp/" />
+<link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Inductively Coupled Plasma (ICP) – Principle & Applications",
+ "description": "Technical guide covering ICP spectroscopy principle, plasma excitation, elemental calculations, troubleshooting and ISO 17025 laboratory applications.",
+ "inLanguage": "en",
+ "mainEntityOfPage": "https://www.instmates.com/knowledge/analyzers/laboratory/icp/",
+ "isPartOf": {
+   "@type": "CollectionPage",
+   "name": "Laboratory Analyzers – Engineering Fundamentals",
+   "url": "https://www.instmates.com/knowledge/analyzers/laboratory/"
+ },
+ "publisher": {
+   "@type": "Organization",
+   "name": "InstMates",
+   "logo": {
+     "@type": "ImageObject",
+     "url": "https://www.instmates.com/images/logo.png"
+   }
+ },
+ "datePublished": "2026-02-26",
+ "dateModified": "2026-02-26"
+}
+</script>
+
+</head>
+
+<body data-page="icp-laboratory">
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+<a href="/">Home</a><span>›</span>
+<a href="/knowledge/">Knowledge</a><span>›</span>
+<a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+<a href="/knowledge/analyzers/laboratory/">Laboratory</a><span>›</span>
+<span class="current">ICP</span>
+</nav>
+
+<main class="container">
+
+<!-- ===== ORIGINAL CONTENT (UNCHANGED) ===== -->
+
+<section class="panel">
+<h1>Inductively Coupled Plasma (ICP)</h1>
+<img src="https://images.unsplash.com/photo-1581090700227-4c4f50fa8b7b" style="width:100%;border-radius:8px;margin-bottom:20px;" alt="ICP Instrument">
+
+<p>ICP is used for elemental analysis using plasma excitation and optical emission detection.</p>
+</section>
+
+<section class="panel">
+<h2>Working Principle</h2>
+<p>Sample aerosol enters plasma at ~8000K where atoms emit characteristic wavelengths.</p>
+</section>
+
+<section class="panel">
+<h2>Applications</h2>
+<ul>
+<li>Trace metal analysis</li>
+<li>Environmental water testing</li>
+<li>Food safety</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Part of Laboratory Engineering Hub</h2>
+<p>
+Inductively Coupled Plasma (ICP) spectroscopy is a key elemental analysis technique
+within our complete laboratory analyzer engineering framework.
+</p>
+<p>
+Explore the full Laboratory Engineering reference including
+GC, HPLC, UV-Vis, ICP, Karl Fischer and Titration:
+<a href="/knowledge/analyzers/laboratory/">
+Laboratory Analyzers – Engineering Fundamentals
+</a>
+</p>
+</section>
+
+<!-- ===== NEW ADDITIONS START HERE ===== -->
+
+<section class="panel">
+<h2>Plasma Generation Mechanism</h2>
+
+<p>
+ICP uses a radio-frequency (RF) coil to ionize argon gas.
+An oscillating electromagnetic field generates a stable plasma
+at temperatures between 6000–10000 K.
+</p>
+
+<p>
+At these temperatures:
+</p>
+
+<ul>
+<li>Sample aerosol is desolvated</li>
+<li>Atoms are atomized</li>
+<li>Atoms are excited</li>
+<li>Characteristic emission wavelengths are produced</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Emission Intensity Relationship</h2>
+
+<p>
+In ICP-OES, emission intensity is proportional to concentration:
+</p>
+
+<p><strong>I ∝ C</strong></p>
+
+<p>
+Quantification is performed using calibration standards.
+</p>
+</section>
+
+<section class="panel">
+<h2>Worked Concentration Example</h2>
+
+<p>
+Calibration equation:
+</p>
+
+<p><strong>I = 1500 C + 20</strong></p>
+
+<p>
+Measured intensity = 3020
+</p>
+
+<p>
+3020 = 1500C + 20  
+3000 = 1500C  
+C = 2.0 mg/L
+</p>
+
+<p>
+This result must fall within validated linear calibration range.
+</p>
+</section>
+
+<section class="panel">
+<h2>Detection Limits</h2>
+
+<p>
+Limit of Detection (LOD):
+</p>
+
+<p><strong>LOD = 3 × (σ / S)</strong></p>
+
+<p>
+Where:
+<br> σ = Standard deviation of blank
+<br> S = Slope of calibration curve
+</p>
+
+<p>
+LOD determination is mandatory under ISO 17025 method validation.
+</p>
+</section>
+
+<section class="panel">
+<h2>Troubleshooting Logic Flow</h2>
+
+<svg viewBox="0 0 900 260" width="100%">
+  <rect x="60" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="180" y="75" text-anchor="middle" font-size="13">Low Signal?</text>
+
+  <rect x="360" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="480" y="75" text-anchor="middle" font-size="13">Check Nebulizer Flow</text>
+
+  <rect x="660" y="40" width="240" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="780" y="75" text-anchor="middle" font-size="13">Check Plasma Stability</text>
+
+  <line x1="300" y1="70" x2="360" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="600" y1="70" x2="660" y2="70" stroke="#333" stroke-width="2"/>
+</svg>
+
+<ul>
+<li>Unstable plasma → RF generator issue</li>
+<li>Drift → Torch alignment problem</li>
+<li>High background → Argon purity issue</li>
+<li>Poor precision → Sample introduction instability</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>ISO 17025 Technical Control Points</h2>
+
+<ul>
+<li>Calibration verification standards</li>
+<li>Internal standard correction</li>
+<li>Background correction validation</li>
+<li>Repeatability (%RSD) checks</li>
+<li>Uncertainty estimation documentation</li>
+</ul>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+</body>
+</html>

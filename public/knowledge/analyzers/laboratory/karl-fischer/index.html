@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Karl Fischer Titration – Principle, Calculations & Moisture Analysis | InstMates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Comprehensive technical guide to Karl Fischer titration including reaction mechanism, volumetric and coulometric methods, calculations, worked examples and troubleshooting under ISO 17025." />
+<meta name="keywords" content="Karl Fischer titration, moisture analysis, volumetric KF, coulometric KF, water determination, ISO 17025 laboratory" />
+
+<link rel="canonical" href="https://www.instmates.com/knowledge/analyzers/laboratory/karl-fischer/" />
+<link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Karl Fischer Titration – Moisture Analysis Principle and Calculations",
+ "description": "Technical guide covering Karl Fischer reaction chemistry, calculation methods, worked examples and troubleshooting in ISO 17025 laboratories.",
+ "inLanguage": "en",
+ "mainEntityOfPage": "https://www.instmates.com/knowledge/analyzers/laboratory/karl-fischer/",
+ "isPartOf": {
+   "@type": "CollectionPage",
+   "name": "Laboratory Analyzers – Engineering Fundamentals",
+   "url": "https://www.instmates.com/knowledge/analyzers/laboratory/"
+ },
+ "publisher": {
+   "@type": "Organization",
+   "name": "InstMates",
+   "logo": {
+     "@type": "ImageObject",
+     "url": "https://www.instmates.com/images/logo.png"
+   }
+ },
+ "datePublished": "2026-02-26",
+ "dateModified": "2026-02-26"
+}
+</script>
+</head>
+
+<body data-page="karl-fischer-laboratory">
+
+<div id="siteHeader"></div>
+
+<nav class="crumbs">
+<a href="/">Home</a><span>›</span>
+<a href="/knowledge/">Knowledge</a><span>›</span>
+<a href="/knowledge/analyzers/">Analyzers</a><span>›</span>
+<a href="/knowledge/analyzers/laboratory/">Laboratory</a><span>›</span>
+<span class="current">Karl Fischer</span>
+</nav>
+
+<main class="container">
+
+<section class="panel">
+<h1>Karl Fischer Titration – Moisture Analysis</h1>
+
+<p>
+Karl Fischer (KF) titration is a highly specific analytical method used to determine
+trace and bulk water content in liquids, solids, and gases.
+It is widely applied in pharmaceutical, petrochemical, transformer oil,
+food and polymer laboratories operating under ISO 17025.
+</p>
+</section>
+
+<section class="panel">
+<h2>Reaction Chemistry</h2>
+
+<p>
+The Karl Fischer reaction is based on the quantitative oxidation of sulfur dioxide by iodine in the presence of water:
+</p>
+
+<p><strong>H₂O + I₂ + SO₂ + 3 RN → 2 HI + RNH·SO₄R</strong></p>
+
+<p>
+Water reacts stoichiometrically with iodine, allowing direct determination of moisture content.
+</p>
+</section>
+
+<section class="panel">
+<h2>Types of Karl Fischer Methods</h2>
+
+<ul>
+<li><strong>Volumetric KF</strong> – Suitable for moisture > 0.1%</li>
+<li><strong>Coulometric KF</strong> – Suitable for trace moisture (ppm level)</li>
+</ul>
+
+<p>
+Volumetric method uses standardized iodine solution.
+Coulometric method generates iodine electrochemically.
+</p>
+</section>
+
+<section class="panel">
+<h2>Calculation – Volumetric Method</h2>
+
+<p>
+Moisture (%) =
+</p>
+
+<p><strong>
+(Volume of KF reagent × KF factor × 100) / Sample weight
+</strong></p>
+
+<p>
+Where:
+<br> KF factor = mg of water per mL of reagent
+</p>
+</section>
+
+<section class="panel">
+<h2>Worked Example</h2>
+
+<p>
+Sample weight = 1.25 g  
+Volume consumed = 3.2 mL  
+KF factor = 5.0 mg/mL
+</p>
+
+<p>
+Water content (mg) = 3.2 × 5.0 = 16 mg
+</p>
+
+<p>
+Moisture % = (16 / 1250) × 100  
+= <strong>1.28 %</strong>
+</p>
+
+<p>
+This calculation must be documented with uncertainty estimation in ISO 17025 systems.
+</p>
+</section>
+
+<section class="panel">
+<h2>Troubleshooting Logic Flow</h2>
+
+<svg viewBox="0 0 900 280" width="100%" style="margin-top:15px;">
+  <rect x="50" y="40" width="200" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="150" y="75" text-anchor="middle" font-size="13">High Drift Value?</text>
+
+  <rect x="350" y="40" width="200" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="450" y="75" text-anchor="middle" font-size="13">Check Reagent Quality</text>
+
+  <rect x="650" y="40" width="200" height="60" fill="#e9f2ff" rx="6"/>
+  <text x="750" y="75" text-anchor="middle" font-size="13">Check Cell Sealing</text>
+
+  <line x1="250" y1="70" x2="350" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="550" y1="70" x2="650" y2="70" stroke="#333" stroke-width="2"/>
+
+  <rect x="350" y="160" width="200" height="60" fill="#e0f7e9" rx="6"/>
+  <text x="450" y="195" text-anchor="middle" font-size="13">Re-standardize Reagent</text>
+
+  <line x1="450" y1="100" x2="450" y2="160" stroke="#333" stroke-width="2"/>
+</svg>
+
+<ul>
+<li>High drift → Moisture contamination in cell</li>
+<li>Unstable endpoint → Electrode cleaning required</li>
+<li>High consumption → Incorrect factor</li>
+<li>No endpoint detection → Generator electrode issue</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>ISO 17025 Laboratory Relevance</h2>
+
+<ul>
+<li>Regular standardization using sodium tartrate</li>
+<li>Blank correction documentation</li>
+<li>Drift value monitoring</li>
+<li>Electrode performance verification</li>
+<li>Uncertainty estimation and traceability</li>
+</ul>
+</section>
+
+<section class="panel">
+<h2>Part of Laboratory Engineering Hub</h2>
+
+<p>
+Karl Fischer moisture analysis is one of the key reaction-based analytical techniques
+within our complete laboratory analyzer engineering framework.
+</p>
+
+<p>
+Explore the full Laboratory Engineering reference:
+<a href="/knowledge/analyzers/laboratory/">
+Laboratory Analyzers – Engineering Fundamentals
+</a>
+</p>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+
+</body>
+</html>
