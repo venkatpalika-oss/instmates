@@ -15,39 +15,49 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
 
   <style>
+
+    body{
+      background:#f4f7fb;
+    }
+
+    /* ================= POST INPUT ================= */
+
     #postInput {
       width: 100%;
       min-height: 120px;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
       border: 1px solid #d0d7de;
-      font-size: 14px;
+      font-size: 15px;
       resize: vertical;
       transition: 0.2s ease;
       font-family: inherit;
+      background:#fff;
     }
 
     #postInput:focus {
       outline: none;
       border-color: #0b5ed7;
-      box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
+      box-shadow: 0 0 0 4px rgba(11,94,215,0.1);
     }
 
-    #postTags, #postType {
+    #postTags,
+    #postType {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       border: 1px solid #ddd;
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 14px;
+      background:#fff;
     }
 
     #fileInput {
       width: 100%;
       margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px dashed #d0d7de;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px dashed #c5d1e0;
       background: #f8fbff;
       font-size: 13px;
       cursor: pointer;
@@ -55,8 +65,14 @@
 
     #fileNote {
       font-size: 12px;
-      margin-top: 6px;
+      margin-top: 8px;
       color: #666;
+    }
+
+    #postBtn {
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 14px;
     }
 
     #postBtn:disabled {
@@ -64,21 +80,285 @@
       cursor: not-allowed;
     }
 
-    .feed .card.muted {
-      text-align: center;
-      padding: 24px;
+    /* ================= FEED ================= */
+
+    .feed {
+      margin-top: 24px;
     }
 
     .feed-card {
-      padding: 18px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 22px;
+      box-shadow:
+        0 4px 14px rgba(0,0,0,0.05);
       transition: 0.2s ease;
+      border:1px solid #edf2f7;
     }
 
     .feed-card:hover {
       transform: translateY(-2px);
+      box-shadow:
+        0 8px 22px rgba(0,0,0,0.08);
     }
 
-    /* ================= PROFILE REQUIRED MODAL ================= */
+    /* ================= TOP ================= */
+
+    .feed-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      margin-bottom:16px;
+    }
+
+    .feed-user{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .avatar{
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#0b5ed7,#4f8df7);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:15px;
+      flex-shrink:0;
+    }
+
+    .feed-username{
+      font-weight:700;
+      font-size:15px;
+      color:#111827;
+    }
+
+    .feed-time{
+      font-size:12px;
+      color:#6b7280;
+      margin-top:2px;
+    }
+
+    /* ================= BADGES ================= */
+
+    .feed-badge{
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .badge-question{
+      background:#0b5ed7;
+    }
+
+    .badge-fault{
+      background:#dc3545;
+    }
+
+    .badge-solution{
+      background:#198754;
+    }
+
+    .badge-calibration{
+      background:#fd7e14;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .modern-content{
+      font-size:15px;
+      line-height:1.7;
+      color:#1f2937;
+      white-space:pre-wrap;
+      margin-bottom:16px;
+    }
+
+    /* ================= ATTACHMENTS ================= */
+
+    .feed-attachment{
+      margin-top:12px;
+    }
+
+    .feed-image{
+      width:100%;
+      border-radius:14px;
+      max-height:520px;
+      object-fit:cover;
+      border:1px solid #e5e7eb;
+    }
+
+    .feed-video{
+      width:100%;
+      border-radius:14px;
+      background:#000;
+    }
+
+    .pdf-box{
+      margin-top:12px;
+      padding:14px;
+      border-radius:12px;
+      background:#f8fafc;
+      border:1px solid #e5e7eb;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .pdf-box a{
+      text-decoration:none;
+      color:#0b5ed7;
+      font-weight:600;
+    }
+
+    /* ================= REACTIONS ================= */
+
+    .reaction-summary{
+      margin-top:16px;
+      font-size:13px;
+      color:#6b7280;
+    }
+
+    .modern-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid #eef2f7;
+    }
+
+    .action-btn{
+      border:none;
+      background:#f3f6fb;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      transition:0.2s ease;
+      color:#374151;
+    }
+
+    .action-btn:hover{
+      background:#e8eef9;
+    }
+
+    .action-btn span{
+      margin-left:4px;
+      font-weight:700;
+    }
+
+    .action-btn:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+    }
+
+    /* ================= COMMENTS ================= */
+
+    .comments-section{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid #eef2f7;
+    }
+
+    .comment-box{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .comment-input{
+      flex:1;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+    }
+
+    .comment-input:focus{
+      outline:none;
+      border-color:#0b5ed7;
+    }
+
+    .comment-btn{
+      border:none;
+      background:#0b5ed7;
+      color:#fff;
+      border-radius:10px;
+      padding:0 18px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .comment-item{
+      padding:12px;
+      background:#f8fafc;
+      border-radius:12px;
+      margin-bottom:10px;
+      border:1px solid #edf2f7;
+    }
+
+    .comment-item strong{
+      display:block;
+      margin-bottom:4px;
+      color:#111827;
+    }
+
+    .comment-item small{
+      display:block;
+      margin-top:6px;
+    }
+
+    /* ================= OWNER ACTIONS ================= */
+
+    .owner-actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .edit-btn,
+    .delete-btn{
+      border:none;
+      padding:8px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .edit-btn{
+      background:#f3f6fb;
+      color:#374151;
+    }
+
+    .delete-btn{
+      background:#fff1f2;
+      color:#dc2626;
+    }
+
+    /* ================= PANELS ================= */
+
+    .panel{
+      background:#fff;
+      border-radius:18px;
+      padding:22px;
+      box-shadow:
+        0 3px 12px rgba(0,0,0,0.04);
+      margin-bottom:22px;
+      border:1px solid #edf2f7;
+    }
+
+    /* ================= PROFILE MODAL ================= */
 
     .profile-modal {
       position: fixed;
@@ -93,7 +373,7 @@
     .profile-modal-content {
       background: #ffffff;
       padding: 30px;
-      border-radius: 16px;
+      border-radius: 18px;
       width: 90%;
       max-width: 420px;
       text-align: center;
@@ -107,7 +387,42 @@
     .profile-modal p {
       margin-bottom: 20px;
       color: #555;
+      line-height:1.6;
     }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width:768px){
+
+      .feed-card{
+        padding:16px;
+        border-radius:16px;
+      }
+
+      .feed-top{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .modern-actions{
+        gap:8px;
+      }
+
+      .action-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .comment-box{
+        flex-direction:column;
+      }
+
+      .comment-btn{
+        height:44px;
+      }
+
+    }
+
   </style>
 </head>
 
