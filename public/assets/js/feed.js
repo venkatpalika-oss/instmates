@@ -1,10 +1,6 @@
 /* =========================================================
-   InstMates – Social Technical Feed (FINAL PRO + ATTACHMENTS)
-   Real-time Posts
-   Reactions (Agree / FacedThis / Helpful)
-   Edit / Delete
-   LIVE Comments
-   Image / Video / PDF Attachments (20MB max)
+   InstMates – Social Technical Feed
+   Modern Feed UI + Attachments + Reactions + Comments
 ========================================================= */
 
 import { db, auth, storage } from "./firebase.js";
@@ -45,7 +41,7 @@ let usersCache = {};
 let unsubscribePosts = null;
 
 /* =========================================================
-   CREATE POST (WITH ATTACHMENT SUPPORT)
+   CREATE POST
 ========================================================= */
 
 if (postBtn) {
@@ -104,7 +100,7 @@ if (postBtn) {
 }
 
 /* =========================================================
-   LOAD USERS CACHE
+   LOAD USERS
 ========================================================= */
 
 async function loadUsers() {
@@ -115,7 +111,7 @@ async function loadUsers() {
 }
 
 /* =========================================================
-   REAL-TIME POSTS LISTENER
+   REAL-TIME POSTS
 ========================================================= */
 
 function listenPosts() {
@@ -132,6 +128,15 @@ function listenPosts() {
 
     feedContainer.innerHTML = "";
 
+    if (snapshot.empty) {
+      feedContainer.innerHTML = `
+        <div class="card muted" style="text-align:center;padding:28px;">
+          No posts yet. Be the first to share a field experience.
+        </div>
+      `;
+      return;
+    }
+
     snapshot.forEach(docSnap => {
 
       const post = docSnap.data();
@@ -147,19 +152,21 @@ function listenPosts() {
 }
 
 /* =========================================================
-   CREATE POST CARD (ALL FEATURES PRESERVED)
+   CREATE MODERN POST CARD
 ========================================================= */
 
 function createPostCard(post) {
 
   const card = document.createElement("div");
-  card.className = "card feed-card";
+  card.className = "card feed-card modern-feed-card";
 
   const user = auth.currentUser;
   const isOwner = user && user.uid === post.uid;
 
   const profile = usersCache[post.uid] || {};
-  const userName = profile.name || "Technician";
+  const userName = profile.name || profile.displayName || "Technician";
+
+  const initials = getInitials(userName);
 
   const totalVotes =
     (post.reactions?.agree || 0) +
@@ -169,33 +176,41 @@ function createPostCard(post) {
   const hasVoted =
     user && post.votedBy && post.votedBy[user.uid];
 
-  /* ---------- ATTACHMENT RENDER ---------- */
+  const postType = post.type || "question";
+  const badgeLabel = getTypeLabel(postType);
+  const badgeClass = getTypeClass(postType);
 
   let attachmentHTML = "";
 
   if (post.attachment) {
 
+    const safeUrl = escapeAttr(post.attachment.url);
+    const safeName = escapeHTML(post.attachment.name || "Attachment");
+
     if (post.attachment.type === "image") {
       attachmentHTML = `
-        <img src="${post.attachment.url}"
-             style="width:100%;margin-top:10px;border-radius:6px;">
+        <div class="feed-attachment">
+          <img src="${safeUrl}" class="feed-image" alt="Post attachment">
+        </div>
       `;
     }
 
     else if (post.attachment.type === "video") {
       attachmentHTML = `
-        <video controls
-               style="width:100%;margin-top:10px;border-radius:6px;">
-          <source src="${post.attachment.url}">
-        </video>
+        <div class="feed-attachment">
+          <video controls class="feed-video">
+            <source src="${safeUrl}">
+          </video>
+        </div>
       `;
     }
 
     else if (post.attachment.type === "pdf") {
       attachmentHTML = `
-        <div style="margin-top:10px;">
-          📄 <a href="${post.attachment.url}" target="_blank">
-          ${escapeHTML(post.attachment.name)}
+        <div class="pdf-box">
+          <span>📄</span>
+          <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+            ${safeName}
           </a>
         </div>
       `;
@@ -203,58 +218,75 @@ function createPostCard(post) {
   }
 
   card.innerHTML = `
-    <div class="feed-header">
-      <strong>${escapeHTML(userName)}</strong>
-      <div class="muted small">
-        ${formatTime(post.createdAt?.toDate?.() || new Date())}
+    <div class="feed-top">
+      <div class="feed-user">
+        <div class="avatar">${initials}</div>
+
+        <div>
+          <div class="feed-username">${escapeHTML(userName)}</div>
+          <div class="feed-time">
+            ${formatTime(post.createdAt?.toDate?.() || new Date())}
+            ${post.editedAt ? " · edited" : ""}
+          </div>
+        </div>
       </div>
+
+      <span class="feed-badge ${badgeClass}">
+        ${badgeLabel}
+      </span>
     </div>
 
-    <div class="feed-content">
-      ${escapeHTML(post.content)}
-      ${attachmentHTML}
+    <div class="feed-content modern-content">
+      ${formatPostContent(post.content)}
     </div>
 
-    <div class="muted small" style="margin-top:6px;">
-      🔥 ${totalVotes} Technical Reactions
+    ${attachmentHTML}
+
+    <div class="reaction-summary">
+      <span>🔥 ${totalVotes} Technical Reactions</span>
     </div>
 
-    <div class="feed-actions">
-      <button class="react" data-type="agree" ${hasVoted ? "disabled" : ""}>
-        👍 Agree (${post.reactions?.agree || 0})
+    <div class="feed-actions modern-actions">
+      <button class="react action-btn" data-type="agree" ${hasVoted ? "disabled" : ""}>
+        👍 Agree <span>${post.reactions?.agree || 0}</span>
       </button>
 
-      <button class="react" data-type="faced" ${hasVoted ? "disabled" : ""}>
-        🛠 Faced This (${post.reactions?.faced || 0})
+      <button class="react action-btn" data-type="faced" ${hasVoted ? "disabled" : ""}>
+        🛠 Faced This <span>${post.reactions?.faced || 0}</span>
       </button>
 
-      <button class="react" data-type="helpful" ${hasVoted ? "disabled" : ""}>
-        💡 Helpful (${post.reactions?.helpful || 0})
+      <button class="react action-btn" data-type="helpful" ${hasVoted ? "disabled" : ""}>
+        💡 Helpful <span>${post.reactions?.helpful || 0}</span>
       </button>
 
-      <button class="toggle-comments">💬 Comments</button>
+      <button class="toggle-comments action-btn">
+        💬 Comments
+      </button>
     </div>
 
-    <div class="comments-section" style="display:none;margin-top:10px;">
+    <div class="comments-section" style="display:none;">
       <div class="comments-list"></div>
 
-      <div style="margin-top:10px;">
-        <input type="text" class="comment-input"
-               placeholder="Write a comment..."
-               style="width:75%;padding:6px;">
-        <button class="comment-btn">Post</button>
+      <div class="comment-box">
+        <input type="text"
+               class="comment-input"
+               placeholder="Write a technical comment..." />
+
+        <button class="comment-btn">
+          Post
+        </button>
       </div>
     </div>
 
     ${isOwner ? `
-      <div style="margin-top:10px;">
+      <div class="owner-actions">
         <button class="edit-btn">✏ Edit</button>
-        <button class="delete-btn" style="color:red;">🗑 Delete</button>
+        <button class="delete-btn">🗑 Delete</button>
       </div>
     ` : ""}
   `;
 
-/* ================= REACTIONS ================= */
+  /* ================= REACTIONS ================= */
 
   card.querySelectorAll(".react").forEach(btn => {
 
@@ -272,17 +304,18 @@ function createPostCard(post) {
     });
   });
 
-/* ================= EDIT / DELETE ================= */
+  /* ================= EDIT / DELETE ================= */
 
   if (isOwner) {
 
     card.querySelector(".edit-btn").addEventListener("click", async () => {
 
       const newContent = prompt("Edit post:", post.content);
+
       if (!newContent) return;
 
       await updateDoc(doc(db, "posts", post.id), {
-        content: newContent,
+        content: newContent.trim(),
         editedAt: serverTimestamp()
       });
     });
@@ -295,7 +328,7 @@ function createPostCard(post) {
     });
   }
 
-/* ================= COMMENTS ================= */
+  /* ================= COMMENTS ================= */
 
   const commentsSection = card.querySelector(".comments-section");
   const toggleBtn = card.querySelector(".toggle-comments");
@@ -321,22 +354,33 @@ function createPostCard(post) {
 
         commentsList.innerHTML = "";
 
+        if (snapshot.empty) {
+          commentsList.innerHTML = `
+            <div class="muted small" style="padding:8px 0;">
+              No comments yet.
+            </div>
+          `;
+          return;
+        }
+
         snapshot.forEach(docSnap => {
 
           const comment = docSnap.data();
+
           const commentUser =
             usersCache[comment.uid]?.name ||
-            comment.uid.substring(0, 6);
+            usersCache[comment.uid]?.displayName ||
+            "Technician";
 
           const commentDiv = document.createElement("div");
-          commentDiv.style.marginBottom = "6px";
+          commentDiv.className = "comment-item";
 
           commentDiv.innerHTML = `
-            <strong>${escapeHTML(commentUser)}</strong>:
-            ${escapeHTML(comment.content)}
-            <span class="muted small">
-              • ${formatTime(comment.createdAt?.toDate?.() || new Date())}
-            </span>
+            <strong>${escapeHTML(commentUser)}</strong>
+            <div>${escapeHTML(comment.content)}</div>
+            <small class="muted">
+              ${formatTime(comment.createdAt?.toDate?.() || new Date())}
+            </small>
           `;
 
           commentsList.appendChild(commentDiv);
@@ -348,6 +392,7 @@ function createPostCard(post) {
   commentBtn.addEventListener("click", async () => {
 
     const content = commentInput.value.trim();
+
     if (!content || !auth.currentUser) return;
 
     await addDoc(
@@ -362,6 +407,12 @@ function createPostCard(post) {
     commentInput.value = "";
   });
 
+  commentInput.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+      commentBtn.click();
+    }
+  });
+
   return card;
 }
 
@@ -374,20 +425,76 @@ function createPostCard(post) {
   listenPosts();
 })();
 
-/* ========================================================= */
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function formatTime(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
-  const hours = Math.floor(seconds / 3600);
-  if (hours >= 1) return hours + "h";
+
+  if (seconds < 60) return "Just now";
+
   const minutes = Math.floor(seconds / 60);
-  if (minutes >= 1) return minutes + "m";
-  return "Just now";
+  if (minutes < 60) return minutes + "m ago";
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return hours + "h ago";
+
+  const days = Math.floor(hours / 24);
+  if (days < 7) return days + "d ago";
+
+  return date.toLocaleDateString();
+}
+
+function getInitials(name) {
+  return String(name)
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .map(part => part[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase() || "T";
+}
+
+function getTypeLabel(type) {
+  const labels = {
+    question: "❓ Question",
+    fault: "🔴 Fault",
+    solution: "✅ Solution",
+    calibration: "📊 Calibration"
+  };
+
+  return labels[type] || "❓ Question";
+}
+
+function getTypeClass(type) {
+  const classes = {
+    question: "badge-question",
+    fault: "badge-fault",
+    solution: "badge-solution",
+    calibration: "badge-calibration"
+  };
+
+  return classes[type] || "badge-question";
+}
+
+function formatPostContent(content) {
+  return escapeHTML(content || "")
+    .replace(/\n/g, "<br>");
 }
 
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeAttr(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
