@@ -52,50 +52,58 @@ if (postBtn) {
 
     if (!content && !file) return;
     if (!auth.currentUser) return;
+postBtn.disabled = true;
+    const originalBtnText = postBtn.innerText;
+    postBtn.innerText = "Posting...";
 
-    let attachment = null;
+    try {
+      let attachment = null;
 
-    if (file) {
+      if (file) {
 
-      if (file.size > 20 * 1024 * 1024) {
-        alert("Maximum file size is 20MB");
-        return;
+        if (file.size > 20 * 1024 * 1024) {
+          alert("Maximum file size is 20MB");
+          return;
+        }
+
+        const filePath =
+          `postAttachments/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
+
+        const storageRef = ref(storage, filePath);
+
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
+
+        let type = "file";
+
+        if (file.type.startsWith("image/")) type = "image";
+        else if (file.type.startsWith("video/")) type = "video";
+        else if (file.type === "application/pdf") type = "pdf";
+
+        attachment = {
+          url: downloadURL,
+          type,
+          name: file.name
+        };
       }
 
-      const filePath =
-        `postAttachments/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
+      await addDoc(collection(db, "posts"), {
+        content: content || "",
+        uid: auth.currentUser.uid,
+        type: postTypeSelect?.value || "question",
+        attachment: attachment || null,
+        createdAt: serverTimestamp(),
+        editedAt: null,
+        reactions: { agree: 0, faced: 0, helpful: 0 },
+        votedBy: {}
+      });
 
-      const storageRef = ref(storage, filePath);
-
-      await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
-
-      let type = "file";
-
-      if (file.type.startsWith("image/")) type = "image";
-      else if (file.type.startsWith("video/")) type = "video";
-      else if (file.type === "application/pdf") type = "pdf";
-
-      attachment = {
-        url: downloadURL,
-        type,
-        name: file.name
-      };
+      postInput.value = "";
+      if (fileInput) fileInput.value = "";
+    } finally {
+      postBtn.disabled = false;
+      postBtn.innerText = originalBtnText;
     }
-
-    await addDoc(collection(db, "posts"), {
-      content: content || "",
-      uid: auth.currentUser.uid,
-      type: postTypeSelect?.value || "question",
-      attachment: attachment || null,
-      createdAt: serverTimestamp(),
-      editedAt: null,
-      reactions: { agree: 0, faced: 0, helpful: 0 },
-      votedBy: {}
-    });
-
-    postInput.value = "";
-    if (fileInput) fileInput.value = "";
   });
 }
 
