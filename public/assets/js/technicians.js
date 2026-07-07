@@ -68,8 +68,8 @@ function renderCard(uid, p) {
 
   const slug = createSlug(p.fullName || "technician");
 
-  // Clean URL (rewrite handles this)
-  const profileURL = `/technicians/${slug}?id=${uid}`;
+      // Link to working profile page (technicians/:uid rewrite is unreliable)
+      const profileURL = `/profile/?uid=${uid}`;
 
   card.innerHTML = `
     <div style="display:flex;align-items:center;gap:12px">
