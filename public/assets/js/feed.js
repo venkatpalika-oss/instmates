@@ -33,6 +33,7 @@ const postInput = document.getElementById("postInput");
 const postBtn = document.getElementById("postBtn");
 const postTypeSelect = document.getElementById("postType");
 const fileInput = document.getElementById("fileInput");
+const postTagsInput = document.getElementById("postTags");
 
 /* ================= STATE ================= */
 
@@ -95,11 +96,13 @@ postBtn.disabled = true;
         createdAt: serverTimestamp(),
         editedAt: null,
         reactions: { agree: 0, faced: 0, helpful: 0 },
-        votedBy: {}
+        votedBy: {},
+        tags: parseTags(postTagsInput?.value)
       });
 
       postInput.value = "";
       if (fileInput) fileInput.value = "";
+        if (postTagsInput) postTagsInput.value = "";
     } finally {
       postBtn.disabled = false;
       postBtn.innerText = originalBtnText;
@@ -225,6 +228,11 @@ function createPostCard(post) {
     }
   }
 
+      let tagsHTML = "";
+      if (Array.isArray(post.tags) && post.tags.length > 0) {
+        tagsHTML = `<div class="feed-tags">${post.tags.map(t => `<span class="feed-tag">#${escapeHTML(t)}</span>`).join("")}</div>`;
+      }
+
   card.innerHTML = `
     <div class="feed-top">
       <div class="feed-user">
@@ -247,6 +255,8 @@ function createPostCard(post) {
     <div class="feed-content modern-content">
       ${formatPostContent(post.content)}
     </div>
+
+      ${tagsHTML}
 
     ${attachmentHTML}
 
@@ -505,4 +515,13 @@ function escapeAttr(str) {
     .replace(/"/g, "&quot;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+
+function parseTags(str) {
+  return String(str || "")
+    .split(",")
+    .map(t => t.trim())
+    .filter(Boolean)
+    .slice(0, 5);
 }
