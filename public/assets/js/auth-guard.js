@@ -19,7 +19,8 @@ const PRIVATE_PAGES = [
    "message",
    "chat",
    "ask",
-   "submit-case"
+   "submit-case",
+       "feed"
    ];
 
 // Pages a logged-in user should be redirected away from
