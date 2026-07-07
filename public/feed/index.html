@@ -12,6 +12,10 @@
   <!-- Global CSS (LOCKED – DO NOT CHANGE) -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
 
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b5ed7">
+
   <style>
 
 body{
@@ -618,6 +622,14 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
 <script type="module" src="/assets/js/firebase.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/auth-guard.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/feed.js?v=2026-02-17"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js");
+      });
+    }
+      </script>
 
 </body>
 </html>
