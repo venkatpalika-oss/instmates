@@ -531,25 +531,5 @@ Actions taken: cleaned column, checked carrier gas pressure."></textarea>
 <script type="module" src="/assets/js/auth-guard.js?v=2026-02-17"></script>
 <script type="module" src="/assets/js/feed.js?v=2026-02-17"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const postBtn = document.getElementById("postBtn");
-
-    if (postBtn) {
-      postBtn.addEventListener("click", () => {
-        if (postBtn.disabled) return;
-
-        postBtn.disabled = true;
-        postBtn.innerText = "Posting...";
-
-        setTimeout(() => {
-          postBtn.disabled = false;
-          postBtn.innerText = "Post";
-        }, 2000);
-      });
-    }
-  });
-</script>
-
 </body>
 </html>
