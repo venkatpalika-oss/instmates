@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /* ================= AUTH HELPERS ================= */
+    // ================= AUTH HELPERS =================
     function isSignedIn() {
       return request.auth != null;
     }
@@ -11,101 +11,86 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == uid;
     }
 
-    /* ================= USERS ================= */
+    // ================= USERS =================
     match /users/{userId} {
-
-      // ✅ READ: allow logged-in users to list users
+      // READ: allow logged-in users to list users
       allow read: if isSignedIn();
 
-      // ✅ WRITE: only owner can update own user doc
+      // WRITE: only owner can update own user doc
       allow create, update: if isOwner(userId);
 
-      // ❌ NO DELETE
+      // NO DELETE
       allow delete: if false;
     }
 
-    /* ================= PROFILES ================= */
+    // ================= PROFILES =================
     match /profiles/{userId} {
-
-      // ✅ ALL LOGGED-IN USERS CAN SEE PROFILES
+      // ALL USERS (SIGNED IN OR NOT) CAN SEE PROFILES
       allow read: if true;
 
-      // ✅ ONLY OWNER CAN WRITE
+      // ONLY OWNER CAN WRITE
       allow create, update: if isOwner(userId);
 
-      // ❌ NO DELETE
+      // NO DELETE
       allow delete: if false;
     }
 
-    /* ================= POSTS ================= */
+    // ================= POSTS =================
     match /posts/{postId} {
-
       allow read: if isSignedIn();
 
       allow create: if isSignedIn()
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.content is string
         && request.resource.data.createdAt is timestamp
-        && request.resource.data.likes == 0
-        && request.resource.data.likedBy == {};
+        && request.resource.data.reactions == {"agree": 0, "faced": 0, "helpful": 0}
+        && request.resource.data.votedBy == {};
 
+      // Owner can edit their own post content
       allow update: if isSignedIn()
-        && request.resource.data.diff(resource.data).changedKeys()
-            .hasOnly(['likes', 'likedBy'])
+        && isOwner(resource.data.uid)
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['content', 'editedAt']);
+
+      // One-time reaction vote (no undo, matches app UI)
+      allow update: if isSignedIn()
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['reactions', 'votedBy'])
+        && resource.data.votedBy[request.auth.uid] != true
+        && request.resource.data.votedBy[request.auth.uid] == true
+        && request.resource.data.votedBy.size() == resource.data.votedBy.size() + 1
         && (
-          (
-            !resource.data.likedBy[request.auth.uid]
-            && request.resource.data.likedBy[request.auth.uid] == true
-            && request.resource.data.likes == resource.data.likes + 1
-          )
-          ||
-          (
-            resource.data.likedBy[request.auth.uid] == true
-            && !request.resource.data.likedBy[request.auth.uid]
-            && request.resource.data.likes == resource.data.likes - 1
-          )
+          (request.resource.data.reactions.agree == resource.data.reactions.agree + 1
+            && request.resource.data.reactions.faced == resource.data.reactions.faced
+            && request.resource.data.reactions.helpful == resource.data.reactions.helpful)
+          || (request.resource.data.reactions.faced == resource.data.reactions.faced + 1
+            && request.resource.data.reactions.agree == resource.data.reactions.agree
+            && request.resource.data.reactions.helpful == resource.data.reactions.helpful)
+          || (request.resource.data.reactions.helpful == resource.data.reactions.helpful + 1
+            && request.resource.data.reactions.agree == resource.data.reactions.agree
+            && request.resource.data.reactions.faced == resource.data.reactions.faced)
         );
 
       allow delete: if false;
 
-      /* ================= COMMENTS ================= */
+      // ================= COMMENTS =================
       match /comments/{commentId} {
-
         allow read: if isSignedIn();
 
         allow create: if isSignedIn()
           && request.resource.data.uid == request.auth.uid
           && request.resource.data.content is string
-          && request.resource.data.createdAt is timestamp
-          && request.resource.data.likes == 0
-          && request.resource.data.likedBy == {};
+          && request.resource.data.createdAt is timestamp;
 
-        allow update: if isSignedIn()
-          && request.resource.data.diff(resource.data).changedKeys()
-              .hasOnly(['likes', 'likedBy'])
-          && (
-            (
-              !resource.data.likedBy[request.auth.uid]
-              && request.resource.data.likedBy[request.auth.uid] == true
-              && request.resource.data.likes == resource.data.likes + 1
-            )
-            ||
-            (
-              resource.data.likedBy[request.auth.uid] == true
-              && !request.resource.data.likedBy[request.auth.uid]
-              && request.resource.data.likes == resource.data.likes - 1
-            )
-          );
+        allow update, delete: if false;
 
-        allow delete: if false;
-
-        /* ================= REPLIES ================= */
+        // ================= REPLIES =================
         match /replies/{replyId} {
           allow read: if isSignedIn();
+
           allow create: if isSignedIn()
             && request.resource.data.uid == request.auth.uid
             && request.resource.data.content is string
             && request.resource.data.createdAt is timestamp;
+
           allow update, delete: if false;
         }
       }
