@@ -439,8 +439,12 @@ function createPostCard(post) {
 ========================================================= */
 
 (async () => {
-  await loadUsers();
-  listenPosts();
+  try {
+         await loadUsers();
+  } catch (err) {
+         console.warn("Could not preload users (may require sign-in):", err.message);
+  }
+       listenPosts();
 })();
 
 /* =========================================================
