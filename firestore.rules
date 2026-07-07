@@ -40,7 +40,7 @@ service cloud.firestore {
     /* ================= POSTS ================= */
     match /posts/{postId} {
 
-      allow read: if true;
+      allow read: if isSignedIn();
 
       allow create: if isSignedIn()
         && request.resource.data.uid == request.auth.uid
@@ -71,7 +71,7 @@ service cloud.firestore {
       /* ================= COMMENTS ================= */
       match /comments/{commentId} {
 
-        allow read: if true;
+        allow read: if isSignedIn();
 
         allow create: if isSignedIn()
           && request.resource.data.uid == request.auth.uid
@@ -101,7 +101,7 @@ service cloud.firestore {
 
         /* ================= REPLIES ================= */
         match /replies/{replyId} {
-          allow read: if true;
+          allow read: if isSignedIn();
           allow create: if isSignedIn()
             && request.resource.data.uid == request.auth.uid
             && request.resource.data.content is string
