@@ -14,8 +14,7 @@ import {
 const card = document.getElementById("profileCard");
 
 const user = auth.currentUser;
-  if (!user) return;
-
+  
   const uid = new URLSearchParams(window.location.search).get("uid");
 
   if (!uid) {
@@ -112,7 +111,7 @@ const user = auth.currentUser;
       }
 
       ${
-        user.uid !== uid
+          user && user.uid !== uid
           ? `
           <div style="margin-top:24px;">
             <button id="startChatBtn" class="btn btn-primary full">
