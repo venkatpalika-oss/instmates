@@ -20,12 +20,9 @@ const searchInput = document.getElementById("searchInput");
 
 /* ================= AUTH ================= */
 
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.replace("/login.html");
-    return;
-  }
-  loadTechnicians();
+// Directory is public - no login required to view
+onAuthStateChanged(auth, () => {
+   loadTechnicians();
 });
 
 /* ================= LOAD ALL ================= */
