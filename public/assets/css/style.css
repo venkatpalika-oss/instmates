@@ -1408,6 +1408,22 @@ body.auth-in.auth-ready .siteHeader .auth-in {
 .nav-dropdown:hover .dropdown-menu {
   display: block;
 }
+
+/* Public Pages dropdown - match existing nav link styling */
+.nav-dropdown .dropdown-toggle {
+     background: none;
+     border: none;
+     font: inherit;
+     font-weight: 700;
+     color: #ffffff;
+     cursor: pointer;
+     padding: 0 2px;
+     opacity: 1;
+}
+
+.nav-dropdown .dropdown-toggle:hover {
+     text-decoration: underline;
+}
 /* ================= HEADER NAV FINAL NORMALIZATION ================= */
 
 /* Normalize ALL top-level nav items */
