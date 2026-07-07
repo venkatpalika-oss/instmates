@@ -388,6 +388,106 @@
       line-height:1.6;
     }
 
+    /* ================= LINKEDIN-STYLE REFRESH ================= */
+
+    .panel,
+    .feed {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .feed-username {
+        cursor: pointer;
+        transition: color 0.15s ease;
+    }
+
+    .feed-username:hover {
+        color: #0b5ed7;
+        text-decoration: underline;
+    }
+
+    .feed-time {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .feed-time::before {
+        content: "\1F310";
+        font-size: 11px;
+    }
+
+    .feed-badge {
+        font-weight: 700;
+    }
+
+    .badge-question { background: rgba(11,94,215,0.12); color: #0b5ed7; }
+    .badge-fault { background: rgba(220,53,69,0.12); color: #dc3545; }
+    .badge-solution { background: rgba(25,135,84,0.12); color: #198754; }
+    .badge-calibration { background: rgba(253,126,20,0.12); color: #c05e0f; }
+
+    .reaction-summary {
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eef2f7;
+    }
+
+    .modern-actions {
+        justify-content: space-between;
+    }
+
+    .modern-actions .action-btn {
+        flex: 1;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border-radius: 8px;
+    }
+
+    .modern-actions .action-btn:hover {
+        background: #f3f6fb;
+    }
+
+    .modern-actions .action-btn:disabled {
+        background: #eaf2ff;
+        color: #0b5ed7;
+        opacity: 1;
+    }
+
+    .comment-input {
+        border-radius: 999px;
+        padding: 10px 16px;
+    }
+
+    .comment-btn {
+        border-radius: 999px;
+        padding: 0 20px;
+    }
+
+    .comment-item {
+        border-radius: 16px;
+    }
+
+    .owner-actions {
+        justify-content: flex-end;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        background: transparent;
+        border: 1px solid #e5e7eb;
+    }
+
+    .edit-btn:hover {
+        background: #f3f6fb;
+    }
+
+    .delete-btn:hover {
+        background: #fff1f2;
+    }
+
     /* ================= MOBILE ================= */
 
     @media (max-width:768px){
