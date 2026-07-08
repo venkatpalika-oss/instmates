@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <small>Feed</small>
       </a>
 
-      <a href="/post.html" class="post-btn">
+      <a href="/feed/" class="post-btn">
         <span>➕</span>
       </a>
 
