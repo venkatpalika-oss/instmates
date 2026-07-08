@@ -26,6 +26,16 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
+/* ================= LOGIN GUARD ================= */
+
+function requireLogin() {
+  if (!auth.currentUser) {
+    alert("Please login to continue.");
+    return false;
+  }
+  return true;
+}
+
 /* ================= ELEMENTS ================= */
 
 const feedContainer = document.getElementById("feedContainer");
@@ -52,7 +62,7 @@ if (postBtn) {
     const file = fileInput?.files[0];
 
     if (!content && !file) return;
-    if (!auth.currentUser) return;
+    if (!requireLogin()) return;
 postBtn.disabled = true;
     const originalBtnText = postBtn.innerText;
     postBtn.innerText = "Posting...";
@@ -310,7 +320,7 @@ function createPostCard(post) {
 
     btn.addEventListener("click", async () => {
 
-      if (!auth.currentUser) return;
+      if (!requireLogin()) return;
 
       const type = btn.dataset.type;
       const postRef = doc(db, "posts", post.id);
@@ -411,7 +421,8 @@ function createPostCard(post) {
 
     const content = commentInput.value.trim();
 
-    if (!content || !auth.currentUser) return;
+    if (!content) return;
+  if (!requireLogin()) return;
 
     await addDoc(
       collection(db, "posts", post.id, "comments"),
