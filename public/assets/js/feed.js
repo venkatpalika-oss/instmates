@@ -36,6 +36,12 @@ function requireLogin() {
   return true;
 }
 
+function getDisplayName(profile) {
+  if (!profile) return "Technician";
+  const basic = profile.basicInfo || {};
+  return basic.fullName || profile.fullName || profile.name || profile.displayName || "Technician";
+}
+
 /* ================= ELEMENTS ================= */
 
 const feedContainer = document.getElementById("feedContainer");
@@ -125,7 +131,7 @@ postBtn.disabled = true;
 ========================================================= */
 
 async function loadUsers() {
-  const snapshot = await getDocs(collection(db, "users"));
+  const snapshot = await getDocs(collection(db, "profiles"));
   snapshot.forEach(docSnap => {
     usersCache[docSnap.id] = docSnap.data();
   });
@@ -185,7 +191,7 @@ function createPostCard(post) {
   const isOwner = user && user.uid === post.uid;
 
   const profile = usersCache[post.uid] || {};
-  const userName = profile.name || profile.displayName || "Technician";
+  const userName = getDisplayName(profile);
 
   const initials = getInitials(userName);
 
@@ -395,10 +401,7 @@ function createPostCard(post) {
 
           const comment = docSnap.data();
 
-          const commentUser =
-            usersCache[comment.uid]?.name ||
-            usersCache[comment.uid]?.displayName ||
-            "Technician";
+          const commentUser = getDisplayName(usersCache[comment.uid]);
 
           const commentDiv = document.createElement("div");
           commentDiv.className = "comment-item";
