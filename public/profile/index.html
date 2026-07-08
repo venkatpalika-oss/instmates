@@ -180,7 +180,30 @@ async function loadProfile(uid) {
   const achievement = p.achievement || {};
   const status = p.profileStatus || {};
 
-  if (status.isPublic === false) {
+  // ===== BACKWARD COMPATIBILITY (old flat schema) =====
+  const displayName = basic.fullName || p.fullName || "Technician";
+  const displayHeadline = basic.headline || p.role || "";
+  const displayLocation = basic.location || p.location || "";
+  const displayPhoto = basic.profilePhoto || p.photoURL || "";
+  const displaySpecialization = professional.specialization || p.primaryDomain || "";
+  const analyzersList = (Array.isArray(professional.analyzersWorked) && professional.analyzersWorked.length)
+    ? professional.analyzersWorked
+    : (Array.isArray(p.skills) ? p.skills : []);
+
+  let completionPercent = status.completionPercent;
+  if (completionPercent === undefined) {
+    let total = 6, score = 0;
+    if (displayName !== "Technician") score++;
+    if (displayHeadline) score++;
+    if (displayLocation) score++;
+    if (displaySpecialization) score++;
+    if (analyzersList.length > 0) score++;
+    if (achievement.title || p.majorTroubleshooting) score++;
+    completionPercent = Math.round((score / total) * 100);
+  }
+
+  const isPublic = status.isPublic !== undefined ? status.isPublic : (p.publicProfile !== false);
+if (isPublic === false) {
     container.innerHTML = "<p class='muted'>This profile is private.</p>";
     return;
   }
@@ -203,7 +226,7 @@ async function loadProfile(uid) {
   const experience = parseInt(basic.experienceYears || 0);
   authorityScore += Math.min(experience, 10);
 
-  const analyzerCount = (professional.analyzersWorked || []).length;
+  const analyzerCount = (analyzersList || []).length;
   authorityScore += Math.min(analyzerCount * 3, 10);
 
   if (achievement.title) authorityScore += 10;
@@ -220,25 +243,25 @@ async function loadProfile(uid) {
 
   container.innerHTML = `
     <div class="profile-hero">
-      <img src="${basic.profilePhoto || "/assets/img/default-avatar.png"}"
+      <img src="${displayPhoto || "/assets/img/default-avatar.png"}"
            class="profile-avatar">
 
       <div>
         <h1>
-          ${basic.fullName || "Technician"}
+          ${displayName}
           ${p.isVerified ? `<span class="verified-badge">✔ Verified</span>` : ""}
         </h1>
-        <p class="headline">${basic.headline || ""}</p>
-        <p class="muted">📍 ${basic.location || ""} | ⏳ ${basic.experienceYears || 0} Years Experience</p>
+        <p class="headline">${displayHeadline}</p>
+        <p class="muted">📍 ${displayLocation} | ⏳ ${basic.experienceYears || 0} Years Experience</p>
 
         <div class="profile-strength-wrapper">
           <div class="profile-strength-header">
             <span>Profile Strength</span>
-            <span>${status.completionPercent || 0}%</span>
+            <span>${completionPercent}%</span>
           </div>
           <div class="profile-strength-bar">
             <div class="profile-strength-fill"
-                 style="width:${status.completionPercent || 0}%">
+                 style="width:${completionPercent}%">
             </div>
           </div>
         </div>
@@ -263,15 +286,15 @@ async function loadProfile(uid) {
     <div class="profile-grid">
       <div>
         <h3>Specialization</h3>
-        <p>${professional.specialization || "Not specified"}</p>
+        <p>${displaySpecialization}</p>
 
         <h3>Plant Type</h3>
         <p>${professional.plantType || "Not specified"}</p>
 
         ${
-          Array.isArray(professional.analyzersWorked) && professional.analyzersWorked.length
+          Array.isArray(analyzersList) && analyzersList.length
           ? `<h3>Analyzers Worked</h3>
-             ${professional.analyzersWorked.map(a => `
+             ${analyzersList.map(a => `
                <div class="skill-bar">
                  <span>${a}</span>
                  <div class="skill-bar-track">
