@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
-Sitemap: https://venkatpalika-oss.github.io/instmates/sitemap.xml
+Sitemap: https://www.instmates.com/sitemap.xml
