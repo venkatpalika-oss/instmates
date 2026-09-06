@@ -53,17 +53,42 @@ img{
   gap:16px;
 }
 
-/* LOGO */
+/* LOGO: approved symbol on a light card + text wordmark */
 .logo{
   display:flex;
   align-items:center;
+  gap:10px;
   text-decoration:none;
+  color:#ffffff;
+}
+.logo:hover{text-decoration:none}
+
+.logo-mark{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  padding:5px;
+  background:#ffffff;
+  border-radius:10px;
+  flex:0 0 auto;
 }
 
-.logo-svg{
-  height:42px;
-  width:auto;
+.logo-mark img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
   display:block;
+}
+
+.logo-wordmark{
+  font-size:1.35rem;
+  font-weight:800;
+  letter-spacing:.2px;
+  line-height:1;
+  white-space:nowrap;
+  color:#ffffff;
 }
 
 /* NAVIGATION */
@@ -310,9 +335,15 @@ img{
     padding:10px 12px;
   }
 
-  /* Logo scaling */
-  .logo-svg{
-    height:34px;      /* desktop = 42px */
+  /* Logo scaling (desktop mark = 42px) */
+  .logo-mark{
+    width:36px;
+    height:36px;
+    padding:4px;
+    border-radius:9px;
+  }
+  .logo-wordmark{
+    font-size:1.2rem;
   }
 
   /* Navigation tighter */
@@ -334,8 +365,14 @@ img{
 /* Extra-small devices */
 @media (max-width: 480px){
 
-  .logo-svg{
-    height:30px;
+  .logo-mark{
+    width:32px;
+    height:32px;
+    padding:4px;
+    border-radius:8px;
+  }
+  .logo-wordmark{
+    font-size:1.1rem;
   }
 
   .main-nav{
@@ -1273,15 +1310,10 @@ body.auth-in.auth-ready .siteHeader .auth-in {
     gap: 8px;
   }
 
-  /* LOGO (INLINE SVG FIX) */
+  /* LOGO */
   .logo,
   .brand {
     max-width: 100%;
-  }
-
-  .logo-svg {
-    width: 160px;
-    height: auto;
   }
 
   /* NAV */
