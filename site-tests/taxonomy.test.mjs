@@ -187,6 +187,14 @@ test("normalizeTag: deterministic exact matching, never guessing", () => {
   assert.equal(normalizeTag("zirconia"), "zirconia-oxygen");
   assert.equal(normalizeTag("gas chromatography column"), null, "partial matches are not guessed");
   assert.equal(normalizeTag("AMETEK 888"), null, "equipment names are not technology slugs");
+  // Equipment, vendor, model and generic single words must never be coerced into a technology or activity.
+  for (const s of ["Siemens Maxum II", "ABB AO2020", "Yokogawa GC8000", "Rosemount 3051", "Emerson", "Honeywell", "Servomex",
+    "zirconia probe", "oxygen", "O2", "GC8000", "gas", "analyzer 123", "pressure transmitter 3051", "flow meter", "hart 7",
+    "4-20", "calibration gas", "loop", "zero", "span", "pm", "control loop"]) {
+    assert.equal(normalizeTag(s), null, `"${s}" must not map to a taxonomy term`);
+  }
+  assert.equal(normalizeTag("current loop"), "signals-loops");
+  assert.equal(normalizeTag("loop check"), "calibration");
   assert.equal(normalizeTag(""), null);
   assert.equal(normalizeTag(null), null);
   assert.equal(normalizeTag("#"), null);

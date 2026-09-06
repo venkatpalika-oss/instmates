@@ -49,7 +49,7 @@ export const TERMS = Object.freeze([
   term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported" }),
   term("measurement", "level", "Level", { aliases: ["level measurement", "wet leg"], coverage: "partial", note: "One case study (wet-leg zero shift); no dedicated pages yet." }),
   term("measurement", "temperature", "Temperature", { aliases: ["rtd", "thermocouple"], coverage: "none" }),
-  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "loop", "wiring", "grounding"], coverage: "supported" }),
+  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported" }),
   term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", note: "Umbrella for the analytical technologies in facet 2." }),
   term("measurement", "control-valves", "Control valves", { aliases: ["valve", "positioner"], coverage: "none" }),
   term("measurement", "process-control", "Process control", { aliases: ["pid", "control loop"], coverage: "none" }),
@@ -79,8 +79,8 @@ export const TERMS = Object.freeze([
 
   // ---------- Facet 3: PROFESSIONAL ACTIVITY (what the professional is doing) ----------
   term("activity", "troubleshooting", "Troubleshooting", { aliases: ["fault finding", "diagnostics", "rca"], coverage: "supported" }),
-  term("activity", "calibration", "Calibration", { aliases: ["loop check", "span", "zero"], coverage: "supported" }),
-  term("activity", "preventive-maintenance", "Preventive maintenance", { aliases: ["pm", "maintenance"], coverage: "partial" }),
+  term("activity", "calibration", "Calibration", { aliases: ["loop check", "zero and span", "span check"], coverage: "supported" }),
+  term("activity", "preventive-maintenance", "Preventive maintenance", { aliases: ["maintenance", "preventive"], coverage: "partial" }),
   term("activity", "commissioning", "Commissioning", { aliases: ["start-up", "startup"], coverage: "none" }),
   term("activity", "reliability", "Reliability & measurement quality", { aliases: ["spc", "uncertainty", "precision"], coverage: "supported" }),
   term("activity", "standards-compliance", "Standards & compliance", { aliases: ["standards", "iso", "astm", "audit"], coverage: "supported" })
