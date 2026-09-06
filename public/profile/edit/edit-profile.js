@@ -21,7 +21,7 @@ let existingPhotoURL = null;
 /* ================= TOAST ================= */
 
 function showToast(message, type = "success") {
-  toast.innerHTML = message;
+  toast.textContent = message;
   toast.style.background = type === "success" ? "#28a745" : "#dc3545";
   toast.style.opacity = "1";
 

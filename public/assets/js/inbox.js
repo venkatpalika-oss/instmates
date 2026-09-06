@@ -1,4 +1,5 @@
 import { auth, db } from "./firebase.js";
+import { esc, idParam } from "./safe-html.js";
 import { onAuthStateChanged } from
 "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
@@ -65,12 +66,12 @@ const user = auth.currentUser;
     card.style.marginBottom = "12px";
 
     card.innerHTML = `
-      <p><strong>From:</strong> ${senderName}</p>
-      <p>${m.message}</p>
+      <p><strong>From:</strong> ${esc(senderName)}</p>
+      <p>${esc(m.message)}</p>
 
       <div class="action-row">
         <a class="btn btn-ghost"
-           href="/message.html?to=${m.fromUid}">
+           href="/message.html?to=${idParam(m.fromUid)}">
            Reply
         </a>
       </div>

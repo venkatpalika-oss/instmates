@@ -13,12 +13,14 @@ import {
   orderBy,
   doc,
   updateDoc,
-  deleteDoc,
   increment,
-  getDocs,
+  getDoc,
   onSnapshot,
   limit
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+// W0.1: one escaping implementation for the whole site (escapes quotes too)
+import { esc, escMultiline, safeStorageUrl } from "./safe-html.js";
 
 import {
   ref,
@@ -130,11 +132,19 @@ postBtn.disabled = true;
    LOAD USERS
 ========================================================= */
 
-async function loadUsers() {
-  const snapshot = await getDocs(collection(db, "profiles"));
-  snapshot.forEach(docSnap => {
-    usersCache[docSnap.id] = docSnap.data();
-  });
+// W0.3/H-11: authors are resolved one document at a time (and cached)
+// instead of downloading the entire profiles collection on every load.
+// A private or missing profile simply falls back to "Technician".
+async function loadUsersFor(uids) {
+  const pending = [...new Set(uids)].filter(uid => uid && !(uid in usersCache));
+  await Promise.all(pending.map(async uid => {
+    try {
+      const snap = await getDoc(doc(db, "profiles", uid));
+      usersCache[uid] = snap.exists() ? snap.data() : null;
+    } catch (err) {
+      usersCache[uid] = null;
+    }
+  }));
 }
 
 /* =========================================================
@@ -151,7 +161,9 @@ function listenPosts() {
     limit(20)
   );
 
-  unsubscribePosts = onSnapshot(postsQuery, snapshot => {
+  unsubscribePosts = onSnapshot(postsQuery, async snapshot => {
+
+    await loadUsersFor(snapshot.docs.map(d => d.data().uid));
 
     feedContainer.innerHTML = "";
 
@@ -195,10 +207,11 @@ function createPostCard(post) {
 
   const initials = getInitials(userName);
 
-  const totalVotes =
-    (post.reactions?.agree || 0) +
-    (post.reactions?.faced || 0) +
-    (post.reactions?.helpful || 0);
+  // Defensive numeric coercion: reaction counters are rendered into markup.
+  const agree = num(post.reactions?.agree);
+  const faced = num(post.reactions?.faced);
+  const helpful = num(post.reactions?.helpful);
+  const totalVotes = agree + faced + helpful;
 
   const hasVoted =
     user && post.votedBy && post.votedBy[user.uid];
@@ -211,10 +224,14 @@ function createPostCard(post) {
 
   if (post.attachment) {
 
-    const safeUrl = escapeAttr(post.attachment.url);
-    const safeName = escapeHTML(post.attachment.name || "Attachment");
+    // Only Firebase Storage URLs are ever rendered as src/href.
+    const safeUrl = esc(safeStorageUrl(post.attachment.url, ""));
+    const safeName = esc(String(post.attachment.name || "Attachment").slice(0, 120));
 
-    if (post.attachment.type === "image") {
+    if (!safeUrl) {
+      attachmentHTML = "";
+    }
+    else if (post.attachment.type === "image") {
       attachmentHTML = `
         <div class="feed-attachment">
           <img src="${safeUrl}" class="feed-image" alt="Post attachment">
@@ -246,16 +263,16 @@ function createPostCard(post) {
 
       let tagsHTML = "";
       if (Array.isArray(post.tags) && post.tags.length > 0) {
-        tagsHTML = `<div class="feed-tags">${post.tags.map(t => `<span class="feed-tag">#${escapeHTML(t)}</span>`).join("")}</div>`;
+        tagsHTML = `<div class="feed-tags">${post.tags.filter(t => typeof t === "string").slice(0, 5).map(t => `<span class="feed-tag">#${esc(t.slice(0, 40))}</span>`).join("")}</div>`;
       }
 
   card.innerHTML = `
     <div class="feed-top">
       <div class="feed-user">
-        <div class="avatar">${initials}</div>
+        <div class="avatar">${esc(initials)}</div>
 
         <div>
-          <div class="feed-username">${escapeHTML(userName)}</div>
+          <div class="feed-username">${esc(userName)}</div>
           <div class="feed-time">
             ${formatTime(post.createdAt?.toDate?.() || new Date())}
             ${post.editedAt ? " · edited" : ""}
@@ -282,15 +299,15 @@ function createPostCard(post) {
 
     <div class="feed-actions modern-actions">
       <button class="react action-btn" data-type="agree" ${hasVoted ? "disabled" : ""}>
-        👍 Agree <span>${post.reactions?.agree || 0}</span>
+        👍 Agree <span>${agree}</span>
       </button>
 
       <button class="react action-btn" data-type="faced" ${hasVoted ? "disabled" : ""}>
-        🛠 Faced This <span>${post.reactions?.faced || 0}</span>
+        🛠 Faced This <span>${faced}</span>
       </button>
 
       <button class="react action-btn" data-type="helpful" ${hasVoted ? "disabled" : ""}>
-        💡 Helpful <span>${post.reactions?.helpful || 0}</span>
+        💡 Helpful <span>${helpful}</span>
       </button>
 
       <button class="toggle-comments action-btn">
@@ -315,7 +332,6 @@ function createPostCard(post) {
     ${isOwner ? `
       <div class="owner-actions">
         <button class="edit-btn">✏ Edit</button>
-        <button class="delete-btn">🗑 Delete</button>
       </div>
     ` : ""}
   `;
@@ -354,12 +370,6 @@ function createPostCard(post) {
       });
     });
 
-    card.querySelector(".delete-btn").addEventListener("click", async () => {
-
-      if (!confirm("Delete post?")) return;
-
-      await deleteDoc(doc(db, "posts", post.id));
-    });
   }
 
   /* ================= COMMENTS ================= */
@@ -407,8 +417,8 @@ function createPostCard(post) {
           commentDiv.className = "comment-item";
 
           commentDiv.innerHTML = `
-            <strong>${escapeHTML(commentUser)}</strong>
-            <div>${escapeHTML(comment.content)}</div>
+            <strong>${esc(commentUser)}</strong>
+            <div>${esc(comment.content)}</div>
             <small class="muted">
               ${formatTime(comment.createdAt?.toDate?.() || new Date())}
             </small>
@@ -453,11 +463,6 @@ function createPostCard(post) {
 ========================================================= */
 
 (async () => {
-  try {
-         await loadUsers();
-  } catch (err) {
-         console.warn("Could not preload users (may require sign-in):", err.message);
-  }
        listenPosts();
 })();
 
@@ -480,6 +485,11 @@ function formatTime(date) {
   if (days < 7) return days + "d ago";
 
   return date.toLocaleDateString();
+}
+
+function num(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
 }
 
 function getInitials(name) {
@@ -516,23 +526,7 @@ function getTypeClass(type) {
 }
 
 function formatPostContent(content) {
-  return escapeHTML(content || "")
-    .replace(/\n/g, "<br>");
-}
-
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function escapeAttr(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return escMultiline(String(content || "").slice(0, 5000));
 }
 
 

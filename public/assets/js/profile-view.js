@@ -4,6 +4,7 @@
 ========================================================= */
 
 import { auth, db } from "./firebase.js";
+import { esc as escape } from "./safe-html.js";
 import { onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
@@ -138,10 +139,4 @@ const user = auth.currentUser;
 });
 
 /* ================= HELPERS ================= */
-
-function escape(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+// escape() is imported from ./safe-html.js

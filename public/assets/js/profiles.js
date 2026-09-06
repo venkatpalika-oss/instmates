@@ -1,13 +1,20 @@
 /* =========================================================
    InstMates – Profiles Directory (Production Version)
-   FINAL: Supports OLD + NEW Schema + Folder Routing Safe
+   Supports OLD + NEW schema. W0.1/W0.3 hardening:
+   - every user field goes through /assets/js/safe-html.js
+   - photo URLs must be Firebase Storage URLs
+   - the query asks Firestore for PUBLIC profiles only, so the
+     rules (not this file) decide what is visible
 ========================================================= */
 
 import { db } from "./firebase.js";
 import {
   collection,
-  getDocs
+  getDocs,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { esc, safeStorageUrl, idParam } from "./safe-html.js";
 
 const grid = document.getElementById("profilesGrid");
 const searchInput = document.getElementById("profileSearch");
@@ -23,7 +30,11 @@ async function loadProfiles() {
   grid.innerHTML = `<p class="muted">Loading profiles…</p>`;
 
   try {
-    const snap = await getDocs(collection(db, "profiles"));
+    // Rules only allow listing profiles whose profileStatus.isPublic == true,
+    // so the query must carry that filter (Firestore rules are not filters).
+    const snap = await getDocs(
+      query(collection(db, "profiles"), where("profileStatus.isPublic", "==", true))
+    );
 
     if (snap.empty) {
       grid.innerHTML = `<p class="muted">No technicians found.</p>`;
@@ -33,20 +44,8 @@ async function loadProfiles() {
     allProfiles = [];
 
     snap.forEach(docSnap => {
-
-      const profile = docSnap.data();
+      const profile = docSnap.data() || {};
       profile.uid = docSnap.id;
-
-      const status = profile.profileStatus || {};
-
-      // Support both new + old public flags
-      const isPublic =
-        status.isPublic !== undefined
-          ? status.isPublic
-          : profile.publicProfile !== false;
-
-      if (isPublic === false) return;
-
       allProfiles.push(profile);
     });
 
@@ -78,42 +77,41 @@ function renderProfiles(list) {
 
 /* ================= CREATE CARD ================= */
 
+function str(value, max = 200) {
+  return typeof value === "string" ? value.slice(0, max) : "";
+}
+
 function createProfileCard(profile) {
 
   const uid = profile.uid;
-  const safeUID = encodeURIComponent(uid);
+  const safeUID = idParam(uid);
 
   const basic = profile.basicInfo || {};
   const professional = profile.professional || {};
-  const achievement = profile.achievement || {};
-  const status = profile.profileStatus || {};
 
   // ===== BACKWARD COMPATIBILITY =====
 
   const fullName =
-    basic.fullName ||
-    profile.fullName ||
+    str(basic.fullName, 100) ||
+    str(profile.fullName, 100) ||
     "Technician";
 
   const role =
-    basic.headline ||
-    profile.role ||
+    str(basic.headline, 150) ||
+    str(profile.role, 150) ||
     "Instrument / Analyzer Technician";
 
   const location =
-    basic.location ||
-    profile.location ||
+    str(basic.location, 100) ||
+    str(profile.location, 100) ||
     "";
 
   const specialization =
-    professional.specialization ||
-    profile.primaryDomain ||
+    str(professional.specialization, 150) ||
+    str(profile.primaryDomain, 150) ||
     "";
 
-  const photo =
-    basic.profilePhoto ||
-    profile.photoURL ||
-    "";
+  const photo = safeStorageUrl(basic.profilePhoto || profile.photoURL, "");
 
   const completion = getCompletion(profile);
 
@@ -121,27 +119,27 @@ function createProfileCard(profile) {
   card.className = "card profile-card";
 
   const avatarHTML = photo
-    ? `<img src="${escapeHTML(photo)}"
+    ? `<img src="${esc(photo)}"
             class="avatar"
-            alt="Avatar" />`
+            alt="" />`
     : `<div class="avatar placeholder">
-         ${fullName[0].toUpperCase()}
+         ${esc(fullName.trim().charAt(0).toUpperCase() || "T")}
        </div>`;
 
   card.innerHTML = `
     ${avatarHTML}
 
-    <h3>${escapeHTML(fullName)}</h3>
+    <h3>${esc(fullName)}</h3>
 
-    <p class="muted">${escapeHTML(role)}</p>
+    <p class="muted">${esc(role)}</p>
 
     ${location
-      ? `<p class="muted">📍 ${escapeHTML(location)}</p>`
+      ? `<p class="muted">📍 ${esc(location)}</p>`
       : ""
     }
 
     ${specialization
-      ? `<p class="muted">🔧 ${escapeHTML(specialization)}</p>`
+      ? `<p class="muted">🔧 ${esc(specialization)}</p>`
       : ""
     }
 
@@ -161,10 +159,8 @@ function createProfileCard(profile) {
          View Profile
       </a>
 
-      <a class="btn btn-primary"
-         href="/message.html?to=${safeUID}">
-         Message
-      </a>
+      <!-- W0: "Message" button hidden - messaging is not functional
+           (message.html script fails to load; no Firestore rules). -->
 
     </div>
   `;
@@ -189,8 +185,8 @@ function getCompletion(profile) {
   if (professional.specialization || profile.primaryDomain) score++;
 
   if (
-    (professional.analyzersWorked && professional.analyzersWorked.length > 0) ||
-    (profile.skills && profile.skills.length > 0)
+    (Array.isArray(professional.analyzersWorked) && professional.analyzersWorked.length > 0) ||
+    (Array.isArray(profile.skills) && profile.skills.length > 0)
   ) score++;
 
   if (
@@ -198,7 +194,7 @@ function getCompletion(profile) {
     profile.majorTroubleshooting
   ) score++;
 
-  return Math.round((score / total) * 100);
+  return Math.max(0, Math.min(100, Math.round((score / total) * 100)));
 }
 
 /* ================= SEARCH ================= */
@@ -214,16 +210,16 @@ if (searchInput) {
       const professional = profile.professional || {};
 
       return (
-        (basic.fullName || profile.fullName || "")
+        str(basic.fullName || profile.fullName)
           .toLowerCase().includes(term) ||
 
-        (basic.headline || profile.role || "")
+        str(basic.headline || profile.role)
           .toLowerCase().includes(term) ||
 
-        (basic.location || profile.location || "")
+        str(basic.location || profile.location)
           .toLowerCase().includes(term) ||
 
-        (professional.specialization || profile.primaryDomain || "")
+        str(professional.specialization || profile.primaryDomain)
           .toLowerCase().includes(term)
       );
 
@@ -231,15 +227,6 @@ if (searchInput) {
 
     renderProfiles(filtered);
   });
-}
-
-/* ================= SAFE ESCAPE ================= */
-
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 /* ================= INIT ================= */

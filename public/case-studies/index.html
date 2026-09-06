@@ -10,6 +10,7 @@
 
   <!-- GLOBAL CSS -->
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+  <link rel="canonical" href="https://www.instmates.com/case-studies/" />
 </head>
 
 <body data-page="case-studies">
@@ -34,9 +35,11 @@
     documented by instrument and analyzer technicians from live plants.
   </p>
 
-  <a href="/submit-case.html" class="btn btn-primary">
-    Submit a Case Study
-  </a>
+  <!-- W0: "Submit a Case Study" CTA hidden - submit-case.html cannot
+       load (truncated Firebase import) and signatureCases has no rules.
+       Restore when the feature is built.
+  <a href="/submit-case.html" class="btn btn-primary">Submit a Case Study</a>
+  -->
 </section>
 
 <!-- ================= CASE LIST ================= -->

@@ -1,4 +1,5 @@
 import { auth, db } from "./firebase.js";
+import { esc as escapeHTML } from "./safe-html.js";
 import { onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
@@ -89,9 +90,4 @@ chatForm.onsubmit = async (e) => {
   chatInput.value = "";
 };
 
-function escapeHTML(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+// escapeHTML is imported from ./safe-html.js

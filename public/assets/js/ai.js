@@ -3,6 +3,8 @@
    File: /assets/js/ai.js
 ========================================================= */
 
+import { esc } from "./safe-html.js";
+
 /* ================= LOAD FIELD KNOWLEDGE ================= */
 
 async function loadKnowledge(analyzer) {
@@ -69,7 +71,9 @@ async function askInstMatesAI() {
       return;
     }
 
-    const formatted = aiText
+    // W0.1: the answer is remote text, never trusted as HTML. Escape first,
+    // then apply the (static) section formatting.
+    const formatted = esc(String(aiText).slice(0, 20000))
       .replace(/(^|\n)1\.\s*(.*)/gi, "<h4>🧠 Interpretation</h4><p>$2</p>")
       .replace(/(^|\n)2\.\s*(.*)/gi, "<h4>⚠️ Most Probable Cause</h4><p>$2</p>")
       .replace(/(^|\n)3\.\s*(.*)/gi, "<h4>🛠️ Field Check Sequence</h4><p>$2</p>")
