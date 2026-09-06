@@ -1,12 +1,7 @@
-<!-- ================= GOOGLE ANALYTICS 4 ================= -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-L57QYT7H9F');
-</script>
-<!-- ====================================================== -->
+<!-- W0: the GA4 block that used to be here never executed - this file is
+     injected with innerHTML by includes.js, which does not run <script>
+     tags. It only caused a duplicate gtag.js fetch on the homepage, which
+     carries its own working GA4 block in <head>. -->
 
 <header class="siteHeader">
   <div class="siteHeader-inner">
