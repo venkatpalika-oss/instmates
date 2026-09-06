@@ -1,5 +1,9 @@
 /* =========================================================
-   InstMates – Service Worker (W0.7)
+   InstMates – Service Worker (post-W0 cleanup: instmates-v4)
+
+   "instmates-v4" (branding cleanup): same strategy as v3; the precache
+   now lists the new icon/mark filenames and activation deletes the v3
+   cache so returning visitors drop the old cached branding.
 
    Previous behaviour ("instmates-v2"): cache-first for EVERY GET,
    including HTML, JavaScript and cross-origin Firebase SDK files, with
@@ -17,14 +21,15 @@
    - Activation deletes every older cache and takes control immediately.
 ========================================================= */
 
-const CACHE_NAME = "instmates-v3";
+const CACHE_NAME = "instmates-v4";
 
 const PRECACHE = [
   "/",
   "/manifest.json",
   "/assets/css/style.css",
-  "/assets/icons/icon-192.png",
-  "/assets/icons/icon-512.png"
+  "/assets/icons/instmates-192.png",
+  "/assets/icons/instmates-512.png",
+  "/assets/brand/instmates-mark-128.png"
 ];
 
 self.addEventListener("install", (event) => {
