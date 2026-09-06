@@ -1,0 +1,13 @@
+{
+  "name": "instmates-web-rules-tests",
+  "private": true,
+  "type": "module",
+  "description": "Firestore + Storage Security Rules tests for the InstMates website, run against the Firebase Local Emulator Suite only (demo project, never live Firebase). See README.md.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.18.0"
+  }
+}

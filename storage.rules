@@ -1,0 +1,62 @@
+rules_version = '2';
+
+// =====================================================================
+// InstMates website – Cloud Storage Security Rules (W0.5)
+//
+// This file did not exist in source before W0; the deployed bucket state
+// was unknown. A read-only probe on 2026-09-06 showed anonymous LIST on
+// the bucket is denied (HTTP 403), so the deployed rules are at least
+// not wide open. Bringing the rules into source control makes the
+// intended state explicit and testable.
+//
+// Upload paths actually used by the site (grep of public/ on 2026-09-06):
+//   profilePhotos/{uid}                      profile/edit/edit-profile.js
+//   postAttachments/{uid}/{timestamp}_{name} assets/js/feed.js
+//
+// Both are displayed to the public (public profiles, public feed), so
+// reads are open; writes are owner-only with size and content-type
+// limits matching what the pages already enforce client-side.
+// =====================================================================
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp|gif)');
+    }
+
+    function isPostMedia() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp|gif)')
+          || request.resource.contentType.matches('video/(mp4|webm|quicktime)')
+          || request.resource.contentType == 'application/pdf';
+    }
+
+    // Profile photo: a single object per member, overwritten on change.
+    match /profilePhotos/{uid} {
+      allow read: if true;
+      allow write: if isOwner(uid)
+                   && (request.resource == null            // delete
+                       || (request.resource.size <= 5 * 1024 * 1024
+                           && isImage()));
+    }
+
+    // Feed attachments: one folder per member, immutable once written.
+    match /postAttachments/{uid}/{fileName} {
+      allow read: if true;
+      allow create: if isOwner(uid)
+                    && resource == null                 // never overwrite
+                    && request.resource.size <= 20 * 1024 * 1024
+                    && isPostMedia()
+                    && fileName.size() <= 200;
+      allow update, delete: if false;
+    }
+
+    // Everything else is denied.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

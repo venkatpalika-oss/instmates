@@ -1,13 +1,11 @@
 rules_version = '2';
 
 // =====================================================================
-// InstMates website – Firestore Security Rules (W0.2 / W0.3 hardening, STRICT)
-//
-// PRECONDITION: every profiles/{uid} document carries profileStatus.isPublic.
-// Run scripts/admin/backfill-profile-status.mjs (--apply, then a second dry
-// run reporting WOULD_UPDATE = 0) BEFORE deploying this file. A legacy-
-// compatible variant is kept in firestore.legacy-compat.rules for rollback
-// only; it is not the intended production state.
+// InstMates website – Firestore Security Rules – LEGACY-COMPATIBLE VARIANT
+// ROLLBACK/CONTINGENCY ONLY. Identical to firestore.rules except profile get
+// also allows documents that lack profileStatus (public unless
+// publicProfile == false). Not the intended production state (owner/CTO
+// decision, W0 data gate item 11).
 //
 // Collections actually used by the deployed site (audit 2026-09-05):
 //   users/{uid}                     account document (contains email)
@@ -109,12 +107,14 @@ service cloud.firestore {
     //             restoreProfiles admin function; no profileStatus key)
     match /profiles/{userId} {
 
-      // Single-document read: public only when profileStatus.isPublic == true.
+      // Single-document read: public when profileStatus.isPublic == true.
+      // Legacy documents without profileStatus keep their pre-W0 behaviour
+      // (public unless publicProfile == false) so existing links do not break.
       // Owners can always read their own document.
-      // POST-BACKFILL (strict): every document carries profileStatus, so
-      // there is NO implicit public access for documents lacking it.
       allow get: if isOwner(userId)
-        || (resource.data.get('profileStatus', {}).get('isPublic', null) == true);
+        || (resource.data.get('profileStatus', {}).get('isPublic', null) == true)
+        || (!('profileStatus' in resource.data)
+            && resource.data.get('publicProfile', true) != false);
 
       // Listing: only queries constrained to public profiles are allowed.
       // Legacy documents (no profileStatus) are not listable; they remain
