@@ -1,0 +1,9 @@
+{
+  "name": "instmates-site-tests",
+  "private": true,
+  "type": "module",
+  "description": "Static contract tests for the website taxonomy, content map and navigation model (no emulator, no network).",
+  "scripts": {
+    "test": "node --test"
+  }
+}
