@@ -1,0 +1,9 @@
+{
+  "name": "instmates-admin-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Local, administrator-run Admin SDK scripts for the InstMates website. Dry-run by default; never deployed; never exposed over HTTP.",
+  "dependencies": {
+    "firebase-admin": "^13.6.0"
+  }
+}
