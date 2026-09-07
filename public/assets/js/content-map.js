@@ -210,3 +210,15 @@ export function hubModel(slug) {
 export function hubEligibleTerms() {
   return TERMS.filter((t) => hubEligible(t.slug));
 }
+
+/** W1.2: the mapped resource a term's declared LEARN entry point opens, or null. */
+export function entryResource(slug) {
+  const t = termBySlug(slug);
+  if (!t || !t.entry) return null;
+  return RESOURCES.find((res) => res.path === t.entry) || null;
+}
+
+/** W1.2: content resources (index pages excluded) whose path starts with a section prefix. */
+export function resourcesUnder(prefix) {
+  return RESOURCES.filter((res) => res.kind !== "index" && res.path.startsWith(prefix));
+}

@@ -10,6 +10,10 @@
    - Importable by the site's ES modules and by node:test.
    - Coverage is DECLARED here for deterministic UI use and is
      VERIFIED against content-map.js by site-tests (the two must agree).
+   - W1.2: `entry` declares the existing page a SUPPORTED measurement or
+     technology term opens from the homepage LEARN block (no hub exists
+     yet). It is null for partial/none terms and for activities, and
+     site-tests verify it resolves to a mapped resource about that term.
    - A term is discoverable only when it has a published hub route
      (`hub` !== null). In W1.1 no hub routes exist, so nothing is
      discoverable; unsupported terms can never receive a hub.
@@ -39,27 +43,28 @@ function term(facet, slug, label, extra = {}) {
     aliases: Object.freeze(extra.aliases || []),
     coverage: extra.coverage || COVERAGE.NONE,
     hub: null, // no hub routes are published in W1.1 (see plan §D)
+    entry: extra.entry || null, // W1.2: declared LEARN entry point (an existing page) for supported terms; verified by site-tests
     note: extra.note || null
   });
 }
 
 export const TERMS = Object.freeze([
   // ---------- Facet 1: MEASUREMENT (what is measured) ----------
-  term("measurement", "pressure", "Pressure", { aliases: ["pt", "dp", "pressure transmitter"], coverage: "supported" }),
-  term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported" }),
+  term("measurement", "pressure", "Pressure", { aliases: ["pt", "dp", "pressure transmitter"], coverage: "supported", entry: "/knowledge/field/pressure/" }),
+  term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported", entry: "/knowledge/field/flow/" }),
   term("measurement", "level", "Level", { aliases: ["level measurement", "wet leg"], coverage: "partial", note: "One case study (wet-leg zero shift); no dedicated pages yet." }),
   term("measurement", "temperature", "Temperature", { aliases: ["rtd", "thermocouple"], coverage: "none" }),
-  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported" }),
-  term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", note: "Umbrella for the analytical technologies in facet 2." }),
+  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported", entry: "/knowledge/field/signals/4-20ma/" }),
+  term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", entry: "/knowledge/analyzers/", note: "Umbrella for the analytical technologies in facet 2." }),
   term("measurement", "control-valves", "Control valves", { aliases: ["valve", "positioner"], coverage: "none" }),
   term("measurement", "process-control", "Process control", { aliases: ["pid", "control loop"], coverage: "none" }),
-  term("measurement", "laboratory-qa", "Laboratory & QA", { aliases: ["laboratory", "lab", "qa", "iso 17025"], coverage: "supported" }),
+  term("measurement", "laboratory-qa", "Laboratory & QA", { aliases: ["laboratory", "lab", "qa", "iso 17025"], coverage: "supported", entry: "/knowledge/laboratory/" }),
 
   // ---------- Facet 2: ANALYTICAL TECHNOLOGY (how it is measured) ----------
-  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported" }),
-  term("technology", "ftir", "FTIR", { group: "gas", aliases: ["ft-ir", "fourier transform infrared"], coverage: "supported" }),
-  term("technology", "sampling-systems", "Sampling systems", { group: "cross-cutting", aliases: ["sample conditioning", "sampling system", "sample system"], coverage: "supported" }),
-  term("technology", "flash-point-analyzer", "Flash-point analyzer", { group: "laboratory", aliases: ["flash point", "astm d56", "astm d93"], coverage: "supported" }),
+  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported", entry: "/knowledge/gc/" }),
+  term("technology", "ftir", "FTIR", { group: "gas", aliases: ["ft-ir", "fourier transform infrared"], coverage: "supported", entry: "/knowledge/analyzers/ftir-analyzer/" }),
+  term("technology", "sampling-systems", "Sampling systems", { group: "cross-cutting", aliases: ["sample conditioning", "sampling system", "sample system"], coverage: "supported", entry: "/knowledge/gc/gc-sampling-system/" }),
+  term("technology", "flash-point-analyzer", "Flash-point analyzer", { group: "laboratory", aliases: ["flash point", "astm d56", "astm d93"], coverage: "supported", entry: "/knowledge/laboratory/flash-point-analyzer/" }),
   term("technology", "moisture", "Moisture analyzers", { group: "gas", aliases: ["dew point", "humidity analyzer"], coverage: "partial", note: "Only the FTIR moisture cross-interference guide." }),
   term("technology", "zirconia-oxygen", "Zirconia oxygen", { group: "oxygen", aliases: ["zirconia", "zirconia o2", "zro2"], coverage: "none" }),
   term("technology", "paramagnetic-oxygen", "Paramagnetic oxygen", { group: "oxygen", aliases: ["paramagnetic", "paramagnetic o2"], coverage: "none" }),
