@@ -47,6 +47,15 @@ export function postType(id) {
   return POST_TYPES.find((t) => t.id === id) || null;
 }
 
+/**
+ * W1.3: `?type=` prefill from a hub CTA. Only the rule-authorized types are
+ * accepted; anything else (missing, unknown, future types) falls back to the default.
+ */
+export function prefillType(param, fallback = POST_TYPES[0].id) {
+  const id = String(param || "").trim().toLowerCase();
+  return postType(id) ? id : fallback;
+}
+
 export function promptFor(id) {
   const t = postType(id);
   return t ? t.prompt : DEFAULT_PROMPT;

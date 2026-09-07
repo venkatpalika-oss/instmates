@@ -40,7 +40,8 @@ const FIRESTORE_SDK = "https://www.gstatic.com/firebasejs/9.23.0/firebase-firest
 export function learnTopics() {
   return TERMS
     .filter((t) => t.facet !== "activity" && t.coverage === COVERAGE.SUPPORTED && t.entry)
-    .map((t) => ({ slug: t.slug, label: t.label, href: t.entry, pages: resourcesFor(t.slug).length }))
+    // W1.3: a published hub takes precedence over the knowledge entry page.
+    .map((t) => ({ slug: t.slug, label: t.label, href: t.hub || t.entry, pages: resourcesFor(t.slug).length }))
     .filter((topic) => topic.pages >= HUB_MIN_RESOURCES);
 }
 

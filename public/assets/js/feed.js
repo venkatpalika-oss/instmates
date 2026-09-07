@@ -20,10 +20,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // W0.1: one escaping implementation for the whole site (escapes quotes too)
-import { esc, escMultiline, safeStorageUrl } from "./safe-html.js";
+import { esc, escMultiline, safeStorageUrl, idParam } from "./safe-html.js";
 // Social + technical composer: pure model (post types, prompts, limits, tags, states)
 import {
-  POST_TYPES, LIMITS, promptFor, attachmentKind, parseTags, countTags, addTag,
+  POST_TYPES, LIMITS, promptFor, prefillType, attachmentKind, parseTags, countTags, addTag,
   tagSuggestions, charCount, validateDraft, submitState, submitLabel, SUBMIT_STATES, postBodyHtml
 } from "./composer-model.js";
 
@@ -152,7 +152,8 @@ function initTypeChips() {
       buttons.find((b) => b.dataset.type === next)?.focus();
     });
   });
-  selectType(postTypeSelect?.value || POST_TYPES[0].id);
+  // W1.3: hub CTAs arrive as /feed/?type=<id>; only rule-authorized types are accepted.
+  selectType(prefillType(new URLSearchParams(location.search).get("type"), postTypeSelect?.value || POST_TYPES[0].id));
 }
 
 function clearPreview() {
@@ -427,7 +428,7 @@ function createPostCard(post) {
         <div class="avatar">${esc(initials)}</div>
 
         <div>
-          <div class="feed-username">${esc(userName)}</div>
+          <a class="feed-username" href="/profile/?uid=${idParam(post.uid)}">${esc(userName)}</a>
           <div class="feed-time">
             ${formatTime(post.createdAt?.toDate?.() || new Date())}
             ${post.editedAt ? " · edited" : ""}
