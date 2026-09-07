@@ -4,25 +4,25 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>InstMates – The Social Technical Platform for Instrument & Analyzer Engineers</title>
+<title>InstMates – Field Troubleshooting, Technical Knowledge & Community for Instrument and Analyzer Professionals</title>
 
 <meta name="description"
-content="InstMates is a private social-technical platform for instrument and analyzer engineers to share real field troubleshooting cases, calibration failures, and plant breakdown solutions." />
+content="Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory for instrument and analyzer professionals." />
 
 <!-- Open Graph / Social Sharing -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="InstMates - The Social Technical Platform for Instrument & Analyzer Engineers" />
-<meta property="og:description" content="Real breakdowns, real plant fixes. A technical community built for instrument and analyzer engineers." />
+<meta property="og:title" content="InstMates – Field Troubleshooting, Technical Knowledge & Community for Instrument and Analyzer Professionals" />
+<meta property="og:description" content="Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory." />
 <meta property="og:url" content="https://www.instmates.com/" />
 <meta property="og:image" content="https://www.instmates.com/assets/images/home/hero-instrumentation.jpg" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="InstMates - The Social Technical Platform for Instrument & Analyzer Engineers" />
-<meta name="twitter:description" content="Real breakdowns, real plant fixes. A technical community built for instrument and analyzer engineers." />
+<meta name="twitter:title" content="InstMates – Field Troubleshooting, Technical Knowledge & Community for Instrument and Analyzer Professionals" />
+<meta name="twitter:description" content="Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory." />
 <meta name="twitter:image" content="https://www.instmates.com/assets/images/home/hero-instrumentation.jpg" />
 
-<!-- GOOGLE ANALYTICS -->
+<!-- GOOGLE ANALYTICS (unchanged in W1.2; no new events) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -35,7 +35,7 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0b5ed7">
 
-<!-- Fonts -->
+<!-- Icons / fonts -->
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/instmates-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -43,122 +43,290 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 
 <!-- Global CSS -->
 <link rel="stylesheet" href="/assets/css/style.css?v=2026-02-17">
+<link rel="canonical" href="https://www.instmates.com/" />
 
+<!-- Structured data: site identity only (no counts, no ratings, no search action) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.instmates.com/#organization",
+      "name": "InstMates",
+      "url": "https://www.instmates.com/",
+      "logo": "https://www.instmates.com/assets/icons/instmates-512.png"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.instmates.com/#website",
+      "name": "InstMates",
+      "url": "https://www.instmates.com/",
+      "description": "Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory for instrument and analyzer professionals.",
+      "publisher": { "@id": "https://www.instmates.com/#organization" }
+    }
+  ]
+}
+</script>
+
+<!-- W1.2 homepage-only styles. Scoped to .hm-*; uses the existing palette
+     (--brand-*), .hero, .panel and .btn classes. W1.3 owns the visual system. -->
 <style>
-.highlight-login {
-border-left: 4px solid #0b5ed7;
-background: #f8fbff;
-}
+.hm{padding-top:0}
+.hm-hero{padding:34px 22px 30px}
+.hm-hero h1{font-size:2rem;line-height:1.2;max-width:820px;margin:0 0 10px}
+.hm-hero .hero-tagline{font-size:1.05rem;font-weight:600;letter-spacing:.01em;margin:0 0 12px;opacity:.95}
+.hm-hero .hero-sub{font-size:1.05rem;line-height:1.55;max-width:760px;margin:0 0 6px}
+.hm-hero .hero-actions{margin-top:16px}
+.hm-hero .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;white-space:normal}
 
-.login-cta-box {
-padding: 20px;
-border-radius: 12px;
-background: #ffffff;
-border: 1px solid #d0d7de;
-text-align: center;
-}
+.hm-promises{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 0;padding:0;list-style:none}
+.hm-promise{display:flex;flex-direction:column;justify-content:center;min-height:64px;padding:12px 16px;border-radius:12px;background:#fff;border:1px solid var(--brand-border);text-decoration:none;color:#0f172a;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.hm-promise:hover{border-color:var(--brand-accent);text-decoration:none}
+.hm-promise-name{font-weight:800;color:var(--brand-primary);font-size:1.05rem;text-transform:uppercase;letter-spacing:.06em}
+.hm-promise-q{font-size:.95rem;opacity:.9}
 
-.auth-in-section {
-display: none;
-}
+.hm-section{margin-top:22px;scroll-margin-top:84px}
+.hm-kicker{margin:0 0 4px;font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-primary)}
+.hm-section h2{margin:0 0 6px;font-size:1.55rem;line-height:1.25}
+.hm-section h3{margin:22px 0 6px;font-size:1.15rem}
+.hm-section > p.muted{margin:0 0 14px;max-width:760px;line-height:1.5}
 
-.hero-split {
-display: flex;
-align-items: center;
-gap: 40px;
-flex-wrap: wrap;
-}
+.hm-grid{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.hm-grid a{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:60px;padding:12px 14px;background:#fff;border:1px solid var(--brand-border);border-radius:10px;color:#0f172a;text-decoration:none;line-height:1.35}
+.hm-grid a:hover{border-color:var(--brand-accent);text-decoration:none}
+.hm-grid strong{font-weight:700}
+.hm-grid span{font-size:.9rem;opacity:.8}
 
+.hm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.hm-actions .btn{min-height:44px;display:inline-flex;align-items:center;white-space:normal;text-align:center}
+.hm-note{margin:10px 0 0;font-size:.95rem}
+.hm-note a{display:inline-block;padding:12px 0;font-weight:600}
+
+.hm-topics{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.hm-topics a{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--brand-border);border-radius:8px;background:#fff;color:#0f172a;text-decoration:none;font-weight:600}
+.hm-topics a:hover{border-color:var(--brand-accent);text-decoration:none}
+.hm-topics small{font-weight:500;opacity:.75;white-space:nowrap}
+
+.hm-connect{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.hm-connect > div{background:#fff;border-radius:12px;padding:16px;border:1px solid var(--brand-border)}
+.hm-connect h3{margin-top:0}
+.hm-list{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
+.hm-list li{border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;line-height:1.45}
+.hm-list li.hm-empty{border-style:dashed}
+.hm-badge{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--brand-soft);color:var(--brand-primary);margin-right:8px}
+.hm-meta{display:block;font-size:.85rem;opacity:.75;margin-top:4px}
+.hm-people{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.hm-people li{border:1px solid #e2e8f0;border-radius:10px;padding:10px;min-width:0;overflow-wrap:anywhere}
+.hm-people a{display:flex;flex-direction:column;gap:2px;min-height:44px;color:#0f172a;text-decoration:none}
+.hm-people a:hover{text-decoration:underline}
+.hm-people .hm-initial{width:36px;height:36px;border-radius:50%;background:var(--brand-soft);color:var(--brand-primary);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.hm-people strong{font-size:.95rem}
+.hm-people span{font-size:.85rem;opacity:.8}
+
+.hm-ladder{margin:0 0 6px;padding-left:20px;line-height:1.55;max-width:760px}
+.hm-ladder li{margin:6px 0}
+.auth-in-section{display:none}
+
+/* Homepage-scoped: the sitewide .btn-primary is white on light orange (about 2:1);
+   on this page it uses the brand blue so the primary actions meet WCAG AA. */
+.hm .btn-primary{background:var(--brand-primary);border:1px solid var(--brand-primary);color:#fff}
+.hm .btn-primary:hover{background:var(--brand-accent);border-color:var(--brand-accent)}
+.hm a:focus-visible,.hm .btn:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+
+@media (max-width:768px){
+  .hm-hero{padding:18px 14px 16px}
+  .hm-hero h1{font-size:1.4rem;line-height:1.25;margin-bottom:8px}
+  .hm-hero .hero-tagline{font-size:.95rem;margin-bottom:8px}
+  .hm-hero .hero-sub{font-size:.95rem;line-height:1.45}
+  .hm-sub-more{display:none}
+  .hm-hero .hero-actions{margin-top:12px;gap:8px}
+  .hm-hero .hero-actions .btn{flex:1 1 40%;margin:0;padding:8px 8px;font-size:.95rem}
+  .hm-promises{grid-template-columns:1fr;gap:8px;margin-top:12px}
+  .hm-promise{min-height:48px;padding:8px 12px;flex-direction:row;align-items:baseline;gap:10px}
+  .hm-promise-name{font-size:.95rem}
+  .hm-promise-q{font-size:.9rem}
+  .hm-section{padding:16px;scroll-margin-top:70px}
+  .hm-section h2{font-size:1.3rem}
+  .hm-grid{grid-template-columns:1fr}
+  .hm-topics{grid-template-columns:1fr}
+  .hm-people{grid-template-columns:repeat(2,1fr)}
+  .hm-actions .btn{flex:1 1 100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .hm *{transition:none!important;animation:none!important}
+}
 </style>
-  <link rel="canonical" href="https://www.instmates.com/" />
 </head>
 
 <body data-page="home">
 
 <div id="siteHeader"></div>
 
-<!-- ================= AUTH-OUT ================= -->
-<section class="auth-out-section">
+<main class="container hm" id="main">
 
-<section class="hero">
-<div class="hero-inner container hero-split">
+  <!-- ================= A. PRODUCT IDENTITY ================= -->
+  <section class="hero hm-hero" aria-labelledby="hm-title">
+    <div class="hero-inner">
+      <h1 id="hm-title">Field troubleshooting, technical knowledge and real experience for instrument and analyzer professionals.</h1>
+      <p class="hero-tagline">Share Technology · Learn Techniques · Grow Together</p>
+      <p class="hero-sub">
+        Start with the fault in front of you, understand the measurement or analyzer behind it,
+        and find real cases, open discussions and the professionals who chose a public profile.
+        <span class="hm-sub-more">Every technical page is open to read. An account is only needed to take part.</span>
+      </p>
+      <div class="hero-actions">
+        <a href="#solve" class="btn btn-hero">Find your fault</a>
+        <a href="/knowledge/" class="btn btn-soft">Browse knowledge</a>
+      </div>
+    </div>
+  </section>
 
-<!-- LEFT TEXT -->
-<div style="flex:1;min-width:280px;">
-<h1>
-The Social Technical Platform for
-Instrument & Analyzer Engineers
-</h1>
+  <!-- ================= B. SOLVE / LEARN / CONNECT ================= -->
+  <nav aria-label="What you can do on InstMates">
+    <ul class="hm-promises">
+      <li><a class="hm-promise" href="#solve"><span class="hm-promise-name">Solve</span><span class="hm-promise-q">What problem are you working on?</span></a></li>
+      <li><a class="hm-promise" href="#learn"><span class="hm-promise-name">Learn</span><span class="hm-promise-q">What do you want to understand?</span></a></li>
+      <li><a class="hm-promise" href="#connect"><span class="hm-promise-name">Connect</span><span class="hm-promise-q">Who has experience with this?</span></a></li>
+    </ul>
+  </nav>
 
-<p class="hero-tagline">
-Real breakdowns · Real plant fixes · Built for instrument & analyzer professionals
-</p>
+  <!-- ================= SOLVE ================= -->
+  <section id="solve" class="panel hm-section" aria-labelledby="solve-title">
+    <p class="hm-kicker">Solve</p>
+    <h2 id="solve-title">What problem are you working on?</h2>
+    <p class="muted">
+      Step-by-step field guides for faults instrument and analyzer technicians actually meet.
+      Open to read, no account needed.
+    </p>
 
-<p class="hero-sub">
-A private network where field engineers share live troubleshooting cases,
-GC errors, CEMS failures, calibration problems, and real plant recovery lessons.
-</p>
+    <!-- Static rendering of the W1.1 navigation contract (taxonomy.js NAVIGATION.solve,
+         status "existing"). site-tests verify this list equals the contract. -->
+    <ul class="hm-grid hm-solve" data-home="solve">
+      <li><a href="/knowledge/field/signals/4-20ma/troubleshooting/"><strong>4–20 mA loop troubleshooting</strong><span>Master guide for signal and loop faults</span></a></li>
+      <li><a href="/knowledge/field/pressure/pressure-troubleshooting/"><strong>Pressure troubleshooting</strong><span>Decision-tree guide for pressure measurement faults</span></a></li>
+      <li><a href="/knowledge/field/pressure/zero-shift-after-shutdown/"><strong>Zero shift after shutdown</strong><span>Root-cause guide for pressure transmitters</span></a></li>
+      <li><a href="/knowledge/field/flow/dp-flow-troubleshooting/"><strong>DP flow troubleshooting</strong><span>Complete field guide for differential-pressure flow</span></a></li>
+      <li><a href="/knowledge/gc/gc-failure-modes/"><strong>GC failure modes</strong><span>How process gas chromatographs fail and what to check</span></a></li>
+      <li><a href="/knowledge/analyzers/ftir-moisture-cross-interference/"><strong>FTIR moisture and cross-interference</strong><span>Field troubleshooting guide for FTIR analyzers</span></a></li>
+      <li><a href="/knowledge/laboratory/flash-point-analyzer/troubleshooting/"><strong>Flash-point analyzer troubleshooting</strong><span>Troubleshooting decision tree for laboratory flash-point analyzers</span></a></li>
+    </ul>
 
-<div class="hero-actions">
-<a href="/register.html" class="btn btn-hero">Join Free</a>
-<a href="/login.html" class="btn btn-soft">Login</a>
-</div>
+    <div class="hm-actions">
+      <a href="/case-studies/" class="btn btn-primary">Read real case studies</a>
+      <a href="/feed/" class="btn btn-ghost">Ask about your fault in the feed (login to post)</a>
+    </div>
 
-</div>
+    <!-- SOLVE support: real field cases, selected deterministically from content-map.js -->
+    <h3 id="cases-title">Real field cases</h3>
+    <p class="muted">Documented faults with the symptoms, the checks and the fix that worked.</p>
+    <ul class="hm-grid hm-cases" data-home="cases" aria-labelledby="cases-title">
+      <li><a href="/case-studies/"><strong>Browse all case studies</strong><span>Analyzer and field instrumentation cases</span></a></li>
+    </ul>
+    <p class="muted hm-note" data-home="case-count"></p>
+  </section>
 
-<!-- RIGHT COLUMN: the 17 MB autoplay avatar video was removed in W0.9
-     (homepage performance). Reserved for the W1 redesign. -->
+  <!-- ================= LEARN ================= -->
+  <section id="learn" class="panel hm-section" aria-labelledby="learn-title">
+    <p class="hm-kicker">Learn</p>
+    <h2 id="learn-title">What do you want to understand?</h2>
+    <p class="muted">
+      Structured learning paths written from plant behaviour, installation logic and diagnostics,
+      not textbook theory alone.
+    </p>
 
-</div>
-</section>
+    <!-- Static rendering of NAVIGATION.learn (status "existing"); page counts are filled
+         from content-map.js at runtime and are the real number of mapped pages. -->
+    <ul class="hm-grid hm-paths">
+      <li><a href="/knowledge/field/"><strong>Field instrumentation</strong><span data-home="path-count" data-path="/knowledge/field/">Pressure, flow, 4–20 mA signals and loops</span></a></li>
+      <li><a href="/knowledge/analyzers/"><strong>Process analyzers</strong><span data-home="path-count" data-path="/knowledge/analyzers/">GC and FTIR analyzers and their sampling systems</span></a></li>
+      <li><a href="/knowledge/gc/"><strong>Gas chromatography</strong><span data-home="path-count" data-path="/knowledge/gc/">Columns, valves, detectors, backflush and failure modes</span></a></li>
+      <li><a href="/knowledge/laboratory/"><strong>Laboratory &amp; QA</strong><span data-home="path-count" data-path="/knowledge/laboratory/">Calibration, uncertainty, SPC, ISO 17025, flash-point</span></a></li>
+    </ul>
 
-<!-- OPEN PREVIEW -->
-<section class="panel highlight-login">
+    <h3 id="topics-title">Covered today</h3>
+    <p class="muted">
+      Topics with at least three real pages, listed from the site's taxonomy with true page counts.
+      A topic that is not listed here is not covered yet.
+    </p>
+    <ul class="hm-topics" data-home="learn-topics" aria-labelledby="topics-title">
+      <li><a href="/knowledge/">Open the Knowledge Hub</a></li>
+    </ul>
+  </section>
 
-<h2>Technical Discussions</h2>
+  <!-- ================= CONNECT ================= -->
+  <section id="connect" class="panel hm-section" aria-labelledby="connect-title">
+    <p class="hm-kicker">Connect</p>
+    <h2 id="connect-title">Who has experience with this?</h2>
+    <p class="muted">
+      Open technical discussions and a public directory of professionals.
+      The community is small today and is shown exactly as it is.
+    </p>
 
-<p class="muted">
-Engineers post GC faults, CEMS trips, unstable 4–20 mA loops and
-calibration problems in the feed, and discuss them openly.
-</p>
+    <div class="hm-connect">
+      <div>
+        <h3 id="discussions-title">Latest discussions</h3>
+        <ul class="hm-list" data-home="discussions" aria-labelledby="discussions-title" aria-busy="true">
+          <li class="hm-empty">Open the feed to read the latest faults, questions and solutions.</li>
+        </ul>
+        <p class="muted hm-note" data-home="discussion-count"></p>
+        <div class="hm-actions">
+          <a href="/feed/" class="btn btn-ghost">Open the feed</a>
+        </div>
+      </div>
+      <div>
+        <h3 id="people-title">Public professionals</h3>
+        <ul class="hm-people" data-home="people" aria-labelledby="people-title" aria-busy="true">
+          <li>Open the directory to see professionals who chose a public profile.</li>
+        </ul>
+        <p class="muted hm-note" data-home="people-count"></p>
+        <div class="hm-actions">
+          <a href="/profiles/" class="btn btn-ghost">Open the directory</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- W0.8: removed three hard-coded "preview" cards that were styled to look
-     like live discussion data. Real posts are on /feed/. -->
+  <!-- ================= G. JOIN / CONTRIBUTE ================= -->
+  <section id="join" class="panel hm-section" aria-label="Take part">
 
-<div class="login-cta-box">
-<p style="font-weight:600;">Browse the full feed — no login needed.</p>
-<div style="margin-top:15px;">
-<a href="/feed/" class="btn btn-primary">View Full Feed</a>
-<a href="/register.html" class="btn btn-ghost">Join Free</a>
-</div>
-</div>
+    <!-- Anonymous visitors. auth.js toggles .auth-out-section / .auth-in-section on "/". -->
+    <div class="auth-out-section">
+      <p class="hm-kicker">Take part</p>
+      <h2 id="join-title">Reading is open. An account is for taking part.</h2>
+      <ul class="hm-ladder">
+        <li><strong>Ask</strong> – post a fault, question or calibration problem in the feed.</li>
+        <li><strong>Comment</strong> – add what you have seen on the same equipment.</li>
+        <li><strong>Share experience</strong> – post a solution and mark what helped, what you faced and what you agree with.</li>
+        <li><strong>Build your professional profile</strong> – headline, specialization, analyzers worked and certifications.</li>
+      </ul>
+      <div class="hm-actions">
+        <a href="/register.html" class="btn btn-primary">Join free</a>
+        <a href="/login.html" class="btn btn-ghost">Login</a>
+      </div>
+    </div>
 
-</section>
+    <!-- Signed-in members -->
+    <div class="auth-in-section">
+      <p class="hm-kicker">Continue</p>
+      <h2 id="continue-title">Welcome back.</h2>
+      <p class="muted">Pick up a discussion, share a solution or keep your profile current.</p>
+      <div class="hm-actions">
+        <a href="/feed/" class="btn btn-primary">Go to the feed</a>
+        <a href="/profile/" class="btn btn-ghost">Your profile</a>
+        <a href="/profile/edit/" class="btn btn-ghost">Edit profile</a>
+      </div>
+    </div>
 
-</section>
+  </section>
 
-<!-- ================= AUTH-IN ================= -->
-<section class="auth-in-section">
-<section class="hero">
-<div class="hero-inner container">
-<h1>Welcome Back to InstMates</h1>
-<p class="hero-sub">
-Continue discussions, explore case studies, and grow your technical authority.
-</p>
-
-<div class="hero-actions">
-<a href="/feed/" class="btn btn-soft">Go to Feed</a>
-<a href="/knowledge/" class="btn btn-ghost">Knowledge Hub</a>
-<a href="/profiles/" class="btn btn-ghost">Technician Directory</a>
-</div>
-</div>
-</section>
-</section>
+</main>
 
 <div id="siteFooter"></div>
 
 <script src="/assets/js/includes.js?v=2026-02-20"></script>
 <script type="module" src="/assets/js/header-auth.js?v=2026-02-20"></script>
+<script type="module" src="/assets/js/home.js?v=2026-09-07"></script>
 
 <script>
 if ("serviceWorker" in navigator) {
@@ -166,7 +334,6 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js");
   });
 }
-
 </script>
 
 </body>
