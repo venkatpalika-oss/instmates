@@ -1,0 +1,69 @@
+# Owner merge gate (repository governance, no product code).
+#
+# Reports a stable check named "owner-gate" on every pull request to main.
+# It PASSES only while the PR carries the `merge-authorized` label, which the
+# owner/CTO applies solely as an explicit merge authorization for the current
+# head. When the head changes (synchronize), the label is removed by this
+# workflow and the check FAILS until the owner re-authorizes the new head, so
+# an authorization for head A can never authorize head B.
+#
+# Once branch protection requires this check (Phase B), main cannot be merged
+# — by anyone, including administrators — before the preview job and this
+# explicit authorization are green for the exact head being merged.
+#
+# Minimum permissions: contents read (none needed for code), pull-requests
+# write (remove the label on synchronize). No PAT, no external secret.
+
+name: Owner merge gate
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: owner-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  owner-gate:
+    name: owner-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate explicit merge authorization for this head
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const LABEL = 'merge-authorized';
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const head = pr.head.sha;
+            const action = context.payload.action;
+            const has = (pr.labels || []).some((l) => l.name === LABEL);
+
+            core.info(`event=${action} pr=#${pr.number} head=${head} labelled=${has}`);
+
+            if (action === 'synchronize') {
+              // The head changed: any earlier authorization is void.
+              if (has) {
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: pr.number, name: LABEL });
+                  core.notice(`Head changed to ${head}: '${LABEL}' removed; the owner/CTO must re-authorize this head.`);
+                } catch (err) {
+                  core.warning(`Could not remove '${LABEL}': ${err.message}`);
+                }
+              }
+              core.setFailed(`Head ${head} is not authorized. Apply '${LABEL}' only under an explicit owner/CTO merge authorization for this head.`);
+              return;
+            }
+
+            if (has) {
+              core.notice(`Head ${head} is authorized for merge via '${LABEL}'.`);
+              return;
+            }
+            core.setFailed(`Head ${head} is not authorized: '${LABEL}' is absent. Apply it only under an explicit owner/CTO merge authorization for this head.`);
