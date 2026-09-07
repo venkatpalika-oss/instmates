@@ -10,7 +10,7 @@ import { TERMS, COVERAGE, HUB_MIN_RESOURCES, NAVIGATION, termBySlug } from "../p
 import { RESOURCES, resourcesFor, entryResource, resourcesUnder } from "../public/assets/js/content-map.js";
 import {
   HOME_LIMITS, POST_TYPE_LABELS, learnTopics, pathCount, caseCount, featuredCases, caseTopic,
-  excerpt, relativeTime, discussionModel, personModel, plural, shouldLoadHeroVideo
+  excerpt, relativeTime, discussionModel, personModel, plural
 } from "../public/assets/js/home.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -131,7 +131,7 @@ test("home: copy carries the approved tagline, no inflated or fabricated claims,
 test("home: one h1, landmarks, labelled sections and accessible heading order", () => {
   assert.equal((HOME_HTML.match(/<h1\b/g) || []).length, 1);
   assert.ok(/<main\b[^>]*id="main"/.test(HOME_HTML));
-  assert.ok(/<nav aria-label="What you can do on InstMates">/.test(HOME_HTML));
+  assert.ok(/<nav class="hm-model" aria-label="What you can do on InstMates">/.test(HOME_HTML));
   for (const id of ["solve", "learn", "connect"]) {
     assert.ok(new RegExp(`<section id="${id}"[^>]*aria-labelledby="${id}-title"`).test(HOME_HTML), `#${id} not labelled`);
     assert.ok(new RegExp(`<h2 id="${id}-title"`).test(HOME_HTML));
@@ -266,79 +266,6 @@ test("home: discussion model is honest — stored counters only, safe excerpt, n
   assert.ok(!Object.keys(items[0]).includes("author") && !Object.keys(items[0]).includes("uid"), "no author data on the homepage rail");
 });
 
-// ---------------------------------------------------------------- hero video (W1.2 addendum)
-/** Top-level MP4 box types plus the sample-description codecs found inside moov. */
-function mp4Boxes(buf) {
-  const boxes = [];
-  const walk = (start, end) => {
-    let o = start;
-    while (o + 8 <= end) {
-      let size = buf.readUInt32BE(o);
-      const type = buf.toString("latin1", o + 4, o + 8);
-      let hdr = 8;
-      if (size === 1) { size = Number(buf.readBigUInt64BE(o + 8)); hdr = 16; }
-      if (size === 0) size = end - o;
-      boxes.push(type);
-      if (["moov", "trak", "mdia", "minf", "stbl"].includes(type)) walk(o + hdr, o + size);
-      if (type === "stsd") boxes.push("codec:" + buf.toString("latin1", o + hdr + 12, o + hdr + 16));
-      o += size;
-    }
-  };
-  walk(0, buf.length);
-  return boxes;
-}
-
-test("hero video: markup is a silent, inline, looping, deferred decoration with a poster fallback", () => {
-  const video = HOME_HTML.match(/<video class="hm-hero-video"[\s\S]*?<\/video>/);
-  assert.ok(video, "hero video element missing");
-  const tag = video[0];
-  for (const attr of ["muted", "playsinline", "loop", 'preload="none"', 'aria-hidden="true"']) {
-    assert.ok(tag.includes(attr) || HOME_HTML.includes(`<div class="hm-hero-media" ${attr}`), `hero video lacks ${attr}`);
-  }
-  assert.ok(!/\bcontrols\b/.test(tag), "decorative video must not show controls");
-  assert.ok(!/<source/.test(tag) && !/\ssrc=/.test(tag), "no eager source: home.js attaches data-src after window load");
-  const poster = tag.match(/poster="([^"]+)"/)[1];
-  const src = tag.match(/data-src="([^"]+)"/)[1];
-  assert.ok(resolveUrl(poster), `poster missing on disk: ${poster}`);
-  assert.ok(resolveUrl(src), `video missing on disk: ${src}`);
-  assert.ok(poster.startsWith("/") && src.startsWith("/"), "same-origin assets only, no third-party video host");
-  assert.ok(HOME_HTML.indexOf("<h1") < HOME_HTML.indexOf('<video class="hm-hero-video"'), "hero text precedes the video in the HTML");
-  const text = sectionHtml("solve");
-  assert.ok(text.length > 500 && HOME_TEXT.includes("Share Technology · Learn Techniques · Grow Together"), "positioning and SOLVE content stay in HTML");
-});
-
-test("hero video: optimized asset is small, faststart, H.264 and carries no audio track; poster is small", () => {
-  const video = readFileSync(path.join(PUBLIC_DIR, "assets", "videos", "instmates-hero.mp4"));
-  const poster = readFileSync(path.join(PUBLIC_DIR, "assets", "images", "home", "hero-poster.jpg"));
-  assert.ok(video.length <= 1_200_000, `hero video too large for the homepage: ${video.length} bytes`);
-  assert.ok(poster.length <= 80_000, `poster too large: ${poster.length} bytes`);
-  assert.equal(poster.readUInt16BE(0), 0xffd8, "poster must be a JPEG");
-  const boxes = mp4Boxes(video);
-  assert.ok(boxes.indexOf("moov") < boxes.indexOf("mdat"), "moov must precede mdat (faststart)");
-  assert.ok(boxes.includes("codec:avc1"), "video must be H.264 for broad playback");
-  assert.ok(!boxes.includes("codec:mp4a") && !boxes.includes("smhd"), "no audio track: sound can never autoplay");
-  assert.ok(!HOME_HTML.includes("/assets/videos/avatar.mp4"), "the 17 MB original must not be referenced");
-  assert.ok(!existsSync(path.join(PUBLIC_DIR, "assets", "videos", "avatar.mp4")), "the 17 MB original must not be deployed (history keeps it)");
-});
-
-test("hero video: loader respects reduced motion, narrow viewports and slow connections; service worker never intercepts media", () => {
-  assert.equal(shouldLoadHeroVideo({}), true);
-  assert.equal(shouldLoadHeroVideo({ reducedMotion: true }), false);
-  assert.equal(shouldLoadHeroVideo({ narrow: true }), false);
-  assert.equal(shouldLoadHeroVideo({ saveData: true }), false);
-  assert.equal(shouldLoadHeroVideo({ effectiveType: "2g" }), false);
-  assert.equal(shouldLoadHeroVideo({ effectiveType: "slow-2g" }), false);
-  assert.equal(shouldLoadHeroVideo({ effectiveType: "4g" }), true);
-  assert.ok(HOME_CODE.includes('window.addEventListener("load", start'), "source attaches after window load");
-  assert.ok(HOME_CODE.includes("video.muted = true"), "muted is forced before play");
-  assert.doesNotMatch(HOME_CODE, /\.muted\s*=\s*false|soundToggle|Enable Sound/, "no unmute path");
-  assert.ok(/prefers-reduced-motion:reduce\)\{[\s\S]*?\.hm-hero-video/.test(HOME_HTML), "reduced-motion rule addresses the hero video");
-  const sw = readFileSync(path.join(PUBLIC_DIR, "service-worker.js"), "utf8");
-  assert.ok(/function isMedia\(url\)[\s\S]*?mp4/.test(sw) && sw.includes("if (isMedia(url)) return;"), "media must bypass the service worker");
-  assert.ok(!/response\.ok\) cache\.put/.test(sw) && sw.includes("response.status === 200"), "only complete 200 responses are cached");
-  assert.equal(sw.match(/const CACHE_NAME = "instmates-v4"/g).length, 1, "cache name unchanged");
-});
-
 test("home: person model exposes only the public directory fields", () => {
   const p = personModel("uid-1", { basicInfo: { fullName: "A", headline: "H", profilePhoto: "x" }, professional: { specialization: "S", analyzersWorked: ["Z"] }, email: "e@x" });
   assert.deepEqual(Object.keys(p).sort(), ["headline", "name", "specialization", "uid"]);
@@ -346,4 +273,62 @@ test("home: person model exposes only the public directory fields", () => {
   assert.equal(personModel("u", { fullName: "Legacy", role: "R", primaryDomain: "D" }).headline, "R");
   assert.equal(plural(1, "page"), "1 page");
   assert.equal(plural(2, "documented case", "documented cases"), "2 documented cases");
+});
+
+// ---------------------------------------------------------------- light technical canvas hero
+const HERO_RAW = HOME_HTML.match(/<section class="hm-hero[^"]*"[\s\S]*?<\/section>/)[0];
+const HERO_HTML = HERO_RAW.replace(/<!--[\s\S]*?-->/g, (c) => c); // comments kept for the slot-note assertion
+const HERO_MARKUP = HERO_RAW.replace(/<!--[\s\S]*?-->/g, ""); // comments stripped for element assertions
+
+test("hero: light technical canvas — homepage-scoped block, verbatim positioning, approved copy, no pattern, no video", () => {
+  assert.ok(HERO_HTML, "hero block missing");
+  assert.ok(!/class="hero[ "]/.test(HOME_HTML), "homepage must not use the sitewide patterned .hero component");
+  assert.ok(HERO_HTML.includes('<h1 id="hm-title">Field troubleshooting, technical knowledge and real experience for instrument and analyzer professionals.</h1>'), "H1 must stay verbatim");
+  assert.ok(HERO_HTML.includes("Share Technology · Learn Techniques · Grow Together"), "tagline must stay verbatim");
+  assert.ok(HERO_HTML.includes("Start with the fault in front of you, understand the measurement or analyzer behind it, then find real cases, open discussions and public professionals. Everything technical is open to read; an account is only for taking part."), "approved support copy");
+  assert.equal((HOME_HTML.match(/<video\b/g) || []).length, 0, "no video element on the homepage");
+  assert.doesNotMatch(HOME_HTML, /instmates-hero\.mp4|hero-poster\.jpg|avatar\.mp4/, "no runtime reference to the retired hero media");
+  assert.doesNotMatch(HOME_JS, /instmates-hero|hero-poster|HeroVideo|<video/, "home.js carries no hero-video logic");
+  assert.doesNotMatch(HOME_TEXT, /HeyGen/i);
+  const heroRule = HOME_HTML.match(/\.hm-hero\{[^}]*\}/);
+  assert.ok(heroRule, "hero CSS rule present");
+  assert.doesNotMatch(heroRule[0], /url\(|gradient/, "no pattern or gradient behind the copy");
+});
+
+test("hero: CTA structure and the compact SOLVE / LEARN / CONNECT model replace the promise-card strip", () => {
+  assert.ok(HERO_HTML.includes('<a href="#solve" class="hm-btn hm-btn-primary">Find your fault</a>'), "primary CTA → #solve");
+  assert.ok(HERO_HTML.includes('<a href="/knowledge/" class="hm-btn hm-btn-outline">Browse knowledge</a>'), "secondary CTA → /knowledge/");
+  assert.equal((HERO_HTML.match(/class="hm-btn /g) || []).length, 2, "exactly two hero CTAs");
+  const model = HERO_HTML.match(/<nav class="hm-model"[\s\S]*?<\/nav>/)[0];
+  for (const [id, q] of [["solve", "What problem are you working on?"], ["learn", "What do you want to understand?"], ["connect", "Who has experience with this?"]]) {
+    assert.ok(model.includes(`href="#${id}"`) && model.includes(q), `model lacks ${id}`);
+    assert.ok(HOME_HTML.includes(`<section id="${id}"`), `anchor target #${id} missing`);
+  }
+  assert.doesNotMatch(HOME_HTML, /hm-promise/, "old promise-card strip removed");
+  assert.match(HOME_HTML.match(/\.hm-btn\{[^}]*\}/)[0], /min-height:46px/, "CTAs are ≥44px targets");
+});
+
+test("hero: photograph contract — when a figure exists it is responsive, dimensioned, described and same-origin", () => {
+  const fig = HERO_MARKUP.match(/<figure class="hm-hero-figure">([\s\S]*?)<\/figure>/);
+  if (!fig) {
+    assert.ok(HERO_HTML.includes("OWNER-SUPPLIED HERO PHOTOGRAPH REQUIRED"), "no figure: the slot must document the pending owner decision");
+    assert.ok(!HERO_MARKUP.includes('class="hm-hero has-figure"'), "has-figure grid only with a real figure");
+    return;
+  }
+  const img = fig[1].match(/<img[^>]+>/)[0];
+  for (const attr of ["srcset=", "sizes=", "width=", "height=", 'fetchpriority="high"']) assert.ok(img.includes(attr), `hero img lacks ${attr}`);
+  const alt = img.match(/alt="([^"]*)"/);
+  assert.ok(alt && alt[1].length > 12, "descriptive alt");
+  for (const src of [...img.matchAll(/(?:src|srcset)="([^"]+)"/g)].flatMap((m) => m[1].split(",").map((s) => s.trim().split(" ")[0]))) {
+    assert.ok(src.startsWith("/assets/images/"), `hero image must be same-origin: ${src}`);
+    assert.ok(resolveUrl(src), `hero image missing on disk: ${src}`);
+    assert.ok(readFileSync(path.join(PUBLIC_DIR, src.replace(/^\//, ""))).length <= 95_000, `hero image too heavy: ${src}`);
+  }
+  assert.ok(HERO_HTML.includes('class="hm-hero has-figure"'));
+});
+
+test("hero: GC discovery entry still reaches the published hub", () => {
+  const gc = learnTopics().find((t) => t.slug === "gas-chromatography");
+  assert.equal(gc.href, "/technology/gas-chromatography/");
+  assert.ok(resolveUrl(gc.href));
 });
