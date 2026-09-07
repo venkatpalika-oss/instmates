@@ -74,6 +74,16 @@ Single column; hero, promise strip and the SOLVE heading fit the first screen (S
 
 Events worth measuring later, if the owner authorises a sitewide analytics decision: promise-strip clicks (solve/learn/connect), SOLVE guide clicks by page, "ask in the feed" clicks, LEARN topic clicks by slug and page count, learning-path clicks, featured-case clicks, discussion/profile rail clicks, Join/Login clicks from the ladder, and the auth-in Continue actions.
 
-## 10. Deferred / out of scope
+## 10. Hero video (owner addendum)
+
+**Recovered evidence.** The only homepage video in history is `public/assets/videos/avatar.mp4`, added in commit 7e4448d ("avatar added", 2026-02-19) and still tracked on `main` (it was never deleted from the tree, so it is still deployed to Hosting). 17,151,945 bytes; MP4, H.264 High 1280×720 25 fps ≈ 4.45 Mbps plus AAC-LC stereo 48 kHz ≈ 189 kbps; 29.56 s. It is a HeyGen AI-avatar presenter with burnt-in captions ("Welcome to InstMates… I created InstMates to ensure that real troubleshooting knowledge is documented, shared, and accessible to every instrument and analyzer professional… built with an engineering mindset — focused on accuracy, structure, and insight") and a HeyGen watermark in the lower-right corner. The old homepage placed it in the hero's right column as `<video autoplay muted loop playsinline>` with a `<source>` in the HTML (so the 17 MB download started on every visit) and a "🔊 Enable Sound" button that unmuted it. Commit 22b5603 (W0.9, "remove fabricated and unavailable product claims") removed the markup for homepage performance and left a comment reserving the column for W1.
+
+**Restored implementation.** New optimized asset `public/assets/videos/instmates-hero.mp4`: 798,540 bytes, H.264 Main 960×540 CRF 33 ≈ 214 kbps, **no audio track**, `+faststart`. Poster `public/assets/images/home/hero-poster.jpg`: 53,120 bytes, 960×540 JPEG from a clean frame at 29.2 s (no caption). The `<video>` is decorative (`aria-hidden`, `tabindex="-1"`, `muted playsinline loop autoplay preload="none"`, no controls) and carries **no source in the HTML**; `home.js` attaches `data-src` after `window` load only when `shouldLoadHeroVideo()` allows it: not under `prefers-reduced-motion`, not at ≤768 px, not with Save-Data or a 2G-class connection. Without JavaScript, when autoplay is blocked, on failure, on mobile and under reduced motion the poster is the whole experience; the hero text, tagline, actions and the promise strip are unchanged HTML. The 17 MB original is not referenced.
+
+**Service worker.** Same cache name (`instmates-v4`). Media (`mp4/webm/m4v/mp3/ogg/wav`) is no longer intercepted, and only complete `200` responses are cached — Range (`206`) responses previously reached `cache.put`, which rejects them.
+
+**Measurements (hosting emulator).** Same-origin compressed bytes on the first view: ≈ 49 KB before the video; ≈ 104 KB after (poster 53 KB + 0.5 KB HTML) on every viewport; plus 799 KB of video on desktop after the load event (≈ 903 KB total). Mobile and reduced-motion never fetch the video. DOMContentLoaded and load are unaffected because the source is attached after load.
+
+## 11. Deferred / out of scope
 
 `/includes/header/` sitemap anomaly (deferred, untouched); `/solve/` and `/technology/` routes (W1.4 / decision); people↔technology mapping (FUTURE); header, footer and bottom-nav changes; retirement redirects (`explore.html` is no longer linked from the homepage but the URL is intact); visual system (W1.3).

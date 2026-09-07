@@ -79,6 +79,10 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 .hm-hero .hero-sub{font-size:1.05rem;line-height:1.55;max-width:760px;margin:0 0 6px}
 .hm-hero .hero-actions{margin-top:16px}
 .hm-hero .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;white-space:normal}
+.hm-hero-split{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.9fr);gap:28px;align-items:center}
+.hm-hero-text{min-width:0}
+.hm-hero-media{margin:0;min-width:0}
+.hm-hero-video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px;background:#08283f;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 
 .hm-promises{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 0;padding:0;list-style:none}
 .hm-promise{display:flex;flex-direction:column;justify-content:center;min-height:64px;padding:12px 16px;border-radius:12px;background:#fff;border:1px solid var(--brand-border);text-decoration:none;color:#0f172a;box-shadow:0 2px 8px rgba(0,0,0,.05)}
@@ -142,6 +146,10 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
   .hm-sub-more{display:none}
   .hm-hero .hero-actions{margin-top:12px;gap:8px}
   .hm-hero .hero-actions .btn{flex:1 1 40%;margin:0;padding:8px 8px;font-size:.95rem}
+  /* Mobile: poster only (home.js never attaches the video source at <=768px). */
+  .hm-hero-split{grid-template-columns:1fr;gap:14px}
+  .hm-hero-media{max-width:280px;margin:2px auto 0}
+  .hm-hero-video{border-radius:10px}
   .hm-promises{grid-template-columns:1fr;gap:8px;margin-top:12px}
   .hm-promise{min-height:48px;padding:8px 12px;flex-direction:row;align-items:baseline;gap:10px}
   .hm-promise-name{font-size:.95rem}
@@ -155,6 +163,8 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 }
 @media (prefers-reduced-motion:reduce){
   .hm *{transition:none!important;animation:none!important}
+  /* Reduced motion: the poster is the whole experience (home.js also never attaches the source). */
+  .hm-hero-video{pointer-events:none}
 }
 </style>
 </head>
@@ -167,7 +177,8 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 
   <!-- ================= A. PRODUCT IDENTITY ================= -->
   <section class="hero hm-hero" aria-labelledby="hm-title">
-    <div class="hero-inner">
+    <div class="hero-inner hm-hero-split">
+    <div class="hm-hero-text">
       <h1 id="hm-title">Field troubleshooting, technical knowledge and real experience for instrument and analyzer professionals.</h1>
       <p class="hero-tagline">Share Technology · Learn Techniques · Grow Together</p>
       <p class="hero-sub">
@@ -179,6 +190,20 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
         <a href="#solve" class="btn btn-hero">Find your fault</a>
         <a href="/knowledge/" class="btn btn-soft">Browse knowledge</a>
       </div>
+    </div>
+
+    <!-- Decorative hero video (W1.2 addendum). Silent, looping, optimized web
+         encode of the original avatar video. No <source> in the HTML: home.js
+         attaches data-src after window load, only on wide viewports, without
+         prefers-reduced-motion and without Save-Data / 2G. Without JavaScript,
+         when blocked, or on failure only the poster is shown. -->
+    <div class="hm-hero-media" aria-hidden="true">
+      <video class="hm-hero-video" muted playsinline loop autoplay preload="none"
+             width="960" height="540"
+             poster="/assets/images/home/hero-poster.jpg"
+             data-src="/assets/videos/instmates-hero.mp4"
+             disablepictureinpicture disableremoteplayback tabindex="-1"></video>
+    </div>
     </div>
   </section>
 

@@ -10,7 +10,7 @@ import { TERMS, COVERAGE, HUB_MIN_RESOURCES, NAVIGATION, termBySlug } from "../p
 import { RESOURCES, resourcesFor, entryResource, resourcesUnder } from "../public/assets/js/content-map.js";
 import {
   HOME_LIMITS, POST_TYPE_LABELS, learnTopics, pathCount, caseCount, featuredCases, caseTopic,
-  excerpt, relativeTime, discussionModel, personModel, plural
+  excerpt, relativeTime, discussionModel, personModel, plural, shouldLoadHeroVideo
 } from "../public/assets/js/home.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -264,6 +264,78 @@ test("home: discussion model is honest — stored counters only, safe excerpt, n
   assert.equal(excerpt("short"), "short");
   assert.equal(discussionModel([]).length, 0, "zero posts → zero items → sparse state");
   assert.ok(!Object.keys(items[0]).includes("author") && !Object.keys(items[0]).includes("uid"), "no author data on the homepage rail");
+});
+
+// ---------------------------------------------------------------- hero video (W1.2 addendum)
+/** Top-level MP4 box types plus the sample-description codecs found inside moov. */
+function mp4Boxes(buf) {
+  const boxes = [];
+  const walk = (start, end) => {
+    let o = start;
+    while (o + 8 <= end) {
+      let size = buf.readUInt32BE(o);
+      const type = buf.toString("latin1", o + 4, o + 8);
+      let hdr = 8;
+      if (size === 1) { size = Number(buf.readBigUInt64BE(o + 8)); hdr = 16; }
+      if (size === 0) size = end - o;
+      boxes.push(type);
+      if (["moov", "trak", "mdia", "minf", "stbl"].includes(type)) walk(o + hdr, o + size);
+      if (type === "stsd") boxes.push("codec:" + buf.toString("latin1", o + hdr + 12, o + hdr + 16));
+      o += size;
+    }
+  };
+  walk(0, buf.length);
+  return boxes;
+}
+
+test("hero video: markup is a silent, inline, looping, deferred decoration with a poster fallback", () => {
+  const video = HOME_HTML.match(/<video class="hm-hero-video"[\s\S]*?<\/video>/);
+  assert.ok(video, "hero video element missing");
+  const tag = video[0];
+  for (const attr of ["muted", "playsinline", "loop", 'preload="none"', 'aria-hidden="true"']) {
+    assert.ok(tag.includes(attr) || HOME_HTML.includes(`<div class="hm-hero-media" ${attr}`), `hero video lacks ${attr}`);
+  }
+  assert.ok(!/\bcontrols\b/.test(tag), "decorative video must not show controls");
+  assert.ok(!/<source/.test(tag) && !/\ssrc=/.test(tag), "no eager source: home.js attaches data-src after window load");
+  const poster = tag.match(/poster="([^"]+)"/)[1];
+  const src = tag.match(/data-src="([^"]+)"/)[1];
+  assert.ok(resolveUrl(poster), `poster missing on disk: ${poster}`);
+  assert.ok(resolveUrl(src), `video missing on disk: ${src}`);
+  assert.ok(poster.startsWith("/") && src.startsWith("/"), "same-origin assets only, no third-party video host");
+  assert.ok(HOME_HTML.indexOf("<h1") < HOME_HTML.indexOf('<video class="hm-hero-video"'), "hero text precedes the video in the HTML");
+  const text = sectionHtml("solve");
+  assert.ok(text.length > 500 && HOME_TEXT.includes("Share Technology · Learn Techniques · Grow Together"), "positioning and SOLVE content stay in HTML");
+});
+
+test("hero video: optimized asset is small, faststart, H.264 and carries no audio track; poster is small", () => {
+  const video = readFileSync(path.join(PUBLIC_DIR, "assets", "videos", "instmates-hero.mp4"));
+  const poster = readFileSync(path.join(PUBLIC_DIR, "assets", "images", "home", "hero-poster.jpg"));
+  assert.ok(video.length <= 1_200_000, `hero video too large for the homepage: ${video.length} bytes`);
+  assert.ok(poster.length <= 80_000, `poster too large: ${poster.length} bytes`);
+  assert.equal(poster.readUInt16BE(0), 0xffd8, "poster must be a JPEG");
+  const boxes = mp4Boxes(video);
+  assert.ok(boxes.indexOf("moov") < boxes.indexOf("mdat"), "moov must precede mdat (faststart)");
+  assert.ok(boxes.includes("codec:avc1"), "video must be H.264 for broad playback");
+  assert.ok(!boxes.includes("codec:mp4a") && !boxes.includes("smhd"), "no audio track: sound can never autoplay");
+  assert.ok(!HOME_HTML.includes("/assets/videos/avatar.mp4"), "the 17 MB original must not be referenced");
+});
+
+test("hero video: loader respects reduced motion, narrow viewports and slow connections; service worker never intercepts media", () => {
+  assert.equal(shouldLoadHeroVideo({}), true);
+  assert.equal(shouldLoadHeroVideo({ reducedMotion: true }), false);
+  assert.equal(shouldLoadHeroVideo({ narrow: true }), false);
+  assert.equal(shouldLoadHeroVideo({ saveData: true }), false);
+  assert.equal(shouldLoadHeroVideo({ effectiveType: "2g" }), false);
+  assert.equal(shouldLoadHeroVideo({ effectiveType: "slow-2g" }), false);
+  assert.equal(shouldLoadHeroVideo({ effectiveType: "4g" }), true);
+  assert.ok(HOME_CODE.includes('window.addEventListener("load", start'), "source attaches after window load");
+  assert.ok(HOME_CODE.includes("video.muted = true"), "muted is forced before play");
+  assert.doesNotMatch(HOME_CODE, /\.muted\s*=\s*false|soundToggle|Enable Sound/, "no unmute path");
+  assert.ok(/prefers-reduced-motion:reduce\)\{[\s\S]*?\.hm-hero-video/.test(HOME_HTML), "reduced-motion rule addresses the hero video");
+  const sw = readFileSync(path.join(PUBLIC_DIR, "service-worker.js"), "utf8");
+  assert.ok(/function isMedia\(url\)[\s\S]*?mp4/.test(sw) && sw.includes("if (isMedia(url)) return;"), "media must bypass the service worker");
+  assert.ok(!/response\.ok\) cache\.put/.test(sw) && sw.includes("response.status === 200"), "only complete 200 responses are cached");
+  assert.equal(sw.match(/const CACHE_NAME = "instmates-v4"/g).length, 1, "cache name unchanged");
 });
 
 test("home: person model exposes only the public directory fields", () => {

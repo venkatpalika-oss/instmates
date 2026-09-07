@@ -19,6 +19,9 @@
      never intercepted.
    - Offline fallback to /index.html only for navigation requests.
    - Activation deletes every older cache and takes control immediately.
+   - W1.2 (same cache name): media files (mp4/webm/audio) are never
+     intercepted, and only complete 200 responses are cached, so Range
+     (206) responses can no longer reach cache.put.
 ========================================================= */
 
 const CACHE_NAME = "instmates-v4";
@@ -57,6 +60,10 @@ function isSameOrigin(url) {
   return url.origin === self.location.origin;
 }
 
+function isMedia(url) {
+  return /\.(mp4|webm|m4v|mp3|ogg|wav)$/i.test(url.pathname);
+}
+
 function isStaticAsset(url) {
   return /\.(png|jpg|jpeg|gif|webp|svg|ico|woff2?|ttf)$/i.test(url.pathname);
 }
@@ -65,7 +72,7 @@ async function networkFirst(request, { fallbackToIndex = false } = {}) {
   const cache = await caches.open(CACHE_NAME);
   try {
     const response = await fetch(request);
-    if (response && response.ok) cache.put(request, response.clone());
+    if (response && response.status === 200) cache.put(request, response.clone()); // never cache partial (206) responses
     return response;
   } catch (err) {
     const cached = await cache.match(request);
@@ -83,7 +90,7 @@ async function cacheFirst(request) {
   const cached = await cache.match(request);
   if (cached) return cached;
   const response = await fetch(request);
-  if (response && response.ok) cache.put(request, response.clone());
+  if (response && response.status === 200) cache.put(request, response.clone()); // never cache partial (206) responses
   return response;
 }
 
@@ -93,6 +100,10 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (!isSameOrigin(url)) return; // let the browser handle Firebase, fonts, analytics
+
+  // W1.2: media is fetched with Range requests (206) and must never be cached
+  // or intercepted; the homepage hero video is attached by home.js after load.
+  if (isMedia(url)) return;
 
   if (request.mode === "navigate") {
     event.respondWith(networkFirst(request, { fallbackToIndex: true }));
