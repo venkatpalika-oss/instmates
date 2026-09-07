@@ -222,3 +222,47 @@ export function entryResource(slug) {
 export function resourcesUnder(prefix) {
   return RESOURCES.filter((res) => res.kind !== "index" && res.path.startsWith(prefix));
 }
+
+/** W1.3: resolve a browser pathname (clean URL, .html or index.html form) to its mapped resource, or null. */
+export function resourceForPath(pathname) {
+  let p = String(pathname || "").split(/[?#]/)[0];
+  p = p.replace(/\/index\.html$/, "/").replace(/\.html$/, "/");
+  if (!p.endsWith("/")) p += "/";
+  return RESOURCES.find((res) => res.path === p) || null;
+}
+
+export const RELATED_LIMIT = 6;
+
+/**
+ * W1.3 related-knowledge rule (deterministic, bounded):
+ * primary term = first technology term, else first measurement term.
+ * Candidates = content resources of that term, never the page itself, never index pages.
+ * Order: round-robin across the OTHER hub sections (HUB_SECTIONS order, RESOURCES order
+ * inside a section) so a reader sees one item per section before a second of any,
+ * then the page's own section. Truncated to RELATED_LIMIT.
+ */
+export function relatedResources(res, limit = RELATED_LIMIT) {
+  if (!res || res.kind === "index") return [];
+  const primary = res.technology[0] || res.measurement[0] || null;
+  if (!primary) return [];
+  const sectionOf = (r) => HUB_SECTIONS.findIndex((s) => s.kinds.includes(r.kind));
+  const mine = sectionOf(res);
+  const candidates = resourcesFor(primary).filter((r) => r.path !== res.path);
+  const buckets = HUB_SECTIONS.map((_, i) => candidates.filter((r) => sectionOf(r) === i));
+  const order = [...buckets.keys()].filter((i) => i !== mine).concat(mine >= 0 ? [mine] : []);
+  const out = [];
+  for (let round = 0; out.length < limit; round++) {
+    let added = false;
+    for (const i of order) {
+      const r = buckets[i][round];
+      if (!r) continue;
+      added = true;
+      // Two mapped pages can share a title (e.g. the GC basics overview in two sections); show one.
+      if (out.some((x) => x.title === r.title)) continue;
+      out.push(r);
+      if (out.length >= limit) break;
+    }
+    if (!added) break;
+  }
+  return out;
+}

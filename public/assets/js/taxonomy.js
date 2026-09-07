@@ -42,7 +42,7 @@ function term(facet, slug, label, extra = {}) {
     group: extra.group || null,
     aliases: Object.freeze(extra.aliases || []),
     coverage: extra.coverage || COVERAGE.NONE,
-    hub: null, // no hub routes are published in W1.1 (see plan §D)
+    hub: extra.hub || null, // published hub route; W1.3: gas-chromatography only (plan §D evidence rule)
     entry: extra.entry || null, // W1.2: declared LEARN entry point (an existing page) for supported terms; verified by site-tests
     tag: extra.tag || null, // feed composer quick-suggestion text (must be the label or an approved alias; verified by site-tests)
     note: extra.note || null
@@ -62,7 +62,7 @@ export const TERMS = Object.freeze([
   term("measurement", "laboratory-qa", "Laboratory & QA", { aliases: ["laboratory", "lab", "qa", "iso 17025"], coverage: "supported", tag: "Laboratory", entry: "/knowledge/laboratory/" }),
 
   // ---------- Facet 2: ANALYTICAL TECHNOLOGY (how it is measured) ----------
-  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported", tag: "GC", entry: "/knowledge/gc/" }),
+  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported", tag: "GC", entry: "/knowledge/gc/", hub: "/technology/gas-chromatography/" }),
   term("technology", "ftir", "FTIR", { group: "gas", aliases: ["ft-ir", "fourier transform infrared"], coverage: "supported", tag: "FTIR", entry: "/knowledge/analyzers/ftir-analyzer/" }),
   term("technology", "sampling-systems", "Sampling systems", { group: "cross-cutting", aliases: ["sample conditioning", "sampling system", "sample system"], coverage: "supported", tag: "Sampling system", entry: "/knowledge/gc/gc-sampling-system/" }),
   term("technology", "flash-point-analyzer", "Flash-point analyzer", { group: "laboratory", aliases: ["flash point", "astm d56", "astm d93"], coverage: "supported", tag: "Flash point", entry: "/knowledge/laboratory/flash-point-analyzer/" }),

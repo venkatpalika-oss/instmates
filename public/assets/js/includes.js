@@ -38,6 +38,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // =====================================================
+  // 🔗 RELATED KNOWLEDGE (W1.3) — one shared mounting point.
+  // Technical content pages get the related.js module; it resolves
+  // the pathname against the canonical content map and renders
+  // nothing when the page is not mapped. No per-page edits.
+  // =====================================================
+
+  if (/^\/(knowledge|case-studies|blog)\//.test(location.pathname) && !document.querySelector('script[src^="/assets/js/related.js"]')) {
+    const related = document.createElement("script");
+    related.type = "module";
+    related.src = "/assets/js/related.js?v=2026-09-07";
+    document.body.appendChild(related);
+  }
+
+  // =====================================================
   // 📱 MOBILE BOTTOM NAV (GLOBAL INJECTION)
   // =====================================================
 
