@@ -318,6 +318,7 @@ test("hero video: optimized asset is small, faststart, H.264 and carries no audi
   assert.ok(boxes.includes("codec:avc1"), "video must be H.264 for broad playback");
   assert.ok(!boxes.includes("codec:mp4a") && !boxes.includes("smhd"), "no audio track: sound can never autoplay");
   assert.ok(!HOME_HTML.includes("/assets/videos/avatar.mp4"), "the 17 MB original must not be referenced");
+  assert.ok(!existsSync(path.join(PUBLIC_DIR, "assets", "videos", "avatar.mp4")), "the 17 MB original must not be deployed (history keeps it)");
 });
 
 test("hero video: loader respects reduced motion, narrow viewports and slow connections; service worker never intercepts media", () => {
