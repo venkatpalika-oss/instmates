@@ -318,57 +318,7 @@ async function loadCommunity() {
   await Promise.all([loadDiscussions(db, fs), loadPeople(db, fs)]);
 }
 
-/* ---------------- Hero video (decorative enhancement, W1.2 addendum) ---------------- */
-
-/**
- * Pure decision: the silent hero video is loaded only when nothing argues
- * against it. Reduced motion → poster. Narrow viewport (field/mobile) →
- * poster. Save-Data or a 2G-class connection → poster.
- */
-export function shouldLoadHeroVideo(env = {}) {
-  if (env.reducedMotion) return false;
-  if (env.narrow) return false;
-  if (env.saveData) return false;
-  if (typeof env.effectiveType === "string" && /(^|-)2g$/.test(env.effectiveType)) return false;
-  return true;
-}
-
-function heroVideoEnv() {
-  const conn = navigator.connection || {};
-  return {
-    reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    narrow: window.matchMedia("(max-width: 768px)").matches,
-    saveData: !!conn.saveData,
-    effectiveType: conn.effectiveType || ""
-  };
-}
-
-function initHeroVideo() {
-  const video = document.querySelector(".hm-hero-video[data-src]");
-  if (!video) return;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const stop = () => {
-    video.pause();
-    video.removeAttribute("src");
-    video.load(); // back to the poster
-  };
-  if (reduced.addEventListener) reduced.addEventListener("change", (e) => { if (e.matches) stop(); });
-  if (!shouldLoadHeroVideo(heroVideoEnv())) return;
-
-  const start = () => {
-    if (!shouldLoadHeroVideo(heroVideoEnv())) return;
-    video.muted = true; // never audio; the encode carries no audio track either
-    video.src = video.dataset.src;
-    const p = video.play();
-    if (p && typeof p.catch === "function") p.catch(() => {}); // autoplay blocked → poster stays
-  };
-  // Never compete with the initial render: attach the source after window load.
-  if (document.readyState === "complete") start();
-  else window.addEventListener("load", start, { once: true });
-}
-
 if (typeof document !== "undefined" && document.body && document.body.dataset.page === "home") {
   renderStatic();
   loadCommunity();
-  initHeroVideo();
 }
