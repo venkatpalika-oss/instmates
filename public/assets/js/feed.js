@@ -21,6 +21,11 @@ import {
 
 // W0.1: one escaping implementation for the whole site (escapes quotes too)
 import { esc, escMultiline, safeStorageUrl } from "./safe-html.js";
+// Social + technical composer: pure model (post types, prompts, limits, tags, states)
+import {
+  POST_TYPES, LIMITS, promptFor, attachmentKind, parseTags, countTags, addTag,
+  tagSuggestions, charCount, validateDraft, submitState, submitLabel, SUBMIT_STATES, postBodyHtml
+} from "./composer-model.js";
 
 import {
   ref,
@@ -63,69 +68,219 @@ let unsubscribePosts = null;
    CREATE POST
 ========================================================= */
 
-if (postBtn) {
-  postBtn.addEventListener("click", async () => {
+/* ---------------- Composer UI (DOM) ---------------- */
 
-    const content = postInput.value.trim();
-    const file = fileInput?.files[0];
+const composer = {
+  submitting: false,
+  justPosted: false,
+  error: "",
+  previewUrl: null
+};
 
-    if (!content && !file) return;
-    if (!requireLogin()) return;
-postBtn.disabled = true;
-    const originalBtnText = postBtn.innerText;
-    postBtn.innerText = "Posting...";
+const typeButtons = () => [...document.querySelectorAll("#postTypes [data-type]")];
+const statusEl = document.getElementById("composerStatus");
+const charCountEl = document.getElementById("charCount");
+const tagCountEl = document.getElementById("tagCount");
+const previewEl = document.getElementById("attachmentPreview");
 
-    try {
-      let attachment = null;
+function currentDraft() {
+  return {
+    content: postInput ? postInput.value : "",
+    file: fileInput?.files?.[0] || null,
+    tags: postTagsInput ? postTagsInput.value : "",
+    typeId: postTypeSelect?.value || "question",
+    signedIn: !!auth.currentUser
+  };
+}
 
-      if (file) {
+function setStatus(message, kind) {
+  if (!statusEl) return;
+  statusEl.textContent = message || "";
+  statusEl.className = "composer-status" + (kind ? ` is-${kind}` : "");
+}
 
-        if (file.size > 20 * 1024 * 1024) {
-          alert("Maximum file size is 20MB");
-          return;
-        }
+function refreshComposer() {
+  if (!postBtn) return;
+  const draft = currentDraft();
+  const check = validateDraft({ ...draft, signedIn: true }); // login is asked for on submit, as before
+  const state = submitState({ valid: check.ok, submitting: composer.submitting, justPosted: composer.justPosted, error: composer.error });
+  postBtn.disabled = state === SUBMIT_STATES.INVALID || state === SUBMIT_STATES.SUBMITTING;
+  postBtn.textContent = submitLabel(state);
+  postBtn.dataset.state = state;
+  if (charCountEl) {
+    const n = charCount(draft.content);
+    charCountEl.textContent = `${n} / ${LIMITS.content}`;
+    charCountEl.classList.toggle("is-limit", n >= LIMITS.content);
+  }
+  if (tagCountEl) {
+    const n = countTags(draft.tags);
+    tagCountEl.textContent = `${Math.min(n, LIMITS.tags)}/${LIMITS.tags}`;
+    tagCountEl.classList.toggle("is-limit", n > LIMITS.tags);
+  }
+  if (composer.error) setStatus(composer.error, "error");
+  else if (composer.justPosted) setStatus("Posted. Thanks for sharing.", "success");
+  else if (!check.ok && (draft.content.trim() || draft.file || countTags(draft.tags) > LIMITS.tags)) setStatus(check.message, "hint");
+  else setStatus("", null);
+}
 
-        const filePath =
-          `postAttachments/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
+function selectType(id) {
+  if (!postTypeSelect) return;
+  postTypeSelect.value = id;
+  for (const btn of typeButtons()) {
+    const on = btn.dataset.type === id;
+    btn.classList.toggle("is-selected", on);
+    btn.setAttribute("aria-checked", on ? "true" : "false");
+    btn.tabIndex = on ? 0 : -1;
+  }
+  if (postInput) postInput.placeholder = promptFor(id);
+}
 
-        const storageRef = ref(storage, filePath);
-
-        await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
-
-        let type = "file";
-
-        if (file.type.startsWith("image/")) type = "image";
-        else if (file.type.startsWith("video/")) type = "video";
-        else if (file.type === "application/pdf") type = "pdf";
-
-        attachment = {
-          url: downloadURL,
-          type,
-          name: file.name
-        };
-      }
-
-      await addDoc(collection(db, "posts"), {
-        content: content || "",
-        uid: auth.currentUser.uid,
-        type: postTypeSelect?.value || "question",
-        attachment: attachment || null,
-        createdAt: serverTimestamp(),
-        editedAt: null,
-        reactions: { agree: 0, faced: 0, helpful: 0 },
-        votedBy: {},
-        tags: parseTags(postTagsInput?.value)
-      });
-
-      postInput.value = "";
-      if (fileInput) fileInput.value = "";
-        if (postTagsInput) postTagsInput.value = "";
-    } finally {
-      postBtn.disabled = false;
-      postBtn.innerText = originalBtnText;
-    }
+function initTypeChips() {
+  const buttons = typeButtons();
+  if (!buttons.length) return;
+  buttons.forEach((btn, i) => {
+    btn.addEventListener("click", () => { selectType(btn.dataset.type); btn.focus(); });
+    btn.addEventListener("keydown", (e) => {
+      const ids = POST_TYPES.map((t) => t.id);
+      let next = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = ids[(i + 1) % ids.length];
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = ids[(i - 1 + ids.length) % ids.length];
+      if (e.key === " " || e.key === "Enter") next = btn.dataset.type;
+      if (!next) return;
+      e.preventDefault();
+      selectType(next);
+      buttons.find((b) => b.dataset.type === next)?.focus();
+    });
   });
+  selectType(postTypeSelect?.value || POST_TYPES[0].id);
+}
+
+function clearPreview() {
+  if (composer.previewUrl) { URL.revokeObjectURL(composer.previewUrl); composer.previewUrl = null; }
+  if (previewEl) { previewEl.textContent = ""; previewEl.hidden = true; }
+}
+
+function renderPreview(file) {
+  clearPreview();
+  if (!previewEl || !file) return;
+  const kind = attachmentKind(file);
+  previewEl.hidden = false;
+  if (kind === "image") {
+    composer.previewUrl = URL.createObjectURL(file);
+    const img = document.createElement("img");
+    img.src = composer.previewUrl;
+    img.alt = "";
+    img.className = "attachment-thumb";
+    previewEl.appendChild(img);
+  }
+  const meta = document.createElement("span");
+  meta.className = "attachment-meta";
+  meta.textContent = `${{ image: "Photo", video: "Video", pdf: "PDF", file: "File" }[kind]} · ${file.name.slice(0, 80)} · ${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+  previewEl.appendChild(meta);
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "attachment-remove";
+  remove.textContent = "Remove";
+  remove.setAttribute("aria-label", "Remove attachment");
+  remove.addEventListener("click", () => { if (fileInput) fileInput.value = ""; clearPreview(); refreshComposer(); });
+  previewEl.appendChild(remove);
+}
+
+function initMediaActions() {
+  if (!fileInput) return;
+  document.querySelectorAll("[data-media]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      fileInput.accept = btn.dataset.accept || "image/*,video/*,application/pdf";
+      fileInput.click();
+    });
+  });
+  fileInput.addEventListener("change", () => {
+    composer.error = "";
+    composer.justPosted = false;
+    renderPreview(fileInput.files?.[0] || null);
+    refreshComposer();
+  });
+}
+
+function initTags() {
+  const box = document.getElementById("tagSuggestions");
+  if (box) {
+    for (const s of tagSuggestions()) {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "tag-suggest";
+      chip.textContent = s.tag;
+      chip.setAttribute("aria-label", `Add tag ${s.tag}`);
+      chip.addEventListener("click", () => {
+        if (!postTagsInput) return;
+        postTagsInput.value = addTag(postTagsInput.value, s.tag);
+        refreshComposer();
+      });
+      box.appendChild(chip);
+    }
+  }
+  postTagsInput?.addEventListener("input", refreshComposer);
+}
+
+async function submitPost() {
+  if (composer.submitting) return; // duplicate-submission guard
+  const draft = currentDraft();
+  const check = validateDraft({ ...draft, signedIn: true });
+  if (!check.ok) { composer.error = check.message; refreshComposer(); return; }
+  if (!requireLogin()) return;
+
+  composer.submitting = true;
+  composer.error = "";
+  composer.justPosted = false;
+  refreshComposer();
+
+  try {
+    const file = draft.file;
+    let attachment = null;
+
+    if (file) {
+      // Same path, limits and classification the rules and Storage rules expect.
+      const filePath = `postAttachments/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, filePath);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      attachment = { url: downloadURL, type: attachmentKind(file), name: file.name };
+    }
+
+    await addDoc(collection(db, "posts"), {
+      content: draft.content.trim() || "",
+      uid: auth.currentUser.uid,
+      type: postTypeSelect?.value || "question",
+      attachment: attachment || null,
+      createdAt: serverTimestamp(),
+      editedAt: null,
+      reactions: { agree: 0, faced: 0, helpful: 0 },
+      votedBy: {},
+      tags: parseTags(postTagsInput?.value)
+    });
+
+    postInput.value = "";
+    if (fileInput) fileInput.value = "";
+    if (postTagsInput) postTagsInput.value = "";
+    clearPreview();
+    composer.justPosted = true;
+    setTimeout(() => { composer.justPosted = false; refreshComposer(); }, 4000);
+  } catch (err) {
+    console.error("Post failed:", err);
+    composer.error = "Your post could not be published. Check your connection and try again.";
+  } finally {
+    composer.submitting = false;
+    refreshComposer();
+  }
+}
+
+if (postBtn) {
+  initTypeChips();
+  initMediaActions();
+  initTags();
+  postInput?.addEventListener("input", () => { composer.error = ""; composer.justPosted = false; refreshComposer(); });
+  postBtn.addEventListener("click", submitPost);
+  refreshComposer();
 }
 
 /* =========================================================
@@ -285,9 +440,7 @@ function createPostCard(post) {
       </span>
     </div>
 
-    <div class="feed-content modern-content">
-      ${formatPostContent(post.content)}
-    </div>
+    ${postBodyHtml(post.content)}
 
       ${tagsHTML}
 
@@ -525,15 +678,7 @@ function getTypeClass(type) {
   return classes[type] || "badge-question";
 }
 
-function formatPostContent(content) {
-  return escMultiline(String(content || "").slice(0, 5000));
-}
+// formatPostContent moved to composer-model.js (postBodyHtml).
 
 
-function parseTags(str) {
-  return String(str || "")
-    .split(",")
-    .map(t => t.trim())
-    .filter(Boolean)
-    .slice(0, 5);
-}
+// parseTags moved to composer-model.js (same behaviour: comma-split, trimmed, max 5).
