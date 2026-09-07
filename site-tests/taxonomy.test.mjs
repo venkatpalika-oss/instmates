@@ -66,11 +66,13 @@ test("taxonomy: aliases never collide with another term's slug, label or alias",
   }
 });
 
-test("taxonomy: no hub is published in W1.1 and no unsupported term can be discoverable", () => {
+test("taxonomy: only the evidence-approved GC hub is published (W1.3); no unsupported term can be discoverable", () => {
+  const published = TERMS.filter((t) => t.hub !== null).map((t) => t.slug);
+  assert.deepEqual(published, ["gas-chromatography"], "exactly one published hub");
   for (const t of TERMS) {
-    assert.equal(t.hub, null, `hub route must not exist yet for ${t.slug}`);
-    assert.equal(isDiscoverable(t), false);
-    if (t.coverage !== COVERAGE.SUPPORTED) assert.equal(t.hub, null);
+    assert.equal(isDiscoverable(t), t.slug === "gas-chromatography");
+    if (t.coverage !== COVERAGE.SUPPORTED) assert.equal(t.hub, null, `unsupported term ${t.slug} must never carry a hub`);
+    if (t.facet === "activity") assert.equal(t.hub, null, `activities are never hubs`);
   }
 });
 
@@ -130,7 +132,8 @@ test("content-map: supported measurement/technology terms are exactly the hub-el
 
 test("content-map: gas chromatography proves the hub contract with real content only", () => {
   const hub = hubModel("gas-chromatography");
-  assert.ok(hub && hub.eligible && !hub.published && hub.hub === null);
+  assert.ok(hub && hub.eligible, "GC must be eligible on real content");
+  assert.ok(hub.published && hub.hub === "/technology/gas-chromatography/", "W1.3: GC is the single published hub");
   assert.ok(hub.resourceCount >= HUB_MIN_RESOURCES);
   for (const s of hub.sections) {
     assert.ok(s.resources.length > 0, `empty section ${s.id} must not be rendered`);
