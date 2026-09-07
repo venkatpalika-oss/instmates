@@ -44,27 +44,28 @@ function term(facet, slug, label, extra = {}) {
     coverage: extra.coverage || COVERAGE.NONE,
     hub: null, // no hub routes are published in W1.1 (see plan §D)
     entry: extra.entry || null, // W1.2: declared LEARN entry point (an existing page) for supported terms; verified by site-tests
+    tag: extra.tag || null, // feed composer quick-suggestion text (must be the label or an approved alias; verified by site-tests)
     note: extra.note || null
   });
 }
 
 export const TERMS = Object.freeze([
   // ---------- Facet 1: MEASUREMENT (what is measured) ----------
-  term("measurement", "pressure", "Pressure", { aliases: ["pt", "dp", "pressure transmitter"], coverage: "supported", entry: "/knowledge/field/pressure/" }),
-  term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported", entry: "/knowledge/field/flow/" }),
+  term("measurement", "pressure", "Pressure", { aliases: ["pt", "dp", "pressure transmitter"], coverage: "supported", tag: "Pressure", entry: "/knowledge/field/pressure/" }),
+  term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported", tag: "Flow", entry: "/knowledge/field/flow/" }),
   term("measurement", "level", "Level", { aliases: ["level measurement", "wet leg"], coverage: "partial", note: "One case study (wet-leg zero shift); no dedicated pages yet." }),
   term("measurement", "temperature", "Temperature", { aliases: ["rtd", "thermocouple"], coverage: "none" }),
-  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported", entry: "/knowledge/field/signals/4-20ma/" }),
-  term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", entry: "/knowledge/analyzers/", note: "Umbrella for the analytical technologies in facet 2." }),
+  term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported", tag: "4-20mA", entry: "/knowledge/field/signals/4-20ma/" }),
+  term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", tag: "Analyzers", entry: "/knowledge/analyzers/", note: "Umbrella for the analytical technologies in facet 2." }),
   term("measurement", "control-valves", "Control valves", { aliases: ["valve", "positioner"], coverage: "none" }),
   term("measurement", "process-control", "Process control", { aliases: ["pid", "control loop"], coverage: "none" }),
-  term("measurement", "laboratory-qa", "Laboratory & QA", { aliases: ["laboratory", "lab", "qa", "iso 17025"], coverage: "supported", entry: "/knowledge/laboratory/" }),
+  term("measurement", "laboratory-qa", "Laboratory & QA", { aliases: ["laboratory", "lab", "qa", "iso 17025"], coverage: "supported", tag: "Laboratory", entry: "/knowledge/laboratory/" }),
 
   // ---------- Facet 2: ANALYTICAL TECHNOLOGY (how it is measured) ----------
-  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported", entry: "/knowledge/gc/" }),
-  term("technology", "ftir", "FTIR", { group: "gas", aliases: ["ft-ir", "fourier transform infrared"], coverage: "supported", entry: "/knowledge/analyzers/ftir-analyzer/" }),
-  term("technology", "sampling-systems", "Sampling systems", { group: "cross-cutting", aliases: ["sample conditioning", "sampling system", "sample system"], coverage: "supported", entry: "/knowledge/gc/gc-sampling-system/" }),
-  term("technology", "flash-point-analyzer", "Flash-point analyzer", { group: "laboratory", aliases: ["flash point", "astm d56", "astm d93"], coverage: "supported", entry: "/knowledge/laboratory/flash-point-analyzer/" }),
+  term("technology", "gas-chromatography", "Gas chromatography", { group: "gas", aliases: ["gc", "gas chromatograph", "chromatograph"], coverage: "supported", tag: "GC", entry: "/knowledge/gc/" }),
+  term("technology", "ftir", "FTIR", { group: "gas", aliases: ["ft-ir", "fourier transform infrared"], coverage: "supported", tag: "FTIR", entry: "/knowledge/analyzers/ftir-analyzer/" }),
+  term("technology", "sampling-systems", "Sampling systems", { group: "cross-cutting", aliases: ["sample conditioning", "sampling system", "sample system"], coverage: "supported", tag: "Sampling system", entry: "/knowledge/gc/gc-sampling-system/" }),
+  term("technology", "flash-point-analyzer", "Flash-point analyzer", { group: "laboratory", aliases: ["flash point", "astm d56", "astm d93"], coverage: "supported", tag: "Flash point", entry: "/knowledge/laboratory/flash-point-analyzer/" }),
   term("technology", "moisture", "Moisture analyzers", { group: "gas", aliases: ["dew point", "humidity analyzer"], coverage: "partial", note: "Only the FTIR moisture cross-interference guide." }),
   term("technology", "zirconia-oxygen", "Zirconia oxygen", { group: "oxygen", aliases: ["zirconia", "zirconia o2", "zro2"], coverage: "none" }),
   term("technology", "paramagnetic-oxygen", "Paramagnetic oxygen", { group: "oxygen", aliases: ["paramagnetic", "paramagnetic o2"], coverage: "none" }),
@@ -83,12 +84,12 @@ export const TERMS = Object.freeze([
   term("technology", "swas", "SWAS", { group: "liquid", aliases: ["steam and water analysis", "steam water analysis system"], coverage: "none" }),
 
   // ---------- Facet 3: PROFESSIONAL ACTIVITY (what the professional is doing) ----------
-  term("activity", "troubleshooting", "Troubleshooting", { aliases: ["fault finding", "diagnostics", "rca"], coverage: "supported" }),
-  term("activity", "calibration", "Calibration", { aliases: ["loop check", "zero and span", "span check"], coverage: "supported" }),
+  term("activity", "troubleshooting", "Troubleshooting", { aliases: ["fault finding", "diagnostics", "rca"], coverage: "supported", tag: "Troubleshooting" }),
+  term("activity", "calibration", "Calibration", { aliases: ["loop check", "zero and span", "span check"], coverage: "supported", tag: "Calibration" }),
   term("activity", "preventive-maintenance", "Preventive maintenance", { aliases: ["maintenance", "preventive"], coverage: "partial" }),
   term("activity", "commissioning", "Commissioning", { aliases: ["start-up", "startup"], coverage: "none" }),
-  term("activity", "reliability", "Reliability & measurement quality", { aliases: ["spc", "uncertainty", "precision"], coverage: "supported" }),
-  term("activity", "standards-compliance", "Standards & compliance", { aliases: ["standards", "iso", "astm", "audit"], coverage: "supported" })
+  term("activity", "reliability", "Reliability & measurement quality", { aliases: ["spc", "uncertainty", "precision"], coverage: "supported", tag: "Uncertainty" }),
+  term("activity", "standards-compliance", "Standards & compliance", { aliases: ["standards", "iso", "astm", "audit"], coverage: "supported", tag: "Standards" })
 ]);
 
 /* ---------------- Navigation contract (consumed by W1.2; not rendered in W1.1) ----------------
