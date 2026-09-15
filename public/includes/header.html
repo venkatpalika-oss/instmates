@@ -19,19 +19,52 @@
     <!-- ================= MOBILE PAGE TITLE ================= -->
     <div class="mobile-page-title"></div>
 
-    <!-- ================= NAVIGATION ================= -->
-    <nav class="main-nav">
+    <!-- ================= MOBILE MENU (≤768px only) =================
+         The desktop .main-nav is hidden on small screens by style.css; this native
+         <details> menu needs no script (the include's scripts never run) and is
+         keyboard and screen-reader operable. Same routes as the primary nav. -->
+    <details class="mobile-menu">
+      <summary>Menu</summary>
+      <nav class="mobile-menu-nav" aria-label="Site">
+        <a href="/#solve">Solve</a>
+        <a href="/knowledge/">Learn</a>
+        <a href="/profiles/">Connect</a>
+        <a href="/#contribute">Contribute</a>
+        <a href="/case-studies/">Case studies</a>
+        <a href="/explore.html">Explore</a>
+        <span class="auth-out">
+          <a href="/login.html">Login</a>
+          <a href="/register.html">Join</a>
+        </span>
+        <span class="auth-in">
+          <a href="/profile/">Your profile</a>
+          <a href="/profile/edit/">Edit profile</a>
+        </span>
+      </nav>
+    </details>
 
-      <a href="/">Home</a>
+    <!-- ================= NAVIGATION =================
+         Primary items follow the product model SOLVE → LEARN → CONNECT → CONTRIBUTE and
+         point only at existing routes. "Solve" lands on the homepage SOLVE block (the
+         canonical troubleshooting index; no /solve/ route exists) and "Contribute" on the
+         homepage CONTRIBUTE section. Everything else public stays reachable under "More". -->
+    <nav class="main-nav" aria-label="Primary">
+
+      <a href="/#solve">Solve</a>
+      <a href="/knowledge/">Learn</a>
+      <a href="/profiles/">Connect</a>
+      <a href="/#contribute">Contribute</a>
+
       <div class="nav-dropdown">
-        <button type="button" class="nav-link dropdown-toggle">
-          Public Pages ▾
+        <button type="button" class="nav-link dropdown-toggle" aria-haspopup="true">
+          More ▾
         </button>
         <div class="dropdown-menu">
           <a href="/explore.html">Explore</a>
           <a href="/knowledge/">Knowledge Hub</a>
           <a href="/knowledge/field/">Field Instrumentation</a>
           <a href="/knowledge/analyzers/">Analyzers</a>
+          <a href="/technology/gas-chromatography/">Gas Chromatography Hub</a>
           <a href="/case-studies/">Case Studies</a>
           <a href="/profiles/">Technician Profiles</a>
           <a href="/community/">Community Q&amp;A</a>
@@ -42,30 +75,11 @@
       </div>
 
       <span class="auth-in">
-        <a href="/explore.html">Explore</a>
-        <a href="/profiles/">Technicians</a>
-        <a href="/community/">Community</a>
-
-        <div class="nav-dropdown">
-          <button type="button" class="nav-link dropdown-toggle">
-            Knowledge ▾
-          </button>
-          <div class="dropdown-menu">
-            <a href="/knowledge/">Knowledge Home</a>
-            <a href="/knowledge/field/">Field Instrumentation</a>
-            <a href="/knowledge/analyzers/">Analyzers</a>
-            <a href="/case-studies/">Case Studies</a>
-            <a href="/blog/">Blog</a>
-          </div>
-        </div>
-
-        <a href="/videos/">Videos</a>
-        <a href="/feed/">Feed</a>
-
         <div class="nav-dropdown user-menu">
           <button type="button"
                   class="nav-link account-link"
-                  id="userMenuBtn">
+                  id="userMenuBtn"
+                  aria-haspopup="true">
             Account ▾
           </button>
           <div class="dropdown-menu">
@@ -86,7 +100,10 @@
   </div>
 </header>
 
-<!-- ================= DROPDOWN SCRIPT ================= -->
+<!-- ================= DROPDOWN SCRIPT =================
+     Never executes (innerHTML injection). Desktop menus open on hover and on
+     keyboard focus via CSS (.nav-dropdown:focus-within); the account menu is
+     wired by header-auth.js. Kept for the static-file case only. -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
 

@@ -1,8 +1,8 @@
-// W1.2 homepage contract tests for /public/index.html and /public/assets/js/home.js.
+// Homepage contract tests for /public/index.html, /public/assets/js/home.js and the shared includes.
 // Run: npm --prefix site-tests test   (from the repository root; no emulator, no network)
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -17,15 +17,29 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC_DIR = path.join(ROOT, "public");
 const HOME_HTML = readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8");
 const HOME_JS = readFileSync(path.join(PUBLIC_DIR, "assets", "js", "home.js"), "utf8");
+const HEADER_HTML = readFileSync(path.join(PUBLIC_DIR, "includes", "header.html"), "utf8");
+const FOOTER_HTML = readFileSync(path.join(PUBLIC_DIR, "includes", "footer.html"), "utf8");
+const STYLE_CSS = readFileSync(path.join(PUBLIC_DIR, "assets", "css", "style.css"), "utf8");
+const YOUTUBE_CHANNEL = "https://www.youtube.com/@InstMates";
+const LINKEDIN_COMPANY = "https://www.linkedin.com/company/144806016/";
+/** Verified 2026-09-15 via YouTube oEmbed (author_url === YOUTUBE_CHANNEL). Titles verbatim. */
+const VERIFIED_VIDEOS = {
+  sMoZogBnM78: "Welcome to InstMates | The Community for Instrumentation & Analyzer Professionals",
+  KgpdwauRuzI: "How Zirconia Oxygen Sensors Work | O₂ Analyzer Working Principle Explained",
+  eFiWW86Z0VA: "Process Analyzer Safety Procedures | LOTO, Isolation & Safe Maintenance"
+};
 /** Visible copy only: no <style>, <script>, comments or tags. */
-const HOME_TEXT = HOME_HTML
+const visibleText = (html) => html
   .replace(/<style[\s\S]*?<\/style>/g, " ")
   .replace(/<script[\s\S]*?<\/script>/g, " ")
   .replace(/<!--[\s\S]*?-->/g, " ")
   .replace(/<[^>]+>/g, " ")
+  .replace(/&amp;/g, "&")
   .replace(/\s+/g, " ");
+const HOME_TEXT = visibleText(HOME_HTML);
 /** home.js without comments. */
 const HOME_CODE = HOME_JS.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+const HOME_STYLE = HOME_HTML.match(/<style>([\s\S]*?)<\/style>/)[1];
 
 function resolveUrl(url) {
   const clean = url.split("#")[0].split("?")[0];
@@ -51,16 +65,26 @@ function slotHtml(name) {
 }
 
 function sectionHtml(id) {
-  const re = new RegExp(`<section id="${id}"[\\s\\S]*?</section>`);
+  const re = new RegExp(`<(?:section|aside) id="${id}"[\\s\\S]*?</(?:section|aside)>`);
   const m = HOME_HTML.match(re);
   assert.ok(m, `section #${id} missing from index.html`);
   return m[0];
 }
 
+/** Every <img ...> tag with its attributes parsed. */
+function images(html) {
+  return [...html.matchAll(/<img\b([^>]*)>/g)].map((m) => {
+    const attrs = {};
+    for (const a of m[1].matchAll(/([a-z-]+)="([^"]*)"/g)) attrs[a[1]] = a[2];
+    return attrs;
+  });
+}
+
 const existingNav = (group) => group.destinations.filter((d) => d.status === "existing");
+const localFile = (url) => path.join(PUBLIC_DIR, url.replace(/^\//, ""));
 
 // ---------------------------------------------------------------- static structure
-test("home: every internal link resolves to a real page (no dead links, no W1/FUTURE routes)", () => {
+test("home: every internal link resolves to a real page (no dead links, no unpublished W1/FUTURE routes)", () => {
   const internal = hrefs(HOME_HTML).filter((h) => h.startsWith("/") || h.startsWith("#"));
   assert.ok(internal.length > 25, "homepage should carry its primary links statically");
   for (const h of internal) {
@@ -73,13 +97,18 @@ test("home: every internal link resolves to a real page (no dead links, no W1/FU
   for (const g of [NAVIGATION.solve, NAVIGATION.learn, NAVIGATION.connect]) {
     for (const d of g.destinations.filter((x) => x.status !== "existing" && x.href)) {
       const base = d.href.replace(/<.*$/, "");
-      assert.ok(!HOME_HTML.includes(`href="${base}`), `homepage links a ${d.status} route: ${d.href}`);
+      // A W1/FUTURE prefix may only appear when the concrete page is published (e.g. the GC hub).
+      for (const h of internal.filter((x) => x.startsWith(base))) {
+        assert.ok(resolveUrl(h), `homepage links an unpublished ${d.status} route: ${h}`);
+      }
       assert.ok(!HOME_JS.includes(base), `home.js references a ${d.status} route: ${d.href}`);
     }
   }
+  const ids = [...HOME_HTML.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(new Set(ids).size, ids.length, `duplicate ids: ${ids.filter((v, i) => ids.indexOf(v) !== i)}`);
 });
 
-test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations of the navigation contract", () => {
+test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations; no feed invitation while P1.2 is open", () => {
   const grid = hrefs(slotHtml("solve"));
   const contract = existingNav(NAVIGATION.solve)
     .filter((d) => !d.auth)
@@ -92,13 +121,15 @@ test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations
   assert.equal(new Set(grid).size, grid.length, "duplicate SOLVE entries");
   const solve = sectionHtml("solve");
   assert.ok(solve.includes('href="/case-studies/"'), "SOLVE must lead to case studies");
-  assert.ok(solve.includes('href="/feed/"'), "SOLVE must offer asking in the feed");
-  assert.match(solve, /login to post/i, "asking requires login and must say so");
+  assert.ok(!solve.includes('href="/feed/"'), "SOLVE must not invite posting in the feed (P1.2 open)");
+  // The feed is reachable for READING from CONNECT and for members from the signed-in block only.
+  assert.equal((HOME_HTML.match(/href="\/feed\/"/g) || []).length, 2, "exactly two feed links: CONNECT read + signed-in continue");
+  assert.doesNotMatch(HOME_TEXT, /ask a technical question|ask about your fault|login to post/i, "no repeated ask-in-the-feed invitations");
 });
 
 test("home: LEARN renders every EXISTING learn destination and only real learning paths", () => {
   const learn = sectionHtml("learn");
-  const paths = hrefs(learn.match(/<ul class="hm-grid hm-paths">[\s\S]*?<\/ul>/)[0]);
+  const paths = hrefs(learn.match(/<ul class="hm-grid hm-paths[^"]*">[\s\S]*?<\/ul>/)[0]);
   for (const d of existingNav(NAVIGATION.learn)) {
     assert.ok(HOME_HTML.includes(`href="${d.href}"`), `LEARN destination missing: ${d.href}`);
   }
@@ -117,25 +148,35 @@ test("home: CONNECT renders the EXISTING public destinations and never implies f
   for (const href of ["/feed/", "/profiles/"]) assert.ok(connect.includes(`href="${href}"`), `CONNECT lacks ${href}`);
   // FUTURE destinations of the contract (people by technology, messaging, follow/save) must not be promised.
   assert.equal(NAVIGATION.connect.destinations.filter((x) => x.status === "future").length, 3, "contract still lists three FUTURE capabilities");
-  assert.doesNotMatch(HOME_TEXT, /by technology|people matching|\bfollow\b|save for later|\bmessag(e|ing)\b|\bmatched\b|recommended|endorse|\bbadges?\b|trending|online now|\bverified\b/i);
+  const withoutLinkedIn = visibleText(HOME_HTML.replace(/<div class="hm-social"[\s\S]*?<\/div>\s*<\/section>/, "</section>"));
+  assert.doesNotMatch(withoutLinkedIn, /by technology|people matching|\bfollow\b|save for later|\bmessag(e|ing)\b|\bmatched\b|recommended|endorse|\bbadges?\b|trending|online now|\bverified\b/i);
 });
 
 test("home: copy carries the approved tagline, no inflated or fabricated claims, no hard-coded community numbers", () => {
   assert.ok(HOME_HTML.includes("Share Technology · Learn Techniques · Grow Together"), "tagline missing");
   assert.doesNotMatch(HOME_TEXT, /largest|leading platform|thousands|trusted worldwide|active community|private network|private social|fastest.growing|world.class|#1\b/i);
-  assert.doesNotMatch(HOME_TEXT, /\b\d+\s*(posts|discussions|comments|members|engineers|technicians|professionals|profiles|users)\b/i, "community counts must come from data, not copy");
+  assert.doesNotMatch(HOME_TEXT, /\b\d+\s*(posts|discussions|comments|members|engineers|technicians|professionals|profiles|users|videos|subscribers|views)\b/i, "community counts must come from data, not copy");
   assert.doesNotMatch(HOME_TEXT, /\b\d+\s*%/, "no percentage claims");
-  assert.doesNotMatch(HOME_TEXT, /coming soon|placeholder|lorem/i);
+  assert.doesNotMatch(HOME_TEXT, /coming soon|placeholder|lorem|AI[- ]powered|smart search|search a fault|everything technical is open/i);
+  assert.doesNotMatch(HOME_HTML, /<input\b|<form\b|type="search"/, "no search box: the site has no search implementation");
+  assert.ok(HOME_TEXT.includes("Explore practical instrumentation guides and field case studies."), "CTO hero note verbatim");
+  assert.doesNotMatch(HOME_TEXT, /only needed to post|account is for taking part/i, "no open-to-read / account-to-post claim");
+  // CONTRIBUTE for anonymous visitors: registration stays available, but nothing promises that a new
+  // account can post, comment or share in the feed (P1.2 open).
+  const anonContribute = visibleText(sectionHtml("contribute").match(/<div class="auth-out-section">[\s\S]*?<\/div>\s*<!-- Signed-in/)[0]);
+  assert.doesNotMatch(anonContribute, /post a|comment|share a solution|share experience|in the feed|discussion/i, "no feed-contribution promise near Join free");
+  assert.match(anonContribute, /Join free/);
 });
 
 test("home: one h1, landmarks, labelled sections and accessible heading order", () => {
   assert.equal((HOME_HTML.match(/<h1\b/g) || []).length, 1);
   assert.ok(/<main\b[^>]*id="main"/.test(HOME_HTML));
-  assert.ok(/<nav class="hm-model" aria-label="What you can do on InstMates">/.test(HOME_HTML));
-  for (const id of ["solve", "learn", "connect"]) {
+  assert.ok(/<nav class="hm-pathway" aria-label="How InstMates works">/.test(HOME_HTML));
+  for (const id of ["solve", "learn", "connect", "watch", "contribute"]) {
     assert.ok(new RegExp(`<section id="${id}"[^>]*aria-labelledby="${id}-title"`).test(HOME_HTML), `#${id} not labelled`);
     assert.ok(new RegExp(`<h2 id="${id}-title"`).test(HOME_HTML));
   }
+  assert.ok(/<aside id="field"[^>]*aria-labelledby="field-title"/.test(HOME_HTML), "From the field aside not labelled");
   const levels = [...HOME_HTML.matchAll(/<h([1-3])\b/g)].map((m) => Number(m[1]));
   let prev = 0;
   for (const level of levels) {
@@ -145,6 +186,15 @@ test("home: one h1, landmarks, labelled sections and accessible heading order", 
   assert.ok(/:focus-visible\{outline/.test(HOME_HTML), "visible focus style missing");
   assert.ok(/prefers-reduced-motion/.test(HOME_HTML));
   assert.ok(/max-width:768px/.test(HOME_HTML), "mobile layout rules missing");
+  for (const m of HOME_HTML.matchAll(/<svg[^>]*>/g)) {
+    const own = /aria-hidden="true"|role="img"/.test(m[0]);
+    const wrapped = /aria-hidden="true">\s*$/.test(HOME_HTML.slice(Math.max(0, m.index - 80), m.index));
+    assert.ok(own || wrapped, `decorative icon must be hidden from AT: ${m[0].slice(0, 60)}`);
+  }
+  for (const a of HOME_HTML.matchAll(/<a\b[^>]*target="_blank"[^>]*>[\s\S]*?<\/a>/g)) {
+    assert.match(a[0], /rel="noopener noreferrer"/, "external link without noopener");
+    assert.match(a[0], /opens in a new tab/, "external link without an accessible new-tab indication");
+  }
 });
 
 test("home: SEO metadata kept (canonical, description, social, structured data, robots-safe)", () => {
@@ -159,20 +209,30 @@ test("home: SEO metadata kept (canonical, description, social, structured data, 
   const data = JSON.parse(ld[1]);
   const types = data["@graph"].map((n) => n["@type"]);
   assert.deepEqual(types.sort(), ["Organization", "WebSite"]);
-  assert.ok(!JSON.stringify(data).match(/aggregateRating|ratingValue|reviewCount|interactionStatistic/), "no fabricated ratings or counts");
+  assert.ok(!JSON.stringify(data).match(/aggregateRating|ratingValue|reviewCount|interactionStatistic|SearchAction/), "no fabricated ratings, counts or search action");
   assert.ok(HOME_HTML.includes('src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"'), "existing analytics tag kept");
-  assert.equal((HOME_HTML.match(/gtag\('event'/g) || []).length, 0, "no new analytics events in W1.2");
+  assert.equal((HOME_HTML.match(/gtag\('event'/g) || []).length, 0, "no new analytics events");
   const sitemap = readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
   assert.ok(sitemap.includes("<loc>https://www.instmates.com/</loc>"));
 });
 
-test("home: no second taxonomy, no legacy scripts, no denied collections", () => {
+test("home: no second taxonomy, no legacy scripts, no denied collections, no third-party scripts or embeds", () => {
   assert.doesNotMatch(HOME_HTML, /data-slug=|data-term=/, "index.html must not carry taxonomy data");
   assert.doesNotMatch(HOME_JS, /\bterm\(|export const TERMS|coverage:\s*"/, "home.js must not define taxonomy terms");
   assert.ok(HOME_JS.includes('from "./taxonomy.js"') && HOME_JS.includes('from "./content-map.js"'));
   assert.doesNotMatch(HOME_HTML, /case-ticker\.js|caseTickerTrack/, "caseStudies collection is denied by rules; ticker must not return");
   assert.doesNotMatch(HOME_JS, /collection\(db, "(users|caseStudies|questions|answers)"\)/);
   assert.doesNotMatch(HOME_CODE, /\.(innerHTML|outerHTML)\s*=|insertAdjacentHTML\(|document\.write\(/, "user data must be rendered with textContent");
+  const scriptSrcs = [...HOME_HTML.matchAll(/<script[^>]*\bsrc="([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(scriptSrcs.filter((s) => /^https?:/.test(s)), ["https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"], "no new third-party scripts");
+  assert.equal((HOME_HTML.match(/<video\b|<iframe\b|<object\b|<embed\b/g) || []).length, 0, "no video, iframe, object or embed element");
+  const external = [...HOME_HTML.matchAll(/(?:href|src|srcset)="(https?:\/\/[^"\s]+)/g)].map((m) => m[1])
+    .filter((u) => !/^https:\/\/(www\.instmates\.com|fonts\.googleapis\.com|www\.googletagmanager\.com|schema\.org)/.test(u));
+  assert.deepEqual([...new Set(external)].sort(), [
+    LINKEDIN_COMPANY,
+    YOUTUBE_CHANNEL,
+    ...Object.keys(VERIFIED_VIDEOS).map((id) => `https://www.youtube.com/watch?v=${id}`)
+  ].sort(), "only the official channel, the three verified videos and the LinkedIn page are external");
 });
 
 test("home: community reads are the existing safe public reads only (no writes, no new index, public filter present)", () => {
@@ -275,19 +335,22 @@ test("home: person model exposes only the public directory fields", () => {
   assert.equal(plural(2, "documented case", "documented cases"), "2 documented cases");
 });
 
-// ---------------------------------------------------------------- light technical canvas hero
+// ---------------------------------------------------------------- light technical canvas hero (2026-09-15 concept + illustrations)
 const HERO_RAW = HOME_HTML.match(/<section class="hm-hero[^"]*"[\s\S]*?<\/section>/)[0];
-const HERO_HTML = HERO_RAW.replace(/<!--[\s\S]*?-->/g, (c) => c); // comments kept for the slot-note assertion
-const HERO_MARKUP = HERO_RAW.replace(/<!--[\s\S]*?-->/g, ""); // comments stripped for element assertions
+const HERO_MARKUP = HERO_RAW.replace(/<!--[\s\S]*?-->/g, "");
 
-test("hero: light technical canvas — homepage-scoped block, verbatim positioning, approved copy, no pattern, no video", () => {
-  assert.ok(HERO_HTML, "hero block missing");
+test("hero: light technical canvas — homepage-scoped block, approved copy, no pattern, no video, retired media unused", () => {
+  assert.ok(HERO_MARKUP, "hero block missing");
   assert.ok(!/class="hero[ "]/.test(HOME_HTML), "homepage must not use the sitewide patterned .hero component");
-  assert.ok(HERO_HTML.includes('<h1 id="hm-title">Field troubleshooting, technical knowledge and real experience for instrument and analyzer professionals.</h1>'), "H1 must stay verbatim");
-  assert.ok(HERO_HTML.includes("Share Technology · Learn Techniques · Grow Together"), "tagline must stay verbatim");
-  assert.ok(HERO_HTML.includes("Start with the fault in front of you, understand the measurement or analyzer behind it, then find real cases, open discussions and public professionals. Everything technical is open to read; an account is only for taking part."), "approved support copy");
-  assert.equal((HOME_HTML.match(/<video\b/g) || []).length, 0, "no video element on the homepage");
+  assert.ok(HERO_MARKUP.includes('<h1 id="hm-title">Solve field problems. Build practical knowledge.</h1>'), "H1 must stay verbatim");
+  assert.ok(HERO_MARKUP.includes("Share Technology · Learn Techniques · Grow Together."), "tagline must stay verbatim");
+  assert.match(HERO_MARKUP, /<p class="hm-support">[^<]{40,220}<\/p>/, "one short supporting sentence");
   assert.doesNotMatch(HOME_HTML, /instmates-hero\.mp4|hero-poster\.jpg|avatar\.mp4/, "no runtime reference to the retired hero media");
+  assert.equal(
+    (HOME_HTML.match(/hero-instrumentation\.jpg/g) || []).length,
+    (HOME_HTML.match(/<meta[^>]*hero-instrumentation\.jpg/g) || []).length,
+    "the social preview image stays a meta-only reference, never rendered"
+  );
   assert.doesNotMatch(HOME_JS, /instmates-hero|hero-poster|HeroVideo|<video/, "home.js carries no hero-video logic");
   assert.doesNotMatch(HOME_TEXT, /HeyGen/i);
   const heroRule = HOME_HTML.match(/\.hm-hero\{[^}]*\}/);
@@ -295,40 +358,236 @@ test("hero: light technical canvas — homepage-scoped block, verbatim positioni
   assert.doesNotMatch(heroRule[0], /url\(|gradient/, "no pattern or gradient behind the copy");
 });
 
-test("hero: CTA structure and the compact SOLVE / LEARN / CONNECT model replace the promise-card strip", () => {
-  assert.ok(HERO_HTML.includes('<a href="#solve" class="hm-btn hm-btn-primary">Find your fault</a>'), "primary CTA → #solve");
-  assert.ok(HERO_HTML.includes('<a href="/knowledge/" class="hm-btn hm-btn-outline">Browse knowledge</a>'), "secondary CTA → /knowledge/");
-  assert.equal((HERO_HTML.match(/class="hm-btn /g) || []).length, 2, "exactly two hero CTAs");
-  const model = HERO_HTML.match(/<nav class="hm-model"[\s\S]*?<\/nav>/)[0];
-  for (const [id, q] of [["solve", "What problem are you working on?"], ["learn", "What do you want to understand?"], ["connect", "Who has experience with this?"]]) {
-    assert.ok(model.includes(`href="#${id}"`) && model.includes(q), `model lacks ${id}`);
-    assert.ok(HOME_HTML.includes(`<section id="${id}"`), `anchor target #${id} missing`);
-  }
-  assert.doesNotMatch(HOME_HTML, /hm-promise/, "old promise-card strip removed");
+test("hero: primary action is knowledge exploration, secondary is case studies, real topic chips replace the search box", () => {
+  assert.ok(HERO_MARKUP.includes('<a href="/knowledge/" class="hm-btn hm-btn-primary">'), "primary CTA → /knowledge/");
+  assert.ok(/Explore technical knowledge\s*<\/a>/.test(HERO_MARKUP), "primary CTA copy");
+  assert.ok(HERO_MARKUP.includes('<a href="/case-studies/" class="hm-btn hm-btn-outline">Read real case studies</a>'), "secondary CTA → /case-studies/");
+  assert.equal((HERO_MARKUP.match(/class="hm-btn /g) || []).length, 2, "exactly two hero CTAs");
+  assert.ok(!HERO_MARKUP.includes('href="/feed/"'), "hero does not point at the feed while P1.2 is open");
   assert.match(HOME_HTML.match(/\.hm-btn\{[^}]*\}/)[0], /min-height:46px/, "CTAs are ≥44px targets");
+  const start = HERO_MARKUP.match(/<nav class="hm-start"[\s\S]*?<\/nav>/);
+  assert.ok(start, "Start with a topic links missing");
+  const topicHrefs = new Set(learnTopics().map((t) => t.href));
+  const links = hrefs(start[0]);
+  assert.ok(links.length >= 5 && links.length <= 8, "a short list of entry points");
+  for (const h of links) assert.ok(topicHrefs.has(h), `start link is not a supported topic entry: ${h}`);
 });
 
-test("hero: photograph contract — when a figure exists it is responsive, dimensioned, described and same-origin", () => {
+test("hero: illustration contract — owner-supplied WebP, responsive, dimensioned, not lazy, same-origin, decorative, blended without a frame", () => {
   const fig = HERO_MARKUP.match(/<figure class="hm-hero-figure">([\s\S]*?)<\/figure>/);
-  if (!fig) {
-    assert.ok(HERO_HTML.includes("OWNER-SUPPLIED HERO PHOTOGRAPH REQUIRED"), "no figure: the slot must document the pending owner decision");
-    assert.ok(!HERO_MARKUP.includes('class="hm-hero has-figure"'), "has-figure grid only with a real figure");
-    return;
+  assert.ok(fig, "hero figure missing");
+  const img = images(fig[1])[0];
+  assert.ok(img, "hero img missing");
+  assert.equal(img.width, "1536");
+  assert.equal(img.height, "1024");
+  assert.equal(img.fetchpriority, "high");
+  assert.equal(img.alt, "", "decorative illustration: empty alt");
+  assert.ok(!("loading" in img), "hero image is never lazy-loaded");
+  assert.ok(img.sizes && img.sizes.includes("100vw"), "sizes attribute present");
+  const sources = [img.src, ...img.srcset.split(",").map((s) => s.trim().split(/\s+/)[0])];
+  assert.equal(new Set(sources).size, 4, "four responsive variants");
+  for (const src of sources) {
+    assert.ok(src.startsWith("/assets/images/illustrations/hero-transmitter-analyzer-"), `same-origin illustration: ${src}`);
+    assert.ok(src.endsWith(".webp"));
+    assert.ok(existsSync(localFile(src)), `missing on disk: ${src}`);
+    assert.ok(statSync(localFile(src)).size <= 95_000, `hero variant too heavy: ${src}`);
   }
-  const img = fig[1].match(/<img[^>]+>/)[0];
-  for (const attr of ["srcset=", "sizes=", "width=", "height=", 'fetchpriority="high"']) assert.ok(img.includes(attr), `hero img lacks ${attr}`);
-  const alt = img.match(/alt="([^"]*)"/);
-  assert.ok(alt && alt[1].length > 12, "descriptive alt");
-  for (const src of [...img.matchAll(/(?:src|srcset)="([^"]+)"/g)].flatMap((m) => m[1].split(",").map((s) => s.trim().split(" ")[0]))) {
-    assert.ok(src.startsWith("/assets/images/"), `hero image must be same-origin: ${src}`);
-    assert.ok(resolveUrl(src), `hero image missing on disk: ${src}`);
-    assert.ok(readFileSync(path.join(PUBLIC_DIR, src.replace(/^\//, ""))).length <= 95_000, `hero image too heavy: ${src}`);
+  const imgRule = HOME_STYLE.match(/\.hm-hero-figure img\{[^}]*\}/)[0];
+  assert.match(imgRule, /object-fit:contain/, "complete silhouettes");
+  assert.match(imgRule, /aspect-ratio:3\/2/, "reserved aspect ratio (no layout shift)");
+  assert.doesNotMatch(imgRule, /border(?!-radius)|box-shadow|background/, "no frame or panel behind the illustration");
+  assert.doesNotMatch(HOME_STYLE.match(/\.hm-hero-figure\{[^}]*\}/)[0], /border|box-shadow|background/, "figure has no frame either");
+  assert.match(HOME_STYLE, /@media \(max-width:1024px\)\{[^}]*\.hm-hero\{grid-template-columns:1fr/, "stacks on narrow screens");
+  assert.match(HOME_STYLE, /\.hm-hero-figure\{order:2/, "image follows the headline and actions on mobile");
+  assert.ok(existsSync(path.join(ROOT, "docs", "assets", "homepage-illustrations.md")), "provenance note present outside public/");
+});
+
+test("learn: the sampling-system illustration links the verified sampling-systems entry, is labelled as an illustration and lazy-loaded", () => {
+  const learn = sectionHtml("learn");
+  const feature = learn.match(/<a class="hm-card hm-feature"[\s\S]*?<\/a>/);
+  assert.ok(feature, "feature card missing");
+  const entry = termBySlug("sampling-systems").entry;
+  assert.ok(feature[0].includes(`href="${entry}"`), `feature must link the sampling-systems entry ${entry}`);
+  assert.ok(resolveUrl(entry));
+  const img = images(feature[0])[0];
+  assert.equal(img.loading, "lazy");
+  assert.equal(img.width, "1536");
+  assert.equal(img.height, "1024");
+  assert.ok(img.alt.length > 30 && /illustration/i.test(img.alt), "descriptive alt that says it is an illustration");
+  for (const src of [img.src, ...img.srcset.split(",").map((s) => s.trim().split(/\s+/)[0])]) {
+    assert.ok(src.startsWith("/assets/images/illustrations/sample-conditioning-panel-") && existsSync(localFile(src)), `missing: ${src}`);
+    assert.ok(statSync(localFile(src)).size <= 60_000, `panel variant too heavy: ${src}`);
   }
-  assert.ok(HERO_HTML.includes('class="hm-hero has-figure"'));
+  assert.match(feature[0], /<figcaption>Illustration<\/figcaption>/);
+  assert.doesNotMatch(visibleText(feature[0]), /GC8000|case study|installation|actual|real plant/i, "never presented as a documented case or a real site");
+});
+
+test("pathway: SOLVE → LEARN → CONNECT → CONTRIBUTE in order, each anchored to a real section", () => {
+  const nav = HOME_HTML.match(/<nav class="hm-pathway"[\s\S]*?<\/nav>/)[0];
+  const steps = [...nav.matchAll(/<a href="#([a-z]+)">[\s\S]*?<strong>([^<]+)<\/strong>/g)].map((m) => [m[1], m[2]]);
+  assert.deepEqual(steps, [["solve", "Solve"], ["learn", "Learn"], ["connect", "Connect"], ["contribute", "Contribute"]]);
+  for (const [id] of steps) assert.ok(HOME_HTML.includes(`<section id="${id}"`), `anchor target #${id} missing`);
+  assert.doesNotMatch(HOME_HTML, /hm-promise|hm-model/, "old promise strip and hero model line removed");
+});
+
+test("from the field: the featured case is the first deterministic pick of the content map, linked to a real page", () => {
+  const field = sectionHtml("field");
+  const first = featuredCases()[0];
+  assert.ok(field.includes(`href="${first.path}"`), "featured case link must be featuredCases()[0]");
+  assert.ok(field.includes(`>${first.title}</a>`), "featured case title must match the content map verbatim");
+  assert.ok(field.includes(`Case study · ${caseTopic(first)}`), "topic label from the taxonomy");
+  assert.ok(field.includes('href="/case-studies/"'));
+  assert.ok(field.includes('data-home="case-count"'), "count comes from data, not copy");
+  assert.ok(resolveUrl(first.path));
+  assert.equal(images(field).length, 0, "no image exists for this case; none is invented");
+});
+
+test("watch & learn: three verified InstMates videos with their own local thumbnails, plain new-tab links, plus the channel link", () => {
+  const watch = sectionHtml("watch");
+  const cards = [...watch.matchAll(/<a class="hm-card hm-video" href="https:\/\/www\.youtube\.com\/watch\?v=([A-Za-z0-9_-]{11})"[^>]*>([\s\S]*?)<\/a>/g)];
+  assert.equal(cards.length, 3, "exactly three video cards");
+  assert.deepEqual(cards.map((c) => c[1]).sort(), Object.keys(VERIFIED_VIDEOS).sort(), "only the verified video ids");
+  for (const [tag, id, body] of cards) {
+    assert.match(tag, /target="_blank"/);
+    assert.match(tag, /rel="noopener noreferrer"/);
+    const title = visibleText(body.match(/<span class="hm-video-title">([\s\S]*?)<\/span>/)[1]).trim();
+    assert.equal(title, VERIFIED_VIDEOS[id], `published title for ${id}`);
+    const img = images(body)[0];
+    assert.equal(img.loading, "lazy");
+    assert.equal(img.width, "1280");
+    assert.equal(img.height, "720");
+    for (const src of [img.src, ...img.srcset.split(",").map((s) => s.trim().split(/\s+/)[0])]) {
+      assert.ok(src.startsWith(`/assets/images/videos/yt-${id}-`), `thumbnail must belong to ${id}: ${src}`);
+      assert.ok(existsSync(localFile(src)), `thumbnail missing on disk: ${src}`);
+      assert.ok(statSync(localFile(src)).size <= 110_000, `thumbnail too heavy: ${src}`);
+    }
+    assert.match(body, /class="hm-play" aria-hidden="true"/, "play icon overlay");
+    assert.match(body, /opens in a new tab/, "accessible new-tab indication");
+  }
+  assert.match(watch, new RegExp(`<a class="hm-more" href="${YOUTUBE_CHANNEL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}" target="_blank" rel="noopener noreferrer">View all videos on YouTube`));
+  assert.doesNotMatch(HOME_HTML, /youtube\.com\/embed|youtube-nocookie|ytimg\.com|youtu\.be|\/iframe_api|player\.js/, "no embeds, hotlinked thumbnails or player scripts");
+  assert.doesNotMatch(visibleText(watch), /\b\d+(\.\d+)?[KkMm]?\s*(views|subscribers)\b|\b\d{1,2}:\d{2}\b/, "no invented durations, views or subscriber counts");
+});
+
+test("linkedin: official company page card near CONNECT with the approved copy, plain link, no embed", () => {
+  const connect = sectionHtml("connect");
+  const card = connect.match(/<div class="hm-social" id="linkedin">[\s\S]*?<\/div>\s*<\/section>|<div class="hm-social" id="linkedin">[\s\S]*?<\/a>\s*<\/div>/)[0];
+  assert.ok(card.includes("<h3>Connect with InstMates on LinkedIn</h3>"));
+  assert.ok(card.includes("Follow our technical posts, industry updates and community discussions."));
+  assert.match(card, /<a class="hm-btn hm-btn-primary" href="https:\/\/www\.linkedin\.com\/company\/144806016\/" target="_blank" rel="noopener noreferrer">Follow InstMates on LinkedIn/);
+  assert.doesNotMatch(HOME_HTML, /linkedin\.com\/company\/144806016\/admin|linkedin\.com\/in\//, "public company URL only, never the admin URL or a personal profile");
+  assert.doesNotMatch(HOME_HTML, /platform\.linkedin\.com|linkedin\.com\/embed|li_sdk|IN\.init/, "no LinkedIn SDK, embed or tracking widget");
+  assert.match(card, /opens in a new tab/);
+});
+
+test("motion: one-time, small, JS-gated entrances and restrained hover, all disabled under reduced motion, nothing hidden without JS", () => {
+  assert.match(HOME_STYLE, /@keyframes hm-fade-up\{from\{opacity:0;transform:translateY\(8px\)\}/, "hero fade-in ≤8px");
+  assert.match(HOME_STYLE, /\.hm-js \.hm-hero-figure\{animation:hm-fade-up \.45s ease both\}/, "hero fade 450ms, one-time");
+  assert.match(HOME_STYLE, /\.hm-js \.hm-reveal\{opacity:0;transform:translateY\(8px\);transition:opacity \.35s ease,transform \.35s ease\}/, "section entrance 350ms ≤8px");
+  assert.ok(!/(^|[^-])\.hm-reveal\{opacity:0/.test(HOME_STYLE.replace(/\.hm-js \.hm-reveal/g, "")), "sections are only hidden when the .hm-js gate is on (JS present)");
+  assert.match(HOME_STYLE, /@media \(hover:hover\) and \(pointer:fine\)\{\s*\.hm-card:hover\{transform:translateY\(-2px\)/, "2px lift only for hover-capable pointers");
+  assert.match(HOME_STYLE, /\.hm-card\{[^}]*transition:[^}]*\.18s/, "card transitions ~180ms");
+  const reduced = HOME_STYLE.match(/@media \(prefers-reduced-motion:reduce\)\{([\s\S]*?)\n\}/)[1];
+  assert.match(reduced, /animation:none!important/);
+  assert.match(reduced, /\.hm-js \.hm-reveal\{opacity:1;transform:none\}/, "entrances removed under reduced motion");
+  assert.match(reduced, /\.hm-card:hover\{transform:none/, "hover lift removed under reduced motion");
+  assert.doesNotMatch(HOME_STYLE, /infinite|alternate|parallax|pulse|blink/i, "no continuous or pulsing animation");
+  const motion = HOME_HTML.match(/<script>\s*\(function \(\) \{[\s\S]*?IntersectionObserver[\s\S]*?<\/script>/);
+  assert.ok(motion, "inline motion script present");
+  assert.match(motion[0], /prefers-reduced-motion: reduce/);
+  assert.match(motion[0], /classList\.add\("hm-js"\)/);
+  assert.match(motion[0], /io\.unobserve\(e\.target\)/, "each container animates once");
+  // Fail-open contract: the gate goes on only after observation is wired; a silent observer or a
+  // thrown error can never leave content hidden.
+  assert.ok(motion[0].indexOf("io.observe(") < motion[0].indexOf('classList.add("hm-js")'), "gate added after observers are wired");
+  assert.match(motion[0], /setTimeout\(function \(\) \{ if \(!fired\) \{ revealAll\(\); io\.disconnect\(\); \} \}, 1500\)/, "silent observer → reveal all");
+  assert.match(motion[0], /catch \(err\) \{\s*root\.classList\.remove\("hm-js"\);\s*revealAll\(\);/, "error → gate removed, all revealed");
+  assert.match(motion[0], /addEventListener\("change"/, "reduced-motion change while open reveals all");
+  assert.doesNotMatch(HOME_HTML, /gsap|anime\.js|aos\.js|framer|lottie|scrollreveal/i, "no animation library");
 });
 
 test("hero: GC discovery entry still reaches the published hub", () => {
   const gc = learnTopics().find((t) => t.slug === "gas-chromatography");
   assert.equal(gc.href, "/technology/gas-chromatography/");
   assert.ok(resolveUrl(gc.href));
+});
+
+// ---------------------------------------------------------------- shared includes (header / footer)
+test("header: primary navigation is SOLVE → LEARN → CONNECT → CONTRIBUTE on real routes, with the rest under More and the account menu intact", () => {
+  const nav = HEADER_HTML.match(/<nav class="main-nav"[\s\S]*?<\/nav>/)[0];
+  const beforeMenus = nav.slice(0, nav.indexOf('<div class="nav-dropdown">'));
+  const primary = [...beforeMenus.matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)].map((m) => [m[2], m[1]]);
+  assert.deepEqual(primary, [["Solve", "/#solve"], ["Learn", "/knowledge/"], ["Connect", "/profiles/"], ["Contribute", "/#contribute"]]);
+  assert.ok(HOME_HTML.includes('<section id="contribute"'), "Contribute target exists on the homepage");
+  assert.ok(!nav.slice(0, nav.indexOf('<div class="nav-dropdown">')).includes('href="/feed/"'), "no primary nav item promises feed posting (P1.2 open)");
+  for (const h of hrefs(nav).filter((x) => x.startsWith("/"))) {
+    assert.ok(resolveUrl(h), `header links a missing page: ${h}`);
+  }
+  assert.ok(HOME_HTML.includes('<section id="solve"'), "Solve target exists on the homepage");
+  for (const id of ["userMenuBtn", "myProfileLink", "editProfileLink", "logoutBtn"]) {
+    assert.ok(nav.includes(`id="${id}"`), `header-auth.js hook #${id} missing`);
+  }
+  assert.ok(nav.includes('class="nav-dropdown user-menu"'), "account menu container kept");
+  assert.ok(nav.includes('<span class="auth-out">') && nav.includes('<span class="auth-in">'), "auth toggles kept");
+  assert.ok(nav.includes('href="/login.html" class="nav-cta"') && nav.includes('href="/register.html" class="nav-cta nav-cta-primary"'));
+  assert.ok(nav.includes('aria-haspopup="true"'), "menu toggles announce a popup");
+  assert.match(STYLE_CSS, /\.nav-dropdown:focus-within \.dropdown-menu\s*\{\s*display:\s*block/, "dropdowns open on keyboard focus");
+  // Small screens hide .main-nav (style.css); a native <details> menu carries the same routes there.
+  const mobile = HEADER_HTML.match(/<details class="mobile-menu">[\s\S]*?<\/details>/);
+  assert.ok(mobile, "mobile <details> menu missing");
+  assert.match(mobile[0], /<summary>Menu<\/summary>/);
+  const mobileLinks = hrefs(mobile[0]);
+  for (const h of ["/#solve", "/knowledge/", "/profiles/", "/#contribute", "/login.html", "/register.html"]) {
+    assert.ok(mobileLinks.includes(h), `mobile menu lacks ${h}`);
+  }
+  assert.ok(!mobileLinks.includes("/feed/"), "mobile menu does not promise feed posting either");
+  for (const h of mobileLinks.filter((x) => x.startsWith("/"))) assert.ok(resolveUrl(h), `mobile menu links a missing page: ${h}`);
+  assert.doesNotMatch(mobile[0], /<script/, "menu must work without script (includes are innerHTML-injected)");
+  const headerIds = [...HEADER_HTML.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(new Set(headerIds).size, headerIds.length, "duplicate ids in the header include");
+});
+
+test("footer: tagline, real site links, official YouTube and LinkedIn links with new-tab indication, legal links", () => {
+  assert.ok(FOOTER_HTML.includes("Share Technology · Learn Techniques · Grow Together."));
+  const links = FOOTER_HTML.match(/<nav class="footer-links"[\s\S]*?<\/nav>/)[0];
+  for (const h of hrefs(links).filter((x) => x.startsWith("/"))) assert.ok(resolveUrl(h), `footer links a missing page: ${h}`);
+  for (const url of [YOUTUBE_CHANNEL, LINKEDIN_COMPANY]) {
+    const a = links.match(new RegExp(`<a href="${url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"[^>]*>[\\s\\S]*?</a>`));
+    assert.ok(a, `footer lacks ${url}`);
+    assert.match(a[0], /target="_blank" rel="noopener noreferrer"/);
+    assert.match(a[0], /opens in a new tab/);
+  }
+  for (const h of ["/legal.html", "/privacy.html"]) assert.ok(FOOTER_HTML.includes(`href="${h}"`), `legal link ${h} missing`);
+  assert.doesNotMatch(visibleText(FOOTER_HTML), /coming soon|placeholder/i);
+  assert.match(STYLE_CSS, /\.sr-only\{/, "sr-only utility present for the new-tab text");
+});
+
+// ---------------------------------------------------------------- P1.1 — secondary (ghost) CTAs must be readable on the light technical canvas.
+/** Declarations of the first rule whose selector line is exactly `selector`. */
+const cssRule = (selector) => {
+  const start = STYLE_CSS.split("\n").findIndex((line) => line.trim() === `${selector}{` || line.trim() === `${selector} {`);
+  assert.ok(start >= 0, `rule ${selector} missing from style.css`);
+  const body = STYLE_CSS.split("\n").slice(start + 1).join("\n");
+  return body.slice(0, body.indexOf("}")).replace(/\/\*[\s\S]*?\*\//g, "");
+};
+
+test("ghost CTAs: the sitewide .btn-ghost rule is brand ink, not the inverted white treatment", () => {
+  const ghost = cssRule(".btn-ghost");
+  assert.match(ghost, /color:\s*var\(--brand-primary/, "text uses the brand primary colour");
+  assert.match(ghost, /border:\s*1px solid var\(--brand-primary/, "border uses the brand primary colour");
+  assert.doesNotMatch(ghost, /color:\s*#fff|rgba\(255,\s*255,\s*255/, "no white text or white border outside .hero");
+  const hover = cssRule(".btn-ghost:hover");
+  assert.doesNotMatch(hover, /rgba\(255,\s*255,\s*255/, "hover stays on the light canvas too");
+});
+
+test("ghost CTAs: the inverted treatment survives only inside the dark .hero surface", () => {
+  const dark = cssRule(".hero .btn-ghost");
+  assert.match(dark, /color:\s*#fff/, ".hero keeps white ghost text");
+  assert.doesNotMatch(HOME_HTML, /class="hero[\s"]/, "the homepage no longer uses the dark .hero surface");
+});
+
+test("ghost CTAs: the homepage ghost CTAs keep the shared .btn-ghost class on the light canvas", () => {
+  assert.ok(sectionHtml("solve").includes('<a href="/knowledge/" class="btn btn-ghost">Open the Knowledge Hub</a>'));
+  assert.ok(sectionHtml("contribute").includes('<a href="/login.html" class="btn btn-ghost">Login</a>'));
+  assert.ok(sectionHtml("connect").includes('<a href="/feed/" class="btn btn-ghost">Open the feed</a>'));
 });
