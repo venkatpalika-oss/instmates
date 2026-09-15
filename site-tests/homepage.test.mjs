@@ -332,3 +332,33 @@ test("hero: GC discovery entry still reaches the published hub", () => {
   assert.equal(gc.href, "/technology/gas-chromatography/");
   assert.ok(resolveUrl(gc.href));
 });
+
+// P1.1 — secondary (ghost) CTAs must be readable on the light technical canvas.
+const STYLE_CSS = readFileSync(path.join(PUBLIC_DIR, "assets", "css", "style.css"), "utf8");
+/** Declarations of the first rule whose selector line is exactly `selector`. */
+const cssRule = (selector) => {
+  const start = STYLE_CSS.split("\n").findIndex((line) => line.trim() === `${selector}{` || line.trim() === `${selector} {`);
+  assert.ok(start >= 0, `rule ${selector} missing from style.css`);
+  const body = STYLE_CSS.split("\n").slice(start + 1).join("\n");
+  return body.slice(0, body.indexOf("}")).replace(/\/\*[\s\S]*?\*\//g, "");
+};
+
+test("ghost CTAs: the sitewide .btn-ghost rule is brand ink, not the inverted white treatment", () => {
+  const ghost = cssRule(".btn-ghost");
+  assert.match(ghost, /color:\s*var\(--brand-primary/, "text uses the brand primary colour");
+  assert.match(ghost, /border:\s*1px solid var\(--brand-primary/, "border uses the brand primary colour");
+  assert.doesNotMatch(ghost, /color:\s*#fff|rgba\(255,\s*255,\s*255/, "no white text or white border outside .hero");
+  const hover = cssRule(".btn-ghost:hover");
+  assert.doesNotMatch(hover, /rgba\(255,\s*255,\s*255/, "hover stays on the light canvas too");
+});
+
+test("ghost CTAs: the inverted treatment survives only inside the dark .hero surface", () => {
+  const dark = cssRule(".hero .btn-ghost");
+  assert.match(dark, /color:\s*#fff/, ".hero keeps white ghost text");
+  assert.doesNotMatch(HOME_HTML, /class="hero[\s"]/, "the homepage no longer uses the dark .hero surface");
+});
+
+test("ghost CTAs: the two audited homepage CTAs keep copy, destination and the shared .btn-ghost class", () => {
+  assert.ok(sectionHtml("solve").includes('<a href="/feed/" class="btn btn-ghost">Ask about your fault in the feed (login to post)</a>'));
+  assert.ok(sectionHtml("join").includes('<a href="/login.html" class="btn btn-ghost">Login</a>'));
+});

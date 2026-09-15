@@ -145,12 +145,28 @@ img{
 
 .btn-primary:hover{opacity:0.92}
 
+/* Secondary (ghost) button on the light technical canvas: brand ink on a
+   transparent field. The inverted white treatment survives only inside the
+   dark .hero surface (see ".hero .btn-ghost" below). */
 .btn-ghost{
-  border:1px solid rgba(255,255,255,0.45);
-  color:#fff;
+  background:transparent;
+  border:1px solid var(--brand-primary, #0b3c5d);
+  color:var(--brand-primary, #0b3c5d);
 }
 
 .btn-ghost:hover{
+  background:rgba(11,60,93,0.06);
+  border-color:var(--brand-primary, #0b3c5d);
+  color:var(--brand-primary, #0b3c5d);
+}
+
+.hero .btn-ghost{
+  border-color:rgba(255,255,255,0.45);
+  color:#fff;
+}
+
+.hero .btn-ghost:hover{
+  background:transparent;
   border-color:rgba(255,255,255,0.75);
 }
 
