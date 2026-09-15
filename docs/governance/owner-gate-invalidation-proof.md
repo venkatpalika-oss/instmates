@@ -7,6 +7,6 @@ remain valid after the PR HEAD changes.
 
 This document must never be merged into main.
 
-Proof stage: A
+Proof stage: B
 
 Owner instruction: DO NOT MERGE THIS PROOF PR.
