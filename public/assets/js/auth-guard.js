@@ -52,9 +52,10 @@ onAuthStateChanged(auth, async (user) => {
       userSnap.exists() &&
       userSnap.data().profileCompleted === true;
 
-   // Block access until profile is completed
-   if (!profileCompleted && page !== "profile") {
-      window.location.replace(`/profile/?uid=${user.uid}`);
+   // Block access until profile is completed. The live edit page is the
+   // completion route, so it is exempt from this redirect.
+   if (!profileCompleted && page !== "profile-edit") {
+      window.location.replace("/profile/edit/");
       return;
    }
 
