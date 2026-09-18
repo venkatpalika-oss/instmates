@@ -200,11 +200,13 @@ form.addEventListener("submit", async (e) => {
       .filter(Boolean);
 
     let photoURL = existingPhotoURL;
+    let photoChanged = false;
 
     if (croppedBlob) {
       const storageRef = ref(storage, `profilePhotos/${user.uid}`);
       await uploadBytes(storageRef, croppedBlob);
       photoURL = await getDownloadURL(storageRef);
+      photoChanged = true;
     }
 
     const profileData = {
@@ -222,13 +224,29 @@ form.addEventListener("submit", async (e) => {
 
     const completion = calculateCompletion(profileData);
 
-    // Only the completion percentage is written, by field path, so the
-    // member's existing profileStatus.isPublic (true, false or absent)
-    // is preserved exactly.
-    await updateDoc(doc(db, "profiles", user.uid), {
-      ...profileData,
+    // P1.3: write only the leaves this form owns, each by field path.
+    // A nested map value passed to updateDoc replaces that whole map, which
+    // deleted hidden siblings such as basicInfo.experienceYears,
+    // basicInfo.company, professional.plantType and
+    // professional.certifications. Field paths leave every other child of
+    // basicInfo, professional and profileStatus (including isPublic)
+    // untouched; only the completion percentage is derived here.
+    const update = {
+      "basicInfo.fullName": fullName,
+      "basicInfo.headline": headline,
+      "basicInfo.location": location,
+      "professional.specialization": specialization,
+      "professional.analyzersWorked": analyzersWorked,
       "profileStatus.completionPercent": completion
-    });
+    };
+
+    // The photo is written only when this save produced a new cropped
+    // photo. Removing a photo is handled by the field-scoped delete above.
+    if (photoChanged) {
+      update["basicInfo.profilePhoto"] = photoURL;
+    }
+
+    await updateDoc(doc(db, "profiles", user.uid), update);
 
     // P1.2: a successful save completes the profile. This runs only after
     // the profile write above has succeeded.

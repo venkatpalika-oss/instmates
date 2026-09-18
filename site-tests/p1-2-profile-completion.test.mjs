@@ -120,9 +120,10 @@ test("edit page: order is profile save → completion write → /feed/, and a fa
 test("privacy: saving never writes isPublic; only profileStatus.completionPercent is updated by field path", () => {
   assert.doesNotMatch(editCode, /isPublic/, "edit-profile.js must not write (or default) profileStatus.isPublic");
   assert.doesNotMatch(editCode, /profileStatus\s*:/, "the profileStatus map is never replaced wholesale");
-  assert.match(
-    saveHandler,
-    /await updateDoc\(doc\(db, "profiles", user\.uid\), \{\s*\.\.\.profileData,\s*"profileStatus\.completionPercent": completion\s*\}\);/);
+  // P1.3: the profile write is a field-path update object; the completion
+  // percentage is one of its leaves and the map is never replaced wholesale.
+  assert.match(saveHandler, /await updateDoc\(doc\(db, "profiles", user\.uid\), update\);/);
+  assert.match(saveHandler, /const update = \{[^}]*"profileStatus\.completionPercent": completion[^}]*\};/);
   assert.equal((editCode.match(/profileStatus/g) || []).length, 1, "completionPercent is the only profileStatus member touched");
 });
 
