@@ -105,12 +105,11 @@
       await window.registerUser(email, password, fullName);
 
       /*
-        IMPORTANT:
-        - Do NOT decide destination here
-        - auth-guard.js enforces profile-first onboarding
-        - New users will be redirected to profile-edit.html
+        Registration owns this navigation: new members continue on the
+        live profile edit page, where a successful save completes the
+        profile (P1.2).
       */
-      window.location.replace("/profile-edit.html");
+      window.location.replace("/profile/edit/");
 
     } catch (err) {
       alert(err.message);

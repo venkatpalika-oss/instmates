@@ -70,7 +70,6 @@ window.registerUser = async function (email, password, fullName) {
     createdAt: serverTimestamp()
   });
 
-  window.location.href = `/profile/?uid=${cred.user.uid}`;
   return cred;
 };
 
