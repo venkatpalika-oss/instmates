@@ -534,7 +534,12 @@ test("ghost CTAs: the homepage ghost CTAs keep the shared .btn-ghost class on th
 test("simulation spotlight: real route, five local assets, no duplicate model or fake readings", () => {
  const spot=sectionHtml("simulate");
  assert.match(spot,/4–20 mA Transmitter &amp; Loop Simulator/);
- assert.match(spot,/href="\/simulations\/4-20ma-loop\/">Launch simulator/);
+ assert.match(spot,/class="hm-btn hm-btn-primary" href="\/simulations\/">Explore All Simulations/);
+ assert.match(spot,/class="hm-btn hm-btn-outline" href="\/simulations\/4-20ma-loop\/">Launch 4–20 mA Simulator/);
+ assert.match(spot,/Featured Simulation <span>Available Now<\/span>/);
+ assert.deepEqual(hrefs(spot),["/simulations/","/simulations/4-20ma-loop/"]);
+ assert.equal((spot.match(/<article/g)||[]).length,1);
+ assert.doesNotMatch(visibleText(spot),/our simulator|the simulator|only simulation|coming soon/i);
  assert.match(spot,/Process → Transmitter → Loop → PLC\/DCS → Display/);
  assert.equal(images(spot).length,5);
  for(const img of images(spot)) {

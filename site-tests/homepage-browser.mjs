@@ -88,9 +88,12 @@ try {
   const response=await context.request.get(base+href);assert.ok(response.ok(),`broken promoted route: ${href}`);
  }
  check('every promoted internal destination returns successfully');
- for(const width of [1440,768,430,390,360,320]) {
+ for(const width of [1920,1440,768,430,390,360,320]) {
   await page.setViewportSize({width,height:width>768?1000:844});await page.evaluate(()=>scrollTo(0,0));
   await overflow();
+  const heroBounds=await page.locator('.hm-hero').boundingBox();
+  assert.ok(Math.abs(heroBounds.x)<1 && Math.abs(heroBounds.width-width)<1,`hero must span viewport at ${width}`);
+  if(width>=1440)assert.ok(heroBounds.height>=500 && heroBounds.height<=600);
   if(width<=430) {
    assert.equal(await page.locator('.mobile-bottom-nav').isVisible(),false);
    const h=await page.locator('.hm-hero').boundingBox();const pathway=await page.locator('.hm-pathway').boundingBox();
@@ -104,7 +107,7 @@ try {
   await page.evaluate(()=>scrollTo(0,0));
   await shot(`home-${width}`,true);await shot(`hero-${width}`);
  }
- check('six explicit viewports: overflow, compact mobile hero, touch targets and no bottom overlay');
+ check('seven explicit viewports: overflow, compact mobile hero, touch targets and no bottom overlay');
  await page.setViewportSize({width:390,height:844});
  await page.locator('.mobile-menu summary').focus();await page.keyboard.press('Enter');
  assert.ok(await page.locator('.mobile-menu a[href="/simulations/"]').isVisible());await shot('mobile-menu');
@@ -115,7 +118,12 @@ try {
  assert.ok(top>=headerBottom,'anchor hidden under header');await shot('simulator-spotlight');check('simulator anchor visible below sticky header');
  assert.deepEqual(await page.locator('.hm-signal strong').allTextContents(),['Process','Transmitter','Loop','PLC/DCS','Display']);
  assert.equal(await page.locator('.hm-signal img').evaluateAll(es=>es.every(i=>i.complete&&i.naturalWidth>0)),true);check('five-step simulator artwork and sequence load');
- await page.locator('.hm-spotlight .hm-btn').click();
+ assert.equal(await page.getByRole('link',{name:'Explore All Simulations',exact:true}).getAttribute('href'),'/simulations/');
+ await page.getByRole('link',{name:'Explore All Simulations',exact:true}).click();
+ await page.waitForURL('**/simulations/');
+ await page.goto(base+'/');await page.waitForSelector('body.auth-ready');
+ assert.ok(await page.getByText('Available Now',{exact:true}).isVisible());
+ await page.getByRole('link',{name:'Launch 4–20 mA Simulator',exact:true}).click();
  await page.waitForFunction(()=>document.getElementById('loop-reading')?.textContent==='12.00 mA');check('launch action reaches working simulator');
  await page.goto(base+'/');await page.waitForSelector('body.auth-ready');
  await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.className),'hm-skip');

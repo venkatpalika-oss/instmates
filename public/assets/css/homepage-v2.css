@@ -314,3 +314,34 @@ body[data-page="home"] .siteFooter{background:#0e2538}
  .hm-hero h1{font-size:1.72rem}
  .hm-hero .hm-pathway{gap:0 14px}
 }
+
+/* PR #52 correction: full-width hero shell, aligned inner reading grid. */
+body[data-page="home"] .hm{max-width:none;padding:0}
+.hm-content{max-width:1240px;margin-inline:auto;padding:0 24px 48px}
+.hm-hero{margin:0;padding:0;min-height:0}
+.hm-hero-inner{max-width:1240px;margin-inline:auto;padding:48px 24px 28px;min-height:540px}
+.hm-featured-simulation{border-top:1px solid #385568;padding-top:22px}
+.hm-featured-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.hm-featured-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 8px;color:#b8d3e5;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.hm-featured-label span{color:#b7f4d5;background:#173e38;border:1px solid #416a5c;border-radius:4px;padding:4px 7px}
+.hm-featured-head h3{margin:0;color:#fff;font-size:1.2rem;line-height:1.35}
+.hm-featured-head .hm-btn{flex-shrink:0;font-size:.88rem}
+@media(max-width:1024px){
+ .hm-hero-inner{padding:36px 28px 24px;min-height:460px}
+ .hm-featured-head{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:768px){
+ .hm-content{padding:0 16px 28px}
+ .hm-hero-inner{padding:30px 24px 22px;min-height:0}
+}
+@media(max-width:600px){
+ .hm-hero-inner{padding:26px 20px 14px}
+ .hm-featured-simulation{padding-top:18px}
+ .hm-featured-head{gap:12px;margin-bottom:14px}
+ .hm-featured-head h3{font-size:1.08rem}
+ .hm-spotlight .hm-head>.hm-btn{width:100%}
+ .hm-featured-head .hm-btn{width:100%}
+}
+@media(max-width:360px){
+ .hm-hero-inner{padding:24px 16px 12px}
+}

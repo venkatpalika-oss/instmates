@@ -74,8 +74,9 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 <body data-page="home">
 <a class="hm-skip" href="#main">Skip to content</a>
 <div id="siteHeader"></div>
-<main class="container hm" id="main" tabindex="-1">
+<main class="hm" id="main" tabindex="-1">
 <section class="hm-hero" aria-labelledby="hm-title">
+ <div class="hm-hero-inner">
  <div class="hm-hero-text">
   <p class="hm-eyebrow">InstMates / Shared field experience</p>
   <h1 id="hm-title">A Community for <span>Instrument &amp; Analyzer Professionals</span></h1>
@@ -93,19 +94,26 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 <a href="#contribute"><span aria-hidden="true">05</span><strong>CONTRIBUTE / GROW</strong></a>
 </nav>
  </div>
+ </div>
 <figure class="hm-hero-figure" aria-hidden="true">
   <img src="/assets/images/home/hero-industrial-v2-960.webp"
        srcset="/assets/images/home/hero-industrial-v2-640.webp 640w, /assets/images/home/hero-industrial-v2-960.webp 960w, /assets/images/home/hero-industrial-v2-1440.webp 1440w, /assets/images/home/hero-industrial-v2-1920.webp 1920w"
-       sizes="(max-width: 600px) 1px, (max-width: 1240px) 100vw, 1240px"
+       sizes="(max-width: 600px) 1px, 100vw"
        width="1920" height="768" alt="" fetchpriority="high" decoding="async">
  </figure>
 </section>
 
+<div class="hm-content">
 <section id="simulate" class="hm-section hm-spotlight" aria-labelledby="simulate-title">
- <div class="hm-head"><div><p class="hm-kicker">Simulate / Interactive learning</p>
- <h2 id="simulate-title">4–20 mA Transmitter &amp; Loop Simulator</h2>
- <p>Change the process value. Trace the signal. Explore faults and test your diagnosis in challenge mode.</p></div>
- <a class="hm-btn hm-btn-primary" href="/simulations/4-20ma-loop/">Launch simulator</a></div>
+ <div class="hm-head"><div><p class="hm-kicker">Simulations / Interactive learning</p>
+ <h2 id="simulate-title">Practice instrumentation. Not just read about it.</h2>
+ <p>Explore interactive technical simulations. Practice process and instrument behavior, signals, faults and troubleshooting.</p></div>
+ <a class="hm-btn hm-btn-primary" href="/simulations/">Explore All Simulations</a></div>
+ <article class="hm-featured-simulation" aria-labelledby="featured-simulation-title">
+ <div class="hm-featured-head"><div>
+ <p class="hm-featured-label">Featured Simulation <span>Available Now</span></p>
+ <h3 id="featured-simulation-title">4–20 mA Transmitter &amp; Loop Simulator</h3></div>
+ <a class="hm-btn hm-btn-outline" href="/simulations/4-20ma-loop/">Launch 4–20 mA Simulator</a></div>
  <ol class="hm-signal" aria-label="Signal sequence: Process → Transmitter → Loop → PLC/DCS → Display">
 <li><img src="/assets/images/simulations/process-vessel.svg" width="160" height="110" loading="lazy" alt=""><strong>Process</strong><small>Measured value</small></li>
 <li><img src="/assets/images/simulations/smart-transmitter.svg" width="160" height="110" loading="lazy" alt=""><strong>Transmitter</strong><small>Value to current</small></li>
@@ -113,6 +121,7 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 <li><img src="/assets/images/simulations/analog-input-rack.svg" width="160" height="110" loading="lazy" alt=""><strong>PLC/DCS</strong><small>Input & scaling</small></li>
 <li><img src="/assets/images/simulations/engineering-display.svg" width="160" height="110" loading="lazy" alt=""><strong>Display</strong><small>Engineering value</small></li>
 </ol>
+ </article>
 </section>
 <div class="hm-workbench">
 <section id="solve" class="hm-section" aria-labelledby="solve-title">
@@ -304,6 +313,7 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
  <p>Every field problem is a chance to deepen your understanding.</p>
  <a class="hm-more" href="/profiles/">Meet the professionals →</a>
 </section>
+</div>
 </main>
 <div id="siteFooter"></div>
 
