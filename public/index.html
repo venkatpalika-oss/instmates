@@ -14,13 +14,13 @@ content="Field troubleshooting guides, real case studies, calibration and analyz
 <meta property="og:title" content="InstMates – Field Troubleshooting, Technical Knowledge & Community for Instrument and Analyzer Professionals" />
 <meta property="og:description" content="Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory." />
 <meta property="og:url" content="https://www.instmates.com/" />
-<meta property="og:image" content="https://www.instmates.com/assets/images/home/hero-instrumentation.jpg" />
+<meta property="og:image" content="https://www.instmates.com/assets/images/home/hero-industrial-v2-1440.webp" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="InstMates – Field Troubleshooting, Technical Knowledge & Community for Instrument and Analyzer Professionals" />
 <meta name="twitter:description" content="Field troubleshooting guides, real case studies, calibration and analyzer knowledge, open technical discussions and a public professional directory." />
-<meta name="twitter:image" content="https://www.instmates.com/assets/images/home/hero-instrumentation.jpg" />
+<meta name="twitter:image" content="https://www.instmates.com/assets/images/home/hero-industrial-v2-1440.webp" />
 
 <!-- GOOGLE ANALYTICS (unchanged; no new events) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"></script>
@@ -69,301 +69,83 @@ gtag('config', 'G-L57QYT7H9F', { send_page_view: true });
 }
 </script>
 
-<!-- Homepage-only styles (light technical canvas concept, 2026-09-15). Everything is scoped
-     to body[data-page="home"] / .hm-* so no other page changes. Palette: --brand-primary
-     #0b3c5d, --brand-accent #1f78b4, restrained 1px borders, white surfaces, no gradients. -->
-<style>
-body[data-page="home"]{background:#fff}
-.hm{padding-top:0}
-.hm-section{margin-top:28px;scroll-margin-top:84px}
-.hm-kicker{margin:0 0 4px;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-accent)}
-.hm-section h2{margin:0 0 6px;font-size:1.5rem;line-height:1.25;color:var(--brand-primary)}
-.hm-section h3{margin:22px 0 8px;font-size:1.1rem;color:var(--brand-primary)}
-.hm-section > p.muted,.hm-head p.muted{margin:0 0 14px;max-width:760px;line-height:1.5;opacity:1;color:#334155}
-.hm-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.hm-head > div{min-width:0}
-.hm-head p.muted{margin-bottom:0}
-.hm-more{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--brand-accent);white-space:nowrap}
-.hm-more:hover{text-decoration:underline}
-.hm-ext{font-size:.85em;margin-left:2px}
-
-/* ---- Hero: light technical canvas, text left, equipment illustration right ---- */
-.hm-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,1fr);gap:36px;align-items:center;padding:30px 16px 26px;margin:0 -16px;background:#f3f8fc;border-bottom:1px solid #d9e4ee}
-.hm-hero-text{max-width:640px;min-width:0}
-/* Kickers on the light-blue bands (#f3f8fc) use navy: the accent blue lands at 4.46:1 there. */
-.hm-eyebrow,.hm-field .hm-kicker,.hm-contribute .hm-kicker{color:var(--brand-primary)}
-.hm-eyebrow{margin:0 0 12px;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
-.hm-hero h1{margin:0 0 14px;font-size:2.4rem;line-height:1.12;color:var(--brand-primary);letter-spacing:-.015em}
-.hm-support{margin:0 0 10px;font-size:1.08rem;line-height:1.55;color:#1f2a37;max-width:600px}
-.hm-tagline{margin:0 0 20px;font-size:.98rem;font-weight:600;color:var(--brand-primary)}
-.hm-cta{display:flex;flex-wrap:wrap;gap:12px}
-.hm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 20px;border-radius:6px;font-weight:700;text-decoration:none;white-space:normal;text-align:center;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
-.hm-btn svg{flex:0 0 auto}
-.hm-btn-primary{background:var(--brand-primary);color:#fff;border:1px solid var(--brand-primary)}
-.hm-btn-primary:hover{background:var(--brand-accent);border-color:var(--brand-accent);color:#fff;text-decoration:none}
-.hm-btn-outline{background:#fff;color:var(--brand-primary);border:1.5px solid var(--brand-primary)}
-.hm-btn-outline:hover{background:var(--brand-primary);color:#fff;text-decoration:none}
-.hm-cta-note{margin:12px 0 0;font-size:.9rem;color:#475569;max-width:600px}
-.hm-start{margin:18px 0 0;padding:14px 0 0;border-top:1px solid #d9e4ee}
-.hm-start p{margin:0 0 8px;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-primary)}
-.hm-start ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.hm-start a{display:inline-flex;align-items:center;min-height:40px;padding:6px 12px;border:1px solid #cfdbe6;border-radius:999px;background:#fff;color:#0f172a;font-weight:600;font-size:.92rem;text-decoration:none;transition:border-color .18s ease,color .18s ease}
-.hm-start a:hover{border-color:var(--brand-accent);color:var(--brand-primary);text-decoration:none}
-.hm-hero-figure{margin:0;min-width:0;align-self:center}
-/* The illustration's own pale background (about #f3f9fe) matches the band, so no blend mode or frame is needed. */
-.hm-hero-figure img{display:block;width:100%;height:auto;max-height:420px;aspect-ratio:3/2;object-fit:contain}
-
-/* ---- Pathway: SOLVE → LEARN → CONNECT → CONTRIBUTE ---- */
-.hm-pathway{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0 -16px;padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#fff}
-.hm-pathway a{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 16px 6px 0;color:#0f172a;text-decoration:none;position:relative}
-.hm-pathway a + a{padding-left:18px}
-.hm-pathway a + a::before{content:"→";position:absolute;left:-8px;top:50%;transform:translateY(-50%);color:#94a3b8;font-weight:700}
-.hm-pathway .hm-icon{flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#eef4fa;color:var(--brand-primary);display:flex;align-items:center;justify-content:center}
-.hm-pathway strong{display:block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-primary)}
-.hm-pathway span{display:block;font-size:.9rem;color:#475569}
-.hm-pathway a:hover span{text-decoration:underline}
-
-/* ---- Card grids ---- */
-.hm-card{background:#fff;border:1px solid #cfdbe6;border-radius:8px;color:#0f172a;text-decoration:none;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
-.hm-card:hover{border-color:var(--brand-accent);text-decoration:none}
-.hm-grid{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-.hm-grid a{display:flex;flex-direction:column;gap:4px;min-height:64px;padding:14px 16px;line-height:1.4}
-.hm-grid strong{font-weight:700;color:var(--brand-primary)}
-.hm-grid span{font-size:.92rem;color:#475569}
-.hm-grid .hm-open{margin-top:auto;padding-top:6px;font-size:.9rem;font-weight:600;color:var(--brand-accent)}
-.hm-cards-icon a{flex-direction:row;align-items:flex-start;gap:12px}
-.hm-cards-icon .hm-icon{flex:0 0 40px;width:40px;height:40px;border:1px solid #d9e4ee;border-radius:8px;color:var(--brand-primary);display:flex;align-items:center;justify-content:center;background:#f8fbfd}
-.hm-cards-icon .hm-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
-
-.hm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.hm-actions .btn{min-height:44px;display:inline-flex;align-items:center;white-space:normal;text-align:center}
-.hm-note{margin:10px 0 0;font-size:.95rem;color:#334155}
-.hm-note a{display:inline-block;padding:12px 0;font-weight:600;color:var(--brand-accent)}
-
-.hm-topics{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
-.hm-topics a{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border-radius:6px;font-weight:600}
-.hm-topics small{font-weight:500;color:#64748b;white-space:nowrap}
-
-/* ---- Sampling-system illustration feature (LEARN) ---- */
-.hm-feature{display:grid;grid-template-columns:minmax(200px,2fr) minmax(0,3fr);gap:18px;align-items:center;margin-top:14px;padding:14px 16px}
-.hm-feature figure{margin:0;min-width:0}
-.hm-feature img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;border-radius:6px;background:#f3f8fc}
-.hm-feature figcaption{margin-top:6px;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:#64748b}
-.hm-feature-body{min-width:0}
-.hm-feature-body strong{display:block;font-size:1.05rem;color:var(--brand-primary);margin-bottom:4px}
-.hm-feature-body span{display:block;font-size:.95rem;line-height:1.5;color:#475569}
-.hm-feature-body .hm-open{display:inline-block;margin-top:8px;font-size:.9rem;font-weight:600;color:var(--brand-accent)}
-
-/* ---- LEARN + FROM THE FIELD ---- */
-.hm-two{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:24px;align-items:start}
-.hm-two > .hm-section{margin-top:28px}
-.hm-field{background:#f3f8fc;border:1px solid #d9e4ee;border-radius:8px;padding:18px 20px}
-.hm-case{background:#fff;border:1px solid #cfdbe6;border-radius:8px;padding:16px 18px;margin-top:4px}
-.hm-case-kicker{margin:0 0 6px;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b}
-.hm-case h3{margin:0 0 8px;font-size:1.12rem;line-height:1.3}
-.hm-case h3 a{color:var(--brand-primary)}
-.hm-case h3 a:hover{text-decoration:underline}
-.hm-case p{margin:0 0 6px;color:#334155;line-height:1.5}
-.hm-field .hm-note{margin-top:12px}
-
-/* ---- CONNECT rails + LinkedIn card ---- */
-.hm-connect{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.hm-connect > div{background:#fff;border-radius:8px;padding:16px;border:1px solid #cfdbe6}
-.hm-connect h3{margin-top:0}
-.hm-list{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px}
-.hm-list li{border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;line-height:1.45}
-.hm-list li.hm-empty{border-style:dashed}
-.hm-badge{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#eef4fa;color:var(--brand-primary);margin-right:8px}
-.hm-meta{display:block;font-size:.85rem;color:#64748b;margin-top:4px}
-.hm-people{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
-.hm-people li{border:1px solid #e2e8f0;border-radius:8px;padding:10px;min-width:0;overflow-wrap:anywhere}
-.hm-people a{display:flex;flex-direction:column;gap:2px;min-height:44px;color:#0f172a;text-decoration:none}
-.hm-people a:hover{text-decoration:underline}
-.hm-people .hm-initial{width:36px;height:36px;border-radius:50%;background:#eef4fa;color:var(--brand-primary);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
-.hm-people strong{font-size:.95rem}
-.hm-people span{font-size:.85rem;color:#475569}
-.hm-social{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:18px;padding:18px 20px;background:#f3f8fc;border:1px solid #d9e4ee;border-radius:8px}
-.hm-social .hm-icon{flex:0 0 48px;width:48px;height:48px;border-radius:8px;background:#fff;border:1px solid #d9e4ee;color:var(--brand-primary);display:flex;align-items:center;justify-content:center}
-.hm-social-body{flex:1 1 280px;min-width:0}
-.hm-social h3{margin:0 0 4px;font-size:1.1rem}
-.hm-social p{margin:0;color:#334155;line-height:1.5}
-.hm-social .hm-btn{flex:0 0 auto}
-
-/* ---- WATCH & LEARN: three verified videos, local thumbnails, plain links ---- */
-.hm-videos{list-style:none;margin:0;padding:0;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-.hm-video{display:block;overflow:hidden}
-.hm-video-thumb{position:relative;aspect-ratio:16/9;background:#e2e8f0}
-.hm-video-thumb img{display:block;width:100%;height:100%;object-fit:cover}
-.hm-play{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(11,60,93,.88);color:#fff;display:flex;align-items:center;justify-content:center;transition:background-color .18s ease,transform .18s ease}
-.hm-video:hover .hm-play,.hm-video:focus-visible .hm-play{background:var(--brand-accent);transform:scale(1.06)}
-.hm-video-title{display:block;padding:12px 14px;font-weight:700;color:var(--brand-primary);line-height:1.35}
-.hm-video-meta{display:block;padding:0 14px 12px;font-size:.85rem;color:#64748b}
-
-/* ---- CONTRIBUTE band ---- */
-.hm-contribute{background:#f3f8fc;border:1px solid #d9e4ee;border-radius:8px;padding:22px 24px}
-.hm-contribute .hm-band{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.hm-contribute .hm-icon{flex:0 0 48px;width:48px;height:48px;color:var(--brand-primary)}
-.hm-ladder{margin:8px 0 6px;padding-left:20px;line-height:1.55;max-width:760px;color:#334155}
-.hm-ladder li{margin:6px 0}
-.auth-in-section{display:none}
-
-/* Homepage-scoped: the sitewide .btn-primary is white on light orange (about 2:1);
-   on this page it uses the brand blue so the primary actions meet WCAG AA. */
-.hm .btn-primary{background:var(--brand-primary);border:1px solid var(--brand-primary);color:#fff;transition:background-color .18s ease,border-color .18s ease}
-.hm .btn-primary:hover{background:var(--brand-accent);border-color:var(--brand-accent)}
-.hm a:focus-visible,.hm .btn:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
-
-/* ---- Motion: one-time entrances (JS-gated so content is always visible without JS),
-        2px hover lift on cards (hover-capable pointers only), all removed under reduced motion. */
-@keyframes hm-fade-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.hm-js .hm-hero-figure{animation:hm-fade-up .45s ease both}
-.hm-js .hm-reveal{opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}
-.hm-js .hm-reveal.is-in{opacity:1;transform:none}
-@media (hover:hover) and (pointer:fine){
-  .hm-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(11,60,93,.10)}
-}
-
-@media (max-width:1024px){
-  .hm-hero{grid-template-columns:1fr;gap:18px}
-  .hm-hero-figure{order:2;max-width:560px}
-  .hm-two{grid-template-columns:1fr}
-}
-@media (max-width:768px){
-  .hm-hero{padding:22px 16px 20px}
-  .hm-hero h1{font-size:1.65rem;line-height:1.18}
-  .hm-support{font-size:1rem;line-height:1.45}
-  .hm-btn{flex:1 1 100%;padding:10px 12px}
-  .hm-hero-figure img{max-height:260px}
-  .hm-pathway{grid-template-columns:1fr;gap:4px;padding:10px 16px}
-  .hm-pathway a{min-height:52px;padding:6px 0}
-  .hm-pathway a + a{padding-left:0}
-  .hm-pathway a + a::before{content:none}
-  .hm-section{margin-top:22px;scroll-margin-top:70px}
-  .hm-two > .hm-section{margin-top:22px}
-  .hm-section h2{font-size:1.3rem}
-  .hm-head{align-items:flex-start}
-  .hm-head .hm-more{min-height:40px}
-  .hm-grid{grid-template-columns:1fr}
-  .hm-feature{grid-template-columns:1fr}
-  .hm-topics{grid-template-columns:1fr}
-  .hm-people{grid-template-columns:repeat(2,1fr)}
-  .hm-videos{grid-template-columns:1fr}
-  .hm-social .hm-btn{flex:1 1 100%}
-  .hm-actions .btn{flex:1 1 100%;justify-content:center}
-  .hm-contribute{padding:18px 16px}
-}
-@media (prefers-reduced-motion:reduce){
-  .hm *{transition:none!important;animation:none!important}
-  .hm-js .hm-reveal{opacity:1;transform:none}
-  .hm-card:hover{transform:none;box-shadow:none}
-  .hm-video:hover .hm-play,.hm-video:focus-visible .hm-play{transform:none}
-}
-</style>
+<link rel="stylesheet" href="/assets/css/homepage-v2.css">
 </head>
-
 <body data-page="home">
-
+<a class="hm-skip" href="#main">Skip to content</a>
 <div id="siteHeader"></div>
+<main class="hm" id="main" tabindex="-1">
+<section class="hm-hero" aria-labelledby="hm-title">
+ <div class="hm-hero-inner">
+ <div class="hm-hero-text">
+  <p class="hm-eyebrow">InstMates / Shared field experience</p>
+  <h1 id="hm-title">A Community for <span>Instrument &amp; Analyzer Professionals</span></h1>
+  <p class="hm-support">Solve real field problems. Build practical knowledge and learn interactively through shared professional experience.</p>
+  <div class="hm-cta">
+   <a href="/knowledge/" class="hm-btn hm-btn-primary">Explore Knowledge</a>
+   <a href="/simulations/4-20ma-loop/" class="hm-btn hm-btn-outline">Try the Simulator</a>
+  </div>
+  <p class="hm-tagline">Share Technology · Learn Techniques · Grow Together.</p>
+<nav class="hm-pathway" aria-label="How InstMates works">
+<a href="#solve"><span aria-hidden="true">01</span><strong>ASK / SOLVE</strong></a>
+<a href="#learn"><span aria-hidden="true">02</span><strong>LEARN</strong></a>
+<a href="#simulate"><span aria-hidden="true">03</span><strong>SIMULATE</strong></a>
+<a href="#connect"><span aria-hidden="true">04</span><strong>CONNECT</strong></a>
+<a href="#contribute"><span aria-hidden="true">05</span><strong>CONTRIBUTE / GROW</strong></a>
+</nav>
+ </div>
+ </div>
+<figure class="hm-hero-figure" aria-hidden="true">
+  <img src="/assets/images/home/hero-industrial-v2-960.webp"
+       srcset="/assets/images/home/hero-industrial-v2-640.webp 640w, /assets/images/home/hero-industrial-v2-960.webp 960w, /assets/images/home/hero-industrial-v2-1440.webp 1440w, /assets/images/home/hero-industrial-v2-1920.webp 1920w"
+       sizes="(max-width: 600px) 1px, 100vw"
+       width="1920" height="768" alt="" fetchpriority="high" decoding="async">
+ </figure>
+</section>
 
-<main class="container hm" id="main">
-
-  <!-- ================= HERO — LIGHT TECHNICAL CANVAS =================
-       Homepage-scoped .hm-hero, not the sitewide patterned .hero. The right column is the
-       owner-supplied decorative illustration (see /assets/images/illustrations/README.md):
-       not a validated diagram, no animated flow/wiring/readings. The retired HeyGen video
-       and poster stay unused. There is no site search, so the concept's search field is
-       replaced by real topic entry points under the actions. -->
-  <section class="hm-hero" aria-labelledby="hm-title">
-    <div class="hm-hero-text">
-      <p class="hm-eyebrow">For instrument &amp; analyzer professionals</p>
-      <h1 id="hm-title">Solve field problems. Build practical knowledge.</h1>
-      <p class="hm-support">Troubleshooting guides, technical knowledge and real experience from the people who work with instruments and analyzers every day.</p>
-      <p class="hm-tagline">Share Technology · Learn Techniques · Grow Together.</p>
-      <div class="hm-cta">
-        <a href="/knowledge/" class="hm-btn hm-btn-primary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5V5.5M20 18v3H6.5"/></svg>
-          Explore technical knowledge
-        </a>
-        <a href="/case-studies/" class="hm-btn hm-btn-outline">Read real case studies</a>
-      </div>
-      <p class="hm-cta-note">Explore practical instrumentation guides and field case studies.</p>
-
-      <nav class="hm-start" aria-labelledby="hm-start-title">
-        <p id="hm-start-title">Start with a topic</p>
-        <ul>
-          <li><a href="/knowledge/field/pressure/">Pressure</a></li>
-          <li><a href="/knowledge/field/flow/">Flow</a></li>
-          <li><a href="/knowledge/field/signals/4-20ma/">4–20 mA signals &amp; loops</a></li>
-          <li><a href="/technology/gas-chromatography/">Gas chromatography</a></li>
-          <li><a href="/knowledge/analyzers/ftir-analyzer/">FTIR analyzers</a></li>
-          <li><a href="/knowledge/laboratory/">Laboratory &amp; QA</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <figure class="hm-hero-figure">
-      <img src="/assets/images/illustrations/hero-transmitter-analyzer-960.webp"
-           srcset="/assets/images/illustrations/hero-transmitter-analyzer-640.webp 640w,
-                   /assets/images/illustrations/hero-transmitter-analyzer-960.webp 960w,
-                   /assets/images/illustrations/hero-transmitter-analyzer-1280.webp 1280w,
-                   /assets/images/illustrations/hero-transmitter-analyzer-1536.webp 1536w"
-           sizes="(max-width: 1024px) calc(100vw - 32px), 560px"
-           width="1536" height="1024" alt="" fetchpriority="high" decoding="async">
-    </figure>
-  </section>
-
-  <!-- ================= PATHWAY: SOLVE → LEARN → CONNECT → CONTRIBUTE ================= -->
-  <nav class="hm-pathway" aria-label="How InstMates works">
-    <a href="#solve">
-      <span class="hm-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L13 18l-4 4-3-3 4-4 6.7-6.7a4 4 0 0 0-5-5l-1.4 1.4 3 3z"/></svg></span>
-      <div><strong>Solve</strong><span>Get help with real problems</span></div>
-    </a>
-    <a href="#learn">
-      <span class="hm-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2z"/><path d="M22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg></span>
-      <div><strong>Learn</strong><span>Build practical knowledge</span></div>
-    </a>
-    <a href="#connect">
-      <span class="hm-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.5a5 5 0 0 1 6 4.5"/></svg></span>
-      <div><strong>Connect</strong><span>Find and share experience</span></div>
-    </a>
-    <a href="#contribute">
-      <span class="hm-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></span>
-      <div><strong>Contribute</strong><span>Help the community grow</span></div>
-    </a>
-  </nav>
-
-  <!-- ================= SOLVE ================= -->
-  <section id="solve" class="hm-section hm-reveal" aria-labelledby="solve-title">
+<div class="hm-content">
+<section id="simulate" class="hm-section hm-spotlight" aria-labelledby="simulate-title">
+ <div class="hm-head"><div><p class="hm-kicker">Simulations / Interactive learning</p>
+ <h2 id="simulate-title">Practice instrumentation. Not just read about it.</h2>
+ <p>Explore interactive technical simulations. Practice process and instrument behavior, signals, faults and troubleshooting.</p></div>
+ <a class="hm-btn hm-btn-primary" href="/simulations/">Explore All Simulations</a></div>
+ <article class="hm-featured-simulation" aria-labelledby="featured-simulation-title">
+ <div class="hm-featured-head"><div>
+ <p class="hm-featured-label">Featured Simulation <span>Available Now</span></p>
+ <h3 id="featured-simulation-title">4–20 mA Transmitter &amp; Loop Simulator</h3></div>
+ <a class="hm-btn hm-btn-outline" href="/simulations/4-20ma-loop/">Launch 4–20 mA Simulator</a></div>
+ <ol class="hm-signal" aria-label="Signal sequence: Process → Transmitter → Loop → PLC/DCS → Display">
+<li><img src="/assets/images/simulations/process-vessel.svg" width="160" height="110" loading="lazy" alt=""><strong>Process</strong><small>Measured value</small></li>
+<li><img src="/assets/images/simulations/smart-transmitter.svg" width="160" height="110" loading="lazy" alt=""><strong>Transmitter</strong><small>Value to current</small></li>
+<li><img src="/assets/images/simulations/icon-current-loop.svg" width="160" height="110" loading="lazy" alt=""><strong>Loop</strong><small>4–20 mA signal</small></li>
+<li><img src="/assets/images/simulations/analog-input-rack.svg" width="160" height="110" loading="lazy" alt=""><strong>PLC/DCS</strong><small>Input & scaling</small></li>
+<li><img src="/assets/images/simulations/engineering-display.svg" width="160" height="110" loading="lazy" alt=""><strong>Display</strong><small>Engineering value</small></li>
+</ol>
+ </article>
+</section>
+<div class="hm-workbench">
+<section id="solve" class="hm-section" aria-labelledby="solve-title">
     <div class="hm-head">
       <div>
         <p class="hm-kicker">Solve</p>
         <h2 id="solve-title">Start with the problem</h2>
-        <p class="muted">Step-by-step field guides for faults instrument and analyzer technicians actually meet. Open to read, no account needed.</p>
+        <p class="muted">Practical checks for signal, pressure and analyzer faults. Open to read, no account needed.</p>
       </div>
       <a class="hm-more" href="/knowledge/">Browse all topics →</a>
     </div>
 
-    <!-- Static rendering of the W1.1 navigation contract (taxonomy.js NAVIGATION.solve,
-         status "existing"). site-tests verify this list equals the contract. -->
+
     <ul class="hm-grid hm-solve" data-home="solve">
-      <li><a class="hm-card" href="/knowledge/field/signals/4-20ma/troubleshooting/"><strong>4–20 mA loop troubleshooting</strong><span>Master guide for signal and loop faults</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/field/pressure/pressure-troubleshooting/"><strong>Pressure troubleshooting</strong><span>Decision-tree guide for pressure measurement faults</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/field/pressure/zero-shift-after-shutdown/"><strong>Zero shift after shutdown</strong><span>Root-cause guide for pressure transmitters</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/field/flow/dp-flow-troubleshooting/"><strong>DP flow troubleshooting</strong><span>Complete field guide for differential-pressure flow</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/gc/gc-failure-modes/"><strong>GC failure modes</strong><span>How process gas chromatographs fail and what to check</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/analyzers/ftir-moisture-cross-interference/"><strong>FTIR moisture and cross-interference</strong><span>Field troubleshooting guide for FTIR analyzers</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-      <li><a class="hm-card" href="/knowledge/laboratory/flash-point-analyzer/troubleshooting/"><strong>Flash-point analyzer troubleshooting</strong><span>Troubleshooting decision tree for laboratory flash-point analyzers</span><span class="hm-open">Explore troubleshooting →</span></a></li>
-    </ul>
+<li><a class="hm-card" href="/knowledge/field/signals/4-20ma/troubleshooting/"><strong>4–20 mA loop troubleshooting</strong><span>Master guide for signal and loop faults</span><span class="hm-open">Explore troubleshooting →</span></a></li>
+<li><a class="hm-card" href="/knowledge/field/pressure/pressure-troubleshooting/"><strong>Pressure troubleshooting</strong><span>Decision-tree guide for pressure measurement faults</span><span class="hm-open">Explore troubleshooting →</span></a></li>
+<li><a class="hm-card" href="/knowledge/gc/gc-failure-modes/"><strong>GC failure modes</strong><span>How process gas chromatographs fail and what to check</span><span class="hm-open">Explore troubleshooting →</span></a></li>
+</ul>
 
     <div class="hm-actions">
       <a href="/case-studies/" class="btn btn-primary">Read real case studies</a>
       <a href="/knowledge/" class="btn btn-ghost">Open the Knowledge Hub</a>
     </div>
-  </section>
-
-  <div class="hm-two">
-    <!-- ================= LEARN ================= -->
-    <section id="learn" class="hm-section hm-reveal" aria-labelledby="learn-title">
+  </section><section id="learn" class="hm-section" aria-labelledby="learn-title">
       <div class="hm-head">
         <div>
           <p class="hm-kicker">Learn</p>
@@ -373,8 +155,7 @@ body[data-page="home"]{background:#fff}
         <a class="hm-more" href="/knowledge/">View all knowledge →</a>
       </div>
 
-      <!-- Static rendering of NAVIGATION.learn (status "existing"); page counts are filled
-           from content-map.js at runtime and are the real number of mapped pages. -->
+
       <ul class="hm-grid hm-paths hm-cards-icon">
         <li><a class="hm-card" href="/knowledge/field/">
           <span class="hm-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-5"/><path d="M2 20h20"/></svg></span>
@@ -394,40 +175,18 @@ body[data-page="home"]{background:#fff}
         </a></li>
       </ul>
 
-      <!-- Sampling-systems entry (taxonomy term "sampling-systems", entry page verified).
-           Image 2 is an owner-supplied illustration: labelled as such, lazy-loaded, no
-           relation to any documented case or real installation. -->
-      <a class="hm-card hm-feature" href="/knowledge/gc/gc-sampling-system/">
-        <figure>
-          <img src="/assets/images/illustrations/sample-conditioning-panel-480.webp"
-               srcset="/assets/images/illustrations/sample-conditioning-panel-480.webp 480w,
-                       /assets/images/illustrations/sample-conditioning-panel-768.webp 768w,
-                       /assets/images/illustrations/sample-conditioning-panel-1024.webp 1024w"
-               sizes="(max-width: 768px) calc(100vw - 64px), 300px"
-               width="1536" height="1024" loading="lazy" decoding="async"
-               alt="Illustration of a stainless-steel sample-conditioning panel with a filter housing, a variable-area flow indicator and two isolation valves">
-          <figcaption>Illustration</figcaption>
-        </figure>
-        <span class="hm-feature-body">
-          <strong>Sampling systems</strong>
-          <span>How the sample reaches the analyzer: filters, flow indication, isolation and the faults that start there.</span>
-          <span class="hm-open">Learn how a GC sampling system works →</span>
-        </span>
-      </a>
 
-      <h3 id="topics-title">Covered today</h3>
-      <p class="muted">Topics with at least three real pages, listed from the site's taxonomy with true page counts. A topic that is not listed here is not covered yet.</p>
+      <p class="hm-note"><a href="/knowledge/gc/gc-sampling-system/">Explore sampling systems →</a></p>
+
+      <details class="hm-topic-disclosure"><summary id="topics-title">Browse covered topics</summary>
+      <p class="muted">Topic page counts come from the published content map.</p>
       <ul class="hm-topics" data-home="learn-topics" aria-labelledby="topics-title">
         <li><a class="hm-card" href="/knowledge/">Open the Knowledge Hub</a></li>
       </ul>
-    </section>
-
-    <!-- ================= FROM THE FIELD =================
-         One real documented case, the first deterministic pick of home.js featuredCases()
-         (content-map.js). site-tests verify title and path. No image: none exists for it. -->
-    <aside id="field" class="hm-section hm-field hm-reveal" aria-labelledby="field-title">
-      <p class="hm-kicker">From the field</p>
-      <h2 id="field-title">Documented case study</h2>
+    </details></section></div>
+<aside id="field" class="hm-section hm-field" aria-labelledby="field-title">
+      <div><p class="hm-kicker">From the field</p>
+      <h2 id="field-title">Experience, documented.</h2></div>
       <article class="hm-case">
         <p class="hm-case-kicker">Case study · Gas chromatography</p>
         <h3><a href="/case-studies/analyzers/yokogawa/gc8000/error-602-slow-oven-warmup/">Yokogawa GC8000 Error 602 – Slow Oven Warm-Up</a></h3>
@@ -435,59 +194,7 @@ body[data-page="home"]{background:#fff}
         <a class="hm-more" href="/case-studies/">Explore case studies →</a>
       </article>
       <p class="muted hm-note" data-home="case-count"></p>
-    </aside>
-  </div>
-
-  <!-- ================= CONNECT ================= -->
-  <section id="connect" class="hm-section hm-reveal" aria-labelledby="connect-title">
-    <div class="hm-head">
-      <div>
-        <p class="hm-kicker">Connect</p>
-        <h2 id="connect-title">Who has experience with this?</h2>
-        <p class="muted">Open technical discussions and a public directory of professionals. The community is small today and is shown exactly as it is.</p>
-      </div>
-    </div>
-
-    <div class="hm-connect">
-      <div>
-        <h3 id="discussions-title">Latest discussions</h3>
-        <ul class="hm-list" data-home="discussions" aria-labelledby="discussions-title" aria-busy="true">
-          <li class="hm-empty">Open the feed to read the latest faults, questions and solutions.</li>
-        </ul>
-        <p class="muted hm-note" data-home="discussion-count"></p>
-        <div class="hm-actions">
-          <a href="/feed/" class="btn btn-ghost">Open the feed</a>
-        </div>
-      </div>
-      <div>
-        <h3 id="people-title">Public professionals</h3>
-        <ul class="hm-people" data-home="people" aria-labelledby="people-title" aria-busy="true">
-          <li>Open the directory to see professionals who chose a public profile.</li>
-        </ul>
-        <p class="muted hm-note" data-home="people-count"></p>
-        <div class="hm-actions">
-          <a href="/profiles/" class="btn btn-ghost">Open the directory</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Official LinkedIn company page (ID 144806016). Plain link, no feed embed, SDK or widget. -->
-    <div class="hm-social" id="linkedin">
-      <span class="hm-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38zM5.25 3a1.97 1.97 0 1 0 0 3.94 1.97 1.97 0 0 0 0-3.94zM20.44 13.1c0-3.3-1.76-4.84-4.1-4.84-1.9 0-2.75 1.04-3.22 1.77V8.5H9.75V20h3.37v-6.42c0-1.7.32-3.34 2.43-3.34 2.08 0 2.1 1.94 2.1 3.45V20h3.38z"/></svg></span>
-      <div class="hm-social-body">
-        <h3>Connect with InstMates on LinkedIn</h3>
-        <p>Follow our technical posts, industry updates and community discussions.</p>
-      </div>
-      <a class="hm-btn hm-btn-primary" href="https://www.linkedin.com/company/144806016/" target="_blank" rel="noopener noreferrer">Follow InstMates on LinkedIn <span class="hm-ext" aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
-    </div>
-  </section>
-
-  <!-- ================= WATCH & LEARN =================
-       Three public videos verified on the official channel (oEmbed author_url
-       https://www.youtube.com/@InstMates, 2026-09-15). Thumbnails are each video's own
-       maxresdefault frame, served locally. Plain links only: no embed, iframe, API or
-       third-party request on page load. -->
-  <section id="watch" class="hm-section hm-reveal" aria-labelledby="watch-title">
+    </aside><section id="watch" class="hm-section" aria-labelledby="watch-title">
     <div class="hm-head">
       <div>
         <p class="hm-kicker">Watch &amp; learn</p>
@@ -528,18 +235,57 @@ body[data-page="home"]{background:#fff}
         </a>
       </li>
     </ul>
-  </section>
+  </section><section id="connect" class="hm-section" aria-labelledby="connect-title">
+    <div class="hm-head">
+      <div>
+        <p class="hm-kicker">Connect &amp; contribute</p>
+        <h2 id="connect-title">Who has experience with this?</h2>
+        <p class="muted">Browse public discussions and professionals. Sign in to manage your profile; contribution options depend on your account and the destination.</p>
+      </div>
+    </div>
 
-  <!-- ================= CONTRIBUTE ================= -->
-  <section id="contribute" class="hm-section hm-contribute hm-reveal" aria-labelledby="contribute-title">
+    <div class="hm-connect">
+      <div>
+        <h3 id="discussions-title">Latest discussions</h3>
+        <ul class="hm-list" data-home="discussions" aria-labelledby="discussions-title" aria-busy="true">
+          <li class="hm-empty">Open the feed to read the latest faults, questions and solutions.</li>
+        </ul>
+        <p class="muted hm-note" data-home="discussion-count"></p>
+        <div class="hm-actions">
+          <a href="/feed/" class="btn btn-ghost">Open the feed</a>
+        </div>
+      </div>
+      <div>
+        <h3 id="people-title">Public professionals</h3>
+        <ul class="hm-people" data-home="people" aria-labelledby="people-title" aria-busy="true">
+          <li>Open the directory to see professionals who chose a public profile.</li>
+        </ul>
+        <p class="muted hm-note" data-home="people-count"></p>
+        <div class="hm-actions">
+          <a href="/profiles/" class="btn btn-ghost">Open the directory</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official LinkedIn company page (ID 144806016). Plain link, no feed embed, SDK or widget. -->
+    <div class="hm-social" id="linkedin">
+      <span class="hm-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38zM5.25 3a1.97 1.97 0 1 0 0 3.94 1.97 1.97 0 0 0 0-3.94zM20.44 13.1c0-3.3-1.76-4.84-4.1-4.84-1.9 0-2.75 1.04-3.22 1.77V8.5H9.75V20h3.37v-6.42c0-1.7.32-3.34 2.43-3.34 2.08 0 2.1 1.94 2.1 3.45V20h3.38z"/></svg></span>
+      <div class="hm-social-body">
+        <h3>Connect with InstMates on LinkedIn</h3>
+        <p>Follow our technical posts, industry updates and community discussions.</p>
+      </div>
+      <a class="hm-btn hm-btn-primary" href="https://www.linkedin.com/company/144806016/" target="_blank" rel="noopener noreferrer">Follow InstMates on LinkedIn <span class="hm-ext" aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+    </div>
+  </section><section id="contribute" class="hm-section hm-contribute" aria-labelledby="contribute-title">
 
     <!-- Anonymous visitors. auth.js toggles .auth-out-section / .auth-in-section on "/". -->
-    <div class="auth-out-section">
+    <h2 id="contribute-title">Bring your field experience to the community.</h2>
+<div class="auth-out-section">
       <div class="hm-band">
         <span class="hm-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.5a5 5 0 0 1 6 4.5"/></svg></span>
         <div>
           <p class="hm-kicker">Contribute</p>
-          <h2 id="contribute-title">Your field experience can help someone solve their next problem.</h2>
+
         </div>
       </div>
       <p class="muted">Reading is open without an account. Join free to build your public professional profile – headline, specialization, analyzers worked and certifications – and be found by other professionals.</p>
@@ -554,7 +300,7 @@ body[data-page="home"]{background:#fff}
     <div class="auth-in-section">
       <p class="hm-kicker">Continue</p>
       <h2 id="continue-title">Welcome back.</h2>
-      <p class="muted">Pick up a discussion, share a solution or keep your profile current.</p>
+      <p class="muted">Read discussions or keep your professional profile current.</p>
       <div class="hm-actions">
         <a href="/feed/" class="btn btn-primary">Go to the feed</a>
         <a href="/profile/" class="btn btn-ghost">Your profile</a>
@@ -562,49 +308,20 @@ body[data-page="home"]{background:#fff}
       </div>
     </div>
 
-  </section>
-
+  </section><section id="grow" class="hm-final" aria-labelledby="grow-title">
+ <h2 id="grow-title">Keep learning. Grow together.</h2>
+ <p>Every field problem is a chance to deepen your understanding.</p>
+ <a class="hm-more" href="/profiles/">Meet the professionals →</a>
+</section>
+</div>
 </main>
-
 <div id="siteFooter"></div>
 
 <script src="/assets/js/includes.js?v=2026-02-20"></script>
 <script type="module" src="/assets/js/header-auth.js?v=2026-02-20"></script>
 <script type="module" src="/assets/js/home.js?v=2026-09-07"></script>
 
-<!-- Motion: one-time section entrances. Gated on the .hm-js class so that without JavaScript
-     (or if this fails) every section is simply visible. Containers only; reduced motion
-     is handled in CSS. No library. -->
-<script>
-(function () {
-  var root = document.documentElement;
-  var els = document.querySelectorAll(".hm-reveal");
-  function revealAll() { for (var i = 0; i < els.length; i++) els[i].classList.add("is-in"); }
-  try {
-    var mql = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
-    if ((mql && mql.matches) || !("IntersectionObserver" in window) || !els.length) return; // no gate: everything stays visible
-    var fired = false;
-    var io = new IntersectionObserver(function (entries) {
-      fired = true;
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
-    for (var i = 0; i < els.length; i++) {
-      io.observe(els[i]);
-      // Keyboard users: a section becomes visible the moment focus enters it, never a hidden focus target.
-      els[i].addEventListener("focusin", function (ev) { ev.currentTarget.classList.add("is-in"); io.unobserve(ev.currentTarget); }, { once: true });
-    }
-    root.classList.add("hm-js"); // gate on only once observation is wired
-    // Fail-open: if the observer never reports (throttled, hidden or broken), show everything.
-    setTimeout(function () { if (!fired) { revealAll(); io.disconnect(); } }, 1500);
-    if (mql && mql.addEventListener) mql.addEventListener("change", function (ev) { if (ev.matches) { revealAll(); io.disconnect(); } });
-  } catch (err) {
-    root.classList.remove("hm-js");
-    revealAll();
-  }
-})();
-</script>
+
 
 <script>
 if ("serviceWorker" in navigator) {

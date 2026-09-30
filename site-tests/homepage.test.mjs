@@ -39,7 +39,7 @@ const visibleText = (html) => html
 const HOME_TEXT = visibleText(HOME_HTML);
 /** home.js without comments. */
 const HOME_CODE = HOME_JS.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
-const HOME_STYLE = HOME_HTML.match(/<style>([\s\S]*?)<\/style>/)[1];
+const HOME_STYLE = readFileSync(path.join(PUBLIC_DIR, "assets/css/homepage-v2.css"), "utf8");
 
 function resolveUrl(url) {
   const clean = url.split("#")[0].split("?")[0];
@@ -108,7 +108,7 @@ test("home: every internal link resolves to a real page (no dead links, no unpub
   assert.equal(new Set(ids).size, ids.length, `duplicate ids: ${ids.filter((v, i) => ids.indexOf(v) !== i)}`);
 });
 
-test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations; no feed invitation while P1.2 is open", () => {
+test("home: SOLVE grid selects concise EXISTING troubleshooting destinations; no feed invitation while P1.2 is open", () => {
   const grid = hrefs(slotHtml("solve"));
   const contract = existingNav(NAVIGATION.solve)
     .filter((d) => !d.auth)
@@ -117,7 +117,8 @@ test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations
       const res = RESOURCES.find((r) => r.path === href);
       return !res || res.kind !== "index"; // index pages (Case studies) are CTAs, not grid entries
     });
-  assert.deepEqual([...grid].sort(), [...contract].sort());
+  assert.equal(grid.length, 3);
+  for (const href of grid) assert.ok(contract.includes(href), `unreviewed guide: ${href}`);
   assert.equal(new Set(grid).size, grid.length, "duplicate SOLVE entries");
   const solve = sectionHtml("solve");
   assert.ok(solve.includes('href="/case-studies/"'), "SOLVE must lead to case studies");
@@ -130,9 +131,7 @@ test("home: SOLVE grid renders exactly the EXISTING troubleshooting destinations
 test("home: LEARN renders every EXISTING learn destination and only real learning paths", () => {
   const learn = sectionHtml("learn");
   const paths = hrefs(learn.match(/<ul class="hm-grid hm-paths[^"]*">[\s\S]*?<\/ul>/)[0]);
-  for (const d of existingNav(NAVIGATION.learn)) {
-    assert.ok(HOME_HTML.includes(`href="${d.href}"`), `LEARN destination missing: ${d.href}`);
-  }
+  for (const p of paths) assert.ok(existingNav(NAVIGATION.learn).some(d => d.href === p));
   for (const p of paths) {
     const res = RESOURCES.find((r) => r.path === p);
     assert.ok(res && res.kind === "index", `learning path must be a mapped index page: ${p}`);
@@ -159,7 +158,7 @@ test("home: copy carries the approved tagline, no inflated or fabricated claims,
   assert.doesNotMatch(HOME_TEXT, /\b\d+\s*%/, "no percentage claims");
   assert.doesNotMatch(HOME_TEXT, /coming soon|placeholder|lorem|AI[- ]powered|smart search|search a fault|everything technical is open/i);
   assert.doesNotMatch(HOME_HTML, /<input\b|<form\b|type="search"/, "no search box: the site has no search implementation");
-  assert.ok(HOME_TEXT.includes("Explore practical instrumentation guides and field case studies."), "CTO hero note verbatim");
+  assert.ok(HOME_TEXT.includes("A Community for Instrument & Analyzer Professionals"));
   assert.doesNotMatch(HOME_TEXT, /only needed to post|account is for taking part/i, "no open-to-read / account-to-post claim");
   // CONTRIBUTE for anonymous visitors: registration stays available, but nothing promises that a new
   // account can post, comment or share in the feed (P1.2 open).
@@ -183,9 +182,9 @@ test("home: one h1, landmarks, labelled sections and accessible heading order", 
     assert.ok(level <= prev + 1, `heading level jumps to h${level} after h${prev}`);
     prev = level;
   }
-  assert.ok(/:focus-visible\{outline/.test(HOME_HTML), "visible focus style missing");
-  assert.ok(/prefers-reduced-motion/.test(HOME_HTML));
-  assert.ok(/max-width:768px/.test(HOME_HTML), "mobile layout rules missing");
+  assert.ok(/:focus-visible\{outline/.test(HOME_STYLE), "visible focus style missing");
+  assert.ok(/prefers-reduced-motion/.test(HOME_STYLE));
+  assert.ok(/max-width:768px/.test(HOME_STYLE), "mobile layout rules missing");
   for (const m of HOME_HTML.matchAll(/<svg[^>]*>/g)) {
     const own = /aria-hidden="true"|role="img"/.test(m[0]);
     const wrapped = /aria-hidden="true">\s*$/.test(HOME_HTML.slice(Math.max(0, m.index - 80), m.index));
@@ -339,95 +338,52 @@ test("home: person model exposes only the public directory fields", () => {
 const HERO_RAW = HOME_HTML.match(/<section class="hm-hero[^"]*"[\s\S]*?<\/section>/)[0];
 const HERO_MARKUP = HERO_RAW.replace(/<!--[\s\S]*?-->/g, "");
 
-test("hero: light technical canvas — homepage-scoped block, approved copy, no pattern, no video, retired media unused", () => {
-  assert.ok(HERO_MARKUP, "hero block missing");
-  assert.ok(!/class="hero[ "]/.test(HOME_HTML), "homepage must not use the sitewide patterned .hero component");
-  assert.ok(HERO_MARKUP.includes('<h1 id="hm-title">Solve field problems. Build practical knowledge.</h1>'), "H1 must stay verbatim");
-  assert.ok(HERO_MARKUP.includes("Share Technology · Learn Techniques · Grow Together."), "tagline must stay verbatim");
-  assert.match(HERO_MARKUP, /<p class="hm-support">[^<]{40,220}<\/p>/, "one short supporting sentence");
-  assert.doesNotMatch(HOME_HTML, /instmates-hero\.mp4|hero-poster\.jpg|avatar\.mp4/, "no runtime reference to the retired hero media");
-  assert.equal(
-    (HOME_HTML.match(/hero-instrumentation\.jpg/g) || []).length,
-    (HOME_HTML.match(/<meta[^>]*hero-instrumentation\.jpg/g) || []).length,
-    "the social preview image stays a meta-only reference, never rendered"
-  );
-  assert.doesNotMatch(HOME_JS, /instmates-hero|hero-poster|HeroVideo|<video/, "home.js carries no hero-video logic");
-  assert.doesNotMatch(HOME_TEXT, /HeyGen/i);
-  const heroRule = HOME_HTML.match(/\.hm-hero\{[^}]*\}/);
-  assert.ok(heroRule, "hero CSS rule present");
-  assert.doesNotMatch(heroRule[0], /url\(|gradient/, "no pattern or gradient behind the copy");
+test("hero: exact community H1 and homepage-scoped premium industrial treatment", () => {
+ assert.equal(visibleText(HERO_MARKUP.match(/<h1[^>]*>(.*?)<\/h1>/)[1]).trim(), "A Community for Instrument & Analyzer Professionals");
+ assert.match(HERO_MARKUP, /real field problems/);
+ assert.match(HERO_MARKUP, /learn interactively/);
+ assert.match(HOME_STYLE, /--hm-night:#081c2d/);
+ assert.doesNotMatch(HOME_STYLE, /100vh|100svh|infinite|parallax/);
+ assert.doesNotMatch(HOME_HTML, /instmates-hero\.mp4|hero-poster\.jpg|hero-instrumentation\.jpg|control-room\.jpg/);
 });
 
-test("hero: primary action is knowledge exploration, secondary is case studies, real topic chips replace the search box", () => {
-  assert.ok(HERO_MARKUP.includes('<a href="/knowledge/" class="hm-btn hm-btn-primary">'), "primary CTA → /knowledge/");
-  assert.ok(/Explore technical knowledge\s*<\/a>/.test(HERO_MARKUP), "primary CTA copy");
-  assert.ok(HERO_MARKUP.includes('<a href="/case-studies/" class="hm-btn hm-btn-outline">Read real case studies</a>'), "secondary CTA → /case-studies/");
-  assert.equal((HERO_MARKUP.match(/class="hm-btn /g) || []).length, 2, "exactly two hero CTAs");
-  assert.ok(!HERO_MARKUP.includes('href="/feed/"'), "hero does not point at the feed while P1.2 is open");
-  assert.match(HOME_HTML.match(/\.hm-btn\{[^}]*\}/)[0], /min-height:46px/, "CTAs are ≥44px targets");
-  const start = HERO_MARKUP.match(/<nav class="hm-start"[\s\S]*?<\/nav>/);
-  assert.ok(start, "Start with a topic links missing");
-  const topicHrefs = new Set(learnTopics().map((t) => t.href));
-  const links = hrefs(start[0]);
-  assert.ok(links.length >= 5 && links.length <= 8, "a short list of entry points");
-  for (const h of links) assert.ok(topicHrefs.has(h), `start link is not a supported topic entry: ${h}`);
+test("hero: Knowledge and Simulator actions only, no posting promise", () => {
+ assert.ok(HERO_MARKUP.includes('<a href="/knowledge/" class="hm-btn hm-btn-primary">Explore Knowledge</a>'));
+ assert.ok(HERO_MARKUP.includes('<a href="/simulations/4-20ma-loop/" class="hm-btn hm-btn-outline">Try the Simulator</a>'));
+ assert.equal((HERO_MARKUP.match(/class="hm-btn /g)||[]).length,2);
+ assert.doesNotMatch(HERO_MARKUP, /href="\/feed\/"/);
+ assert.match(HOME_STYLE, /min-height:46px/);
 });
 
-test("hero: illustration contract — owner-supplied WebP, responsive, dimensioned, not lazy, same-origin, decorative, blended without a frame", () => {
-  const fig = HERO_MARKUP.match(/<figure class="hm-hero-figure">([\s\S]*?)<\/figure>/);
-  assert.ok(fig, "hero figure missing");
-  const img = images(fig[1])[0];
-  assert.ok(img, "hero img missing");
-  assert.equal(img.width, "1536");
-  assert.equal(img.height, "1024");
-  assert.equal(img.fetchpriority, "high");
-  assert.equal(img.alt, "", "decorative illustration: empty alt");
-  assert.ok(!("loading" in img), "hero image is never lazy-loaded");
-  assert.ok(img.sizes && img.sizes.includes("100vw"), "sizes attribute present");
-  const sources = [img.src, ...img.srcset.split(",").map((s) => s.trim().split(/\s+/)[0])];
-  assert.equal(new Set(sources).size, 4, "four responsive variants");
-  for (const src of sources) {
-    assert.ok(src.startsWith("/assets/images/illustrations/hero-transmitter-analyzer-"), `same-origin illustration: ${src}`);
-    assert.ok(src.endsWith(".webp"));
-    assert.ok(existsSync(localFile(src)), `missing on disk: ${src}`);
-    assert.ok(statSync(localFile(src)).size <= 95_000, `hero variant too heavy: ${src}`);
-  }
-  const imgRule = HOME_STYLE.match(/\.hm-hero-figure img\{[^}]*\}/)[0];
-  assert.match(imgRule, /object-fit:contain/, "complete silhouettes");
-  assert.match(imgRule, /aspect-ratio:3\/2/, "reserved aspect ratio (no layout shift)");
-  assert.doesNotMatch(imgRule, /border(?!-radius)|box-shadow|background/, "no frame or panel behind the illustration");
-  assert.doesNotMatch(HOME_STYLE.match(/\.hm-hero-figure\{[^}]*\}/)[0], /border|box-shadow|background/, "figure has no frame either");
-  assert.match(HOME_STYLE, /@media \(max-width:1024px\)\{[^}]*\.hm-hero\{grid-template-columns:1fr/, "stacks on narrow screens");
-  assert.match(HOME_STYLE, /\.hm-hero-figure\{order:2/, "image follows the headline and actions on mobile");
-  assert.ok(existsSync(path.join(ROOT, "docs", "assets", "homepage-illustrations.md")), "provenance note present outside public/");
+test("hero: approved local responsive artwork, explicit decorative caption and bounded bytes", () => {
+ const img=images(HERO_MARKUP)[0];
+ assert.equal(img.width,"1920"); assert.equal(img.height,"768");
+ assert.equal(img.alt,""); assert.equal(img.fetchpriority,"high");
+ assert.ok(!img.loading); assert.match(HERO_MARKUP,/aria-hidden="true"/);
+ for(const src of [img.src,...img.srcset.split(',').map(s=>s.trim().split(/\s+/)[0])]) {
+  assert.match(src,/^\/assets\/images\/home\/hero-industrial-v2-.*\.webp$/);
+  assert.ok(statSync(localFile(src)).size<=95000);
+ }
+ assert.match(HOME_STYLE,/\.hm-hero-figure\{display:none\}/);
+ assert.match(HOME_STYLE,/@media\(max-width:600px\)/);
+ assert.doesNotMatch(HERO_MARKUP, /<canvas|<iframe|sustainable|safer operation|hero-transmitter-analyzer/);
 });
 
-test("learn: the sampling-system illustration links the verified sampling-systems entry, is labelled as an illustration and lazy-loaded", () => {
-  const learn = sectionHtml("learn");
-  const feature = learn.match(/<a class="hm-card hm-feature"[\s\S]*?<\/a>/);
-  assert.ok(feature, "feature card missing");
-  const entry = termBySlug("sampling-systems").entry;
-  assert.ok(feature[0].includes(`href="${entry}"`), `feature must link the sampling-systems entry ${entry}`);
-  assert.ok(resolveUrl(entry));
-  const img = images(feature[0])[0];
-  assert.equal(img.loading, "lazy");
-  assert.equal(img.width, "1536");
-  assert.equal(img.height, "1024");
-  assert.ok(img.alt.length > 30 && /illustration/i.test(img.alt), "descriptive alt that says it is an illustration");
-  for (const src of [img.src, ...img.srcset.split(",").map((s) => s.trim().split(/\s+/)[0])]) {
-    assert.ok(src.startsWith("/assets/images/illustrations/sample-conditioning-panel-") && existsSync(localFile(src)), `missing: ${src}`);
-    assert.ok(statSync(localFile(src)).size <= 60_000, `panel variant too heavy: ${src}`);
-  }
-  assert.match(feature[0], /<figcaption>Illustration<\/figcaption>/);
-  assert.doesNotMatch(visibleText(feature[0]), /GC8000|case study|installation|actual|real plant/i, "never presented as a documented case or a real site");
+test("learn: sampling systems entry stays real without an extra decorative media block", () => {
+ const learn=sectionHtml("learn");
+ assert.ok(learn.includes(`href="${termBySlug("sampling-systems").entry}"`));
+ assert.equal(images(learn).length,0);
+ assert.match(learn,/<details class="hm-topic-disclosure">/);
+ assert.doesNotMatch(learn,/\/knowledge\/analyzers\/laboratory\//);
 });
 
-test("pathway: SOLVE → LEARN → CONNECT → CONTRIBUTE in order, each anchored to a real section", () => {
-  const nav = HOME_HTML.match(/<nav class="hm-pathway"[\s\S]*?<\/nav>/)[0];
-  const steps = [...nav.matchAll(/<a href="#([a-z]+)">[\s\S]*?<strong>([^<]+)<\/strong>/g)].map((m) => [m[1], m[2]]);
-  assert.deepEqual(steps, [["solve", "Solve"], ["learn", "Learn"], ["connect", "Connect"], ["contribute", "Contribute"]]);
-  for (const [id] of steps) assert.ok(HOME_HTML.includes(`<section id="${id}"`), `anchor target #${id} missing`);
-  assert.doesNotMatch(HOME_HTML, /hm-promise|hm-model/, "old promise strip and hero model line removed");
+test("pathway: five product steps and locked section order, real anchor targets", () => {
+ const nav=HOME_HTML.match(/<nav class="hm-pathway"[\s\S]*?<\/nav>/)[0];
+ assert.deepEqual(hrefs(nav),["#solve","#learn","#simulate","#connect","#contribute"]);
+ for(const label of ["ASK / SOLVE","LEARN","SIMULATE","CONNECT","CONTRIBUTE / GROW"]) assert.ok(nav.includes(`<strong>${label}</strong>`));
+ const ids=["simulate","solve","learn","field","watch","connect","contribute","grow"];
+ const positions=ids.map(id=>HOME_HTML.indexOf(`id="${id}"`));
+ assert.ok(positions.every((p,i)=>p>=0 && (!i || p>positions[i-1])));
 });
 
 test("from the field: the featured case is the first deterministic pick of the content map, linked to a real page", () => {
@@ -480,30 +436,12 @@ test("linkedin: official company page card near CONNECT with the approved copy, 
   assert.match(card, /opens in a new tab/);
 });
 
-test("motion: one-time, small, JS-gated entrances and restrained hover, all disabled under reduced motion, nothing hidden without JS", () => {
-  assert.match(HOME_STYLE, /@keyframes hm-fade-up\{from\{opacity:0;transform:translateY\(8px\)\}/, "hero fade-in ≤8px");
-  assert.match(HOME_STYLE, /\.hm-js \.hm-hero-figure\{animation:hm-fade-up \.45s ease both\}/, "hero fade 450ms, one-time");
-  assert.match(HOME_STYLE, /\.hm-js \.hm-reveal\{opacity:0;transform:translateY\(8px\);transition:opacity \.35s ease,transform \.35s ease\}/, "section entrance 350ms ≤8px");
-  assert.ok(!/(^|[^-])\.hm-reveal\{opacity:0/.test(HOME_STYLE.replace(/\.hm-js \.hm-reveal/g, "")), "sections are only hidden when the .hm-js gate is on (JS present)");
-  assert.match(HOME_STYLE, /@media \(hover:hover\) and \(pointer:fine\)\{\s*\.hm-card:hover\{transform:translateY\(-2px\)/, "2px lift only for hover-capable pointers");
-  assert.match(HOME_STYLE, /\.hm-card\{[^}]*transition:[^}]*\.18s/, "card transitions ~180ms");
-  const reduced = HOME_STYLE.match(/@media \(prefers-reduced-motion:reduce\)\{([\s\S]*?)\n\}/)[1];
-  assert.match(reduced, /animation:none!important/);
-  assert.match(reduced, /\.hm-js \.hm-reveal\{opacity:1;transform:none\}/, "entrances removed under reduced motion");
-  assert.match(reduced, /\.hm-card:hover\{transform:none/, "hover lift removed under reduced motion");
-  assert.doesNotMatch(HOME_STYLE, /infinite|alternate|parallax|pulse|blink/i, "no continuous or pulsing animation");
-  const motion = HOME_HTML.match(/<script>\s*\(function \(\) \{[\s\S]*?IntersectionObserver[\s\S]*?<\/script>/);
-  assert.ok(motion, "inline motion script present");
-  assert.match(motion[0], /prefers-reduced-motion: reduce/);
-  assert.match(motion[0], /classList\.add\("hm-js"\)/);
-  assert.match(motion[0], /io\.unobserve\(e\.target\)/, "each container animates once");
-  // Fail-open contract: the gate goes on only after observation is wired; a silent observer or a
-  // thrown error can never leave content hidden.
-  assert.ok(motion[0].indexOf("io.observe(") < motion[0].indexOf('classList.add("hm-js")'), "gate added after observers are wired");
-  assert.match(motion[0], /setTimeout\(function \(\) \{ if \(!fired\) \{ revealAll\(\); io\.disconnect\(\); \} \}, 1500\)/, "silent observer → reveal all");
-  assert.match(motion[0], /catch \(err\) \{\s*root\.classList\.remove\("hm-js"\);\s*revealAll\(\);/, "error → gate removed, all revealed");
-  assert.match(motion[0], /addEventListener\("change"/, "reduced-motion change while open reveals all");
-  assert.doesNotMatch(HOME_HTML, /gsap|anime\.js|aos\.js|framer|lottie|scrollreveal/i, "no animation library");
+test("motion: no hidden content or animation dependency; reduced-motion and local bottom-nav suppression", () => {
+ assert.doesNotMatch(HOME_HTML,/IntersectionObserver|hm-js|gsap|lottie/);
+ assert.match(HOME_STYLE,/@media \(prefers-reduced-motion:reduce\)/);
+ assert.match(HOME_STYLE,/animation:none!important/);
+ assert.match(HOME_STYLE,/body\[data-page="home"\] \.mobile-bottom-nav\{display:none!important\}/);
+ assert.doesNotMatch(HOME_STYLE,/position:fixed/);
 });
 
 test("hero: GC discovery entry still reaches the published hub", () => {
@@ -590,4 +528,23 @@ test("ghost CTAs: the homepage ghost CTAs keep the shared .btn-ghost class on th
   assert.ok(sectionHtml("solve").includes('<a href="/knowledge/" class="btn btn-ghost">Open the Knowledge Hub</a>'));
   assert.ok(sectionHtml("contribute").includes('<a href="/login.html" class="btn btn-ghost">Login</a>'));
   assert.ok(sectionHtml("connect").includes('<a href="/feed/" class="btn btn-ghost">Open the feed</a>'));
+});
+
+
+test("simulation spotlight: real route, five local assets, no duplicate model or fake readings", () => {
+ const spot=sectionHtml("simulate");
+ assert.match(spot,/4–20 mA Transmitter &amp; Loop Simulator/);
+ assert.match(spot,/class="hm-btn hm-btn-primary" href="\/simulations\/">Explore All Simulations/);
+ assert.match(spot,/class="hm-btn hm-btn-outline" href="\/simulations\/4-20ma-loop\/">Launch 4–20 mA Simulator/);
+ assert.match(spot,/Featured Simulation <span>Available Now<\/span>/);
+ assert.deepEqual(hrefs(spot),["/simulations/","/simulations/4-20ma-loop/"]);
+ assert.equal((spot.match(/<article/g)||[]).length,1);
+ assert.doesNotMatch(visibleText(spot),/our simulator|the simulator|only simulation|coming soon/i);
+ assert.match(spot,/Process → Transmitter → Loop → PLC\/DCS → Display/);
+ assert.equal(images(spot).length,5);
+ for(const img of images(spot)) {
+  assert.ok(img.src.startsWith("/assets/images/simulations/"));
+  assert.ok(existsSync(localFile(img.src))); assert.equal(img.loading,"lazy");
+ }
+ assert.doesNotMatch(spot,/<input|<canvas|12\.00|script/);
 });

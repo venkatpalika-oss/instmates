@@ -1,5 +1,7 @@
 # W1.2 — Homepage information architecture: audit and implementation notes
 
+> Historical sections below describe earlier releases. The Homepage V2 H1 addendum at the end supersedes their homepage presentation contracts.
+
 **Slice:** W1.2 of the W1 product contract ([17-w1-product-experience-plan.md](17-w1-product-experience-plan.md) §C, §I, §K, §L), consuming the W1.1 foundation ([18-w1-1-taxonomy-navigation-notes.md](18-w1-1-taxonomy-navigation-notes.md)). Homepage only: no header, footer, bottom-nav, service-worker, rules, index, schema or data change. W1.3 (visual system) is not started.
 
 ## 1. Audit of the previous homepage (main 792bea7)
@@ -89,3 +91,91 @@ Events worth measuring later, if the owner authorises a sitewide analytics decis
 ## 11. Deferred / out of scope
 
 `/includes/header/` sitemap anomaly (deferred, untouched); `/solve/` and `/technology/` routes (W1.4 / decision); people↔technology mapping (FUTURE); header, footer and bottom-nav changes; retirement redirects (`explore.html` is no longer linked from the homepage but the URL is intact); visual system (W1.3).
+
+
+## Homepage V2 — H1 local implementation (2026-09-30)
+
+Base: `fc2a600104edbd2533a5509fd6e6650f26a51248`. Local implementation only;
+no staging, commit, remote write, deployment or branch housekeeping.
+
+### Current presentation contract
+
+- Exact H1: **A Community for Instrument & Analyzer Professionals**.
+- Hero actions: Explore Knowledge → `/knowledge/`; Try the Simulator →
+  `/simulations/4-20ma-loop/`. No posting promise or invented metrics.
+- Order: hero; five-step pathway; simulator spotlight; Solve & Learn;
+  one documented field case; verified videos; Connect & Contribute; final CTA.
+- `#solve` and `#contribute` stay compatible with the untouched shared header.
+- Navy hero / simulator panel, restrained cyan and purple light, pale technical
+  reading surfaces. Homepage CSS is in `public/assets/css/homepage-v2.css`.
+- Existing approved decorative equipment artwork is framed deliberately on a
+  pale inset. No new artwork, vendor logo, legacy JPEG or framework. The image
+  can be replaced later with owner-approved cinematic artwork (see asset notes).
+- The spotlight reuses five existing local simulator SVGs. It shows the ordered
+  process/transmitter/loop/PLC-DCS/display chain and launches the existing lab;
+  no model or live calculation is copied to the homepage.
+- Mobile hero omits decorative artwork at ≤768px; five pathway links wrap;
+  videos use compact horizontal cards. Topics sit in a keyboard-operable
+  disclosure. The fixed bottom bar is hidden only by `body[data-page="home"]`
+  CSS; shared markup, behavior, header and simulator are unchanged.
+- Contribution section has a persistent accessible heading in both auth states.
+  Existing auth classes, account destinations and public read filters remain.
+  The only home.js change replaces the empty discussion prompt inviting an
+  immediate question with a public-browsing message.
+
+### Real sources
+
+Three existing troubleshooting guides (4–20 mA loop, pressure, GC faults), four
+existing learning indexes, the canonical taxonomy/content map, sampling-systems
+entry, first deterministic documented case (GC8000 Error 602), and the same three
+verified YouTube videos/local thumbnails. Official LinkedIn, public feed and
+professional directory remain. No broken `/knowledge/analyzers/laboratory/`
+links are promoted. Existing case title identifies the actual equipment;
+no manufacturer branding is added to imagery.
+
+### Validation and local-only fixtures
+
+`npm --prefix site-tests test` validates all site contracts. Baseline: 103 tests;
+V2 adds a spotlight contract while replacing obsolete visual assertions without
+removing the data integrity/auth safety tests.
+
+`node site-tests/homepage-browser.mjs` uses Playwright and an externally supplied
+Chromium/axe installation, never a new production dependency. Environment:
+`HOME_CHROMIUM_PATH`, `HOME_AXE_MODULE`, `HOME_EVIDENCE_DIR`.
+The local-only harness intercepts all external SDK/font/analytics requests.
+Firebase signed-out empty and unavailable states are fixtures; no production
+Auth/Firestore reads or writes occur. Existing homepage and auth rendering code
+executes against these fixtures. This is not live Firebase integration proof.
+
+Viewport evidence: 1440, 768, 430, 390, 360, 320; menu open; spotlight; lower
+content; keyboard focus; reduced motion; 640 CSS px reflow equivalent to 200%
+zoom on a 1280px viewport. Screenshots are outside the repository. Automated
+axe checks cover homepage main; existing shared-shell findings, if any, must
+be recorded separately rather than repaired in this slice.
+
+Existing `site-tests/simulations-browser.mjs` must remain unchanged and pass
+28/28 with axe enabled. Simulator source/model/assets remain byte-identical.
+
+### Deferred boundary
+
+Shared navigation rewrite; broken laboratory routes; authentication/profile
+backlog; production/domain behavior; 404 page; branch retirement; Firestore
+quality; CI and deployment configuration. Hero replacement needs separate
+artwork approval. No code for these items belongs in H1.
+
+
+### H1 validation result
+
+- Before: 103/103 site tests. After: 104/104 (one added spotlight contract).
+- Existing simulator browser harness: 28/28, including both main-content axe checks.
+- Homepage browser harness: 21/21. Main-content desktop/mobile and full-page
+  desktop automated WCAG checks: zero violations. Runtime/console/local HTTP
+  errors: zero. Fixtures only; production services were not contacted.
+- The old shared footer nowrap caused narrow overflow; homepage-only wrapping
+  and contrast styling correct it here. Shared files remain unchanged.
+- Screenshots inspected at 1440, 768, 430, 390, 360 and 320, plus mobile menu,
+  simulator spotlight, lower page, focus, reduced motion and reflow.
+- 200% reflow is verified via the equivalent 640 CSS-pixel viewport, not native
+  desktop-browser zoom controls. Fonts use system fallback in the isolated run.
+- Final hero artwork remains replaceable; approved existing local artwork is
+  used now. No new asset/dependency was added to the project.
