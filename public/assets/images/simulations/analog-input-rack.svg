@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" fill="none"><defs><linearGradient id="metal"><stop stop-color="#a9bcc8"/><stop offset=".45" stop-color="#f3f7f9"/><stop offset="1" stop-color="#9eafbb"/></linearGradient></defs><ellipse cx="80" cy="166" rx="70" ry="5" fill="#dae6ed"/>
+<path d="M12 48L26 33H144V146L132 157H12Z" fill="#a5b7c3" stroke="#516d80" stroke-width="2"/>
+<path d="M12 48H132L144 33M132 48V157" stroke="#516d80" stroke-width="2"/>
+<rect x="19" y="56" width="27" height="91" rx="2" fill="url(#metal)" stroke="#516d80"/>
+<rect x="24" y="63" width="10" height="10" rx="2" fill="#32806b"/><path d="M24 87H39M24 93H39M24 99H39" stroke="#516d80" stroke-width="2"/>
+<rect x="51" y="56" width="35" height="91" rx="2" fill="#e4edf2" stroke="#516d80"/>
+<rect x="58" y="66" width="20" height="39" rx="2" fill="#0b3c5d"/>
+<path d="M59 114H77M59 120H77M59 126H77M59 132H77" stroke="#ba8e35" stroke-width="3"/>
+<rect x="91" y="56" width="33" height="91" rx="2" fill="#c4d3dd" stroke="#516d80"/>
+<path d="M100 65H115M100 75H115M100 85H115M100 95H115M100 105H115M100 115H115M100 125H115M100 135H115" stroke="#516d80" stroke-width="3"/></svg>
