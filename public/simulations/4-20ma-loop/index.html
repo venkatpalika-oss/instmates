@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4–20 mA transmitter & loop simulator | InstMates</title><meta name="description" content="Interactive transmitter scaling, current loop faults and PLC/DCS diagnostic challenges. No account required.">
+<link rel="canonical" href="https://www.instmates.com/simulations/4-20ma-loop/">
+<meta property="og:title" content="4–20 mA transmitter & loop simulator | InstMates"><meta property="og:description" content="Interactive transmitter scaling, current loop faults and PLC/DCS diagnostic challenges. No account required.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://www.instmates.com/simulations/4-20ma-loop/">
+<link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/simulations.css">
+</head>
+<body class="sim-page" data-page="simulations" data-public-learning="true">
+<a class="sim-skip" href="#main">Skip to simulator content</a>
+<div id="siteHeader"></div>
+<main id="main" class="sim-shell" tabindex="-1">
+<nav class="sim-crumb" aria-label="Breadcrumb"><a href="/simulations/">Simulations</a><span aria-hidden="true">/</span><span>4–20 mA loop</span></nav>
+<header class="sim-title-row"><div><p class="sim-eyebrow">SIGNALS & CONTROL / LAB 01</p><h1>4–20 mA transmitter & loop</h1><p>Follow the signal. Find where the numbers stop agreeing.</p></div><button type="button" id="reset" class="sim-secondary">Reset workbench</button></header>
+<noscript><p class="sim-error">Enable JavaScript to use this simulator. Displayed placeholders are not live readings.</p></noscript>
+<p id="input-error" class="sim-error" role="alert" hidden></p>
+<nav class="sim-mobile-jumps" aria-label="Workbench sections"><a href="#controls">Adjust controls ↓</a><a href="#challenge-title">Try a challenge ↓</a></nav>
+<div class="sim-workbench">
+<aside class="sim-library-nav" aria-label="Simulation library"><a class="sim-library-home" href="/simulations/">← Simulation library</a>
+<p class="sim-eyebrow">PROCESS MEASUREMENT</p><a href="/simulations/#process-measurement">Pressure · Flow · Level · Temperature</a>
+<p class="sim-eyebrow">SIGNALS & CONTROL</p><a href="/simulations/4-20ma-loop/" aria-current="page" class="sim-current-lab"><img src="/assets/images/simulations/icon-current-loop.svg" alt="" width="28" height="28">4–20 mA loop <small>AVAILABLE</small></a><span>Control loops <small>COMING SOON</small></span>
+<p class="sim-eyebrow">PROCESS ANALYZERS</p><a href="/simulations/#process-analyzers">Explore analyzer topics</a>
+<p class="sim-eyebrow">CALIBRATION & DIAGNOSIS</p><a href="#challenge-title">Try a diagnostic challenge</a>
+<div class="sim-nav-note">A virtual instrument bench.<br>Change one parameter.<br>Trace the evidence.</div></aside>
+
+<div class="sim-results">
+<section class="sim-panel sim-instrument" aria-labelledby="signal-title"><div class="sim-section-heading"><div><p class="sim-eyebrow">VIRTUAL INSTRUMENT BENCH</p><h2 id="signal-title">Follow the live signal</h2></div><span id="quality" class="sim-badge">Initializing</span></div>
+<p class="sim-small">Process connection → electrical current → engineering indication</p>
+<div id="signal-path" class="signal-path" role="group" aria-label="Process to DCS signal path">
+<div class="signal-node process-node"><span class="node-number">01 / PROCESS</span><div class="equipment-stage"><img src="/assets/images/simulations/process-vessel.svg" alt="" width="160" height="180"><svg class="pressure-gauge" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28"/><path d="M13 36A20 20 0 0 1 51 36"/><path id="pressure-needle" d="M32 32L32 13"/><circle class="needle-hub" cx="32" cy="32" r="3"/></svg></div><strong id="process-reading">—</strong><div id="process-meter" class="sim-meter" aria-hidden="true"><i></i></div><span id="percent-reading">—</span><small>Gauge = normalized PV</small></div>
+<div id="transmitter-node" class="signal-node"><span class="node-number">02 / TRANSMITTER</span><div class="equipment-stage"><img src="/assets/images/simulations/smart-transmitter.svg" alt="" width="160" height="180"><strong id="tx-reading" class="device-screen tx-screen">—</strong></div><span>Output command</span><small id="expected-reading">Ideal: —</small><small id="tx-delta" class="equipment-note">—</small></div>
+<div id="wire-node" class="signal-node wire-equipment"><span class="node-number">03 / 4–20 mA LOOP</span><div class="equipment-stage wire-stage"><svg class="loop-wire" viewBox="0 0 160 180" aria-hidden="true"><path class="wire-base" d="M0 80H160"/><path class="wire-movement" d="M0 80H160"/><path class="wire-return" d="M155 95V130H5V95"/><path class="wire-break-mask" d="M61 80H99"/><path class="wire-open-contact" d="M61 80L94 56"/><circle cx="61" cy="80" r="4" class="contact"/><circle cx="99" cy="80" r="4" class="contact"/></svg><span id="wire-condition" class="wire-condition">—</span></div><strong id="loop-reading">—</strong><span>Measured series current</span><div class="current-track" aria-hidden="true"><i></i></div></div>
+<div id="input-node" class="signal-node"><span class="node-number">04 / PLC / DCS</span><div class="equipment-stage"><img src="/assets/images/simulations/analog-input-rack.svg" alt="" width="160" height="180"><span class="input-led" aria-hidden="true"></span><svg class="bypass-path" viewBox="0 0 160 180" aria-hidden="true"><path d="M0 80V17H157V80"/><path d="M76 12L84 17L76 22"/></svg></div><strong id="input-reading">—</strong><span>Measured input current</span><small id="scale-reading">Scale: —</small><small id="receiver-condition" class="equipment-note">—</small></div>
+<div id="display-node" class="signal-node display-node"><span class="node-number">05 / ENGINEERING DISPLAY</span><div class="equipment-stage"><img src="/assets/images/simulations/engineering-display.svg" alt="" width="160" height="180"><strong id="display-reading" class="device-screen dcs-screen">—</strong></div><span id="display-note">Engineering indication</span></div>
+</div>
+<p id="visual-state-note" class="sim-visual-state">—</p>
+<p id="observation" class="sim-observation">Change the process value to observe the response.</p>
+<div class="sim-readout-row"><span>Raw DCS conversion <strong id="raw-reading">—</strong></span><span>Indication − process <strong id="error-reading">—</strong></span></div>
+<p class="sim-small sim-diagram-key">Arrows show signal progression, not electron motion. Functional diagram; not a wiring schematic.</p>
+<p id="live-summary" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p></section>
+<form id="controls" class="sim-panel sim-controls" novalidate aria-label="Simulator settings" tabindex="-1">
+<div class="sim-mobile-readout" aria-hidden="true"><span>PV<strong id="mobile-process">—</strong></span><span>Ideal output<strong id="mobile-ideal">—</strong></span><span>Actual loop<strong id="mobile-loop">—</strong></span><span>DCS indication<strong id="mobile-dcs">—</strong></span></div>
+<fieldset><legend>01 / Process & transmitter</legend><div class="sim-pair"><label for="lrv">LRV<input id="lrv" type="number" value="0" min="-1000000" max="1000000" step="any" required></label><label for="urv">URV<input id="urv" type="number" value="10" min="-1000000" max="1000000" step="any" required></label></div>
+<label for="unit">Engineering unit<select id="unit"><option>bar</option><option>kPa</option><option>°C</option><option>m</option><option>%</option></select></label>
+<label for="pv">Process value<input id="pv" type="number" value="5" min="-1000000" max="1000000" step="any" required></label><label for="pv-slider">Process position <span class="sim-small">(LRV to URV)</span><input id="pv-slider" type="range" min="0" max="100" value="50" step="0.1"></label>
+<label for="mode">Output mode<select id="mode"><option value="process">Follow process value</option><option value="manual">Force transmitter test current</option></select></label>
+<div id="manual-control" hidden><label for="manual">Forced current (mA)<input id="manual" type="number" value="12" min="0" max="24" step="any" required></label></div></fieldset>
+<fieldset><legend>02 / PLC / DCS scale</legend><div class="sim-pair"><label for="dcsLrv">Value at 4 mA<input id="dcsLrv" type="number" value="0" min="-1000000" max="1000000" step="any" required></label><label for="dcsUrv">Value at 20 mA<input id="dcsUrv" type="number" value="10" min="-1000000" max="1000000" step="any" required></label></div><button type="button" id="match-range" class="sim-secondary">Match transmitter range</button></fieldset>
+<fieldset><legend>03 / Inject a fault</legend><label for="fault">Fault mode<select id="fault"><option value="normal">Normal</option><option value="open">Open loop</option><option value="short">Short / low current</option><option value="stuck">Current stuck</option><option value="zero">Zero shift</option><option value="span">Span error</option><option value="scaling">Wrong DCS scaling</option></select></label>
+<div id="stuck-control" hidden><label for="stuck">Stuck current (mA)<input id="stuck" type="number" value="4" min="0" max="24" step="any" required></label></div><div id="zero-control" hidden><label for="zero">Zero shift (mA)<input id="zero" type="number" value="1" min="-4" max="4" step="any" required></label></div><div id="span-control" hidden><label for="span">Span error (%)<input id="span" type="number" value="10" min="-50" max="50" step="any" required></label></div>
+<p id="fault-hint" class="sim-small">Observe readings before revealing diagnostic checks.</p></fieldset></form>
+<section class="measurement-cards" aria-label="Live measurements">
+<div><span>PROCESS VALUE</span><strong id="card-process">—</strong><small>Independent process reference</small></div>
+<div><span>TRANSMITTER OUTPUT · IDEAL</span><strong id="card-ideal">—</strong><small>From configured range</small></div>
+<div><span>LOOP CURRENT · ACTUAL</span><strong id="card-loop">—</strong><small>Measured series path</small></div>
+<div><span>DCS INDICATION</span><strong id="card-dcs">—</strong><small>Receiver engineering value</small></div>
+</section>
+
+<section class="sim-panel" aria-labelledby="challenge-title"><div class="sim-section-heading"><div><p class="sim-eyebrow">PUT IT TO WORK</p><h2 id="challenge-title">Diagnostic challenge</h2></div><span id="challenge-count" class="sim-badge">3 scenarios</span></div><p id="challenge-prompt">Load a scenario, inspect the readings, then choose where to investigate first. Fault controls are hidden during a challenge.</p>
+<button id="start-challenge" class="sim-button" type="button">Start challenge</button>
+<form id="challenge-form" hidden><fieldset><legend>Where would you investigate first?</legend>
+<label class="sim-choice"><input type="radio" name="diagnosis" value="scaling"> DCS scaling / channel configuration</label>
+<label class="sim-choice"><input type="radio" name="diagnosis" value="stuck"> Forced or frozen transmitter output</label>
+<label class="sim-choice"><input type="radio" name="diagnosis" value="open"> Loop supply / open series wiring</label>
+</fieldset><div class="sim-actions"><button class="sim-button" type="submit">Check diagnosis</button><button id="next-challenge" class="sim-secondary" type="button" hidden>Next scenario</button><button id="exit-challenge" class="sim-secondary" type="button">Return to sandbox</button></div></form><p id="challenge-feedback" role="status" aria-live="polite"></p></section>
+<details class="sim-panel sim-model"><summary>Model assumptions & technical references</summary><p>This is a linear, direct-acting, steady-state model. URV must exceed LRV. Numeric entries are bounded to ±1,000,000; process values may exceed the configured range. Units are labels: changing a unit does not convert entered numbers.</p><p>Process mode limits output to 3.8–20.5 mA as an explicit teaching convention. Real alarm/saturation settings depend on the instrument. Below 3.8 or above 20.5 mA, this receiver marks quality BAD and suppresses engineering indication; raw arithmetic remains visible. A real DCS may clamp, hold last value or use configured alarm limits. Manual and stuck modes allow 0–24 mA.</p><p>Open loop means a broken series path (0 mA actual current). The transmitter number is a command, not proof of current flow. Short / low current specifically models a bypass across the receiver sensing resistor: series current continues but input current is zero. No supply voltage, wire resistance, compliance, HART, noise, square-root extraction or process dynamics are modeled.</p><p>Zero/span faults apply only in process mode. Wrong DCS scaling loads a receiver span at half the transmitter span; endpoints remain editable. Faults are selected individually. Challenges are learning exercises; the readings do not uniquely identify every real-world fault.</p><p><a href="https://www.ni.com/en/shop/data-acquisition/fundamentals--system-design--and-setup-for-the-4-to-20-ma-curren.html">NI: 4–20 mA current loop fundamentals</a> · <a href="https://www.emerson.com/en/measurement-instrumentation/catalog/pressure-measurement/4051s-manual">Emerson: transmitter saturation and alarm behavior</a></p></details>
+</div>
+<section class="sim-panel sim-learning-panel" aria-labelledby="learning-title"><p class="sim-eyebrow">READ THE EVIDENCE</p><h2 id="learning-title">What’s happening?</h2><p id="what">Initializing the workbench…</p>
+<div class="sim-learning-grid"><div><h3>Formula</h3><p class="sim-formula">mA = 4 + ((PV − LRV) / (URV − LRV)) × 16</p><p class="sim-formula">PV = LRV + ((mA − 4) / 16) × (URV − LRV)</p><p id="worked" class="sim-small"></p></div><div><h3>Field check</h3><p>Compare an independent process reference, measured series current and receiver indication. A plausible engineering value can still be wrong.</p><p class="sim-small">Use your site’s approved isolation and test procedures. Breaking a live loop can affect plant operation.</p></div></div>
+<details id="diagnostics"><summary>Inspect symptoms first — reveal diagnostic checks</summary><p id="diagnosis"></p></details></section>
+</div></main>
+<div id="siteFooter"></div>
+<script src="/assets/js/includes.js"></script>
+<script type="module" src="/assets/js/simulations/loop-page.js"></script>
+</body></html>

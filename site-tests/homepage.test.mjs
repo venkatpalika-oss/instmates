@@ -513,11 +513,11 @@ test("hero: GC discovery entry still reaches the published hub", () => {
 });
 
 // ---------------------------------------------------------------- shared includes (header / footer)
-test("header: primary navigation is SOLVE → LEARN → CONNECT → CONTRIBUTE on real routes, with the rest under More and the account menu intact", () => {
+test("header: primary navigation is SOLVE → LEARN → SIMULATIONS → CONNECT → CONTRIBUTE on real routes, with the rest under More and the account menu intact", () => {
   const nav = HEADER_HTML.match(/<nav class="main-nav"[\s\S]*?<\/nav>/)[0];
   const beforeMenus = nav.slice(0, nav.indexOf('<div class="nav-dropdown">'));
   const primary = [...beforeMenus.matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)].map((m) => [m[2], m[1]]);
-  assert.deepEqual(primary, [["Solve", "/#solve"], ["Learn", "/knowledge/"], ["Connect", "/profiles/"], ["Contribute", "/#contribute"]]);
+  assert.deepEqual(primary, [["Solve", "/#solve"], ["Learn", "/knowledge/"], ["Simulations", "/simulations/"], ["Connect", "/profiles/"], ["Contribute", "/#contribute"]]);
   assert.ok(HOME_HTML.includes('<section id="contribute"'), "Contribute target exists on the homepage");
   assert.ok(!nav.slice(0, nav.indexOf('<div class="nav-dropdown">')).includes('href="/feed/"'), "no primary nav item promises feed posting (P1.2 open)");
   for (const h of hrefs(nav).filter((x) => x.startsWith("/"))) {
@@ -537,7 +537,7 @@ test("header: primary navigation is SOLVE → LEARN → CONNECT → CONTRIBUTE o
   assert.ok(mobile, "mobile <details> menu missing");
   assert.match(mobile[0], /<summary>Menu<\/summary>/);
   const mobileLinks = hrefs(mobile[0]);
-  for (const h of ["/#solve", "/knowledge/", "/profiles/", "/#contribute", "/login.html", "/register.html"]) {
+  for (const h of ["/#solve", "/knowledge/", "/simulations/", "/profiles/", "/#contribute", "/login.html", "/register.html"]) {
     assert.ok(mobileLinks.includes(h), `mobile menu lacks ${h}`);
   }
   assert.ok(!mobileLinks.includes("/feed/"), "mobile menu does not promise feed posting either");

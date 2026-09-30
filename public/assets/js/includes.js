@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =====================================================
 
   // Prevent duplicate auth loading
-    if (!document.body.dataset.authLoaded) {
+    // Public learning workbenches are anonymous and never initialize Firebase.
+    if (document.body.dataset.publicLearning !== "true" && !document.body.dataset.authLoaded) {
 
     const coreAuth = document.createElement("script");
     coreAuth.type = "module";
