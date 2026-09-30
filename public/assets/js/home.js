@@ -211,7 +211,7 @@ function renderDiscussions(items) {
   if (!list) return;
   list.setAttribute("aria-busy", "false");
   if (items.length === 0) {
-    replaceChildren(list, [emptyItem("No discussions yet. Ask the first question in the feed.")]);
+    replaceChildren(list, [emptyItem("No discussions yet. Browse the feed for questions and field experience.")]);
     return;
   }
   replaceChildren(list, items.map((item) => {
