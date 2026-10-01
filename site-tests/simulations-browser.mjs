@@ -176,10 +176,10 @@ try {
   check('axe automated accessibility: simulator main');
  }
  await page.goto(`${base}/simulations/`);await page.waitForSelector('.category');
- assert.equal(await page.locator('.sim-topic-list img').count(),17);
- assert.equal(await page.locator('.sim-topic-list a').count(),0);
+ assert.equal(await page.locator('.catalog-tags').count(),2);
+ assert.equal(await page.locator('#categories a').count(),0);
  assert.equal(await page.locator('img').evaluateAll(es=>es.every(e=>e.complete && e.naturalWidth>0)),true);
- check('local technical icons load and unavailable topics have no fake links');
+ check('local images load and subject areas have no fake links');
  assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),2);
  await page.setViewportSize({width:1440,height:1100});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-desktop.png`,fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -188,7 +188,7 @@ try {
   const {default:AxeBuilder}=require(process.env.SIM_AXE_MODULE);
   const result=await new AxeBuilder({page}).include('#main').analyze();assert.equal(result.violations.length,0,JSON.stringify(result.violations.map(v=>v.id)));check('axe automated accessibility: landing main');
  }
- await page.locator('.sim-card[href="/simulations/4-20ma-loop/"]').click();await page.waitForFunction(()=>document.getElementById('display-reading')?.textContent==='5.00 bar');check('catalog links to working simulation');
+ await page.locator('.sim-card a[href="/simulations/4-20ma-loop/"]').click();await page.waitForFunction(()=>document.getElementById('display-reading')?.textContent==='5.00 bar');check('catalog links to working simulation');
  assert.deepEqual(external,[]);assert.deepEqual(errors,[]);check('zero external requests, HTTP errors, console errors or runtime errors');
  await writeFile(`${output}/browser-results.json`,JSON.stringify({checks,errors,external},null,2));
  console.log(JSON.stringify({passed:checks.length,checks},null,2));

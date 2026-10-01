@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { toCurrent, fromCurrent, percentOfRange } from '../public/assets/js/simulations/linear.js';
 import { DEFAULTS, simulate, CHALLENGES, FAULTS } from '../public/assets/js/simulations/loop-model.js';
-import { SIMULATIONS, CATEGORIES } from '../public/assets/js/simulations/catalog.js';
+import { SIMULATIONS, CATEGORIES, availableLabs } from '../public/assets/js/simulations/catalog.js';
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`);
 const run=patch=>simulate({...DEFAULTS,...patch});
 for(const [percent,ma] of [[0,4],[25,8],[50,12],[75,16],[100,20]]) test(`${percent}% produces ${ma} mA across arbitrary ranges`,()=>{
@@ -58,7 +58,7 @@ test('challenge scenarios have modeled evidence and independent expected outcome
 });
 test('catalog publishes only working routes and four honest categories',()=>{
  assert.equal(CATEGORIES.length,4);assert.equal(SIMULATIONS.length,2);
- for(const s of SIMULATIONS) assert.ok(existsSync(new URL(`../public${s.href}index.html`,import.meta.url)));
+ for(const s of availableLabs(SIMULATIONS)) assert.ok(existsSync(new URL(`../public${s.href}index.html`,import.meta.url)));
 });
 test('learning pages isolate Firebase, retain shared shell and offer progressive fallback',()=>{
  for(const p of ['simulations/index.html','simulations/4-20ma-loop/index.html']) {

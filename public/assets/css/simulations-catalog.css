@@ -1,0 +1,35 @@
+/* Catalog-only presentation: lab workbenches and shared navigation remain unchanged. */
+.sim-catalog .sim-shell{max-width:1200px;padding-bottom:32px}
+.catalog-intro{padding:8px 0 28px;max-width:760px}
+.sim-catalog .catalog-intro h1{font-size:clamp(2rem,4vw,3.2rem);margin:8px 0 12px}
+.catalog-intro>p:not(.sim-eyebrow){font-size:1.05rem;color:#36596e;max-width:650px}
+.catalog-intro .sim-badge{margin-top:8px}
+.catalog-labs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.sim-catalog .sim-card{margin:0;padding:24px;display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.sim-catalog .sim-card h3{font-size:1.3rem;line-height:1.3;margin:16px 0 0}
+.catalog-outcome{flex:1}
+.catalog-tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:12px 0 20px;font-size:.78rem}
+.catalog-tags li{background:white;border:1px solid #c4d9e6;border-radius:6px;padding:4px 8px}
+.sim-catalog .sim-card .sim-button{min-height:44px;color:white}
+.catalog-subjects{margin-top:32px;padding-top:24px;border-top:1px solid #c4d9e6}
+.catalog-subjects>p{font-size:.85rem;color:#476277}
+.sim-catalog #categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:18px}
+.sim-catalog .category{min-height:0}.sim-catalog .category h3{margin:0}.sim-catalog .category p{font-size:.82rem;color:#476277}
+.sim-catalog :is(a,summary){scroll-margin-block:24px}
+@media(max-width:768px){
+ .sim-catalog{padding-bottom:0}
+ .sim-catalog .mobile-bottom-nav{position:static}
+ .sim-catalog .sim-shell{padding:16px 16px 28px}
+ .sim-catalog .sim-crumb{margin-bottom:12px}
+ .catalog-intro{padding:0 0 22px}
+ .catalog-intro>p:not(.sim-eyebrow){font-size:1rem}
+ .catalog-labs{grid-template-columns:1fr;gap:14px}
+ .sim-catalog .sim-card{padding:18px}
+ .sim-catalog #categories{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+}
+@media(max-width:360px){.sim-catalog #categories{grid-template-columns:1fr}.sim-catalog .sim-card h3{font-size:1.18rem}}
+/* Whole-page contrast correction confined to the catalog shell. */
+.sim-catalog .siteFooter{background:#0b3c5d;color:#fff}
+.sim-catalog .siteFooter :is(a,.footer-desc,.footer-bottom){color:#eef6fc}
+
+.sim-catalog .sim-skip:not(:focus){clip-path:inset(100%)}
