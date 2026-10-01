@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {mkdir} from 'node:fs/promises';
+import {startServer} from '../scripts/serve-oxymitter-dev.mjs';
+const require=createRequire(import.meta.url),{chromium}=require('playwright');
+const {server,url}=await startServer();let browser;
+const shots=process.env.OXYMITTER_M3_SCREENSHOTS??'/tmp/oxymitter-m3-screenshots';
+try{
+ browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(url);await page.waitForSelector('#cal-start',{state:'attached'});
+ const text=id=>page.locator('#'+id).textContent();const click=id=>page.locator('#'+id).click();
+ async function tabTo(id){for(let n=0;n<180;n++){if(await page.evaluate(()=>document.activeElement?.id)===id)return;await page.keyboard.press('Tab');}throw new Error(`Tab could not reach ${id}`);}
+ async function key(id){await tabTo(id);await page.keyboard.press('Enter');}
+ // Complete one default LOI calibration using Tab + Enter only, including startup and workspace selection.
+ for(const id of ['power-on','complete','calibration-workspace','cal-manual','cal-verify','cal-start','cal-apply1','cal-enter','cal-finish-timer','cal-apply2','cal-enter','cal-finish-timer','cal-remove','cal-enter','cal-finish-timer','cal-auto'])await key(id);
+ assert.equal(await text('cal-procedure'),'TRAINING PROCEDURE COMPLETE');assert.match(await text('cal-loop'),/AUTOMATIC/);assert.match(await text('cal-output-state'),/NUMERIC MAPPING BLOCKED/);assert.match(await text('cal-device-outcome'),/Pre-authored/);
+ await mkdir(shots,{recursive:true});await page.locator('#calibration-workspace-panel').screenshot({path:`${shots}/loi-complete.png`});
+ await click('cal-new');await page.locator('#cal-interface').selectOption('keypad');await page.locator('#cal-first').selectOption('high');await page.locator('#cal-output').selectOption('HOLD');await page.locator('#cal-scenario').selectOption('invalidSlope');await page.locator('#cal-guidance').selectOption('practice');assert.equal(await page.locator('#cal-guided').isVisible(),false);
+ await click('cal-manual');await click('cal-verify');await click('cal-start');assert.match(await text('cal-keypad-boundary'),/G05|arming/);assert.match(await text('cal-output-state'),/HOLDING PRE-CALIBRATION/);assert.match(await text('cal-gas1'),/^8%/);
+ for(const id of ['cal-apply1','cal-cal','cal-finish-timer','cal-apply2','cal-cal','cal-finish-timer'])await click(id);
+ assert.match(await text('cal-led'),/THREE-PATTERN/);assert.match(await text('cal-diagnostic'),/Invalid slope/);assert.match(await text('cal-retention'),/Bad calibration values are not loaded/);await page.locator('#calibration-workspace-panel').screenshot({path:`${shots}/keypad-invalid.png`});
+ for(const id of ['cal-remove','cal-cal','cal-finish-timer','cal-auto'])await click(id);assert.equal(await text('cal-procedure'),'TRAINING PROCEDURE COMPLETE');assert.match(await text('cal-records'),/Current: Prior good/);assert.doesNotMatch(await text('cal-diagnostic'),/Fixture diagnostic/);
+ // Reject out-of-range setup, then complete an allowed non-example concentration with no TP conversion.
+ await click('cal-new');await click('cal-manual');await click('cal-verify');await page.locator('#cal-low').fill('3');await page.locator('#cal-low').press('Tab');await click('cal-start');assert.match(await text('cal-error'),/TRAINING ACTION NOT ALLOWED/);assert.equal(await text('cal-state'),'NORMAL / READY');
+ await page.locator('#cal-low').fill('1.2');await page.locator('#cal-low').press('Tab');await click('cal-verify');await click('cal-start');await click('cal-enter');assert.match(await text('cal-error'),/Apply the requested gas/);assert.match(await text('cal-diagnostic'),/No device alarm inferred/);await click('cal-apply1');assert.match(await text('cal-tp'),/No exact TP5\/TP6/);
+ // LOI abort requires removal and purge. Training errors are distinct from the selected device result.
+ await click('cal-abort');assert.equal(await text('cal-state'),'ABORT / REMOVE GAS');assert.match(await text('cal-retention'),/previous good/);await click('cal-auto');assert.match(await text('cal-error'),/purge/);await click('cal-remove');await click('cal-finish-timer');await click('cal-auto');assert.match(await text('cal-procedure'),/ABORTED — CLEANUP COMPLETE/);
+ await click('cal-new');await page.locator('#cal-interface').selectOption('keypad');await click('cal-manual');await click('cal-verify');await click('cal-start');assert.equal(await text('cal-abort'),'Simulate CAL ×3 within 3s');await click('cal-abort');await click('cal-remove');await click('cal-finish-timer');await click('cal-auto');assert.match(await text('cal-procedure'),/ABORTED/);
+ // Browser timer boundary and timeout cleanup.
+ await click('cal-new');await click('cal-manual');await click('cal-verify');await click('cal-start');await click('cal-finish-timer');assert.equal(await text('cal-state'),'ABORT / REMOVE GAS');await click('cal-remove');await click('cal-finish-timer');await click('cal-auto');
+ // Current source inspector and mobile interactions in an active calibration, not only a static landing screenshot.
+ await click('cal-new');await click('cal-manual');await click('cal-verify');await click('cal-start');await click('cal-apply1');await click('cal-enter');
+ const sourceSummary=page.locator('#calibration-workspace-panel summary').filter({hasText:'Source / current procedure'});await sourceSummary.click();assert.match(await text('cal-step-source'),/PDF p147, 148/);assert.match(await text('cal-history'),/acknowledge/);await sourceSummary.click();
+ for(const width of [1440,430,390,320]){await page.setViewportSize({width,height:1000});await page.evaluate(()=>scrollTo(0,0));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`overflow ${width}`);await page.screenshot({path:`${shots}/${width}.png`,fullPage:true});await page.screenshot({path:`${shots}/${width}-viewport.png`});await page.locator('#calibration-workspace-panel details').evaluateAll(ns=>ns.forEach(n=>n.open=true));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`expanded overflow ${width}`);assert.equal(await page.locator('#calibration-workspace-panel button,#calibration-workspace-panel select,#calibration-workspace-panel input').evaluateAll(ns=>ns.every(n=>n.getBoundingClientRect().height===0||n.getBoundingClientRect().height>=44)),true);await page.locator('#calibration-workspace-panel details').evaluateAll(ns=>ns.forEach(n=>n.open=false));}
+ for(const id of ['cal-finish-timer','cal-apply2','cal-enter','cal-finish-timer','cal-remove','cal-enter','cal-finish-timer','cal-auto'])await click(id);assert.equal(await text('cal-procedure'),'TRAINING PROCEDURE COMPLETE');
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches),true);assert.equal(await page.locator('#calibration-workspace-panel').evaluate(n=>[n,...n.querySelectorAll('*')].some(x=>['fixed','sticky'].includes(getComputedStyle(x).position))),false);
+ assert.deepEqual(errors,[]);console.log('M3 browser acceptance passed: keyboard-only LOI completion, keypad high-first invalid scenario, track/hold, rejected gas settings and procedural errors, exact-example boundary, both abort mechanisms, timeout, source inspection, 1440/430/390/320px, reduced motion.');console.log(`Screenshots: ${shots}`);
+}finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}

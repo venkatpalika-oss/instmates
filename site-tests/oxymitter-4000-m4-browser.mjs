@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {mkdir} from 'node:fs/promises';
+import {startServer} from '../scripts/serve-oxymitter-dev.mjs';
+import {DIAGNOSTIC_SCENARIOS as scenarios,diagRead as read} from '../public/assets/js/simulations/oxymitter-4000/diagnostic-data.mjs';
+const require=createRequire(import.meta.url),{chromium}=require('playwright');
+const {server,url}=await startServer();let browser;
+const shots=process.env.OXYMITTER_M4_SCREENSHOTS??'/tmp/oxymitter-m4-screenshots';
+try{
+ browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(url);await page.waitForSelector('#diag-load',{state:'attached'});
+ const text=id=>page.locator('#'+id).textContent();const click=id=>page.locator('#'+id).click();const select=(id,value)=>page.locator('#'+id).selectOption(value);
+ async function tabTo(id){for(let i=0;i<220;i++){if(await page.evaluate(()=>document.activeElement?.id)===id)return;await page.keyboard.press('Tab');}throw new Error('Tab target unavailable: '+id);}
+ async function key(id){await tabTo(id);await page.keyboard.press('Enter');}
+ async function keySelect(id,value){await tabTo(id);const idx=await page.locator('#'+id).evaluate((n,v)=>[...n.options].findIndex(o=>o.value===v),value);assert.ok(idx>=0);await page.keyboard.press('Home');for(let i=0;i<idx;i++)await page.keyboard.press('ArrowDown');await page.keyboard.press('Tab');}
+ async function journey(id,{keyboard=false,practice=false}={}){const press=keyboard?key:click,choose=keyboard?keySelect:select;const s=scenarios.find(s=>s.id===id);if(!await page.locator('#diag-scenario').isVisible()){if(keyboard){await page.locator('#diag-setup summary').focus();await page.keyboard.press('Enter');}else await page.locator('#diag-setup summary').click();}
+  await choose('diag-scenario',id);await choose('diag-mode',practice?'practice':'guided');await press('diag-load');assert.equal(await page.locator('#diag-guide').isVisible(),!practice);
+  for(const c of s.checks){assert.ok(await page.locator('#diag-check option').count()<=4);await choose('diag-check',c.id);await press('diag-select-check');await choose('diag-meter-mode',c.meter.status==='SUPPORTED'?read(c.meter).mode:'Inspection / source review');await press('diag-safe');await press('diag-perform');assert.equal(await text('diag-observation'),read(c.observation));if(c.meter.status==='SUPPORTED')assert.ok((await text('diag-meter')).includes(read(c.meter).result));await press('diag-next');}
+  await choose('diag-diagnosis',id);await press('diag-identify');await choose('diag-action',s.action.id);await press('diag-action-safe');await press('diag-corrective');assert.equal(await text('diag-stage'),'COMPLETE');assert.match(await text('diag-result'),/EXERCISE COMPLETE/);
+ }
+ // Initial thermocouple path uses only Tab, native select keyboard navigation and Enter.
+ await key('diagnostic-workspace');await journey('F1',{keyboard:true});assert.equal(await text('diag-loi-message'),'O2 T/C Open');assert.match(await text('diag-result'),/Fixture retained/);
+ for(const [id,practice] of [['F5',true],['F10',false],['F13',true],['T17',true],['T18',false],['T19',false],['T16',true]])await journey(id,{practice});
+ await click('diag-highlight');assert.equal(await page.locator('[data-component=heater]').getAttribute('aria-pressed'),'true');
+ await page.locator('#diag-setup summary').click();await select('diag-scenario','F2');await select('diag-interface','keypad');await select('diag-output-choice','21.6');await click('diag-load');await click('diag-step');await click('diag-step');assert.match(await text('diag-blink'),/Pause 2 seconds/);assert.match(await text('diag-output'),/21.6/);
+ const indication=await text('diag-blink');await select('diag-check','F5-j8');await click('diag-select-check');assert.match(await text('diag-error'),/TRAINING ACTION NOT APPROPRIATE/);assert.equal(await text('diag-blink'),indication);assert.equal(await text('diag-stage'),'CHECK');
+ await select('diag-check','F2-voltage');await click('diag-select-check');await select('diag-meter-mode','Resistance');await click('diag-safe');await click('diag-perform');assert.match(await text('diag-error'),/TRAINING ACTION/);assert.equal(await text('diag-stage'),'TEST');await select('diag-meter-mode','DC voltage');await click('diag-perform');assert.match(await text('diag-meter'),/0 ±0.5 mV/);
+ const src=page.locator('#diagnostic-workspace-panel summary').filter({hasText:'Source / fault'});await src.click();assert.match(await text('diag-current-source'),/F02.*PDF p113, 114/);await src.click();
+ await mkdir(shots,{recursive:true});await page.locator('#diagnostic-workspace-panel').screenshot({path:`${shots}/thermocouple-meter.png`});
+ for(const width of [1440,430,390,320]){await page.setViewportSize({width,height:1000});await page.evaluate(()=>scrollTo(0,0));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`overflow ${width}`);await page.screenshot({path:`${shots}/${width}.png`,fullPage:true});await page.screenshot({path:`${shots}/${width}-viewport.png`});await page.locator('#diagnostic-workspace-panel details').evaluateAll(ns=>ns.forEach(n=>n.open=true));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`expanded overflow ${width}`);assert.equal(await page.locator('#diagnostic-workspace-panel button,#diagnostic-workspace-panel select').evaluateAll(ns=>ns.every(n=>n.getBoundingClientRect().height===0||n.getBoundingClientRect().height>=44)),true);await page.locator('#diagnostic-workspace-panel details').evaluateAll(ns=>ns.forEach(n=>n.open=false));}
+ await journey('T19',{practice:true});await page.locator('#diagnostic-workspace-panel').screenshot({path:`${shots}/diffuser-mobile.png`});
+ await page.locator('#diag-setup summary').click();await click('diag-random');const challenge=await text('diag-symptom');assert.ok(scenarios.some(s=>(s.id+' · '+read(s.symptom))===challenge));
+ assert.equal(await page.locator('#diag-scenario option').count(),20);assert.equal(await page.locator('#diag-scenario option[value=T20]').count(),0);assert.equal(await page.locator('#diagnostic-workspace-panel').evaluate(n=>[n,...n.querySelectorAll('*')].some(x=>['fixed','sticky'].includes(getComputedStyle(x).position))),false);
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches),true);assert.deepEqual(errors,[]);
+ // Workspace isolation: a running calibration cannot be bypassed through Diagnostics.
+ await click('startup-workspace');await click('power-on');await click('complete');await click('calibration-workspace');await click('cal-manual');await click('cal-verify');await click('cal-start');assert.equal(await page.locator('#diagnostic-workspace').isDisabled(),true);assert.deepEqual(errors,[]);
+ console.log('M4 browser acceptance passed: keyboard thermocouple path; heater/cell/calibration/leak/diffuser/setpoint exercises; guided/practice; meter, source, challenge, inappropriate actions; component link; 1440/430/390/320px; mobile completion; calibration isolation; no page errors.');console.log(`Screenshots: ${shots}`);
+}finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}

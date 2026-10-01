@@ -20,7 +20,11 @@ export const SIMULATIONS = Object.freeze([
  {id:'pressure-transmitter-calibration', lab:'02', title:'Pressure Transmitter Calibration', status:'available', href:'/simulations/pressure-transmitter-calibration/',
  summary:'Record a calibration run, diagnose errors and compare as-found with as-left.',
  categoryIds:['measurement','field-skills'], topicIds:['pressure','calibration','troubleshooting'],
- equipmentTypes:['pressure-transmitter','reference-pressure-calibrator','hand-pump'], objectives:['Record nine calibration observations','Diagnose response errors','Compare as-found and as-left results']}
+ equipmentTypes:['pressure-transmitter','reference-pressure-calibrator','hand-pump'], objectives:['Record nine calibration observations','Diagnose response errors','Compare as-found and as-left results']},
+ {id:'oxymitter-4000', lab:'03', title:'Rosemount Oxymitter 4000 Educational Simulator', status:'available', href:'/simulations/oxymitter-4000/',
+ summary:'Explore analyzer components and documented startup, calibration, diagnostic and troubleshooting procedures, with source references and local learning assessments.',
+ categoryIds:['analyzers','field-skills'], topicIds:['oxygen','gas-analysis','calibration','fault-finding','troubleshooting'],
+ equipmentTypes:['oxygen-analyzer','in-situ-probe'], objectives:['Identify probe and signal components','Read exact documented reference points','Practice documented startup procedures','Practice documented calibration procedures','Interpret documented fault indications','Follow source-backed troubleshooting checks','Review educational assessment results']}
 ]);
 
 /** Fail closed: unpublished entries cannot acquire launch actions. Route existence is checked at build/test time. */

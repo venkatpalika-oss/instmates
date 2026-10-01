@@ -1,0 +1,762 @@
+{
+  "browser": "Chromium",
+  "widths": [
+    1440,
+    1024,
+    768,
+    430,
+    390,
+    360,
+    320
+  ],
+  "textScaling": "200% of each computed element font size, captured before changing any sizes; not browser zoom",
+  "errors": [],
+  "warnings": [],
+  "failed": [],
+  "requests": [
+    "http://127.0.0.1:45853/simulations/oxymitter-4000/",
+    "http://127.0.0.1:45853/__oxymitter/dev/style.css",
+    "http://127.0.0.1:45853/__oxymitter/dev/page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/calibration-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/diagnostic-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/training-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/hardening-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/source-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/startup-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/view-model.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/provenance.mjs",
+    "http://127.0.0.1:45853/simulations/oxymitter-4000/",
+    "http://127.0.0.1:45853/__oxymitter/dev/style.css",
+    "http://127.0.0.1:45853/__oxymitter/dev/page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/calibration-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/diagnostic-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/training-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/hardening-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/source-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/startup-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/view-model.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/provenance.mjs"
+  ],
+  "layouts": [
+    {
+      "name": "results",
+      "width": 1440,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 1024,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 768,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 430,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 390,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 360,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 320,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "results",
+      "width": 320,
+      "text": 200,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 1440,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 1024,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 768,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 430,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 390,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 360,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 320,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "home",
+      "width": 320,
+      "text": 200,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 1440,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 1024,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 768,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 430,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 390,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 360,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 320,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "calibration",
+      "width": 320,
+      "text": 200,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 1440,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 1024,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 768,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 430,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 390,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 360,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 320,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "diagnostics",
+      "width": 320,
+      "text": 200,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 1440,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 1024,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 768,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 430,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 390,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 360,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 320,
+      "text": 100,
+      "overflow": 0
+    },
+    {
+      "name": "assessment",
+      "width": 320,
+      "text": 200,
+      "overflow": 0
+    }
+  ],
+  "a11y": [
+    {
+      "name": "results-1440",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-1024",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-768",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-430",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-390",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-360",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-320",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "results-200%",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-1440",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-1024",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-768",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-430",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-390",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-360",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-320",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "home-200%",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-1440",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-1024",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-768",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-430",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-390",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-360",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-320",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "calibration-200%",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-1440",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-1024",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-768",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-430",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-390",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-360",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-320",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "diagnostics-200%",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-1440",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-1024",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-768",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-430",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-390",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-360",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-320",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    },
+    {
+      "name": "assessment-200%",
+      "unlabeled": [],
+      "unnamed": [],
+      "small": [],
+      "fixed": [],
+      "h1": 1,
+      "main": 1,
+      "contrastMinimum": 4.69,
+      "contrastFailures": []
+    }
+  ],
+  "version": "153.0.8010.0",
+  "initialRequests": [
+    "http://127.0.0.1:45853/simulations/oxymitter-4000/",
+    "http://127.0.0.1:45853/__oxymitter/dev/style.css",
+    "http://127.0.0.1:45853/__oxymitter/dev/page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/calibration-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/diagnostic-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/training-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/hardening-page.mjs",
+    "http://127.0.0.1:45853/__oxymitter/source-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/startup-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/dev/view-model.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/diagnostic-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/training-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-data.mjs",
+    "http://127.0.0.1:45853/__oxymitter/calibration-engine.mjs",
+    "http://127.0.0.1:45853/__oxymitter/provenance.mjs"
+  ],
+  "keyboardJourney": "All six lessons + inherited startup/calibration + F2/T19 troubleshooting + 15 questions/four practicals + results/review; Tab, Enter, Home and ArrowDown only.",
+  "storage": {
+    "local": 0,
+    "session": 0,
+    "cookies": ""
+  }
+}

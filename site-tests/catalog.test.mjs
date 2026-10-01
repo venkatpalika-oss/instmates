@@ -7,7 +7,7 @@ for(const n of [2,5,10,25]) test(`catalog ${n} unique labs and deduplicated memb
  const result=availableLabs(fixture(n));assert.equal(result.length,n);assert.ok(result.every(l=>l.categoryIds.length===2));
 });
 test('real available routes exist and retain permanent IDs',()=>{
- assert.deepEqual(SIMULATIONS.map(l=>l.lab),['01','02']);
+ assert.deepEqual(SIMULATIONS.map(l=>l.lab),['01','02','03']);
  for(const l of availableLabs()) assert.ok(existsSync(new URL(`../public${l.href}index.html`,import.meta.url)));
 });
 test('unpublished entries excluded and cannot have launch routes',()=>{

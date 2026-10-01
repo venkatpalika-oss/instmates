@@ -176,11 +176,11 @@ try {
   check('axe automated accessibility: simulator main');
  }
  await page.goto(`${base}/simulations/`);await page.waitForSelector('.category');
- assert.equal(await page.locator('.catalog-tags').count(),2);
+ assert.equal(await page.locator('.catalog-tags').count(),3);
  assert.equal(await page.locator('#categories a').count(),0);
  assert.equal(await page.locator('img').evaluateAll(es=>es.every(e=>e.complete && e.naturalWidth>0)),true);
  check('local images load and subject areas have no fake links');
- assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),2);
+ assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),3);
  await page.setViewportSize({width:1440,height:1100});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-desktop.png`,fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-mobile.png`,fullPage:true});

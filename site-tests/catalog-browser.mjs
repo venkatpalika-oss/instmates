@@ -50,8 +50,8 @@ const eq=async(id,value)=>assert.equal(await page.locator(`#${id}`).innerText(),
 const set=async(id,value)=>page.locator(`#${id}`).fill(String(value));
 try {
  await page.goto(`${base}/simulations/`);await page.waitForSelector('.sim-card');await page.waitForSelector('.mobile-bottom-nav',{state:'attached'});
- assert.equal(await page.locator('h1').innerText(),'Learn by doing.');assert.equal(await page.locator('#lab-count').innerText(),'2 labs available now');
- assert.equal(await page.locator('.sim-card').count(),2);assert.equal(await page.locator('#categories a').count(),0);assert.equal(await page.locator('input,select').count(),0);check('compact available-first catalog with no unnecessary controls');
+ assert.equal(await page.locator('h1').innerText(),'Learn by doing.');assert.equal(await page.locator('#lab-count').innerText(),'3 labs available now');
+ assert.equal(await page.locator('.sim-card').count(),3);assert.equal(await page.locator('#categories a').count(),0);assert.equal(await page.locator('input,select').count(),0);check('compact available-first catalog with no unnecessary controls');
  for(const width of [1440,768,430,390,360,320]) {
   await page.setViewportSize({width,height:900});await page.evaluate(()=>scrollTo(0,0));
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -65,7 +65,7 @@ try {
  }
  await page.locator('.sim-card a').first().focus();await page.keyboard.press('Tab');assert.ok(await page.locator('.sim-card a').nth(1).evaluate(e=>e===document.activeElement));await page.screenshot({path:`${output}/keyboard-focus.png`});check('keyboard card navigation');
  await page.setViewportSize({width:640,height:900});await page.evaluate(()=>document.documentElement.style.fontSize='200%');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.evaluate(()=>{document.activeElement.blur();scrollTo(0,0)});await page.screenshot({path:`${output}/reflow-200.png`,fullPage:true});await page.evaluate(()=>document.documentElement.style.fontSize='');check('200% text enlargement at 640 CSS px');
- await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.sim-card').count(),2);check('reduced motion keeps full content');
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.sim-card').count(),3);check('reduced motion keeps full content');
  await page.locator('.mobile-menu summary').focus();await page.keyboard.press('Enter');assert.ok(await page.locator('.mobile-menu a[href="/simulations/"]').isVisible());await page.keyboard.press('Enter');check('shared mobile menu remains keyboard usable');
  await page.locator('#subject-heading').scrollIntoViewIfNeeded();await page.screenshot({path:`${output}/subject-areas.png`});
  const {default:AxeBuilder}=require(process.env.CAT_AXE_MODULE);const audits=[];
@@ -78,7 +78,7 @@ try {
  await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:`${output}/synthetic-25.png`,fullPage:true});
  await page.reload();await page.waitForSelector('.sim-card');
  assert.ok(await page.locator('img').evaluateAll(es=>es.every(e=>e.complete&&e.naturalWidth>0)));
- for(const route of ['/simulations/4-20ma-loop/','/simulations/pressure-transmitter-calibration/']) {await page.locator(`.sim-card a[href="${route}"]`).click();assert.equal(new URL(page.url()).pathname,route);await page.goBack();await page.waitForSelector('.sim-card');}check('real routes and images');
+ for(const route of ['/simulations/4-20ma-loop/','/simulations/pressure-transmitter-calibration/','/simulations/oxymitter-4000/']) {await page.locator(`.sim-card a[href="${route}"]`).click();assert.equal(new URL(page.url()).pathname,route);await page.goBack();await page.waitForSelector('.sim-card');}check('real routes and images');
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);check('zero runtime console resource or external-request errors');
  await writeFile(`${output}/browser-results.json`,JSON.stringify({passed:checks.length,checks,errors},null,2));console.log(JSON.stringify({passed:checks.length,checks},null,2));
 } finally {await browser.close();if(server) await new Promise(resolve=>server.close(resolve));}

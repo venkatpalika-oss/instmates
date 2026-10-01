@@ -1,0 +1,168 @@
+{
+  "baselineHead": "929f4ce14648c1564a7b007de7bff8df3021901e",
+  "runtime": [
+    {
+      "from": "simulator-foundations/oxymitter-4000/training-data.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/training-data.mjs",
+      "kind": "module",
+      "beforeSha256": "3e9b7fde9630d5b8189317199ac48880bd20ef80b4bb18ad73125300b921f260",
+      "afterSha256": "a971efad9cc1e2ed9f0709d02ca5ad6be961c1a6ad6446c6d26e67c4bc9c53a4",
+      "byteIdentical": false,
+      "normalization": "training-data import ./dev/ \u2192 ./ui/ only"
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/diagnostic-engine.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/diagnostic-engine.mjs",
+      "kind": "module",
+      "beforeSha256": "d11879fbdb9b9609c3d771672db6f4720aa4f8a712cb6866e06c7938b0fb4b3c",
+      "afterSha256": "d11879fbdb9b9609c3d771672db6f4720aa4f8a712cb6866e06c7938b0fb4b3c",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/calibration-data.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/calibration-data.mjs",
+      "kind": "module",
+      "beforeSha256": "736eed329da1b688e79c02cae92133f4be4c85aa8b52c1a48b557f1c0af87a9a",
+      "afterSha256": "736eed329da1b688e79c02cae92133f4be4c85aa8b52c1a48b557f1c0af87a9a",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/diagnostic-data.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/diagnostic-data.mjs",
+      "kind": "module",
+      "beforeSha256": "3e402ae2dc730854bc7edf87b7e190c0d4f4532963b7140f366f84d6a0541def",
+      "afterSha256": "3e402ae2dc730854bc7edf87b7e190c0d4f4532963b7140f366f84d6a0541def",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/calibration-engine.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/calibration-engine.mjs",
+      "kind": "module",
+      "beforeSha256": "d14e54e61f524d2c1b1778d8693f295029f54d266ce2081ed8fce65261f9cf2b",
+      "afterSha256": "d14e54e61f524d2c1b1778d8693f295029f54d266ce2081ed8fce65261f9cf2b",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/source-data.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/source-data.mjs",
+      "kind": "module",
+      "beforeSha256": "d9afe6d622387020d749e171147cbc1e10c3984ad041f65213966e196fa4288d",
+      "afterSha256": "d9afe6d622387020d749e171147cbc1e10c3984ad041f65213966e196fa4288d",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/provenance.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/provenance.mjs",
+      "kind": "module",
+      "beforeSha256": "f99c17fecef7c081f94621ec0de101cd6a54a7966e5b3dfdb1b41519f1a278ed",
+      "afterSha256": "f99c17fecef7c081f94621ec0de101cd6a54a7966e5b3dfdb1b41519f1a278ed",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/startup-engine.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/startup-engine.mjs",
+      "kind": "module",
+      "beforeSha256": "54f623974074f3a9f11e157da915e3499eec38fb065cde26fe8ba4018566aac6",
+      "afterSha256": "54f623974074f3a9f11e157da915e3499eec38fb065cde26fe8ba4018566aac6",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/training-engine.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/training-engine.mjs",
+      "kind": "module",
+      "beforeSha256": "77e8c315fb7e5cd2c2a495508206a4f4c7adb2d148f3da244951e7fe4aa857ce",
+      "afterSha256": "77e8c315fb7e5cd2c2a495508206a4f4c7adb2d148f3da244951e7fe4aa857ce",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/diagnostic-page.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/diagnostic-page.mjs",
+      "kind": "module",
+      "beforeSha256": "52479fbc02bbba0b60be1d7a28c6271f1b3dac04317f47d075818814136b8238",
+      "afterSha256": "52479fbc02bbba0b60be1d7a28c6271f1b3dac04317f47d075818814136b8238",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/training-page.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/training-page.mjs",
+      "kind": "module",
+      "beforeSha256": "4ba4f1a48dfa5cc080e322bfbd709c5cb8099f17ab5438771e96724b5181e5a1",
+      "afterSha256": "4ba4f1a48dfa5cc080e322bfbd709c5cb8099f17ab5438771e96724b5181e5a1",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/calibration-page.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/calibration-page.mjs",
+      "kind": "module",
+      "beforeSha256": "35f46b7a3b474410268c2411d08e110f700b423bee076dd934e9f5ac510322d5",
+      "afterSha256": "35f46b7a3b474410268c2411d08e110f700b423bee076dd934e9f5ac510322d5",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/index.html",
+      "to": "public/simulations/oxymitter-4000/index.html",
+      "kind": "shell",
+      "beforeSha256": "076feda4510e762addfc186fd6a007c445fa4f4eaf79cf1971b7fb6311ca334d",
+      "afterSha256": "33b646ef6d33a6acc778b2c72d28ef4ecb34eca75075ed4dd288fca5123e0899",
+      "byteIdentical": false,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/hardening-page.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/hardening-page.mjs",
+      "kind": "module",
+      "beforeSha256": "d0bd348d8a27c37b3ea05e3d96a94187d1f4c861411d493725d68b6b281421e3",
+      "afterSha256": "d0bd348d8a27c37b3ea05e3d96a94187d1f4c861411d493725d68b6b281421e3",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/page.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/page.mjs",
+      "kind": "module",
+      "beforeSha256": "40cc0922a2ff30db0cc5b48b3be9647c674f00aac33eb96b0dd485071aa0b801",
+      "afterSha256": "40cc0922a2ff30db0cc5b48b3be9647c674f00aac33eb96b0dd485071aa0b801",
+      "byteIdentical": true,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/style.css",
+      "to": "public/assets/css/oxymitter-4000.css",
+      "kind": "style",
+      "beforeSha256": "bcab885059395abfb08b98db67690e394f30e95303a2cec94b8b8fe4f73f86ed",
+      "afterSha256": "607bc998605fc99c1b0afe3e4a9c10d3cfd493f62d5d9230653fa85134d53bab",
+      "byteIdentical": false,
+      "normalization": null
+    },
+    {
+      "from": "simulator-foundations/oxymitter-4000/dev/view-model.mjs",
+      "to": "public/assets/js/simulations/oxymitter-4000/ui/view-model.mjs",
+      "kind": "module",
+      "beforeSha256": "dd84adf2c52b948de66038a309fa4e712212b6dd3ba6ae755022b66ed4ce5f3f",
+      "afterSha256": "dd84adf2c52b948de66038a309fa4e712212b6dd3ba6ae755022b66ed4ce5f3f",
+      "byteIdentical": true,
+      "normalization": null
+    }
+  ],
+  "historicalArtifacts": {
+    "docs/27-oxymitter-4000-m1.md": "469a8310a62698e994afb86e4d078e7e1cfd982596a08a07f6d843a3a4e288f5",
+    "docs/28-oxymitter-4000-m2.md": "72778e78dd4e5337e6b5ccc30febd5e08bfcf47123cf5c8b3794507758062393",
+    "docs/29-oxymitter-4000-m3.md": "fcf37626ff0e47cebe235f7365df9dc9f32d5eef32a82ff5bc403e85cefeb435",
+    "docs/30-oxymitter-4000-m4.md": "dee0ae1c297fd9ae07e1eb55b2f08358984da8811c84515938014c2cc8bf0f9e",
+    "docs/31-oxymitter-4000-m5.md": "31ec27845976d5963d1f31d4cd8999cf1d9c086cbe023cccc6e1a882625bb1cf",
+    "docs/32-oxymitter-4000-browser-evidence.json": "a11dbd4de7116552a6820f589a7845069da9ff926b59d864627cff8cb8c0cc2c",
+    "docs/32-oxymitter-4000-m6.md": "cbfa4c526166c371803924a2a8ed4074a53d13c8a63a123d6275c07e7186b4f7",
+    "docs/32-oxymitter-4000-source-audit.json": "19ac0da2034d8ac70b916587c4a4c1b61c24197f6135504dc7fbd2162a2350d8"
+  }
+}
