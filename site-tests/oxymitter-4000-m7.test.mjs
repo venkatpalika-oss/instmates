@@ -20,12 +20,14 @@ test('M7 public shell is anonymous and noindex until release; sitemap remains ga
  assert.doesNotMatch(html,/firebase|analytics|gtag|https:\/\/(?:fonts|cdn)/i);
  const dir='public/assets/js/simulations/oxymitter-4000/';for(const f of [...readdirSync(new URL(dir,root)).filter(x=>x.endsWith('.mjs')),...readdirSync(new URL(dir+'ui/',root)).map(x=>'ui/'+x)])assert.doesNotMatch(read(dir+f),/localStorage|sessionStorage|indexedDB|document\.cookie|fetch\(|XMLHttpRequest|firebase|firestore/);
 });
-test('M7 technical files retain M6 hashes with only the declared training-data import relocation',async()=>{
+test('M7 integrity retains historical hashes except explicit PR54 runtime corrections',async()=>{
+ // Preserve historical evidence; pin only the two authorized PR54 corrections separately.
+ const pr54={"public/assets/js/simulations/oxymitter-4000/training-engine.mjs": "a2590b842d9b1b864181cc78374c5ad6f2698c167865527b0d1ee6944d0f4617", "public/assets/js/simulations/oxymitter-4000/ui/hardening-page.mjs": "d33e4f9257463fb8b124790713782b2047a3b748fb2db2db0257067fb8078fce"};
  const evidence=JSON.parse(read('docs/33-oxymitter-4000-integrity.json'));
  assert.deepEqual((await sourceAudit()).records,JSON.parse(read('docs/32-oxymitter-4000-source-audit.json')).records);
  for(const [path,hash] of Object.entries(evidence.historicalArtifacts))assert.equal(createHash('sha256').update(readFileSync(new URL(path,root))).digest('hex'),hash,path);
  for(const f of evidence.runtime.filter(f=>f.kind==='module')){
   let content=read(f.to);if(f.normalization)content=content.replace('./ui/view-model.mjs','./dev/view-model.mjs');
-  assert.equal(createHash('sha256').update(content).digest('hex'),f.beforeSha256,f.to);
+  assert.equal(createHash('sha256').update(content).digest('hex'),pr54[f.to]??f.beforeSha256,f.to);
  }
 });

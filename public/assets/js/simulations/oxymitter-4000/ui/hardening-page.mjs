@@ -14,7 +14,8 @@ for(const id of ['reference-point','fault-reference','configuration']){
  const node=$(id),allowed=new Set([...node.options].map(o=>o.value));let previous=node.value;
  node.addEventListener('change',event=>{if(!allowed.has(node.value)){event.stopImmediatePropagation();node.value=previous;error.textContent='TRAINING INPUT REJECTED: choose an existing documented reference. The previous selection is retained.';node.setAttribute('aria-invalid','true');}else{previous=node.value;node.removeAttribute('aria-invalid');error.textContent='';}},true);
 }
-function focusVisible(){const active=document.activeElement;if(!active||active===document.body||active.getClientRects().length)return;
+// Rendering can hide the event control and make the browser return focus to body.
+function focusVisible(previous){const active=document.activeElement===document.body?previous:document.activeElement;if(!active||active===document.body||active.getClientRects().length)return;
  let target;
  if(!$('diagnostic-workspace-panel').hidden){ // Resolved below using native DOM IDs.
   const ids={CHECK:'diag-check',TEST:'diag-meter-mode',OBSERVATION:'diag-observation',DIAGNOSIS:'diag-diagnosis',ACTION:'diag-action',COMPLETE:'diag-result'};
@@ -23,14 +24,14 @@ function focusVisible(){const active=document.activeElement;if(!active||active==
  if(!target&&!$('calibration-workspace-panel').hidden)target=$('cal-state');
  if(target){if(!target.matches('button,select,input'))target.tabIndex=-1;target.focus({preventScroll:true});}
 }
-function sync(){const c=calibrationSnapshot(),pending=c.active||c.needsAutomatic;
+function sync(event){const c=calibrationSnapshot(),pending=c.active||c.needsAutomatic;
  obligation.hidden=!pending;obligation.textContent=pending?(c.needsAutomatic?calRead(calibration.facts.returnLoop):'Finish or abort this calibration and complete cleanup before leaving the workspace. This is a training navigation guard.')+' Home, diagnostics and power removal remain unavailable until cleanup finishes.':'';
  caution.hidden=!pending;
  if(pending){for(const id of ['startup-workspace','diagnostic-workspace','power-off','training-home','training-reset']){const n=$(id);if(n){n.disabled=true;n.setAttribute('aria-describedby','cleanup-obligation');}}}
  else{for(const id of ['startup-workspace','diagnostic-workspace'])$(id).disabled=false;for(const id of ['startup-workspace','diagnostic-workspace','power-off','training-home','training-reset']){const n=$(id);if(n?.getAttribute('aria-describedby')==='cleanup-obligation'){if(id.startsWith('training-'))n.setAttribute('aria-describedby','training-guard-note');else n.removeAttribute('aria-describedby');}}}
  // Errors must be announced even if the invalid action occurred before a scenario loaded.
  if($('diag-active').hidden&&$('diag-error').textContent)error.textContent=$('diag-error').textContent;
- focusVisible();
+ focusVisible(event?.target);
 }
 for(const id of ['startup-workspace','calibration-workspace','diagnostic-workspace','power-on','power-off','complete','minute','five','next','report-fault'])$(id).addEventListener('click',event=>{if(trainingSnapshot().mode==='ACTIVE'){event.stopImmediatePropagation();error.textContent='TRAINING ACTION BLOCKED: the exploration workspace is paused during assessment.';}},true);
 // Guard even stale, programmatically dispatched UI events; do not change engine semantics.
