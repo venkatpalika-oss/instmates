@@ -72,7 +72,7 @@ try {
  }
  check('all equipment keyboard activation, selection, focus retention');
  assert.ok((await page.locator('[data-result]').allTextContents()).every(x=>x==='—'));
- assert.equal(await page.locator('main input').count(),2);
+ assert.equal(await page.locator('main input').count(),4);
  assert.equal(await page.locator('main select,main canvas').count(),0);
  assert.equal(await page.locator('.gm-nav a').count(),5);
  check('unrelated placeholders remain absent; only pressure controls active');
@@ -100,7 +100,40 @@ try {
   assert.equal(await entry.inputValue(),'300');assert.equal(await bias.isChecked(),false);
   assert.equal(await entry.getAttribute('aria-invalid'),'false');assert.equal(await page.locator('#gm-pressure-error').textContent(),'');
  };
+ const tempEntry=page.locator('#gm-temperature-entry'), tempBias=page.locator('#gm-temperature-bias');
+ const switchLesson=async name=>{const button=page.locator(`[data-lesson="${name}"]`);await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');};
+ const expectTemperature=async values=>{
+  for(const [i,stage] of ['process','observation','transmitted','selected'].entries())for(const el of await page.locator(`[data-temperature="${stage}"]`).all())assert.equal(await el.textContent(),`${values[i]} °C`);
+ };
+ const temperatureChecks=async()=>{
+  await reset.click();await expectTemperature([30,30,30,30]);
+  await entry.fill('250');await entry.press('Enter');await bias.check();
+  await switchLesson('temperature');await tempBias.check();await expectTemperature([30,32,32,32]);await expectChain([250,270,270,270]);
+  await tempEntry.fill('25');await tempEntry.press('Enter');await expectTemperature([25,27,27,27]);await expectChain([250,270,270,270]);
+  await tempBias.focus();await tempBias.press('Space');await expectTemperature([25,25,25,25]);
+  await tempBias.check();await tempEntry.fill('40');await page.getByRole('button',{name:'Apply temperature',exact:true}).click();await expectTemperature([40,42,42,42]);
+  await switchLesson('pressure');await bias.uncheck();await entry.fill('300');await entry.press('Enter');await expectTemperature([40,42,42,42]);
+  await entry.fill('bad');await entry.press('Enter');
+  await switchLesson('temperature');
+  for(const draft of ['', '+25','-25','25.0','2e1','0x20','2,5','25 °C','NaN','Infinity','19','41']){
+   await tempEntry.fill(draft);await tempEntry.press('Enter');assert.equal(await tempEntry.getAttribute('aria-invalid'),'true');await expectTemperature([40,42,42,42]);
+  }
+  await tempBias.uncheck();await expectTemperature([40,40,40,40]);assert.equal(await tempEntry.inputValue(),'41');assert.equal(await tempEntry.getAttribute('aria-invalid'),'true');
+  await switchLesson('pressure');assert.equal(await entry.inputValue(),'bad');assert.equal(await entry.getAttribute('aria-invalid'),'true');
+  await switchLesson('temperature');assert.equal(await tempEntry.inputValue(),'41');assert.equal(await tempEntry.getAttribute('aria-invalid'),'true');
+  assert.ok(await page.locator('#flow-computer [data-pressure="selected"]').isVisible());assert.ok(await page.locator('#flow-computer [data-temperature="selected"]').isVisible());
+  for(const control of [tempEntry,page.getByRole('button',{name:'Apply temperature',exact:true}),page.locator('#gm-temperature-lesson .gm-bias-toggle')]){
+   await control.scrollIntoViewIfNeeded();const box=await control.boundingBox();assert.ok(box.width>=44&&box.height>=44);assert.ok(box.x>=0&&box.x+box.width<=page.viewportSize().width+1);
+  }
+  await reset.focus();const before=await page.evaluate(()=>scrollY);await reset.press('Enter');
+  assert.ok(await reset.evaluate(el=>el===document.activeElement));assert.ok(Math.abs((await page.evaluate(()=>scrollY))-before)<=1,'reset viewport stable');
+  await expectChain([300,300,300,300]);await expectTemperature([30,30,30,30]);
+  assert.equal(await page.locator('[data-lesson="pressure"]').getAttribute('aria-pressed'),'true');
+  assert.equal(await tempEntry.inputValue(),'30');assert.equal(await entry.inputValue(),'300');assert.equal(await tempBias.isChecked(),false);assert.equal(await bias.isChecked(),false);
+  for(const name of ['temperature','pressure']){assert.equal(await page.locator(`#gm-${name}-entry`).getAttribute('aria-invalid'),'false');assert.equal(await page.locator(`#gm-${name}-error`).textContent(),'');}
+ };
  await pressureChecks();check('pressure apply, bias, Enter, Space, invalid drafts and reset');
+ await temperatureChecks();check('temperature, independent chains, lesson switching and focus-stable shared reset');
  for(const button of await buttons.all()){
   await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');
   assert.equal(await page.locator('[data-detail]:visible').getAttribute('data-detail'),await button.getAttribute('data-equipment'));
@@ -116,8 +149,8 @@ try {
    assert.ok(b.y>=0&&b.y+b.height<=900,`focus visibility ${width}`);
   }
   if(width===1440||width<=430){
-   await pressureChecks();
-   for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('.gm-bias-toggle')]){
+   await pressureChecks();await temperatureChecks();
+   for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('#gm-pressure-lesson .gm-bias-toggle')]){
     await control.scrollIntoViewIfNeeded();const b=await control.boundingBox();
     assert.ok(b.width>=44&&b.height>=44);assert.ok(b.x>=0&&b.x+b.width<=width+1);
    }

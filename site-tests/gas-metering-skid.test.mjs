@@ -14,7 +14,7 @@ test('gas skid: semantic unreleased learning page and shared shell',()=>{
  assert.match(html,/data-public-learning="true"/);
  assert.match(html,/<meta name="robots" content="noindex,nofollow">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
- assert.match(html,/Pressure lesson active — other models not enabled/);
+ assert.match(html,/Pressure and temperature lessons active — other models not enabled/);
  assert.match(html,/<a class="gm-skip" href="#main">/);
 });
 test('gas skid: every enabled local anchor resolves; deferred navigation is not interactive',()=>{
@@ -25,20 +25,20 @@ test('gas skid: every enabled local anchor resolves; deferred navigation is not 
  assert.equal((nav.match(/<a /g)||[]).length,5);
  for(const label of ['Fault Scenarios','Trends','Assessment']) assert.ok(nav.includes(`<span>${label}<small>Not active in M1</small></span>`));
 });
-test('gas skid: only pressure lesson permits numeric controls; other results stay absent',()=>{
+test('gas skid: only measurement lessons permit numeric controls; other results stay absent',()=>{
  const results=[...html.matchAll(/data-result>([^<]*)</g)].map(m=>m[1]);
  assert.ok(results.length>=10);assert.ok(results.every(x=>x==='—'));
- assert.doesNotMatch(visible,/\b(?:NORMAL|HEALTHY|OK|GOOD)\b|\bmA\b|\bbar\b|\bMW\b|\bMJ\b|°[CK]/);
- const lesson=html.match(/<div id="gm-pressure-lesson"[\s\S]*?<\/div><noscript>/)[0];
+ assert.doesNotMatch(visible,/\b(?:NORMAL|HEALTHY|OK|GOOD)\b|\bmA\b|\bbar\b|\bMW\b|\bMJ\b|°K/);
+ const lesson=html.match(/<div id="gm-pressure-lesson"[\s\S]*?<\/div>/)[0];
  assert.equal((lesson.match(/<input /g)||[]).length,2);
- assert.equal((html.match(/<input /g)||[]).length,2);
+ assert.equal((html.match(/<input /g)||[]).length,4);
  assert.doesNotMatch(html,/<(?:select|canvas)\b/);
  assert.match(lesson,/type="text" inputmode="numeric"/);
  assert.match(lesson,/type="checkbox"/);
  assert.equal((html.match(/data-pressure="selected"/g)||[]).length,2);
  for(const id of ['gas-quality','gas-properties']) {
   const section=html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))[0];
-  assert.doesNotMatch(section,/<input|data-pressure/);
+  assert.doesNotMatch(section,/<input|data-pressure|data-temperature/);
   assert.doesNotMatch(section.replace(/<[^>]*>/g,' '),/\d/);
  }
  assert.match(html,/No flow calculation enabled/);
@@ -56,9 +56,9 @@ test('gas skid: equipment buttons have unique static destinations and initial se
  assert.match(html,/role="status" aria-live="polite" aria-atomic="true"/);
  assert.match(html,/<noscript>/);
 });
-test('gas skid: controller imports only pressure model; no timing or persistence',()=>{
+test('gas skid: controller imports only quantity-specific models; no timing or persistence',()=>{
  assert.doesNotMatch(js,/\b(?:fetch|setTimeout|setInterval|requestAnimationFrame|Date|localStorage|sessionStorage|eval)\b|Math\.|innerHTML/);
- assert.deepEqual([...js.matchAll(/from '([^']+)'/g)].map(m=>m[1]),['./gas-metering-pressure-model.js']);
+ assert.deepEqual([...js.matchAll(/from '([^']+)'/g)].map(m=>m[1]),['./gas-metering-pressure-model.js','./gas-metering-temperature-model.js']);
  assert.match(js,/textContent/);assert.match(js,/aria-pressed/);
 });
 test('gas skid: runtime assets are local and exist; SVG contains no simulated readings',()=>{
@@ -74,4 +74,13 @@ test('gas skid: catalog and sitemap exclude the prototype; published labs remain
  assert.doesNotMatch(read('public/sitemap.xml'),/gas-metering-skid/);
  assert.doesNotMatch(read('public/index.html'),/gas-metering-skid/);
  assert.doesNotMatch(read('public/includes/header.html'),/gas-metering-skid/);
+});
+
+test('gas skid: independent temperature lesson, accessible selectors and shared reset',()=>{
+ assert.equal((html.match(/data-temperature="selected"/g)||[]).length,2);
+ assert.equal((html.match(/>Reset lesson</g)||[]).length,1);
+ for(const name of ['pressure','temperature']) assert.match(html,new RegExp(`data-lesson="${name}" aria-pressed="(?:true|false)" aria-controls="gm-${name}-lesson"`));
+ assert.match(html,/Inject educational TT bias: \+2 °C/);
+ assert.match(html,/20–40 °C/);
+ assert.doesNotMatch(js,/\.focus\(|scrollIntoView|scrollTo/);
 });

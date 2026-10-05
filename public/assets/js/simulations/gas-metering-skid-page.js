@@ -1,4 +1,4 @@
-/** Equipment descriptions and the isolated educational pressure lesson. */
+/** Equipment descriptions and independent educational measurement lessons. */
 const controls = document.querySelector('.gm-equipment');
 const buttons = [...controls.querySelectorAll('button[data-equipment]')];
 const details = [...document.querySelectorAll('[data-detail]')];
@@ -14,9 +14,8 @@ controls.addEventListener('click', event => {
   announcement.textContent = `Selected equipment: ${detail.querySelector('h3').textContent}`;
 });
 
-// Only the educational pressure slice is active; equipment selection stays descriptive.
+// Quantity-specific states remain separate; equipment selection stays descriptive.
 import {initialState, transition, measurementChain, displayPressure} from './gas-metering-pressure-model.js';
-const lesson = document.getElementById('gm-pressure-lesson');
 const form = document.getElementById('gm-pressure-form');
 const entry = document.getElementById('gm-pressure-entry');
 const bias = document.getElementById('gm-pressure-bias');
@@ -46,11 +45,52 @@ bias.addEventListener('change', () => {
   pressureState = transition(pressureState, {type: 'bias', enabled: bias.checked}).state;
   renderPressure();
 });
+import {initialState as initialTemperature, transition as temperatureTransition, measurementChain as temperatureChain, displayTemperature} from './gas-metering-temperature-model.js';
+const temperatureEntry = document.getElementById('gm-temperature-entry');
+const temperatureBias = document.getElementById('gm-temperature-bias');
+const temperatureFeedback = document.getElementById('gm-temperature-error');
+let temperatureState = initialTemperature();
+function renderTemperature() {
+  const chain = temperatureChain(temperatureState);
+  const values = {process: {valueC: chain.processC, quality: 'GOOD', unit: '°C'}, observation: chain.observation, transmitted: chain.transmitted, selected: chain.selected};
+  for (const [stage, value] of Object.entries(values)) {
+    document.querySelectorAll(`[data-temperature="${stage}"]`).forEach(el => { el.textContent = displayTemperature(value); });
+  }
+  document.getElementById('gm-temperature-bias-context').textContent = temperatureState.biasEnabled ? 'Educational TT bias ON: +2 °C offset.' : 'Educational TT bias OFF: no injected offset.';
+  document.getElementById('gm-temperature-explanation').textContent = temperatureState.biasEnabled
+    ? 'The TT observation increased by the injected offset. Transmission and the selected temperature followed it. Modeled process temperature did not change.'
+    : 'With no injected offset, the educational TT observation equals modeled temperature.';
+}
+document.getElementById('gm-temperature-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const result = temperatureTransition(temperatureState, {type: 'apply', text: temperatureEntry.value});
+  temperatureFeedback.textContent = result.error || '';
+  temperatureEntry.setAttribute('aria-invalid', String(Boolean(result.error)));
+  if (result.error) return;
+  temperatureState = result.state;
+  renderTemperature();
+});
+temperatureBias.addEventListener('change', () => {
+  temperatureState = temperatureTransition(temperatureState, {type: 'bias', enabled: temperatureBias.checked}).state;
+  renderTemperature();
+});
+const lessonButtons = [...document.querySelectorAll('[data-lesson]')];
+function selectLesson(name) {
+  lessonButtons.forEach(button => {
+    const selected = button.dataset.lesson === name;
+    button.setAttribute('aria-pressed', String(selected));
+    document.getElementById(button.getAttribute('aria-controls')).hidden = !selected;
+  });
+}
+lessonButtons.forEach(button => button.addEventListener('click', () => selectLesson(button.dataset.lesson)));
 document.getElementById('gm-pressure-reset').addEventListener('click', () => {
   pressureState = transition(pressureState, {type: 'reset'}).state;
+  temperatureState = temperatureTransition(temperatureState, {type: 'reset'}).state;
   entry.value = '300'; bias.checked = false;
+  temperatureEntry.value = '30'; temperatureBias.checked = false;
   entry.setAttribute('aria-invalid', 'false'); feedback.textContent = '';
-  renderPressure();
+  temperatureEntry.setAttribute('aria-invalid', 'false'); temperatureFeedback.textContent = '';
+  renderPressure(); renderTemperature(); selectLesson('pressure');
 });
-renderPressure();
-lesson.hidden = false;
+renderPressure(); renderTemperature(); selectLesson('pressure');
+document.getElementById('gm-lessons').hidden = false;
