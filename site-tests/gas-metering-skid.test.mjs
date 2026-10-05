@@ -14,7 +14,7 @@ test('gas skid: semantic unreleased learning page and shared shell',()=>{
  assert.match(html,/data-public-learning="true"/);
  assert.match(html,/<meta name="robots" content="noindex,nofollow">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
- assert.match(html,/Layout preview — models not active/);
+ assert.match(html,/Pressure lesson active — other models not enabled/);
  assert.match(html,/<a class="gm-skip" href="#main">/);
 });
 test('gas skid: every enabled local anchor resolves; deferred navigation is not interactive',()=>{
@@ -25,11 +25,23 @@ test('gas skid: every enabled local anchor resolves; deferred navigation is not 
  assert.equal((nav.match(/<a /g)||[]).length,5);
  for(const label of ['Fault Scenarios','Trends','Assessment']) assert.ok(nav.includes(`<span>${label}<small>Not active in M1</small></span>`));
 });
-test('gas skid: results are absent, not numeric; no active engineering controls',()=>{
+test('gas skid: only pressure lesson permits numeric controls; other results stay absent',()=>{
  const results=[...html.matchAll(/data-result>([^<]*)</g)].map(m=>m[1]);
  assert.ok(results.length>=10);assert.ok(results.every(x=>x==='—'));
- assert.doesNotMatch(visible,/\d|\b(?:NORMAL|HEALTHY|OK)\b|\bmA\b|\bbar\b|\bMW\b|\bMJ\b|°[CK]/);
- assert.doesNotMatch(html,/<(?:input|select|canvas)\b/);
+ assert.doesNotMatch(visible,/\b(?:NORMAL|HEALTHY|OK|GOOD)\b|\bmA\b|\bbar\b|\bMW\b|\bMJ\b|°[CK]/);
+ const lesson=html.match(/<div id="gm-pressure-lesson"[\s\S]*?<\/div><noscript>/)[0];
+ assert.equal((lesson.match(/<input /g)||[]).length,2);
+ assert.equal((html.match(/<input /g)||[]).length,2);
+ assert.doesNotMatch(html,/<(?:select|canvas)\b/);
+ assert.match(lesson,/type="text" inputmode="numeric"/);
+ assert.match(lesson,/type="checkbox"/);
+ assert.equal((html.match(/data-pressure="selected"/g)||[]).length,2);
+ for(const id of ['gas-quality','gas-properties']) {
+  const section=html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))[0];
+  assert.doesNotMatch(section,/<input|data-pressure/);
+  assert.doesNotMatch(section.replace(/<[^>]*>/g,' '),/\d/);
+ }
+ assert.match(html,/No flow calculation enabled/);
  assert.match(html,/A dash means no value, not zero/);
  assert.match(html,/Model pending validation/);
 });
@@ -44,8 +56,9 @@ test('gas skid: equipment buttons have unique static destinations and initial se
  assert.match(html,/role="status" aria-live="polite" aria-atomic="true"/);
  assert.match(html,/<noscript>/);
 });
-test('gas skid: controller is presentation only without timing, persistence or engineering imports',()=>{
- assert.doesNotMatch(js,/\b(?:import|fetch|setTimeout|setInterval|requestAnimationFrame|Date|localStorage|sessionStorage|eval)\b|Math\.|innerHTML/);
+test('gas skid: controller imports only pressure model; no timing or persistence',()=>{
+ assert.doesNotMatch(js,/\b(?:fetch|setTimeout|setInterval|requestAnimationFrame|Date|localStorage|sessionStorage|eval)\b|Math\.|innerHTML/);
+ assert.deepEqual([...js.matchAll(/from '([^']+)'/g)].map(m=>m[1]),['./gas-metering-pressure-model.js']);
  assert.match(js,/textContent/);assert.match(js,/aria-pressed/);
 });
 test('gas skid: runtime assets are local and exist; SVG contains no simulated readings',()=>{

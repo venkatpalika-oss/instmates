@@ -1,4 +1,4 @@
-/** Local M1 acceptance harness; installs nothing. GM_CHROMIUM_PATH may select an
+/** Local pressure-slice acceptance harness; installs nothing. GM_CHROMIUM_PATH may select an
  * existing browser. GM_EVIDENCE_DIR must be outside this repository.
  * Optional GM_AXE_MODULE selects an already available axe Playwright module.
  * Exit 2 = browser prerequisite unavailable; exit 1 = failed product assertion.
@@ -72,9 +72,40 @@ try {
  }
  check('all equipment keyboard activation, selection, focus retention');
  assert.ok((await page.locator('[data-result]').allTextContents()).every(x=>x==='—'));
- assert.equal(await page.locator('main input,main select,main canvas').count(),0);
+ assert.equal(await page.locator('main input').count(),2);
+ assert.equal(await page.locator('main select,main canvas').count(),0);
  assert.equal(await page.locator('.gm-nav a').count(),5);
- check('placeholders and no active engineering controls');
+ check('unrelated placeholders remain absent; only pressure controls active');
+ const entry=page.locator('#gm-pressure-entry'), bias=page.locator('#gm-pressure-bias');
+ const reset=page.getByRole('button',{name:'Reset lesson',exact:true});
+ const expectChain=async values=>{
+  for(const [i,stage] of ['process','observation','transmitted','selected'].entries()){
+   for(const el of await page.locator(`[data-pressure="${stage}"]`).all()) assert.equal(await el.textContent(),`${values[i]} kPa (absolute)`);
+  }
+ };
+ const pressureChecks=async()=>{
+  await reset.click();await expectChain([300,300,300,300]);
+  await entry.fill('250');await page.getByRole('button',{name:'Apply pressure',exact:true}).click();await expectChain([250,250,250,250]);
+  await bias.check();await expectChain([250,270,270,270]);
+  await entry.fill('400');await entry.press('Enter');await expectChain([400,420,420,420]);
+  await bias.focus();await page.keyboard.press('Space');assert.equal(await bias.isChecked(),false);await expectChain([400,400,400,400]);
+  await reset.click();await bias.check();await expectChain([300,320,320,320]);
+  for(const draft of ['', '250.0','2e2','2,50','250 kPa','250x','199','401','NaN','Infinity']){
+   await entry.fill(draft);await entry.press('Enter');
+   assert.equal(await entry.getAttribute('aria-invalid'),'true');
+   assert.ok((await page.locator('#gm-pressure-error').textContent()).includes('Draft not applied'));
+   await expectChain([300,320,320,320]);
+  }
+  await reset.click();await expectChain([300,300,300,300]);
+  assert.equal(await entry.inputValue(),'300');assert.equal(await bias.isChecked(),false);
+  assert.equal(await entry.getAttribute('aria-invalid'),'false');assert.equal(await page.locator('#gm-pressure-error').textContent(),'');
+ };
+ await pressureChecks();check('pressure apply, bias, Enter, Space, invalid drafts and reset');
+ for(const button of await buttons.all()){
+  await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('[data-detail]:visible').getAttribute('data-detail'),await button.getAttribute('data-equipment'));
+ }
+
  for(const width of [1440,1024,768,320,390,430]){
   await page.setViewportSize({width,height:900});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`overflow ${width}`);
@@ -83,6 +114,14 @@ try {
    const b=await button.boundingBox();assert.ok(b.width>=44&&b.height>=44,`target ${width}`);
    assert.ok(b.x>=0&&b.x+b.width<=width+1,`clipping ${width}`);
    assert.ok(b.y>=0&&b.y+b.height<=900,`focus visibility ${width}`);
+  }
+  if(width===1440||width<=430){
+   await pressureChecks();
+   for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('.gm-bias-toggle')]){
+    await control.scrollIntoViewIfNeeded();const b=await control.boundingBox();
+    assert.ok(b.width>=44&&b.height>=44);assert.ok(b.x>=0&&b.x+b.width<=width+1);
+   }
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   }
   if(width<=430){
    const top=async selector=>(await page.locator(selector).boundingBox()).y;
