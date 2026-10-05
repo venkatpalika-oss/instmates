@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 60 1440 365" role="img" aria-labelledby="title desc">
+<title id="title">Natural gas metering skid — conceptual equipment overview</title><desc id="desc">A main pipeline runs left to right through isolation, a separator, flow conditioning and metering to an outlet. A distinct sample branch leads to the sample system and gas chromatograph. Dashed information connections lead from measurement equipment to a separate flow computer. This is not an installation or piping schematic. All models are inactive.</desc>
+<defs>
+<linearGradient id="steel" x2="0" y2="1"><stop stop-color="#354656"/><stop offset=".22" stop-color="#e3e9eb"/><stop offset=".45" stop-color="#899aa5"/><stop offset=".7" stop-color="#d4dce0"/><stop offset="1" stop-color="#344654"/></linearGradient>
+<linearGradient id="vessel"><stop stop-color="#3a4c58"/><stop offset=".25" stop-color="#9caeb7"/><stop offset=".48" stop-color="#e1e6e7"/><stop offset=".74" stop-color="#798d9b"/><stop offset="1" stop-color="#30434f"/></linearGradient>
+<linearGradient id="yellow" x2="0" y2="1"><stop stop-color="#71500e"/><stop offset=".25" stop-color="#ffd566"/><stop offset=".5" stop-color="#e9aa1c"/><stop offset=".8" stop-color="#b7790c"/><stop offset="1" stop-color="#624510"/></linearGradient>
+<linearGradient id="cabinet"><stop stop-color="#9dabb4"/><stop offset=".5" stop-color="#d0d9dd"/><stop offset="1" stop-color="#718691"/></linearGradient>
+<radialGradient id="back"><stop stop-color="#476477" stop-opacity=".48"/><stop offset="1" stop-color="#102434" stop-opacity="0"/></radialGradient>
+<g id="flange"><rect x="-7" y="273" width="14" height="66" rx="3" fill="url(#yellow)" stroke="#604b21"/><path d="M-7 282H7M-7 329H7" stroke="#ffe39a"/><g fill="#cbd5da" stroke="#526572"><rect x="-9" y="280" width="18" height="6" rx="1"/><rect x="-9" y="325" width="18" height="6" rx="1"/></g></g>
+<g id="tx"><path d="M0 287V223" stroke="#aebec8" stroke-width="9"/><rect x="-20" y="182" width="40" height="44" rx="12" fill="#12658d" stroke="#70b5d7" stroke-width="3"/><circle cy="202" r="12" fill="#122f42" stroke="#a2c6d5" stroke-width="3"/><path d="M-6 202H6" stroke="#9ebac5" stroke-width="2"/><rect x="-9" y="229" width="18" height="10" rx="2" fill="url(#steel)"/></g>
+</defs>
+<rect width="1440" height="450" fill="#0b1e2c"/><ellipse cx="730" cy="260" rx="720" ry="260" fill="url(#back)"/>
+<!-- Subdued structural frame; equipment remains the visual focus. -->
+<g fill="#344a58" stroke="#536976" stroke-width="1.5"><path d="M87 376H1357V397H87Z"/><path d="M96 397H1350V404H96Z"/><path d="M129 160H515V168H129ZM129 168H137V376H129ZM507 168H515V376H507Z"/><path d="M567 160H919V168H567ZM567 168H575V376H567ZM911 168H919V376H911Z"/></g>
+<path d="M88 377H1355" stroke="#83949f" stroke-width="2"/>
+<!-- Main process pipeline remains below, and separate from analyzer cabinets. -->
+<rect x="58" y="287" width="1321" height="38" rx="7" fill="url(#yellow)" stroke="#6e551f" stroke-width="2"/>
+<rect x="376" y="288" width="160" height="36" fill="url(#steel)" stroke="#5a6c77"/>
+
+<g fill="#455b68" stroke="#617783"><path d="M180 326V375H201V326ZM429 326V375H450V326ZM684 326V375H705V326ZM838 326V375H859V326ZM1297 326V375H1318V326Z"/></g>
+<use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(82)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(143)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(204)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(258)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(371)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(532)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(576)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(697)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(749)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(830)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(946)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(1300)"/><use href="#flange" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#flange" transform="translate(1350)"/><!-- Isolation valve and handwheel. -->
+<g stroke="#718895" stroke-width="2">
+<path d="M151 290L164 278H188L202 290V324L188 336H164L151 324Z" fill="url(#steel)"/>
+<rect x="160" y="271" width="33" height="13" rx="3" fill="url(#steel)"/>
+<path d="M166 271V249H187V271M170 249V235H183V249" fill="url(#vessel)"/>
+<rect x="160" y="246" width="33" height="7" rx="2" fill="#aebbc3"/>
+<ellipse cx="176" cy="231" rx="32" ry="8" fill="none" stroke="#d36958" stroke-width="6"/>
+<path d="M146 231H206M176 223V239" stroke="#e28b77" stroke-width="3"/>
+<g fill="#dce3e5"><circle cx="158" cy="289" r="3"/><circle cx="195" cy="289" r="3"/><circle cx="158" cy="326" r="3"/><circle cx="195" cy="326" r="3"/></g></g>
+<!-- Filter / separator: cylindrical vessel with domed ends. -->
+<path d="M266 210Q311 177 359 210V326Q312 355 266 326Z" fill="url(#vessel)" stroke="#9aaab2" stroke-width="2"/><ellipse cx="312" cy="211" rx="46" ry="14" fill="url(#steel)" stroke="#657c8a"/><path d="M268 231H356M268 314H356" stroke="#d9e1e4" opacity=".7"/><rect x="294" y="184" width="36" height="15" rx="3" fill="url(#steel)"/><path d="M289 340V376M337 340V376" stroke="#889ba7" stroke-width="9"/><circle cx="360" cy="240" r="14" fill="#d4dedf" stroke="#627b8e" stroke-width="4"/><path d="M360 240L366 232" stroke="#273d49" stroke-width="2"/>
+<!-- Generic external conditioner housing; no internal construction asserted. -->
+<g stroke="#8295a0" stroke-width="2">
+<rect x="410" y="279" width="98" height="55" rx="7" fill="url(#steel)"/>
+<rect x="416" y="274" width="12" height="65" rx="2" fill="url(#vessel)"/>
+<rect x="490" y="274" width="12" height="65" rx="2" fill="url(#vessel)"/>
+<path d="M432 284H484M432 329H484" stroke="#dce5e8"/>
+<g fill="#dce3e5"><circle cx="422" cy="280" r="3"/><circle cx="422" cy="333" r="3"/><circle cx="496" cy="280" r="3"/><circle cx="496" cy="333" r="3"/></g></g>
+<!-- Substantial ultrasonic meter body, bolted end rings and external sensor bosses. -->
+<g stroke="#708996" stroke-width="2">
+<path d="M584 282L603 267H671L690 282V331L671 345H603L584 331Z" fill="url(#steel)"/>
+<rect x="581" y="263" width="16" height="87" rx="3" fill="url(#vessel)"/>
+<rect x="677" y="263" width="16" height="87" rx="3" fill="url(#vessel)"/>
+<path d="M603 279H670M603 335H670" stroke="#dce6e9"/>
+<g fill="#dce3e5"><circle cx="589" cy="271" r="4"/><circle cx="589" cy="290" r="4"/><circle cx="589" cy="324" r="4"/><circle cx="589" cy="342" r="4"/><circle cx="685" cy="271" r="4"/><circle cx="685" cy="290" r="4"/><circle cx="685" cy="324" r="4"/><circle cx="685" cy="342" r="4"/></g>
+<rect x="611" y="287" width="16" height="22" rx="4" fill="#314e60" transform="rotate(-24 619 298)"/>
+<rect x="650" y="306" width="16" height="22" rx="4" fill="#314e60" transform="rotate(24 658 317)"/>
+<path d="M637 267V238" stroke="#bccbd2" stroke-width="12"/>
+<rect x="612" y="190" width="50" height="49" rx="12" fill="#16729d" stroke="#7db7d0" stroke-width="3"/>
+<circle cx="637" cy="214" r="16" fill="#152f40" stroke="#acccd9" stroke-width="4"/>
+<path d="M629 214H645" stroke="#acccd9"/>
+<path d="M662 219C718 189 723 262 662 312M619 294C607 259 602 250 618 238" fill="none" stroke="#07121c" stroke-width="5"/>
+<path d="M662 219C718 189 723 262 662 312" fill="none" stroke="#647b88" stroke-width="1.5"/>
+</g>
+<!-- PT manifold and TT connection use different external mounting silhouettes. -->
+<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#tx" transform="translate(775 0)"/>
+<g fill="url(#steel)" stroke="#8ca1ad" stroke-width="2"><rect x="757" y="249" width="36" height="16" rx="2"/><path d="M766 265V285H784V265"/><path d="M752 253H745M798 253H805" stroke-width="4"/></g>
+<g stroke="#9cb3bf" stroke-width="2"><path d="M852 287V242" stroke-width="7"/><path d="M842 269H862L866 276L862 282H842L838 276Z" fill="url(#steel)"/><rect x="835" y="197" width="34" height="43" rx="5" fill="#246c8c"/><path d="M832 197H872V205H832Z" fill="url(#steel)"/><rect x="842" y="212" width="20" height="13" rx="3" fill="#132e40"/><path d="M869 219H878V260" fill="none" stroke="#5b7584" stroke-width="4"/></g>
+<!-- Conceptual sample take-off. No return/vent routing is asserted. -->
+<path d="M903 287V237H933V187H976" stroke="#d8b75d" stroke-width="4" fill="none"/><circle cx="903" cy="286" r="5" fill="#f1d278"/><rect x="941" y="167" width="73" height="113" rx="3" fill="#263d4b" stroke="#92a3ab" stroke-width="3"/><g fill="url(#vessel)" stroke="#9cabb3"><rect x="953" y="190" width="15" height="57" rx="6"/><rect x="983" y="195" width="17" height="49" rx="6"/></g><path d="M960 190V181H992V195M960 247V261H992V244M1014 209H1040" fill="none" stroke="#dfc471" stroke-width="3"/>
+<!-- Visible sample-panel fittings and a small analog face without a reading. -->
+<g stroke="#adbec6" stroke-width="2" fill="url(#steel)"><circle cx="976" cy="180" r="9"/><circle cx="976" cy="180" r="5" fill="#193442"/><rect x="955" y="250" width="11" height="7" rx="1"/><rect x="988" y="247" width="9" height="8" rx="1"/><path d="M946 174V270M1008 174V270" stroke="#5c7380"/></g>
+<!-- Cabinets are physically offset from the main process line. -->
+<g stroke="#6e8390" stroke-width="2"><rect x="1040" y="147" width="127" height="128" rx="5" fill="url(#cabinet)"/><rect x="1048" y="155" width="110" height="112" rx="2" fill="none"/><rect x="1210" y="147" width="127" height="128" rx="5" fill="url(#cabinet)"/><rect x="1218" y="155" width="110" height="112" rx="2" fill="none"/></g>
+<g fill="#102532" stroke="#6d899b" stroke-width="3"><rect x="1061" y="169" width="69" height="46" rx="2"/><rect x="1230" y="169" width="73" height="46" rx="2"/></g>
+<g stroke="#97acb7" stroke-width="3"><path d="M1070 183H1120M1070 193H1107M1239 183H1294M1239 193H1280"/></g><g fill="#405864"><rect x="1144" y="207" width="5" height="23" rx="2"/><rect x="1314" y="207" width="5" height="23" rx="2"/></g>
+<g stroke="#708894" stroke-width="8"><path d="M1052 275V376M1154 275V376M1222 275V376M1324 275V376"/></g>
+<!-- Dashed lines are information relationships, never gas piping. -->
+<g fill="none" stroke="#65b7d8" stroke-width="2" stroke-dasharray="6 6"><path d="M637 190V92H1274V147M775 182V92M852 197V92M1103 147V92"/></g>
+<g font-family="Arial, sans-serif" text-anchor="middle" font-size="14" fill="#edf5f9">
+<text x="72" y="266">GAS INLET</text><text x="1355" y="266">GAS OUTLET</text>
+<text x="958" y="75" fill="#9cd4e8">INFORMATION → FLOW COMPUTER</text>
+<text x="977" y="310" fill="#f3d890">SAMPLE BRANCH</text>
+</g>
+<g fill="#c4dce8"><path d="M27 300H49V293L62 306L49 319V312H27Z"/><path d="M1381 300H1401V293L1414 306L1401 319V312H1381Z"/></g>
+<g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="134.5" y="179" width="83" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="176" y="199" fill="#f1f6fa">Isolation</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="237.0" y="143" width="146" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="310" y="163" fill="#f1f6fa">Filter / separator</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="410.5" y="206" width="97" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="459" y="226" fill="#f1f6fa">Conditioner</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="571.0" y="133" width="132" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="637" y="153" fill="#f1f6fa">Ultrasonic meter</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="748.0" y="123" width="54" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="775" y="143" fill="#f1f6fa">PT</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="825.0" y="123" width="54" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="852" y="143" fill="#f1f6fa">TT</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="921.5" y="103" width="111" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="977" y="123" fill="#f1f6fa">Sample system</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="1034.5" y="92" width="139" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="1104" y="112" fill="#f1f6fa">Gas chromatograph</text></g><g font-family="Arial, sans-serif" font-size="14" text-anchor="middle"><rect x="1218.5" y="92" width="111" height="30" rx="5" fill="#102633" stroke="#476274"/><text x="1274" y="112" fill="#f1f6fa">Flow computer</text></g></svg>
