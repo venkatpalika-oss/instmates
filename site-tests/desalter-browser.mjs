@@ -57,10 +57,52 @@ async function publicOnly(page){
  assert.equal(await page.evaluate(()=>['inject','runTests','setCoreLevel','runCoreSequence','installM1CeRegistryPanel','M1_CE_VERIFICATION'].filter(k=>typeof window[k]!=='undefined').length),0);
 }
 async function nav(page,view){await page.locator(`[data-view="${view}"]`).click();assert.ok(await page.locator('#'+view).isVisible());if(view==='esdView')assert.equal(await page.locator('#ceLogic').evaluate(e=>getComputedStyle(e).flexDirection),'column');await publicOnly(page);}
+// Read the existing deterministic state; never create or export a second model.
+async function visualizationAgrees(page){
+ const actual=await page.evaluate(()=>{
+  const key=Object.keys(CE).find(k=>CE[k].label===S.tripCause);
+  const process=document.querySelector('#processView .process');
+  return {values:channelValues(),hh:channels(),threshold:ENG.lahh,voted:voteTrip(channels()),
+   mainVote:document.getElementById('vote2').textContent,compact:document.getElementById('voteMiniTxt').textContent,
+   dots:['A','B','C'].map(id=>document.getElementById('vd'+id).classList.contains('hh')),
+   compactTrip:document.getElementById('voteMini').classList.contains('trip'),
+   esd:document.getElementById('ceLogicState').textContent,tripped:S.tripped,powerTrip:S.powerTrip,uvClosed:S.uvClosed,
+   effects:key?CE[key].effects:[],stage:document.getElementById('pceStage').textContent,
+   stageTrip:document.getElementById('pceStage').classList.contains('trip'),
+   tripClass:document.getElementById('processView').classList.contains('v21-tripped'),
+   isolated:document.getElementById('processView').classList.contains('v23-isolated'),
+   stopped:document.getElementById('v23ProcessStopped').classList.contains('on'),
+   processStopped:process.classList.contains('tripStopped'),
+   power:document.getElementById('powertxt').textContent,
+   inlet:document.getElementById('inletSdvtxt').textContent,
+   outlet:document.getElementById('outletSdvtxt').textContent,
+   exportedState:typeof window.S!=='undefined'||typeof window.CE!=='undefined'};
+ });
+ assert.deepEqual(actual.hh,actual.values.map(v=>v>=actual.threshold));
+ assert.equal(actual.mainVote,actual.hh.filter(Boolean).length+'/3');
+ assert.equal(actual.compact,actual.mainVote);assert.deepEqual(actual.dots,actual.hh);
+ assert.equal(actual.compactTrip,actual.voted);assert.equal(actual.esd,actual.tripped?'INITIATED':'CLEAR');
+ assert.equal(actual.exportedState,false,'state must remain lexical');
+ assert.equal(actual.stageTrip,actual.tripped);
+ assert.equal(actual.tripClass,actual.tripped);
+ assert.equal(actual.isolated,actual.uvClosed);
+ assert.equal(actual.stopped,actual.uvClosed);
+ assert.equal(actual.processStopped,actual.uvClosed);
+ assert.equal(actual.power,actual.powerTrip?'TRIPPED':'RUN');
+ assert.equal(actual.inlet,actual.uvClosed?'CLOSED':'OPEN');
+ assert.equal(actual.outlet,actual.uvClosed?'CLOSED':'OPEN');
+ if(actual.tripped){
+  assert.doesNotMatch(actual.stage,/NORMAL|NO PROTECTION INITIATOR/);
+  assert.match(actual.stage,/INITIATOR DETECTED|VOTE SATISFIED|PROTECTION LOGIC ACTIVE|VERIFIED EFFECTS/);
+  assert.deepEqual(actual.effects,['POWER_TRIP','INLET_SDV_CLOSE','OUTLET_SDV_CLOSE']);
+  assert.equal(actual.powerTrip,true);assert.equal(actual.uvClosed,true);
+ }else assert.equal(actual.stage,'SIGNAL STATUS — NORMAL / NO PROTECTION INITIATOR ACTIVE');
+ await publicOnly(page);
+}
 async function clean(page,running){
  const actual=await page.evaluate(()=>({level:S.level,tripped:S.tripped,powerTrip:S.powerTrip,uvClosed:S.uvClosed,mode:S.mode,running:S.running,id:S.scenario.id,bias:S.channelBias,faults:S.instrumentFaults,history:S.history.length}));
  assert.deepEqual(actual,{level:650,tripped:false,powerTrip:false,uvClosed:false,mode:'normal',running,id:'',bias:[0,0,0],faults:{},history:1});
- await publicOnly(page);
+ await visualizationAgrees(page);
 }
 async function beginScenario(page){
  await page.locator('[data-mode="training"]').click();await nav(page,'trainingView');
@@ -113,6 +155,7 @@ try{
   await page.clock.install();await page.goto(base+'/labs/desalter/');await page.clock.pauseAt(new Date(Date.now()+1000));
   await publicOnly(page);await clean(page,false);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'document overflow');
+  await page.locator('#voteMini').scrollIntoViewIfNeeded();
   await page.screenshot({path:`${output}/process-${viewport.width}.png`,fullPage:true});
   const scroll=page.locator('.processScroll');
   assert.ok(await scroll.evaluate(e=>e.clientWidth<=innerWidth));
@@ -147,8 +190,32 @@ try{
   await beginScenario(page);await nav(page,'processView');await page.locator('#resetBtn').click();await clean(page,false);
   await page.screenshot({path:`${output}/reset-${viewport.width}.png`,fullPage:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-  results.push({viewport,status:'PASS',scenario:'S01 recovery, replay, active reset, Normal Operation',equipmentDialogs:7});
-  await context.close();check(`${viewport.width}x${viewport.height}: six views, seven dialogs, trends, investigation, S01 recovery/debrief, replay and resets`);
+  // Select the existing disagreement scenario through the public start button.
+  await page.evaluate(()=>{Math.random=()=>0.9;});
+  await beginScenario(page);await nav(page,'processView');await page.clock.runFor(2000);
+  await visualizationAgrees(page);assert.equal(await page.locator('#voteMiniTxt').innerText(),'1/3');
+  assert.equal(await page.evaluate(()=>S.tripped),false);
+  await page.locator('#voteMini').scrollIntoViewIfNeeded();
+  await page.screenshot({path:`${output}/process-single-${viewport.width}.png`,fullPage:true});
+  await page.locator('[data-mode="normal"]').click();await clean(page,true);
+  await page.evaluate(()=>{Math.random=()=>0.1;});
+  // Exercise the genuine trip and both reset paths at every supported viewport.
+  await beginScenario(page);await nav(page,'processView');
+  for(let i=0;i<72;i++){await page.clock.runFor(500);await visualizationAgrees(page);}
+  assert.equal(await page.evaluate(()=>S.tripped),true);
+  assert.match(await page.locator('#pceStage').innerText(),/VERIFIED EFFECTS/);
+  await page.locator('#voteMini').scrollIntoViewIfNeeded();
+  await page.screenshot({path:`${output}/process-tripped-${viewport.width}.png`,fullPage:true});
+  await page.locator('#resetBtn').click();await clean(page,false);
+  await page.clock.runFor(4000);await visualizationAgrees(page);
+  await page.locator('#voteMini').scrollIntoViewIfNeeded();
+  await page.screenshot({path:`${output}/process-reset-${viewport.width}.png`,fullPage:true});
+  await beginScenario(page);await nav(page,'processView');await page.clock.runFor(33000);
+  await visualizationAgrees(page);assert.equal(await page.evaluate(()=>S.tripped),true);
+  await page.locator('[data-mode="normal"]').click();await clean(page,true);
+  await page.clock.runFor(4000);await visualizationAgrees(page);
+  results.push({viewport,status:'PASS',scenario:'S01 recovery, trip visualization, replay, tripped Reset and Normal Operation',equipmentDialogs:7});
+  await context.close();check(`${viewport.width}x${viewport.height}: six views, seven dialogs, trends, investigation, recovery/debrief, trip visualization/state agreement, replay and resets`);
  }
  // S02: real start button with controlled randomness, no direct fault injection.
  const c2=await browser.newContext({viewport:{width:1440,height:900}});await c2.addInitScript(()=>{Math.random=()=>0.9;});const p2=await watch(c2);
@@ -166,7 +233,9 @@ try{
  assert.ok(await pt.evaluate(()=>S.level>=1500&&S.level<1700&&!S.tripped));
  assert.match(await pt.locator('#lahStageState').innerText(),/ALARM ONLY/);assert.equal(await pt.locator('#dcsPowerState').innerText(),'RUN');
  await nav(pt,'processView');await pt.locator('#ackBtn').click();assert.equal(await pt.evaluate(()=>S.alarmAck),true);
- await pt.clock.runFor(12000);assert.equal(await pt.evaluate(()=>S.scenario.outcome),'TRIPPED');
+ await visualizationAgrees(pt);
+ for(let i=0;i<24;i++){await pt.clock.runFor(500);await visualizationAgrees(pt);}
+ assert.equal(await pt.evaluate(()=>S.scenario.outcome),'TRIPPED');
  assert.deepEqual(await pt.evaluate(()=>[S.powerTrip,S.uvClosed,channels().filter(Boolean).length]),[true,true,3]);
  assert.equal(await pt.locator('#powertxt').innerText(),'TRIPPED');assert.equal(await pt.locator('#inletSdvtxt').innerText(),'CLOSED');assert.equal(await pt.locator('#outletSdvtxt').innerText(),'CLOSED');
  await nav(pt,'esdView');assert.equal(await pt.locator('#ceLogicState').innerText(),'INITIATED');assert.equal(await pt.locator('#liveCeRows .active').count(),1);

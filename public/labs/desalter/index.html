@@ -179,7 +179,7 @@
   function updateSignalStatus(){
     /* Read existing deterministic simulator state directly.
        Do not infer state from page text and do not mutate continuously. */
-    var active = !!(window.S && S.tripped);
+    var active = !!S.tripped;
     var nodes = document.querySelectorAll(
       '.ce-signal-status,[data-ce-signal-status],#ceSignalStatus'
     );
@@ -417,6 +417,8 @@ function render(){
  const vals=channelValues();const hh=vals.map(v=>v>=ENG.lahh),votes=hh.filter(Boolean).length;
  if(voteTrip(hh)&&!S.tripped)interfaceTrip();
  $('level').textContent=Math.round(S.level);$('level2').textContent=Math.round(S.level);$('loopPV').textContent=Math.round(S.level);$('lvpos').textContent=Math.round(S.lv);$('loopOut').textContent=Math.round(S.lv);$('vote').textContent=votes+'/3';$('vote2').textContent=votes+'/3';
+ $('voteMiniTxt').textContent=votes+'/3';$('voteMini').classList.toggle('trip',voteTrip(hh));
+ ['A','B','C'].forEach((id,i)=>$('vd'+id).classList.toggle('hh',hh[i]));
  ['a','b','c'].forEach((id,i)=>{$(id).textContent=vals[i];$('c'+id).classList.toggle('hh',hh[i])});
  $('inletSdv').classList.toggle('closed',S.uvClosed);$('outletSdv').classList.toggle('closed',S.uvClosed);$('inletSdvtxt').textContent=S.uvClosed?'CLOSED':'OPEN';$('outletSdvtxt').textContent=S.uvClosed?'CLOSED':'OPEN'; if(S.uvClosed&&!S.prevUvClosed){$('inletSdv').classList.add('travel');$('outletSdv').classList.add('travel');setTimeout(()=>{$('inletSdv').classList.remove('travel');$('outletSdv').classList.remove('travel')},650)} S.prevUvClosed=S.uvClosed;
  const tb=$('tripBanner');
@@ -815,7 +817,7 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
   }
 
   function activeKey(){
-    if(!window.S || !S.tripped) return '';
+    if(!S.tripped) return '';
     return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
   }
 
@@ -973,7 +975,7 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
   }
 
   function tripKey(){
-    if(!window.S || !S.tripped || !window.CE) return '';
+    if(!S.tripped) return '';
     return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
   }
 
@@ -991,7 +993,7 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
     ensureFlag();
     const pv=document.getElementById('processView');
     const flag=document.getElementById('v21TripFlag');
-    if(!pv || !flag || !window.S) return;
+    if(!pv || !flag) return;
     const on=!!S.tripped, k=tripKey();
     pv.classList.toggle('v21-tripped',on);
     flag.classList.toggle('on',on);
@@ -1092,7 +1094,6 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
   }
 
   function sdvsClosedByState(){
-    if(!window.S) return false;
     /* Use existing final state, not cause inference. */
     return S.inletSdvClosed === true ||
            S.outletSdvClosed === true ||
@@ -1108,7 +1109,7 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
     ensureIndicator();
     const pv=document.getElementById('processView');
     const e=document.getElementById('v22FlowStopped');
-    if(!pv || !e || !window.S) return;
+    if(!pv || !e) return;
 
     const stopped=!!S.tripped && sdvsClosedByState();
     pv.classList.toggle('v22-clean-trip', !!S.tripped);
@@ -1224,7 +1225,7 @@ setInterval(tick,SIM.tickMs);reset();setMode('normal');
 
   function isolated(){
     const p=document.querySelector('#processView .process');
-    if(!window.S || !p) return false;
+    if(!p) return false;
     /* Existing simulator already asserts tripStopped from the verified SDV isolation state. */
     return p.classList.contains('tripStopped');
   }

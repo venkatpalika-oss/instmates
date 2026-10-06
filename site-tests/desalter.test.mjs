@@ -91,3 +91,10 @@ test('Desalter: local route fits existing Firebase directory convention',()=>{
  assert.ok(config.hosting.rewrites.every(r=>!r.source.startsWith('/labs')));
  assert.match(html,/class="processScroll"[^>]+tabindex="0"/);
 });
+
+test('Desalter: visualization reads lexical state without exporting or copying it',()=>{
+ assert.doesNotMatch(html,/window\.(?:S|CE)\b/);
+ assert.match(html,/const S=\{/);assert.match(html,/const CE=/);
+ assert.match(html,/function activeKey\(\)\{\s*if\(!S\.tripped\) return '';/);
+ assert.match(html,/function tripKey\(\)\{\s*if\(!S\.tripped\) return '';/);
+});
