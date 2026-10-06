@@ -14,7 +14,7 @@ test('gas skid: semantic unreleased learning page and shared shell',()=>{
  assert.match(html,/data-public-learning="true"/);
  assert.match(html,/<meta name="robots" content="noindex,nofollow">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
- assert.match(html,/Pressure and temperature lessons active — other models not enabled/);
+ assert.match(html,/Pressure, temperature and GC lifecycle lessons active — calculations not enabled/);
  assert.match(html,/<a class="gm-skip" href="#main">/);
 });
 test('gas skid: every enabled local anchor resolves; deferred navigation is not interactive',()=>{
@@ -32,11 +32,13 @@ test('gas skid: only measurement lessons permit numeric controls; other results 
  const lesson=html.match(/<div id="gm-pressure-lesson"[\s\S]*?<\/div>/)[0];
  assert.equal((lesson.match(/<input /g)||[]).length,2);
  assert.equal((html.match(/<input /g)||[]).length,4);
- assert.doesNotMatch(html,/<(?:select|canvas)\b/);
+ assert.doesNotMatch(html,/<canvas\b/);
+ assert.equal((html.match(/<select /g)||[]).length,1);
+ assert.match(html,/<select id="gm-gc-profile">/);
  assert.match(lesson,/type="text" inputmode="numeric"/);
  assert.match(lesson,/type="checkbox"/);
  assert.equal((html.match(/data-pressure="selected"/g)||[]).length,2);
- for(const id of ['gas-quality','gas-properties']) {
+ for(const id of ['gas-properties']) {
   const section=html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))[0];
   assert.doesNotMatch(section,/<input|data-pressure|data-temperature/);
   assert.doesNotMatch(section.replace(/<[^>]*>/g,' '),/\d/);
@@ -83,4 +85,29 @@ test('gas skid: independent temperature lesson, accessible selectors and shared 
  assert.match(html,/Inject educational TT bias: \+2 °C/);
  assert.match(html,/20–40 °C/);
  assert.doesNotMatch(js,/\.focus\(|scrollIntoView|scrollTo/);
+});
+
+test('gas skid: GC lifecycle controls, distinct records and absent startup result',()=>{
+ const gc=html.match(/<section[^>]*id="gas-quality"[\s\S]*?<\/section>/)[0];
+ assert.match(gc,/Modeled process composition/);assert.match(gc,/Select educational profile/);
+ assert.match(gc,/<option value="A" selected>Profile A<\/option><option value="B">Profile B<\/option>/);
+ assert.equal((gc.match(/<button /g)||[]).length,2);assert.doesNotMatch(gc,/<input|<canvas|<svg/);
+ for(const heading of ['Captured sample','Current analysis','Latest completed result'])assert.ok(gc.includes(heading));
+ assert.match(gc,/id="gm-gc-current"[^>]*>IDLE — no analysis started/);
+ assert.match(gc,/id="gm-gc-result-identity">No GC result yet/);
+ assert.match(html,/id="gm-gc-input-identity">No GC result yet/);
+ for(const prefix of ['result','input']){
+  assert.match(html,new RegExp(`id="gm-gc-${prefix}-composition">—`));
+  assert.match(html,new RegExp(`id="gm-gc-${prefix}-age">Sample age: —`));
+ }
+ assert.match(html,/No gas-property or flow calculation enabled/);
+ assert.match(gc,/not representative pipeline gas/);assert.match(gc,/not manufacturer cycle time/);
+ assert.doesNotMatch(gc,/process control|feed control|gas blending control|valve control|FRESH|STALE/);
+ assert.match(html,/<script type="module" src="\/assets\/js\/simulations\/gas-metering-gc-page.js"><\/script>/);
+ const controller=read('public/assets/js/simulations/gas-metering-gc-page.js');
+ const model=read('public/assets/js/simulations/gas-metering-gc-model.js');
+ assert.match(controller,/from '.\/gas-metering-gc-model.js'/);
+ assert.doesNotMatch(controller+model,/\b(?:fetch|setTimeout|setInterval|requestAnimationFrame|Date|localStorage|sessionStorage|eval)\b|innerHTML|scrollTo|scrollIntoView|\.focus\(/);
+ assert.doesNotMatch(controller,/data-pressure|data-temperature|pressureState|temperatureState/);
+ assert.match(controller,/gm-pressure-reset/);
 });

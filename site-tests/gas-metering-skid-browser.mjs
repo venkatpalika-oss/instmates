@@ -1,4 +1,4 @@
-/** Local pressure-slice acceptance harness; installs nothing. GM_CHROMIUM_PATH may select an
+/** Local measurement-lifecycle acceptance harness; installs nothing. GM_CHROMIUM_PATH may select an
  * existing browser. GM_EVIDENCE_DIR must be outside this repository.
  * Optional GM_AXE_MODULE selects an already available axe Playwright module.
  * Exit 2 = browser prerequisite unavailable; exit 1 = failed product assertion.
@@ -73,9 +73,10 @@ try {
  check('all equipment keyboard activation, selection, focus retention');
  assert.ok((await page.locator('[data-result]').allTextContents()).every(x=>x==='—'));
  assert.equal(await page.locator('main input').count(),4);
- assert.equal(await page.locator('main select,main canvas').count(),0);
+ assert.equal(await page.locator('main select').count(),1);
+ assert.equal(await page.locator('main canvas').count(),0);
  assert.equal(await page.locator('.gm-nav a').count(),5);
- check('unrelated placeholders remain absent; only pressure controls active');
+ check('unrelated placeholders remain absent; only authorized measurement controls active');
  const entry=page.locator('#gm-pressure-entry'), bias=page.locator('#gm-pressure-bias');
  const reset=page.getByRole('button',{name:'Reset lesson',exact:true});
  const expectChain=async values=>{
@@ -132,8 +133,55 @@ try {
   assert.equal(await tempEntry.inputValue(),'30');assert.equal(await entry.inputValue(),'300');assert.equal(await tempBias.isChecked(),false);assert.equal(await bias.isChecked(),false);
   for(const name of ['temperature','pressure']){assert.equal(await page.locator(`#gm-${name}-entry`).getAttribute('aria-invalid'),'false');assert.equal(await page.locator(`#gm-${name}-error`).textContent(),'');}
  };
+ const gcProfile=page.locator('#gm-gc-profile'),gcStart=page.locator('#gm-gc-start'),gcAdvance=page.locator('#gm-gc-advance');
+ const gcText=id=>page.locator(`#gm-gc-${id}`).textContent();
+ const expectGC=async(id,pattern)=>assert.match(await gcText(id),pattern);
+ const gcSnapshot=()=>page.locator('[id^="gm-gc-"]').evaluateAll(elements=>elements.map(el=>({id:el.id,text:el.textContent,value:el.value,disabled:el.disabled})));
+ const measurementSnapshot=()=>page.locator('[data-pressure],[data-temperature],#gm-pressure-entry,#gm-temperature-entry,#gm-pressure-bias,#gm-temperature-bias,#gm-pressure-error,#gm-temperature-error,[data-lesson]').evaluateAll(elements=>elements.map(el=>({id:el.id,text:el.textContent,value:el.value,checked:el.checked,invalid:el.getAttribute('aria-invalid'),selected:el.getAttribute('aria-pressed')})));
+ const gcChecks=async()=>{
+  await reset.click();
+  assert.equal(await gcProfile.inputValue(),'A');await expectGC('tick',/^Simulation step: 0$/);await expectGC('current',/^IDLE/);
+  await expectGC('sample-identity',/^No captured sample$/);
+  for(const prefix of ['result','input']){await expectGC(`${prefix}-identity`,/^No GC result yet$/);await expectGC(`${prefix}-composition`,/^—$/);await expectGC(`${prefix}-age`,/^Sample age: —$/);}
+  // A: native keyboard start/advance and exact first completion.
+  await gcStart.focus();assert.ok(await gcStart.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'));await gcStart.press('Enter');
+  assert.equal(await gcStart.isDisabled(),true);assert.equal(await gcStart.getAttribute('aria-describedby'),'gm-gc-start-help');await expectGC('start-help',/unavailable.*two simulation steps/);
+  await expectGC('sample-identity',/^Profile A/);await gcAdvance.focus();await gcAdvance.press('Space');
+  await expectGC('tick',/^Simulation step: 1$/);await expectGC('current',/^ANALYZING/);await expectGC('result-identity',/^No GC result yet$/);
+  await gcAdvance.click();await expectGC('tick',/^Simulation step: 2$/);await expectGC('current',/^COMPLETE/);
+  for(const prefix of ['result','input']){await expectGC(`${prefix}-identity`,/^Analysis #1 — Profile A$/);await expectGC(`${prefix}-composition`,/Methane 80 mole %.*Ethane 10 mole %.*Nitrogen 10 mole %/);await expectGC(`${prefix}-age`,/^Sample age: 2 simulation steps$/);}
+  // B: model changes while the sample remains A; PT/TT drafts, errors and biases survive.
+  await reset.click();await entry.fill('bad');await entry.press('Enter');await bias.check();
+  await switchLesson('temperature');await tempBias.check();await tempEntry.fill('bad');await tempEntry.press('Enter');
+  const measurements=await measurementSnapshot();
+  await gcStart.click();await gcProfile.focus();await gcProfile.press('ArrowDown');await gcProfile.press('Tab');assert.equal(await gcProfile.inputValue(),'B');
+  await expectGC('process-composition',/Methane 60 mole %/);await expectGC('sample-composition',/Methane 80 mole %/);
+  await gcAdvance.click();await gcAdvance.click();await expectGC('result-identity',/^Analysis #1 — Profile A$/);await expectGC('input-identity',/^Analysis #1 — Profile A$/);
+  assert.deepEqual(await measurementSnapshot(),measurements);
+  // C: separate current analysis and prior completed/selected records.
+  await gcStart.click();await expectGC('current',/^ANALYZING.*Analysis #2, Profile B/);await expectGC('sample-identity',/^Profile B/);
+  await expectGC('result-identity',/^Analysis #1 — Profile A$/);await expectGC('input-identity',/^Analysis #1 — Profile A$/);
+  const gcBefore=await gcSnapshot();
+  await tempEntry.fill('25');await tempEntry.press('Enter');await tempBias.uncheck();await switchLesson('pressure');await entry.fill('250');await entry.press('Enter');await bias.uncheck();await switchLesson('temperature');
+  assert.deepEqual(await gcSnapshot(),gcBefore);
+  await gcAdvance.click();await expectGC('result-identity',/^Analysis #1 — Profile A$/);await gcAdvance.click();
+  for(const prefix of ['result','input']){await expectGC(`${prefix}-identity`,/^Analysis #2 — Profile B$/);await expectGC(`${prefix}-composition`,/Methane 60 mole %.*Ethane 20 mole %.*Nitrogen 20 mole %/);await expectGC(`${prefix}-age`,/^Sample age: 2 simulation steps$/);}
+  const composition=await gcText('input-composition');await gcAdvance.click();await expectGC('input-age',/^Sample age: 3 simulation steps$/);assert.equal(await gcText('input-composition'),composition);
+  assert.doesNotMatch(await page.locator('#gas-quality,#gm-gc-input').allTextContents().then(x=>x.join(' ')),/\b(?:FRESH|STALE|GOOD|HEALTHY|OK)\b/);
+  for(const control of [gcProfile,gcStart,gcAdvance]){
+   await control.focus();const box=await control.boundingBox();assert.ok(box.width>=44&&box.height>=44);assert.ok(box.x>=0&&box.x+box.width<=page.viewportSize().width+1);
+  }
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  // Reset in progress: both listeners, retained focus and stable viewport.
+  await gcStart.click();await reset.focus();const scrollBefore=await page.evaluate(()=>scrollY);await reset.press('Space');
+  assert.ok(await reset.evaluate(el=>el===document.activeElement));assert.ok(Math.abs((await page.evaluate(()=>scrollY))-scrollBefore)<=1,'GC shared reset viewport stable');
+  await expectGC('current',/^IDLE/);await expectGC('tick',/^Simulation step: 0$/);assert.equal(await gcProfile.inputValue(),'A');await expectGC('sample-identity',/^No captured sample$/);
+  for(const prefix of ['result','input']){await expectGC(`${prefix}-identity`,/^No GC result yet$/);await expectGC(`${prefix}-age`,/^Sample age: —$/);}
+  await expectChain([300,300,300,300]);await expectTemperature([30,30,30,30]);assert.equal(await bias.isChecked(),false);assert.equal(await tempBias.isChecked(),false);
+ };
  await pressureChecks();check('pressure apply, bias, Enter, Space, invalid drafts and reset');
  await temperatureChecks();check('temperature, independent chains, lesson switching and focus-stable shared reset');
+ await gcChecks();check('GC A/B/C, snapshot provenance, prior result separation, age, independent states and shared reset');
  for(const button of await buttons.all()){
   await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');
   assert.equal(await page.locator('[data-detail]:visible').getAttribute('data-detail'),await button.getAttribute('data-equipment'));
@@ -149,7 +197,7 @@ try {
    assert.ok(b.y>=0&&b.y+b.height<=900,`focus visibility ${width}`);
   }
   if(width===1440||width<=430){
-   await pressureChecks();await temperatureChecks();
+   await pressureChecks();await temperatureChecks();await gcChecks();
    for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('#gm-pressure-lesson .gm-bias-toggle')]){
     await control.scrollIntoViewIfNeeded();const b=await control.boundingBox();
     assert.ok(b.width>=44&&b.height>=44);assert.ok(b.x>=0&&b.x+b.width<=width+1);
