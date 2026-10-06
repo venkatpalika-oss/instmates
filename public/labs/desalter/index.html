@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>InstMates — Desalter Training Simulator</title>
+<style>
+:root{--nav:#0b3764;--nav2:#092b50;--blue:#138bd2;--bg:#eaf3f8;--panel:#fff;--line:#bdd2df;--ink:#0d3154;--muted:#61798c;--ok:#09a766;--trip:#d9303e;--warn:#e8a317;--water:#36a6df;--oil:#c89532}
+*{box-sizing:border-box}body{margin:0;font:12px/1.3 "Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}button{font:inherit}.top{height:62px;background:linear-gradient(90deg,var(--nav),var(--nav2));color:white;display:flex;align-items:center;padding:0 18px;gap:20px;box-shadow:0 2px 8px #1235}.brand{font-size:22px;font-weight:800}.brand small{display:block;font-size:11px;font-weight:400;color:#bfe3ff}.modes{margin-left:auto;display:flex;gap:8px}.mode{padding:9px 22px;border:1px solid #7ca2c4;background:#153e67;color:white;border-radius:5px;font-weight:700}.mode.active{background:#0bbd78;border-color:#69e5b6}.mode[data-mode="training"].active{background:#d49a21;border-color:#ffd878}.ack{opacity:.58}.ack:after{content:" — ACK";font-weight:800}.plant{margin-left:12px;background:#47e4a4;color:#063f2b;padding:9px 18px;border-radius:5px;font-weight:800}.shell{display:grid;grid-template-columns:145px 1fr;min-height:calc(100vh - 62px)}.side{background:linear-gradient(#f8fcff,#e2f0f8);border-right:1px solid var(--line);padding-top:10px}.nav{padding:13px 18px;font-weight:700;cursor:pointer;border-left:4px solid transparent}.nav.active{background:#158bd1;color:white;border-left-color:#05649e}.nav:hover{background:#d8edf9}.sidefoot{position:sticky;top:85vh;margin-top:250px;padding:18px 12px;text-align:center;color:#315f80;font-size:11px}.main{padding:8px 10px 14px;overflow:auto}.toolbar{display:grid;grid-template-columns:430px 1fr;gap:8px;margin-bottom:8px}.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 4px #173a5b15}.ct{padding:6px 10px;background:linear-gradient(#f9fdff,#dcecf6);border-bottom:1px solid var(--line);font-weight:800;font-size:13px}.cb{padding:8px}.actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid #a9c1d1;background:#edf5fa;border-radius:5px;padding:7px 12px;font-weight:700;cursor:pointer;color:#173d60}.btn.green{background:#0aa567;color:white;border-color:#078653}.btn.red{background:#fff0f1;color:#a71f2c;border-color:#efb6ba}.workspace{display:grid;grid-template-columns:minmax(760px,1fr) 325px;gap:8px}.process{height:430px;position:relative;background:linear-gradient(#fff,#f4f9fc);overflow:hidden}.pipe{position:absolute;background:#aab8c0;border:2px solid #6e818d;border-radius:5px}.pipe.h{height:12px}.pipe.v{width:12px}.pipe{box-shadow:inset 0 2px 2px #fff8}.flowdot{position:absolute;width:8px;height:8px;border-radius:50%;background:#078fe0;z-index:4;box-shadow:0 0 7px #078fe0;animation:flowRight 2s linear infinite}.flowdot.rev{animation:flowDown 2.2s linear infinite}@keyframes flowRight{from{transform:translateX(0)}to{transform:translateX(150px)}}@keyframes flowDown{from{transform:translateY(0)}to{transform:translateY(52px)}}.flow{position:absolute;color:#0c87d5;font-size:20px;font-weight:900}.vessel{position:absolute;left:300px;top:90px;width:430px;height:245px;border:7px solid #637d8d;border-radius:90px 90px 65px 65px;background:linear-gradient(90deg,#dce5e9,#fdfefe 18%,#f4f8fa 75%,#c8d4da);overflow:hidden;box-shadow:inset 0 0 22px #38566d55,0 6px 14px #183a5222}.vessel:before{content:"";position:absolute;inset:8px 18px auto;height:25px;border-radius:50%;background:linear-gradient(#ffffffaa,#9eb1bc44);z-index:8;pointer-events:none}.layer{position:absolute;left:0;width:100%;transition:.3s}.water{bottom:0;background:linear-gradient(#5bc0ec,#258ac5)}.emul{background:#d9c37b}.oil{background:linear-gradient(#e3b55a,#b77b21)}.gridline{position:absolute;left:75px;right:75px;height:5px;background:#7455d8;border-radius:5px;z-index:5}.gridline.ground{background:#4f606b}.probe{position:absolute;top:18px;width:4px;height:190px;background:#314e60;z-index:6}.probe:after{content:"";position:absolute;left:-7px;bottom:0;width:18px;height:3px;background:#314e60}.probe.p1{left:125px}.probe.p2{left:300px}.ifaceLine{position:absolute;left:15px;right:15px;border-top:2px dashed #fff;z-index:7;opacity:.95}.levelRef{position:absolute;left:18px;right:18px;border-top:1px dashed rgba(34,62,79,.72);z-index:9;pointer-events:none}.levelRef span{position:absolute;right:4px;top:-15px;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,.88);font-size:9px;font-weight:800;color:#27485d;white-space:nowrap}.levelRef.normal{border-top:2px solid #16945f}.levelRef.normal span{color:#087345}.levelRef.high{border-top-color:#d69516}.levelRef.high span{color:#9a6500}.levelRef.trip{border-top:2px solid #c93645}.levelRef.trip span{color:#a51e2a}.currentLevelFlag{position:absolute;left:16px;z-index:10;background:#0b6fae;color:white;border-radius:3px;padding:2px 5px;font-size:9px;font-weight:800;pointer-events:none;transform:translateY(50%)}.spark{animation:sparkPulse .75s infinite alternate}@keyframes sparkPulse{from{opacity:.35}to{opacity:1}}.equip{cursor:pointer}.equip:hover{filter:drop-shadow(0 0 4px #148bd4)}.valve{position:absolute;width:45px;height:30px;z-index:6}.valve:before,.valve:after{content:"";position:absolute;top:6px;width:21px;height:18px;background:#21bd70;border:2px solid #087847}.valve:before{left:1px;clip-path:polygon(0 0,100% 50%,0 100%)}.valve:after{right:1px;clip-path:polygon(100% 0,0 50%,100% 100%)}.valve.closed:before,.valve.closed:after{background:#ed6269;border-color:#a51f29}.valve{transition:.25s}.valve.closed{transform:scale(.94)}.tag{position:absolute;font-weight:800;color:#0a3154}.instrument{position:absolute;background:#f7fbff;border:1px solid #bfd4e1;border-radius:6px;padding:7px;width:112px;cursor:pointer;z-index:7}.instrument b{display:block}.mixvalve{position:absolute;left:248px;top:155px;width:45px;height:30px;z-index:8}.mixdp{position:absolute;left:225px;top:55px;width:125px;z-index:9}.mixline{position:absolute;left:269px;top:92px;width:2px;height:67px;background:#607d8d;z-index:5}.unresolved{color:#a15c00;font-weight:800}.pv{font-size:15px;color:#075cb1;font-weight:800}.lamp{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--ok);float:right}.power{position:absolute;left:690px;top:26px;width:105px;height:74px;border:2px solid #647c8b;border-radius:5px;background:#eef5f8;padding:9px;text-align:center;font-weight:800;cursor:pointer}.power.off{background:#f5dfe1;color:#8b2730}.statusrow{display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid #d9e5ec}.pill{font-weight:800;padding:2px 8px;border-radius:4px;background:#d8f8e8;color:#087345}.pill.trip{background:#ffdadd;color:#a51e2a}.alarmbar{padding:7px;margin-bottom:7px;border-radius:4px;background:#dff7eb;color:#087345;font-weight:800}.alarmbar.trip{background:#ffdfe1;color:#a51e2a}.values{display:grid;grid-template-columns:1fr 90px}.values div{padding:4px 6px;border-bottom:1px solid #dbe6ec}.values .v{font-size:14px;font-weight:800;color:#075cb1;text-align:right;background:#eef6fb}.channels{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px}.ch{border:1px solid #c5d7e2;border-radius:4px;padding:5px;text-align:center}.ch.hh{background:#ffe0e2;color:#a21c29}.lower{display:grid;grid-template-columns:1.15fr .85fr .9fr;gap:8px;margin-top:8px}.trendwrap{height:190px}.eventlog{height:155px;overflow:auto;font:11px Consolas,monospace}.event{padding:4px;border-bottom:1px solid #e1e9ee}.bottom{display:grid;grid-template-columns:1fr 1.25fr .7fr;gap:8px;margin-top:8px}.table{width:100%;border-collapse:collapse}.table th,.table td{border:1px solid #d6e2e9;padding:5px;text-align:left}.table th{background:#edf5fa}.pass{color:#078653;font-weight:800}.muted{color:var(--muted);font-size:10px}.modalback{display:none;position:fixed;inset:0;background:#09233c66;z-index:50;align-items:center;justify-content:center}.modalback.show{display:flex}.modal{width:min(760px,94vw);background:white;border-radius:8px;box-shadow:0 16px 50px #001b;overflow:hidden}.modalhead{background:var(--nav);color:white;padding:12px 15px;font-size:16px;font-weight:800;display:flex;justify-content:space-between}.close{background:none;border:0;color:white;font-size:20px;cursor:pointer}.modalbody{padding:15px}.tabs{display:flex;gap:5px;margin-bottom:10px}.tab{padding:6px 10px;background:#e8f2f8;border:1px solid #bed2df;border-radius:4px;cursor:pointer}.tab.active{background:#0b6fae;color:white;border-color:#0b6fae}.kv{display:grid;grid-template-columns:1fr 1fr;gap:7px}.kv div{border:1px solid #d4e2ea;padding:8px;border-radius:4px}.fpHero{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-bottom:10px}.fpPV{border:1px solid #b8d4e4;border-radius:6px;padding:12px;background:linear-gradient(#f8fcff,#e8f4fa)}.fpPV .big{font-size:30px;font-weight:900;color:#075cb1}.fpState{border-radius:6px;padding:12px;background:#e2f8ec;color:#087345;font-weight:800}.fpState.trip{background:#ffe0e2;color:#a51e2a}.fpSection{margin-top:10px;font-weight:800;color:#244e70;border-bottom:1px solid #cddde7;padding-bottom:4px}.src{margin-top:10px;padding:8px;border-left:4px solid #0b78b6;background:#eef7fc}.warn{border-left-color:#e6a126;background:#fff7e6}.danger{border-left-color:#c73d49;background:#fff0f1}.miniActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.view{display:none}.view.active{display:block}@media(max-width:1200px){.workspace{grid-template-columns:1fr}.shell{grid-template-columns:120px 1fr}.lower,.bottom{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.process{min-width:820px}}
+
+.coreflow{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:12px 0}.corestep{border:1px solid #c8dbe6;background:#f4f8fb;border-radius:5px;padding:8px 5px;text-align:center;font-weight:800;font-size:10px}.corestep b{display:block;font-size:12px;margin-bottom:3px}.corestep.live{background:#fff0c9;border-color:#dda72b;color:#835800}.corestep.trip{background:#ffe0e2;border-color:#d34b58;color:#9d1f2b}.corestep.ok{background:#e1f7ec;border-color:#55b989;color:#087345}.corelogic{margin-top:8px;border:1px solid #bdd2df;border-radius:5px;background:#f8fbfd;padding:9px}.corelogic .row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:4px 0;border-bottom:1px solid #e1e9ee}.corelogic .row:last-child{border-bottom:0}.corelogic strong{font-size:13px}.corelogic .hot{color:#a51e2a}.corelogic .good{color:#087345}@media(max-width:1000px){.coreflow{grid-template-columns:repeat(3,1fr)}}
+/* Core alarm/state refinement */
+.alarmbar.unack{animation:alarmFlash .85s steps(2,end) infinite}.alarmbar.ack{opacity:1!important;box-shadow:inset 0 0 0 2px #b97700}.alarmbar.warnstate{background:#fff0bf;color:#8a5a00}.lamp.alarm{background:#e23f49;box-shadow:0 0 8px #e23f49;animation:alarmFlash .85s steps(2,end) infinite}.lamp.vote{background:#f0a928;box-shadow:0 0 7px #f0a928}.ch.hh{border-color:#d6404b;box-shadow:inset 0 0 0 1px #d6404b}.ch.hh.unack{animation:alarmFlash .85s steps(2,end) infinite}.ch.hh.ack{background:#fff0c9;color:#815700}.valve.travel{animation:valveTravel .55s ease-in-out}.power.off{box-shadow:0 0 0 2px #d44952,0 0 12px #d4495266}.tripBanner{position:absolute;left:310px;top:50px;z-index:12;padding:6px 12px;border-radius:4px;background:#b72d39;color:#fff;font-weight:900;display:none;box-shadow:0 2px 8px #0004}.tripBanner.show{display:block}.voteMini{position:absolute;left:205px;top:302px;z-index:9;background:#fff;border:1px solid #b9cfdd;border-radius:5px;padding:4px 7px;font-weight:800;color:#244e70}.voteMini.trip{background:#ffe1e3;color:#a31e29;border-color:#e59aa0}.voteDot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#38b97b;margin:0 2px}.voteDot.hh{background:#e23f49}.alarmLegend{display:flex;gap:10px;flex-wrap:wrap;margin:5px 0 8px;font-size:10px}.alarmLegend span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;background:#38b97b}.alarmLegend .al:before{background:#e23f49}.alarmLegend .ak:before{background:#f0a928}@keyframes alarmFlash{50%{filter:brightness(1.35);opacity:.48}}@keyframes valveTravel{0%{transform:scale(1)}50%{transform:scale(.82) rotate(5deg)}100%{transform:scale(.94)}}
+
+.dcsgrid{display:grid;grid-template-columns:1.15fr .85fr;gap:8px}.loopfp{padding:14px}.loophead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.loopname{font-size:18px;font-weight:900}.modechip{padding:5px 12px;border-radius:4px;background:#dff4ea;color:#087345;font-weight:900}.barrow{display:grid;grid-template-columns:90px 1fr 90px;gap:10px;align-items:center;margin:12px 0}.barbox{height:26px;border:1px solid #a9c2d2;background:#eef5f9;border-radius:4px;overflow:hidden;position:relative}.barfill{height:100%;background:linear-gradient(90deg,#198bd0,#45b4e7);transition:.25s}.barfill.out{background:linear-gradient(90deg,#13a66b,#54cf98)}.barfill.dev{background:linear-gradient(90deg,#e2aa2f,#f1c861)}.barvalue{text-align:right;font-size:16px;font-weight:900;color:#075cb1}.loopdiagram{margin:14px 0;padding:12px;border:1px solid #c8dbe6;background:#f7fbfd;border-radius:6px;text-align:center;font-weight:800}.loopdiagram span{display:inline-block;padding:8px 12px;border:1px solid #9fbccc;background:#fff;border-radius:5px;margin:3px}.arrow{border:0!important;background:none!important;color:#0b6fae;font-size:18px}.dcsalarms{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.ann{padding:9px;border:1px solid #c8dbe6;border-radius:4px;text-align:center;background:#edf5f9;font-weight:800}.ann.active{background:#ffdfe1;border-color:#e6a1a7;color:#a51e2a}.dcsnote{margin-top:10px;padding:9px;border-left:4px solid #e2a326;background:#fff7e6}.dcsstate{display:grid;grid-template-columns:1fr 1fr;gap:7px}.dcsstate>div{border:1px solid #d4e2ea;border-radius:5px;padding:10px;background:#f8fbfd}.dcsstate strong{display:block;font-size:16px;margin-top:3px}.dcsstate .bad{color:#a51e2a}.dcsstate .good{color:#087345}@media(max-width:1000px){.dcsgrid{grid-template-columns:1fr}}
+
+/* Core graphical ESD/C&E view */
+.ceflow{padding:14px}.celegend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px}.celegend span{display:flex;align-items:center;gap:5px}.cedot{width:11px;height:11px;border-radius:50%;background:#20ad6c;display:inline-block}.cedot.active{background:#dc3f4c;box-shadow:0 0 8px #dc3f4c}.cegrid{display:grid;grid-template-columns:1.25fr 80px .7fr 80px 1.05fr;gap:8px;align-items:stretch}.cecol{display:flex;flex-direction:column;gap:7px}.cenode{border:1px solid #bcd0dc;border-radius:6px;background:#f8fcfe;padding:9px 10px;min-height:56px;position:relative}.cenode b{display:block;color:#163e5e}.cenode small{color:#607b8d}.cenode.active{background:#ffe2e4;border-color:#d84c57;box-shadow:0 0 0 1px #d84c57 inset}.cenode.partial{background:#fff4d8;border-color:#dfa72d}.cewire{display:flex;align-items:center;justify-content:center;position:relative;color:#6e8999;font-size:24px;font-weight:900}.cewire:before{content:"";position:absolute;left:0;right:0;height:4px;background:#aabdc8;border-radius:4px}.cewire span{z-index:2;background:white;padding:0 3px}.cewire.active:before{background:#d83f4b;box-shadow:0 0 7px #d83f4b}.celogic{display:flex;align-items:center;justify-content:center;text-align:center;border:2px solid #7b9aab;border-radius:10px;background:#eef6fa;font-weight:900;font-size:16px;min-height:92px}.celogic.active{background:#ffdfe1;border-color:#c72e3b;color:#9f1f2a}.ceeffects .cenode{min-height:67px}.cefoot{margin-top:12px;padding:10px;border-left:4px solid #d9a22c;background:#fff7e4}.cepath{font-size:10px;font-weight:800;margin-top:4px;color:#557181}.cepath.hot{color:#b32230}@media(max-width:1050px){.cegrid{grid-template-columns:1fr}.cewire{height:25px;transform:rotate(90deg)}}
+
+/* Core visual polish — presentation only; engineering logic unchanged */
+.vessel.state-low{box-shadow:inset 0 0 22px #38566d55,0 0 0 3px #d8a21b55,0 6px 14px #183a5222}.vessel.state-high{box-shadow:inset 0 0 22px #38566d55,0 0 0 4px #e4a32188,0 6px 18px #d28c1844}.vessel.state-trip{box-shadow:inset 0 0 25px #7d1c2855,0 0 0 5px #d63d4a99,0 0 22px #d63d4a66;animation:vesselTripPulse .75s steps(2,end) infinite}.currentLevelFlag.state-normal{background:#087b50}.currentLevelFlag.state-low,.currentLevelFlag.state-high{background:#b97908}.currentLevelFlag.state-trip{background:#b52431;animation:alarmFlash .75s steps(2,end) infinite}.power.off{box-shadow:0 0 0 3px #d63d4a44,0 0 16px #d63d4a55}.valve.closed{filter:drop-shadow(0 0 5px #d63d4a88)}@keyframes vesselTripPulse{from{filter:none}to{filter:saturate(1.2) brightness(.96)}}
+/* Visual polish: staged HH -> vote -> ESD -> effects. Animation timing is SIMULATION ASSUMPTION. */
+.ceflow.esd-sequence .cenode.active{animation:esdNodePulse .8s ease-in-out 2}.ceflow.esd-sequence .cewire.active{animation:esdWirePulse .65s ease-in-out 2}.ceflow.esd-sequence .celogic.active{animation:esdLogicPulse .75s ease-in-out 2}.ceflow.esd-sequence .ceeffects .cenode.active{animation:esdEffectPulse .9s ease-in-out 2}.esdStageNote{margin-top:10px;padding:8px 10px;border:1px solid #cbdbe4;border-radius:5px;background:#f7fafc;font-weight:800}.esdStageNote.hh{background:#fff0bf;color:#805800}.esdStageNote.trip{background:#ffe1e3;color:#a31e29;border-color:#e59aa0;animation:alarmFlash .8s steps(2,end) infinite}@keyframes esdNodePulse{50%{transform:scale(1.025);box-shadow:0 0 0 3px #e23f4933}}@keyframes esdWirePulse{50%{filter:brightness(1.45)}}@keyframes esdLogicPulse{50%{transform:scale(1.025)}}@keyframes esdEffectPulse{50%{transform:translateX(3px);box-shadow:0 0 0 3px #d63d4a33}}
+
+/* Core control-loop visual polish — presentation only */
+.controlChain{position:absolute;left:180px;top:286px;width:525px;height:38px;z-index:12;display:flex;align-items:center;gap:6px;pointer-events:none}.controlNode{min-width:112px;padding:5px 7px;border:1px solid #9fb8c8;border-radius:5px;background:#f7fbfd;box-shadow:0 1px 3px #173a5b22;text-align:center;font-size:10px;font-weight:800;color:#234b66;transition:.25s}.controlNode b{display:block;font-size:11px}.controlNode.live{border-color:#158bd1;background:#e8f5fc;box-shadow:0 0 8px #158bd155}.controlNode.high{border-color:#d69516;background:#fff3cf;color:#855600}.controlNode.trip{border-color:#c93645;background:#ffe4e6;color:#9d202b}.controlArrow{font-size:18px;font-weight:900;color:#718c9d;transition:.25s}.controlArrow.live{color:#158bd1;transform:scale(1.12)}.valveStem{position:absolute;left:629px;top:362px;width:8px;height:22px;background:#516b7b;z-index:8;border-radius:3px}.valveTravel{position:absolute;left:657px;top:374px;width:92px;height:8px;background:#dbe7ed;border:1px solid #9fb6c4;border-radius:5px;z-index:8;overflow:hidden}.valveTravel>i{display:block;height:100%;width:50%;background:#1b9bd7;transition:.3s}.valveTravelLabel{position:absolute;left:754px;top:368px;z-index:9;font-size:10px;font-weight:800;color:#31566e}.controlHint{position:absolute;left:182px;top:306px;z-index:13;font-size:9px;color:#537185;background:#ffffffd9;padding:1px 4px;border-radius:3px;pointer-events:none}
+
+.alarmTransition{display:grid;grid-template-columns:1fr 44px 1fr;gap:8px;align-items:stretch;margin-top:10px}.alarmStage{border:2px solid #cbdbe4;border-radius:6px;padding:9px;text-align:center;background:#f8fbfd}.alarmStage b{display:block;font-size:13px}.alarmStage .bigstate{font-size:15px;font-weight:900;margin-top:4px}.alarmStage.lah{border-color:#d8a21c;background:#fff7dd;color:#825900}.alarmStage.lah.active{box-shadow:0 0 0 3px #f0bd3d55}.alarmStage.lahh{border-color:#c73d49;background:#fff0f1;color:#9d202c}.alarmStage.lahh.active{box-shadow:0 0 0 3px #df465555;animation:tripPulse .8s infinite alternate}.alarmArrow{display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:#7890a0}.alarmRule{margin-top:6px;font-size:10px;font-weight:800}.alarmRule.alarmonly{color:#8b6200}.alarmRule.esdrule{color:#a51e2a}@keyframes tripPulse{from{filter:brightness(1)}to{filter:brightness(.92)}}
+
+/* M6 signal interpretation graphic — presentation/training layer only */
+.controlChain,.controlHint{display:none!important}
+.signalFlowWrap{padding:12px}.signalLegend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:10px}.signalLegend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:4px;background:#9fb4c0}.signalLegend .blue i{background:#168fd0}.signalLegend .red i{background:#d43d49}.signalRows{display:grid;gap:10px}.signalRow{display:grid;grid-template-columns:145px 1fr;gap:10px;align-items:center}.signalLabel{font-weight:900;color:#173f5e}.signalPath{display:flex;align-items:center;gap:5px;min-width:0}.sigNode{flex:1;min-width:105px;padding:8px 7px;border:1px solid #b9ceda;border-radius:6px;background:#f8fbfd;text-align:center;font-size:10px;color:#31566e;transition:.25s}.sigNode b{display:block;font-size:11px;color:#173f5e}.sigArrow{font-size:20px;font-weight:900;color:#9aadb8;transition:.25s}.sigNode.ctrlOn{background:#e4f4fd;border-color:#168fd0;box-shadow:0 0 7px #168fd044}.sigArrow.ctrlOn{color:#168fd0}.sigNode.warnOn{background:#fff2ca;border-color:#dda622;color:#7b5700}.sigNode.tripOn{background:#ffe1e4;border-color:#d43d49;color:#9c202b;box-shadow:0 0 8px #d43d4944}.sigArrow.tripOn{color:#d43d49}.signalStatus{margin-top:10px;padding:8px 10px;border-left:4px solid #168fd0;background:#eef8fd;font-weight:800}.signalStatus.trip{border-left-color:#d43d49;background:#fff0f1;color:#941e29}.signalStatus.warn{border-left-color:#dda622;background:#fff8df;color:#795700}@media(max-width:1100px){.signalRow{grid-template-columns:1fr}.signalPath{flex-wrap:wrap}.sigArrow{transform:rotate(90deg)}}
+
+/* M6.1: keep live signal interpretation beside vessel so process and signal path are visible together */
+.workspace aside .signalFlowWrap{padding:7px}
+.workspace aside .signalLegend{gap:7px;margin-bottom:6px;font-size:8px}
+.workspace aside .signalRows{gap:7px}
+.workspace aside .signalRow{display:block}
+.workspace aside .signalLabel{font-size:9px;margin-bottom:3px}
+.workspace aside .signalPath{display:grid;grid-template-columns:1fr 14px 1fr 14px 1fr;gap:2px;align-items:center}
+.workspace aside .sigNode{min-width:0;padding:5px 3px;font-size:8px;line-height:1.15}
+.workspace aside .sigNode b{font-size:9px}
+.workspace aside .sigArrow{font-size:13px;text-align:center}
+.workspace aside .signalPath .sigNode:nth-of-type(4),.workspace aside .signalPath .sigNode:nth-of-type(5){margin-top:2px}
+.workspace aside .signalStatus{margin-top:6px;padding:6px 7px;font-size:9px;line-height:1.25}
+.workspace aside .signalFlowWrap>.muted{font-size:8px!important}
+@media(max-width:1250px){.workspace aside .signalPath{grid-template-columns:1fr 12px 1fr 12px 1fr}.workspace aside .sigNode{font-size:7.5px}}
+
+
+/* M6.3 — industrial pictograms + trip flow-stop visualization (functional representations) */
+.process.esd-active .flowdot{animation-play-state:paused!important;opacity:.08!important;box-shadow:none!important}
+.process.esd-active .flow{opacity:.18!important}
+.process.esd-active .pipe{filter:saturate(.35)}
+.process.esd-active #svgCtrlPulse1,.process.esd-active #svgCtrlPulse2{display:none}
+.eqPic{overflow:visible}.eqPic .metal{fill:#7f98a8;stroke:#24485f;stroke-width:2}.eqPic .dark{fill:#29495e}.eqPic .blue{fill:#1789c7;stroke:#24485f;stroke-width:2}.eqPic .glass{fill:#dff6ff;stroke:#24485f;stroke-width:2}.eqPic .green{fill:#20b96d;stroke:#087847;stroke-width:2}.eqPic .red{fill:#e85c66;stroke:#9f2430;stroke-width:2}.eqPic .rack{fill:#435a68;stroke:#203d50;stroke-width:2}.eqPic .slot{fill:#a9bcc7;stroke:#203d50;stroke-width:1}.eqPic .lampg{fill:#2ed681;stroke:#087847;stroke-width:1.5}.eqPic .lampr{fill:#ff6570;stroke:#9f2430;stroke-width:1.5}.svgEquipLabel{font-size:9px;font-weight:800;fill:#153e5c}.svgEquipSub{font-size:7px;fill:#4b6c81}.tripStopNote{position:absolute;right:14px;bottom:9px;z-index:12;padding:4px 7px;border-radius:4px;background:#fff;border:1px solid #c5d7e2;color:#4a6678;font-size:9px;font-weight:700}.process.esd-active .tripStopNote{background:#ffe4e6;border-color:#df6a74;color:#a51e2a}.process.esd-active .tripStopNote:after{content:" — PROCESS FLOW STOPPED";font-weight:900}
+
+/* M6.2 — live SVG signal-transmission overlay inside DS-V-101 process graphic */
+.processSignalSvg{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:visible}
+.processSignalSvg .sigWire{fill:none;stroke:#16a05d;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s,filter .25s;vector-effect:non-scaling-stroke}
+.processSignalSvg .sigWire.inactive{stroke:#9aadb8;stroke-dasharray:7 6}
+.processSignalSvg .sigWire.warn{stroke:#d99a16;filter:drop-shadow(0 0 3px #d99a1688)}
+.processSignalSvg .sigWire.trip{stroke:#d63d4a;stroke-width:4;filter:drop-shadow(0 0 4px #d63d4aaa)}
+.processSignalSvg .pulse{fill:#16a05d;filter:drop-shadow(0 0 4px #16a05d);opacity:.95}
+.processSignalSvg .pulse.warn{fill:#d99a16;filter:drop-shadow(0 0 4px #d99a16)}
+.processSignalSvg .pulse.trip{fill:#d63d4a;filter:drop-shadow(0 0 5px #d63d4a)}
+.processSignalSvg .svgBox{fill:#f7fbff;stroke:#7996a8;stroke-width:1.5;rx:5;ry:5;vector-effect:non-scaling-stroke}
+.processSignalSvg .svgBox.active{stroke:#16a05d;filter:drop-shadow(0 0 3px #16a05d66)}
+.processSignalSvg .svgBox.warn{stroke:#d99a16;fill:#fff7dd}
+.processSignalSvg .svgBox.trip{stroke:#d63d4a;fill:#fff0f1;filter:drop-shadow(0 0 4px #d63d4a66)}
+.processSignalSvg text{font-family:"Segoe UI",Arial,sans-serif;fill:#123d5b;font-weight:700;font-size:10px}
+.processSignalSvg .small{font-size:8px;font-weight:600;fill:#587386}
+.processSignalSvg .stateText{font-size:8px;font-weight:900}
+.processSignalSvg .normalText{fill:#087345}.processSignalSvg .warnText{fill:#9a6500}.processSignalSvg .tripText{fill:#a51e2a}
+.processSignalSvg .signalTitle{font-size:9px;fill:#315f80}
+.processSignalLegend{position:absolute;left:350px;top:8px;z-index:11;background:#ffffffdf;border:1px solid #c5d7e2;border-radius:5px;padding:3px 7px;font-size:9px;pointer-events:none}
+.processSignalLegend i{display:inline-block;width:18px;height:3px;margin:0 4px 2px 7px;background:#16a05d}.processSignalLegend i:first-child{margin-left:0}.processSignalLegend i.trip{background:#d63d4a}.processSignalLegend i.off{background:#9aadb8}
+
+
+/* === M1 V5 DIGITAL-TWIN VISUALIZATION LAYER === */
+.process{height:470px;background:linear-gradient(180deg,#f8fcff 0%,#edf6fb 100%);border-top:1px solid #c7dbe7}
+.process:before{content:"LIVE DIGITAL TWIN • FIELD → CONTROL → FINAL ELEMENT";position:absolute;left:10px;top:8px;z-index:20;background:#083f70;color:white;border-radius:4px;padding:5px 10px;font-size:10px;font-weight:900;letter-spacing:.25px}
+.processSignalLegend{top:10px!important;right:12px!important;left:auto!important;z-index:21!important;background:#fff!important;border:1px solid #b9cedb!important;border-radius:5px;padding:4px 7px!important}
+/* remove duplicate floating cards from over the process equipment */
+.controlChain,.controlHint,.process>.instrument{display:none!important}
+/* make the process equipment the visual focus */
+.vessel{left:285px;top:115px;width:455px;height:260px;box-shadow:inset 0 0 24px #38566d55,0 10px 20px #173a5b30}
+.process>.tag[style*="left:465px"]{left:470px!important;top:126px!important;font-size:18px!important;z-index:15}
+.process>.tag[style*="left:452px"]{left:463px!important;top:148px!important;z-index:15}
+/* clearer process piping */
+.process>.pipe.h{height:14px;box-shadow:inset 0 3px 3px #fff9,0 2px 4px #183a5b22}
+.process>.flowdot{width:10px;height:10px;box-shadow:0 0 10px #078fe0}
+.process.tripStopped>.flowdot,.process.tripStopped>.flow{animation-play-state:paused!important;opacity:.12!important}
+.process.tripStopped>.pipe{filter:grayscale(1);opacity:.62}
+.process.tripStopped:after{content:"ESD / TRIP ACTIVE • PROCESS FLOW STOPPED";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:25;background:#b91f32;color:#fff;padding:7px 18px;border-radius:5px;font-weight:900;font-size:12px;box-shadow:0 0 12px #b91f3266}
+/* signal architecture sits around equipment rather than over labels */
+.processSignalSvg{z-index:11}
+.processSignalSvg .svgBox{fill:#fff;stroke-width:2}
+.processSignalSvg .sigWire{stroke-width:3.5}
+.processSignalSvg .sigWire.trip{stroke-width:5}
+.processSignalSvg .pulse{r:5px}
+.tripStopNote{z-index:22!important;right:12px!important;bottom:10px!important;font-weight:900!important}
+/* equipment state emphasis */
+.valve.closed{filter:drop-shadow(0 0 7px #d63d4a)}
+.power.off{box-shadow:0 0 10px #d63d4a88}
+
+
+/* V11 — narrow sidebar signal-flow repair: vertical deterministic chain */
+.workspace aside .signalRows{display:grid;gap:12px}
+.workspace aside .signalRow{display:block}
+.workspace aside .signalLabel{font-size:10px;margin:0 0 5px;font-weight:900}
+.workspace aside .signalPath{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important;width:100%}
+.workspace aside .sigNode{width:100%!important;min-width:0!important;box-sizing:border-box;padding:6px 7px!important;font-size:9px!important;line-height:1.2!important;white-space:normal!important;word-break:normal!important}
+.workspace aside .sigNode b{font-size:10px!important;white-space:normal!important}
+.workspace aside .sigArrow{display:block!important;width:100%!important;height:13px!important;line-height:13px!important;text-align:center!important;font-size:0!important;transform:none!important;margin:0!important}
+.workspace aside .sigArrow::after{content:'↓';font-size:14px;font-weight:900;color:#9aadb8}
+.workspace aside .sigArrow.ctrlOn::after{color:#168fd0}
+.workspace aside .sigArrow.tripOn::after{color:#d43d49}
+.workspace aside .signalPath .sigNode:nth-of-type(4),.workspace aside .signalPath .sigNode:nth-of-type(5){margin-top:0!important}
+.workspace aside .signalStatus{font-size:9px;line-height:1.3;padding:7px 8px;margin-top:9px}
+
+/* M6.4 — move Live Signal Interpretation below DS-V-101 process graphic */
+.processColumn{display:flex;flex-direction:column;gap:8px;min-width:0}
+.processColumn>.card{min-width:0}
+.processColumn .signalFlowWrap{padding:10px}
+.processColumn .signalLegend{font-size:9px;gap:14px;margin-bottom:8px}
+.processColumn .signalRows{gap:10px}
+.processColumn .signalRow{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.processColumn .signalLabel{font-size:10px;margin:0}
+.processColumn .signalPath{display:flex;flex-wrap:nowrap;align-items:center;gap:5px}
+.processColumn .sigNode{min-width:0;flex:1;padding:7px 5px;font-size:9px;line-height:1.2}
+.processColumn .sigNode b{font-size:10px}
+.processColumn .sigArrow{font-size:17px;transform:none}
+.processColumn .signalStatus{margin-top:8px;padding:7px 9px;font-size:10px}
+.processColumn .signalFlowWrap>.muted{font-size:8px!important}
+@media(max-width:1250px){.processColumn .signalRow{grid-template-columns:100px 1fr}.processColumn .sigNode{font-size:8px;padding:6px 3px}.processColumn .sigNode b{font-size:9px}}
+</style>
+<style id="v10-process-restore">
+/* V10 — restore validated process canvas geometry. UI only. */
+.process{
+  height:470px !important;
+  min-height:470px !important;
+  position:relative !important;
+  overflow:hidden !important;
+}
+.processSignalSvg{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+}
+/* Keep right-side signal cards readable without touching the main workspace grid. */
+#signalFlowPanel,.signalFlowPanel,.signal-panel{min-width:0;overflow:hidden}
+</style>
+
+
+
+
+<style id="v26-fixed-share-style">
+/* Share-build stabilization. Visual only; deterministic C&E logic is unchanged. */
+#v25ProcessTripOverlay,
+.v25-process-trip-overlay,
+[data-v25-process-trip-overlay="true"]{
+  display:none !important;
+  visibility:hidden !important;
+}
+</style>
+
+<script id="v26-fixed-share-js">
+(function(){
+  "use strict";
+
+  function cleanupDuplicateOverlay(){
+    document.querySelectorAll(
+      '#v25ProcessTripOverlay,.v25-process-trip-overlay,[data-v25-process-trip-overlay="true"]'
+    ).forEach(function(el){
+      el.style.display='none';
+      el.setAttribute('aria-hidden','true');
+    });
+  }
+
+  function updateSignalStatus(){
+    /* Read existing deterministic simulator state directly.
+       Do not infer state from page text and do not mutate continuously. */
+    var active = !!(window.S && S.tripped);
+    var nodes = document.querySelectorAll(
+      '.ce-signal-status,[data-ce-signal-status],#ceSignalStatus'
+    );
+    nodes.forEach(function(el){
+      var wanted = active
+        ? 'SIGNAL STATUS — PROTECTION INITIATOR ACTIVE / TRIP TRANSMITTED'
+        : 'SIGNAL STATUS — NORMAL / NO PROTECTION INITIATOR ACTIVE';
+      if(el.textContent !== wanted) el.textContent = wanted;
+    });
+  }
+
+  function refreshShareView(){
+    cleanupDuplicateOverlay();
+    updateSignalStatus();
+  }
+
+  window.addEventListener('DOMContentLoaded', function(){
+    refreshShareView();
+
+    /* Low-frequency state refresh avoids the recursive MutationObserver
+       used in the previous V26 build. */
+    window.setInterval(refreshShareView, 500);
+  });
+})();
+</script>
+
+
+<style id="public-layout">
+.publicBoundary{padding:10px 18px;background:#e1f7ec;color:#06482e;border-bottom:1px solid #99c8b0;font-weight:700;line-height:1.4}
+.top{height:auto;min-height:62px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px;gap:12px}
+.brand{flex:1 1 360px}.brand small{line-height:1.5}.modes{flex-wrap:wrap}.mode{min-height:44px}
+.shell{grid-template-columns:145px minmax(0,1fr)}.main,.workspace,.processColumn,.card{min-width:0}
+.nav{display:block;width:100%;text-align:left;background:transparent;color:inherit;border:0;border-left:4px solid transparent;min-height:44px}
+.nav.active:hover{background:#158bd1;color:white}
+.nav:focus-visible,.btn:focus-visible,.mode:focus-visible,.processScroll:focus-visible{outline:3px solid #075cb1;outline-offset:-3px}
+.toolbar{grid-template-columns:1fr}.lower{grid-template-columns:1fr 1fr}
+.celogic{flex-direction:column;padding:12px;gap:4px}.celogic hr{width:100%}
+.processScroll{overflow-x:auto;overscroll-behavior-x:contain}.processScroll .process{min-width:1000px}
+.modal{max-height:92vh;display:flex;flex-direction:column}.modalhead{flex-shrink:0}.modalbody{overflow:auto;min-height:0}.tabs{flex-wrap:wrap}
+.modal .close{min-width:44px;min-height:44px}.modalhead{padding:6px 12px}
+@media(max-width:1200px){.shell{grid-template-columns:120px minmax(0,1fr)}.lower{grid-template-columns:1fr}}
+@media(max-width:800px){
+ .shell{display:block}.side{padding:6px;display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line)}
+ .nav{width:auto;flex:1 1 100px;padding:10px 8px;border-left:0;border-bottom:3px solid transparent;text-align:center}.nav.active{border-left:0;border-bottom-color:#05649e}.sidefoot{display:none}
+ .top{padding:12px}.brand{font-size:20px}.modes{margin-left:0}.mode{padding:9px 12px}.plant{margin-left:0;padding:9px 12px}
+ .main{padding:8px}.btn,.tab{min-height:44px}.cb{overflow-x:auto}.modalbody{padding:10px}.fpHero,.kv{grid-template-columns:1fr}
+ .barrow{grid-template-columns:40px minmax(50px,1fr) 76px;gap:6px}.loophead{gap:8px;flex-wrap:wrap}.dcsalarms{grid-template-columns:repeat(2,1fr)}
+ .alarmTransition{grid-template-columns:1fr}.alarmArrow{transform:rotate(90deg)}
+ .values{grid-template-columns:minmax(0,1fr) minmax(90px,1fr)}.values .v{overflow-wrap:anywhere}
+ .processColumn .signalRow{grid-template-columns:1fr}.processColumn .signalPath{flex-wrap:wrap}.processColumn .sigNode{flex:1 1 75px;font-size:10px}.processColumn .sigNode b{font-size:11px}
+}
+</style>
+</head><body>
+<header class="top"><div class="brand">InstMates — Desalter Training Simulator<small>First-Stage Desalter (DS-V-101) | Interface Level • Control • 2oo3 ESD Training<br/><span style="font-size:9px;color:#8ea2b8">Training tags are simulator identifiers — not plant tags</span></small></div><div class="modes"><button class="mode active" data-mode="normal">Normal Operation</button><button class="mode" data-mode="training">Training Mode</button></div><div class="plant" id="readyBadge">READY</div></header>
+<div class="publicBoundary">Public Training Demo — Educational simulation only • Not for plant operation</div>
+<div class="shell"><nav class="side" aria-label="Simulator views"><button type="button" class="nav active" data-view="processView">▣   Process</button><button type="button" class="nav" data-view="dcsView">⌘   DCS</button><button type="button" class="nav" data-view="esdView">♢   ESD / C&amp;E</button><button type="button" class="nav" data-view="trendsView">⌁   Trends</button><button type="button" class="nav" data-view="alarmsView">♧   Alarms</button><button type="button" class="nav" data-view="trainingView">◇   Training</button><div class="sidefoot">Training Process Unit<br/><b>First-Stage Desalter</b><br/><br/>CORE: LEVEL • LT • LIC/LV • ESD</div></nav>
+<main class="main"><section class="view active" id="processView">
+<div class="toolbar"><div class="card"><div class="ct">Quick Actions</div><div class="cb actions"><button class="btn green" id="startBtn">▶ Start</button><button class="btn" id="normalBtn">Normal Operation</button><button class="btn" id="resetBtn">↻ Training Reset</button><button class="btn" onclick="document.documentElement.requestFullscreen?.()">⛶ Full Screen</button></div></div></div>
+<div class="card" style="margin-bottom:8px"><div class="ct">Core Level Control &amp; ESD Sequence — First Stage Only</div><div class="cb"><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center"><div><b>300 mm</b><br/><span class="muted">LALL</span></div><div><b>450 mm</b><br/><span class="muted">LAL</span></div><div style="background:#e2f8ec;border-radius:5px;padding:5px"><b>650 mm</b><br/><span class="muted">LIC SP / Normal</span></div><div style="background:#fff0bf;border-radius:5px;padding:5px"><b>1500 mm</b><br/><span class="muted">LAH • ALARM ONLY</span></div><div style="background:#ffe0e2;border-radius:5px;padding:5px"><b>1700 mm</b><br/><span class="muted">LAHH • 2oo3 ESD</span></div></div><div style="margin-top:7px"><b>Control:</b> Level ↑ above 650 → DS-LIC-101 output ↑ → DS-LV-101 opens further → water removal ↑.   <b>Protection:</b> 2 of 3 DS-LIT-102 channels at HH → DS-ESD-101 → power unit TRIP + both SDVs CLOSE.</div><div class="muted" style="margin-top:4px">300/450/1500 are displayed level alarm/reference points. The modeled interface ESD path is the verified 1700 mm HH condition with 2oo3 voting. Dynamic response is SIMULATION ASSUMPTION.</div></div></div>
+<div class="workspace"><div class="processColumn"><div class="card"><div class="ct">▣ Process Overview — First Stage Desalter (DS-V-101)</div><div class="processScroll" tabindex="0" role="region" aria-label="Process drawing — scroll horizontally to inspect equipment"><div class="process">
+<div class="processSignalLegend"><i></i> live signal <i class="trip"></i> trip signal <i class="off"></i> inactive</div>
+<svg aria-label="Live field signal transmission and ESD action visualization" class="processSignalSvg" id="processSignalSvg" preserveaspectratio="none" viewbox="0 0 960 430">
+<defs>
+<marker id="arrowGreen" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0,0 L7,3.5 L0,7 z" fill="#16a05d"></path></marker>
+<marker id="arrowRed" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0,0 L7,3.5 L0,7 z" fill="#d63d4a"></path></marker>
+<symbol id="picTx" viewbox="0 0 54 72"><g class="eqPic"><rect class="dark" height="28" rx="2" width="8" x="23" y="40"></rect><rect class="metal" height="10" rx="3" width="18" x="18" y="34"></rect><circle class="blue" cx="27" cy="22" r="17"></circle><circle class="glass" cx="27" cy="22" r="11"></circle><path class="dark" d="M21 22h12M27 16v12"></path></g></symbol>
+<symbol id="picRack" viewbox="0 0 90 64"><g class="eqPic"><rect class="rack" height="60" rx="3" width="86" x="2" y="2"></rect><rect class="slot" height="48" width="12" x="8" y="8"></rect><rect class="slot" height="48" width="12" x="24" y="8"></rect><rect class="slot" height="48" width="12" x="40" y="8"></rect><rect class="slot" height="48" width="12" x="56" y="8"></rect><rect class="slot" height="48" width="10" x="72" y="8"></rect><circle class="lampg" cx="14" cy="14" r="2.5"></circle><circle class="lampg" cx="30" cy="14" r="2.5"></circle><circle class="lampg" cx="46" cy="14" r="2.5"></circle></g></symbol>
+<symbol id="picValve" viewbox="0 0 80 72"><g class="eqPic"><path class="green" d="M8 44L32 32v24zM72 44L48 32v24z"></path><rect class="metal" height="20" rx="2" width="16" x="32" y="34"></rect><rect class="dark" height="18" width="4" x="38" y="18"></rect><rect class="blue" height="15" rx="6" width="30" x="25" y="6"></rect><rect class="metal" height="6" rx="2" width="76" x="2" y="41"></rect></g></symbol>
+<symbol id="picMotor" viewbox="0 0 90 60"><g class="eqPic"><rect class="metal" height="34" rx="8" width="52" x="18" y="14"></rect><path class="dark" d="M24 17v28M31 17v28M38 17v28M45 17v28M52 17v28M59 17v28"></path><circle class="metal" cx="72" cy="31" r="12"></circle><rect class="dark" height="10" rx="2" width="18" x="2" y="26"></rect><rect class="dark" height="5" rx="2" width="48" x="20" y="48"></rect></g></symbol>
+</defs>
+<!-- Functional equipment pictograms: illustrative only, not exact vendor geometry -->
+<use height="54" href="#picTx" width="40" x="196" y="8"></use><text class="svgEquipLabel" text-anchor="middle" x="216" y="69">DS-LIT-101</text>
+<use height="36" href="#picRack" width="42" x="258" y="13"></use>
+<use height="56" href="#picValve" width="62" x="535" y="326"></use><text class="svgEquipLabel" text-anchor="middle" x="566" y="389">DS-LV-101</text>
+<use height="42" href="#picTx" width="31" x="270" y="180"></use><use height="42" href="#picTx" width="31" x="300" y="180"></use><use height="42" href="#picTx" width="31" x="330" y="180"></use><text class="svgEquipLabel" text-anchor="middle" x="316" y="231">DS-LIT-102 A/B/C</text>
+<use height="48" href="#picRack" width="68" x="642" y="78"></use><text class="svgEquipLabel" text-anchor="middle" x="676" y="136">2oo3 / ESD</text>
+<use height="38" href="#picMotor" width="55" x="705" y="15"></use><text class="svgEquipSub" text-anchor="middle" x="733" y="61">POWER UNIT</text>
+<!-- Control measurement path: field LT -> DCS LIC -> LV -->
+<rect class="svgBox active" height="58" id="svgDcsBox" width="190" x="250" y="4"></rect>
+<text text-anchor="middle" x="365" y="21">DCS • DS-LIC-101</text><text class="small" id="svgDcsPv" text-anchor="middle" x="365" y="38">PV 650 • SP 650</text><text class="stateText normalText" id="svgDcsOut" text-anchor="middle" x="365" y="53">OUTPUT 50%</text>
+<path class="sigWire" d="M235 340 L235 76 L250 76 L250 33" id="svgControlIn" marker-end="url(#arrowGreen)"></path>
+<path class="sigWire" d="M440 33 L555 33 L555 365 L625 365" id="svgControlOut" marker-end="url(#arrowGreen)"></path>
+<circle class="pulse" id="svgCtrlPulse1" r="4"><animatemotion dur="1.8s" path="M235 340 L235 76 L250 76 L250 33" repeatcount="indefinite"></animatemotion></circle>
+<circle class="pulse" id="svgCtrlPulse2" r="4"><animatemotion dur="1.8s" path="M440 33 L555 33 L555 365 L625 365" repeatcount="indefinite"></animatemotion></circle>
+<text class="signalTitle" x="244" y="71">LEVEL PV</text><text class="signalTitle" x="475" y="27">CONTROL OUTPUT</text>
+<!-- Protection path: HH LTs -> ESD logic -> final elements. Kept separate from DCS. -->
+<rect class="svgBox" height="52" id="svgEsdBox" width="135" x="610" y="18"></rect>
+<text text-anchor="middle" x="677" y="34">ESD • 2oo3 LOGIC</text><text class="small" id="svgVoteState" text-anchor="middle" x="677" y="48">0/3 HH</text><text class="stateText normalText" id="svgEsdState" text-anchor="middle" x="677" y="61">CLEAR</text>
+<path class="sigWire inactive" d="M235 245 L270 245 L270 92 L610 92 L610 44" id="svgProtectIn"></path>
+<path class="sigWire inactive" d="M745 44 L780 44 L780 145 L150 145 L150 155" id="svgTripInlet"></path>
+<path class="sigWire inactive" d="M745 44 L780 44 L780 145 L827 145 L827 155" id="svgTripOutlet"></path>
+<path class="sigWire inactive" d="M745 44 L760 44 L760 64 L742 64" id="svgTripPower"></path>
+<circle class="pulse" id="svgProtPulse" r="4" style="display:none"><animatemotion dur="1.35s" path="M235 245 L270 245 L270 92 L610 92 L610 44" repeatcount="indefinite"></animatemotion></circle>
+<circle class="pulse trip" id="svgTripPulse" r="4" style="display:none"><animatemotion dur="1.1s" path="M745 44 L780 44 L780 145 L827 145 L827 155" repeatcount="indefinite"></animatemotion></circle>
+<text class="signalTitle" x="300" y="88">HH PROTECTION SIGNAL</text>
+</svg>
+<div class="tripStopNote">PROCESS FLOW ACTIVE</div>
+<div class="tag" style="left:18px;top:135px">CRUDE + WATER INLET</div><div class="pipe h" style="left:20px;top:165px;width:295px"></div><span class="flow" style="left:245px;top:153px">➜</span><i class="flowdot" style="left:52px;top:167px"></i><div class="valve equip" data-equip="inletSdv" id="inletSdv" style="left:125px;top:155px"></div><div class="tag" style="left:105px;top:188px">DS-SDV-101</div>
+<div class="vessel equip" data-equip="vessel" id="vessel"><div class="layer oil" id="oil"></div><div class="layer emul" id="emul"></div><div class="layer water" id="water"></div><div class="levelRef" data-ref-level="300"><span>300 LALL</span></div><div class="levelRef" data-ref-level="450"><span>450 LAL</span></div><div class="levelRef normal" data-ref-level="650"><span>650 NORMAL / SP</span></div><div class="levelRef high" data-ref-level="1500"><span>1500 LAH</span></div><div class="levelRef trip" data-ref-level="1700"><span>1700 LAHH • 2oo3</span></div><div class="ifaceLine" id="ifaceLine"></div><div class="currentLevelFlag" id="currentLevelFlag">PV 650 mm</div><div class="gridline" style="top:65px"></div><div class="gridline ground" style="top:105px"></div><div class="probe p1" title="GWR functional representation"></div><div class="probe p2" title="GWR functional representation"></div><div id="sparks"><span class="spark" style="position:absolute;left:130px;top:73px;color:#754dde;font-size:20px">ϟ</span><span class="spark" style="position:absolute;left:220px;top:80px;color:#754dde;font-size:20px">ϟ</span></div></div><div class="tag" style="left:465px;top:105px;font-size:16px">DS-V-101</div><div class="tag" style="left:452px;top:125px">1st Stage Desalter</div>
+<div class="pipe h" style="left:720px;top:165px;width:210px"></div><span class="flow" style="left:875px;top:153px">➜</span><i class="flowdot" style="left:735px;top:167px"></i><div class="valve equip" data-equip="outletSdv" id="outletSdv" style="left:805px;top:155px"></div><div class="tag" style="left:790px;top:188px">DS-SDV-102</div><div class="tag" style="left:905px;top:135px">OIL OUTLET</div>
+<div class="pipe v" style="left:505px;top:330px;height:72px"></div><i class="flowdot rev" style="left:507px;top:336px"></i><div class="pipe h" style="left:510px;top:392px;width:390px"></div><span class="flow" style="left:845px;top:380px">➜</span><div class="valve equip" data-equip="lv81" id="lv81" style="left:610px;top:382px"></div><div class="tag" style="left:585px;top:414px">DS-LV-101 • WATER OUTLET</div>
+<div class="tripBanner" id="tripBanner">DS-ESD-101 PROTECTION ACTIVE</div><div class="voteMini" id="voteMini"><span class="voteDot" id="vdA"></span><span class="voteDot" id="vdB"></span><span class="voteDot" id="vdC"></span> <span id="voteMiniTxt">0/3</span></div><div class="power equip" data-equip="power" id="power"><span class="lamp"></span><br/>DS-TR-101<br/><span class="muted">POWER UNIT</span></div>
+<div class="instrument equip" data-equip="ifaceProtect" style="left:185px;top:225px"><span class="lamp"></span><b>DS-LIT-102A/B/C</b><span class="muted">Interface HH • 2oo3</span><div class="pv"><span id="vote">0/3</span> vote</div></div>
+<div aria-label="Interface level control relationship" class="controlChain"><div class="controlNode" id="procLtNode"><b>DS-LIT-101</b><span id="procLtTxt">PV 650 mm</span></div><span class="controlArrow" id="procArrow1">→</span><div class="controlNode" id="procLicNode"><b>DS-LIC-101</b><span id="procLicTxt">AT SP</span></div><span class="controlArrow" id="procArrow2">→</span><div class="controlNode" id="procLvNode"><b>DS-LV-101</b><span id="procLvTxt">50% OPEN</span></div></div><div class="controlHint">PV above 650 mm → LIC output ↑ → LV opens further → water removal ↑</div><div class="instrument equip" data-equip="ifaceControl" style="left:185px;top:330px"><span class="lamp"></span><b>DS-LIT-101</b><span class="muted">Interface Level</span><div class="pv"><span id="level">650</span> mm</div></div><div class="valveStem"></div><div class="valveTravel"><i id="procValveTravel"></i></div><div class="valveTravelLabel" id="procValveTravelLabel">50%</div>
+</div></div></div><div class="card" style="margin-top:8px"><div class="ct">Live Signal Interpretation — Control &amp; Trip Flow</div><div class="signalFlowWrap"><div class="signalLegend"><span class="blue"><i></i>Control signal / action</span><span class="red"><i></i>Protection / trip path</span><span><i></i>Inactive path</span></div><div class="signalRows"><div class="signalRow"><div class="signalLabel">CONTROL PATH</div><div class="signalPath"><div class="sigNode" id="sfLevel"><b>INTERFACE</b><span id="sfLevelTxt">650 mm</span></div><span class="sigArrow" id="sfCA1">→</span><div class="sigNode" id="sfLit"><b>DS-LIT-101</b>PV measurement</div><span class="sigArrow" id="sfCA2">→</span><div class="sigNode" id="sfLic"><b>DS-LIC-101</b><span id="sfLicTxt">SP 650</span></div><span class="sigArrow" id="sfCA3">→</span><div class="sigNode" id="sfLv"><b>DS-LV-101</b><span id="sfLvTxt">50% OPEN</span></div><span class="sigArrow" id="sfCA4">→</span><div class="sigNode" id="sfWater"><b>WATER OUTLET</b>Removal response</div></div></div><div class="signalRow"><div class="signalLabel">PROTECTION PATH</div><div class="signalPath"><div class="sigNode" id="sfProtLevel"><b>INTERFACE</b><span id="sfProtLevelTxt">650 mm</span></div><span class="sigArrow" id="sfPA1">→</span><div class="sigNode" id="sfLits"><b>DS-LIT-102 A/B/C</b><span id="sfLitsTxt">0/3 HH</span></div><span class="sigArrow" id="sfPA2">→</span><div class="sigNode" id="sfVote"><b>2oo3 VOTE</b><span id="sfVoteTxt">NOT SATISFIED</span></div><span class="sigArrow" id="sfPA3">→</span><div class="sigNode" id="sfEsd"><b>DS-ESD-101</b><span id="sfEsdTxt">CLEAR</span></div><span class="sigArrow" id="sfPA4">→</span><div class="sigNode" id="sfEffects"><b>FINAL EFFECTS</b><span id="sfEffectsTxt">PU RUN • SDVs OPEN</span></div></div></div></div><div class="signalStatus" id="sfStatus">NORMAL — control loop maintaining interface around 650 mm; protection path clear.</div><div class="muted" style="margin-top:6px">Signal-flow animation is a training visualization. Verified engineering relationships are preserved; animation timing is a SIMULATION ASSUMPTION.</div></div></div></div>
+<aside><div class="card"><div class="ct">Live Status</div><div class="cb"><div class="alarmbar" id="state">NORMAL / READY</div><div class="statusrow"><span>DS-V-101 Power Unit</span><span class="pill" id="powertxt">RUN</span></div><div class="statusrow"><span>DS-SDV-101</span><span class="pill" id="inletSdvtxt">OPEN</span></div><div class="statusrow"><span>DS-SDV-102</span><span class="pill" id="outletSdvtxt">OPEN</span></div><div class="statusrow"><span>DS-ESD-101 Desalters Trip</span><span class="pill" id="triptxt">CLEAR</span></div></div></div>
+<div class="card" style="margin-top:8px"><div class="ct">Key Process Values</div><div class="cb values"><div>Interface Level (DS-LIT-101)</div><div class="v"><span id="level2">650</span> mm</div><div>DS-LIC-101 SP</div><div class="v">650 mm</div><div>DS-LIC-101 Output</div><div class="v"><span id="lvpos">50</span>%</div><div>2oo3 Interface HH Vote</div><div class="v" id="vote2">0/3</div></div><div class="channels"><div class="ch" id="ca"><b>DS-LIT-102A</b><br/><span id="a">650</span></div><div class="ch" id="cb"><b>DS-LIT-102B</b><br/><span id="b">650</span></div><div class="ch" id="cc"><b>DS-LIT-102C</b><br/><span id="c">650</span></div></div></div></aside></div>
+<div class="card" style="margin-top:8px"><div class="ct">Integrated Core Sequence — Training Reference</div><div class="cb"><b>650 NORMAL → 1500 LAH → 1700 LAHH → 2oo3 → DS-ESD-101 → POWER TRIP + BOTH SDVs CLOSE</b><div class="muted" style="margin-top:4px">PROCESS, DCS and ESD/C&amp;E views use the same live interface level, LT channel values, vote state and protection outcome. LIT-0083 total-liquid LL has a separate 1oo1 C&amp;E relationship; no total-level dynamics or trip delay are modeled. Dynamic timing is a SIMULATION ASSUMPTION.</div></div></div><div class="lower"><div class="card"><div class="ct">Interface Level Trend — DS-LIT-101</div><div class="cb trendwrap"><canvas height="170" id="trend" style="width:100%;height:160px" width="900"></canvas><div class="muted">Verified thresholds: LALL 300 • LAL 450 • NLL 650 • LAH 1500 • LAHH 1700 mm.</div></div></div><div class="card"><div class="ct">Alarms &amp; Events (SOE)</div><div class="cb"><div class="actions" style="margin-bottom:5px"><button class="btn" id="ackBtn">Acknowledge Visible Alarm</button></div><div class="alarmLegend"><span>Normal</span><span class="al">Unacknowledged</span><span class="ak">Acknowledged active</span></div><div class="eventlog" id="log"></div></div></div></div>
+<div class="bottom"><div class="card"><div class="ct">Control Loops</div><div class="cb"><table class="table"><tr><th>Loop</th><th>PV</th><th>SP</th><th>Output</th><th>Mode</th></tr><tr><td>DS-LIC-101</td><td><span id="loopPV">650</span> mm</td><td>650 mm</td><td><span id="loopOut">50</span>%</td><td>AUTO</td></tr></table></div></div><div class="card"><div class="ct">First Stage Protection Logic — DS-ESD-101</div><div class="cb"><table class="table"><tr><th>Initiator</th><th>Voting</th><th>Verified first-stage action</th></tr><tr><td>DS-LIT-102A/B/C HH</td><td>2oo3</td><td>PU trip + both SDVs close</td></tr><tr><td>DS-HS-101A/B/C Manual ESD</td><td>1oo1 each</td><td>PU trip + both SDVs close</td></tr><tr><td>DS-INTLK-101 Unit Shutdown</td><td>Interlock</td><td>Both SDVs close; first-stage PU trip is not marked in this C&amp;E row</td></tr></table><div class="muted" style="margin-top:5px">VERIFIED from the first-stage desalter trip C&amp;E matrix. Total-liquid LL, PU oil LL and PU current HH trip the first-stage power unit only; they do not close these SDVs in the verified row alignment.</div></div></div><div class="card"><div class="ct">Diagnostics &amp; Training</div><div class="cb"><div class="statusrow"><span>C&amp;E engine</span><span class="pass">SDV PATHS VERIFIED</span></div><div class="statusrow"><span>Reset philosophy</span><span>UNRESOLVED</span></div><div class="statusrow"><span>UI / training engine</span><span class="pass">CORE TRAINING • S01–S02</span></div></div></div></div>
+</section><section class="view" id="dcsView"><div class="dcsgrid"><div class="card"><div class="ct">DCS Loop Faceplate — DS-LIC-101</div><div class="loopfp"><div class="loophead"><div><div class="loopname">Interface Level Control</div><div class="muted">DS-LIT-101 → DS-LIC-101 → DS-LV-101</div></div><div class="modechip">AUTO — DISPLAY ONLY</div></div><div class="barrow"><b>PV</b><div class="barbox"><div class="barfill" id="dcsPvBar"></div></div><div class="barvalue" id="dcsPv">650 mm</div></div><div class="barrow"><b>SP</b><div class="barbox"><div class="barfill dev" id="dcsSpBar"></div></div><div class="barvalue">650 mm</div></div><div class="barrow"><b>OUT</b><div class="barbox"><div class="barfill out" id="dcsOutBar"></div></div><div class="barvalue" id="dcsOut">50%</div></div><div class="loopdiagram"><span>DS-LIT-101<br/><small>PV</small></span><span class="arrow">→</span><span>DS-LIC-101<br/><small>SP 650 mm</small></span><span class="arrow">→</span><span>DS-LV-101<br/><small id="dcsValve">50%</small></span></div><div aria-label="Core level and ESD sequence" class="coreflow"><div class="corestep ok" id="seqPv"><b>1 • LEVEL / LT</b><span id="seqPvTxt">650 mm</span></div><div class="corestep ok" id="seqCtrl"><b>2 • LIC-101</b><span id="seqCtrlTxt">AT SP</span></div><div class="corestep ok" id="seqValve"><b>3 • LV-101</b><span id="seqValveTxt">50%</span></div><div class="corestep" id="seqAlarm"><b>4 • ALARM</b><span id="seqAlarmTxt">CLEAR</span></div><div class="corestep" id="seqVote"><b>5 • HH VOTE</b><span id="seqVoteTxt">0/3</span></div><div class="corestep" id="seqEsd"><b>6 • ESD EFFECT</b><span id="seqEsdTxt">CLEAR</span></div></div><div class="dcsalarms"><div class="ann" id="dcsLall">LALL<br/>300 mm</div><div class="ann" id="dcsLal">LAL<br/>450 mm</div><div class="ann" id="dcsLah">LAH<br/>1500 mm</div><div class="ann" id="dcsLahh">LAHH<br/>1700 mm</div></div><div class="alarmTransition"><div class="alarmStage lah" id="lahStage"><b>1500 mm • LAH</b><div class="bigstate" id="lahStageState">CLEAR</div><div class="alarmRule alarmonly">ALARM ONLY • NO 2oo3 ESD</div></div><div class="alarmArrow">→</div><div class="alarmStage lahh" id="lahhStage"><b>1700 mm • LAHH</b><div class="bigstate" id="lahhStageState">CLEAR</div><div class="alarmRule esdrule">HH CHANNELS → 2oo3 → ESD</div></div></div><div class="dcsnote"><b>Control actions intentionally locked.</b> SP writing, MAN/AUTO transfer and direct DS-LV-101 commands are not enabled until the plant operating/control philosophy is verified. The displayed controller output dynamics are a <b>SIMULATION ASSUMPTION</b>.</div></div></div><div><div class="card"><div class="ct">Loop / Equipment Status</div><div class="cb dcsstate"><div>Interface state<strong class="good" id="dcsLevelState">NORMAL</strong></div><div>DS-LV-101 command<strong id="dcsValveState">50%</strong></div><div>DS-TR-101<strong class="good" id="dcsPowerState">RUN</strong></div><div>DS-ESD-101<strong class="good" id="dcsTripState">CLEAR</strong></div><div>DS-SDV-101<strong class="good" id="dcsUv81">OPEN</strong></div><div>DS-SDV-102<strong class="good" id="dcsUv82">OPEN</strong></div></div><div class="corelogic"><div class="row"><span>Protection channels HH</span><strong id="dcsVoteDetail">0 / 3</strong></div><div class="row"><span>2oo3 vote</span><strong class="good" id="dcsVoteState">NOT SATISFIED</strong></div><div class="row"><span>Verified ESD effects</span><strong class="good" id="dcsEffectState">NONE</strong></div></div></div><div class="card" style="margin-top:8px"><div class="ct">Operator / Engineering Boundary</div><div class="cb"><p><b>VERIFIED:</b> 650 mm SP and direct action: rising interface causes DS-LV-101 to open further.</p><p><b>DISPLAY ONLY:</b> AUTO mode indication in this training faceplate.</p><p><b>UNRESOLVED:</b> operator SP permissions, MAN/AUTO transfer philosophy, manual output operation and bumpless-transfer behavior.</p><button class="btn" onclick="openEquip('ifaceControl')">Open detailed loop faceplate</button></div></div><div class="card" style="margin-top:8px"><div class="ct">Protection Channel Diagnostics — Training Aid</div><div class="cb"><div class="values"><div>DS-LIT-102A</div><div class="v" id="diagA">650 mm</div><div>DS-LIT-102B</div><div class="v" id="diagB">650 mm</div><div>DS-LIT-102C</div><div class="v" id="diagC">650 mm</div><div>Channel spread</div><div class="v" id="diagSpread">0 mm</div><div>HH vote</div><div class="v" id="diagVote">0/3</div><div>Diagnostic interpretation</div><div class="v" id="diagState">CHANNELS CONSISTENT</div></div><button class="btn" id="inspectProtection" onclick="openEquip('ifaceProtect')">Inspect Protection Channels</button><p class="muted"><b>SIMULATION DIAGNOSTIC:</b> channel spread and the text interpretation are training aids derived from the three simulated values. They are not claimed as plant alarms, transmitter diagnostics, or maintenance limits.</p></div></div></div></div></section><section class="view" id="esdView"><div class="card"><div class="ct">ESD / Cause &amp; Effect — Verified First-Stage SDV Closing Paths</div><div class="ceflow"><div class="celegend"><span><i class="cedot"></i> Normal / clear</span><span><i class="cedot active"></i> HH / active path</span><span><b>2oo3</b> any two of three protection LTs required</span></div><div class="cegrid"><div class="cecol"><div class="cenode" id="ceChA"><b>DS-LIT-102A</b><small>Interface HH protection channel A</small><div class="cepath" id="ceChAState">NORMAL</div></div><div class="cenode" id="ceChB"><b>DS-LIT-102B</b><small>Interface HH protection channel B</small><div class="cepath" id="ceChBState">NORMAL</div></div><div class="cenode" id="ceChC"><b>DS-LIT-102C</b><small>Interface HH protection channel C</small><div class="cepath" id="ceChCState">NORMAL</div></div></div><div class="cewire" id="ceWireIn"><span>→</span></div><div class="celogic" id="ceLogic">2oo3 VOTE<br/><small id="ceVoteState">0/3 HH — NOT SATISFIED</small><hr style="border:0;border-top:1px solid #8ea2b8;margin:8px 0"/>DS-ESD-101<br/><small id="ceLogicState">CLEAR</small></div><div class="cewire" id="ceWireOut"><span>→</span></div><div class="cecol ceeffects"><div class="cenode" id="cePower"><b>DS-TR-101</b><small>POWER UNIT</small><div class="cepath" id="cePowerState">RUN</div></div><div class="cenode" id="ceInlet"><b>DS-SDV-101</b><small>INLET SHUTDOWN VALVE</small><div class="cepath" id="ceInletState">OPEN</div></div><div class="cenode" id="ceOutlet"><b>DS-SDV-102</b><small>OUTLET SHUTDOWN VALVE</small><div class="cepath" id="ceOutletState">OPEN</div></div></div></div><div class="esdStageNote" id="ceStageNote">STAGE 0 • NORMAL — HH vote not satisfied</div><div class="cefoot"><b>Interface-HH path:</b> 1700 mm HH → any 2 of 3 protection channels → DS-ESD-101 → first-stage power unit trip + both shutdown valves close. <b>Other VERIFIED SDV-closing causes:</b> each manual ESD handswitch (1oo1) and the Unit Shutdown Interlock. Unit Shutdown closes both SDVs but the first-stage power-unit trip column is not marked in that row. Plant reset/latching remains <b>UNRESOLVED — SOURCE DOCUMENT REQUIRES VERIFICATION</b>.</div></div></div><div class="card" style="margin-top:8px"><div class="ct">Verified First-Stage SDV Closing Cause Matrix</div><div class="cb"><div class="alarmbar" id="ceActiveCause">NO ACTIVE INITIATOR</div><table class="table"><tr><th>Simulator initiator</th><th>Voting / type</th><th>First-stage PU</th><th>DS-SDV-101</th><th>DS-SDV-102</th></tr><tr><td>DS-LIT-102A/B/C HH</td><td>2oo3</td><td>TRIP</td><td>CLOSE</td><td>CLOSE</td></tr><tr><td>DS-HS-101A Manual ESD — Control Room</td><td>1oo1</td><td>TRIP</td><td>CLOSE</td><td>CLOSE</td></tr><tr><td>DS-HS-101B Manual ESD — LCS</td><td>1oo1</td><td>TRIP</td><td>CLOSE</td><td>CLOSE</td></tr><tr><td>DS-HS-101C Manual ESD — Local</td><td>1oo1</td><td>TRIP</td><td>CLOSE</td><td>CLOSE</td></tr><tr><td>DS-INTLK-101 Unit Shutdown Interlock</td><td>Interlock</td><td>NO MARK IN VERIFIED ROW</td><td>CLOSE</td><td>CLOSE</td></tr></table><div class="muted">Training identifiers only — not plant tags. Matrix alignment visually verified on the first-stage desalter trip C&amp;E page.</div></div></div></section><section class="view" id="trendsView"><div class="card"><div class="ct">Trends</div><div class="cb"><p><b>Interface Level — DS-LIT-101</b></p><canvas height="360" id="trendLarge" style="width:100%;height:360px;border:1px solid #d7e4ec;background:#fff" width="1100"></canvas><p class="muted">Trend history is simulator-generated. Engineering alarm/reference levels use verified values where shown.</p></div></div></section><section class="view" id="alarmsView"><div class="card"><div class="ct">Alarms &amp; Sequence of Events</div><div class="cb"><div class="eventlog" id="logMirror" style="height:520px"></div></div></div></section><section class="view" id="trainingView"><div class="card"><div class="ct">Training — Scenario Engine</div><div class="cb"><div class="alarmbar" id="scenarioBanner">READY — no scenario active</div><p><b>Hidden-fault exercise:</b> start one unknown first-stage scenario, then investigate using Process, DCS, Trends, Alarms/SOE and ESD/C&amp;E. The initiating scenario identity is withheld until the exercise is complete.</p><div class="actions"><button class="btn green" id="hiddenScenarioStart">▶ Start Hidden Scenario</button><button class="btn" disabled="" id="scenarioStabilizeBtn">Apply Training Stabilization</button></div><div style="margin-top:12px"><b>Diagnosis</b><div class="actions" style="margin-top:6px"><button class="btn diagBtn" data-diag="interface">High interface developing</button><button class="btn diagBtn" data-diag="instrument">Single protection-channel disagreement</button></div></div><div class="src" id="scenarioResult" style="margin-top:12px"><b>Training status</b><br/>Start the scenario when ready. No initiating fault will be displayed.</div><div class="actions" style="margin-top:10px"><button class="btn" id="scenarioDebriefBtn" style="display:none">Reveal Scenario Debrief</button><button class="btn" id="scenarioReplayBtn" style="display:none">Reset for Next Exercise</button></div><div class="src" id="scenarioDebrief" style="display:none;margin-top:10px"></div><div class="card" style="margin-top:10px;box-shadow:none"><div class="ct">Training Evidence &amp; Score</div><div class="cb"><div class="values"><div>Evidence views inspected</div><div class="v" id="scenarioEvidence">0/5</div><div>Diagnosis attempts</div><div class="v" id="scenarioAttempts">0</div><div>Training score</div><div class="v" id="scenarioScore">—</div></div><p class="muted">Score is a <b>SIMULATION ASSUMPTION</b>. Core scenarios: evidence 25, diagnosis 45, stabilization 20, recovery 10. Incorrect diagnoses reduce the score. It is not a plant competency standard.</p></div></div><p class="muted"><b>SIMULATION ASSUMPTION:</b> disturbance rate, scenario timing, training stabilization action and scoring logic. Scenario disturbances, timing, stabilization actions and scoring are training constructs; they do not claim plant-specific root causes or operating procedures.</p><p class="muted">Training Reset is a simulator function and is not claimed as plant ESD reset logic.</p></div></div></section></main></div>
+<div class="modalback" id="modalback"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modalhead"><span id="modalTitle">Equipment</span><button class="close" id="modalClose" aria-label="Close equipment dialog">×</button></div><div class="modalbody"><div class="tabs"><button class="tab" data-tab="overview">Overview</button><button class="tab" data-tab="logic">Control / Logic</button></div><div id="modalContent"></div></div></div></div>
+<script>
+const ENG={sp:650,lah:1500,lahh:1700,lal:450,lall:300,top:3800,voting:{required:2,total:3}};
+const SIM={tickMs:250,disturbanceRise:8.5,controllerGain:0.035,controllerResponse:0.045,nominalOutput:50,channelOffsets:[0,0,0],trainingChannelBias:1200};
+// Core training instrument-disagreement layer. Fault magnitude is a SIMULATION ASSUMPTION and remains separate from process state and C&E definitions.
+const INSTRUMENT_FAULT_CONTRACT={processStateIndependent:true,ceMapImmutable:true,trainingFaultsAreAssumptions:true,plantDiagnosticsClaimed:false,supportedTargets:['DS-LIT-102A','DS-LIT-102B','DS-LIT-102C'],supportedBehaviors:['BIAS_HIGH']};
+
+// Core deterministic C&E definition. Effects are limited to visually/source-verified first-stage actions.
+const CE={
+ IFACE_HH_2OO3:{label:'DS-LIT-102A/B/C HH',voting:'2oo3',effects:['POWER_TRIP','INLET_SDV_CLOSE','OUTLET_SDV_CLOSE'],source:'First-stage desalter trip C&E row 1'},
+ TOTAL_LEVEL_LL_1OO1:{label:'LIT-0083 Total Liquid Level LL',voting:'1oo1',effects:['POWER_TRIP'],source:'U-0001 C&E row 2'},
+ PU_CURRENT_HH_1OO1:{label:'IT-9500 Power Unit Current HH',voting:'1oo1',effects:['POWER_TRIP'],source:'U-0001 C&E — verified power-unit-trip-only path'},
+ PU_OIL_LEVEL_LL_1OO1:{label:'LSLL-9500 Power Unit Oil Level LL',voting:'1oo1',effects:['POWER_TRIP'],source:'U-0001 C&E — verified power-unit-trip-only path'},
+ MANUAL_ESD_CR:{label:'DS-HS-101A Manual ESD — Control Room',voting:'1oo1',effects:['POWER_TRIP','INLET_SDV_CLOSE','OUTLET_SDV_CLOSE'],source:'First-stage desalter trip C&E row 11'},
+ MANUAL_ESD_LCS:{label:'DS-HS-101B Manual ESD — LCS',voting:'1oo1',effects:['POWER_TRIP','INLET_SDV_CLOSE','OUTLET_SDV_CLOSE'],source:'First-stage desalter trip C&E row 12'},
+ MANUAL_ESD_LOCAL:{label:'DS-HS-101C Manual ESD — Local',voting:'1oo1',effects:['POWER_TRIP','INLET_SDV_CLOSE','OUTLET_SDV_CLOSE'],source:'First-stage desalter trip C&E row 10'},
+ UNIT_SHUTDOWN:{label:'DS-INTLK-101 Unit Shutdown Interlock',voting:'Interlock',effects:['INLET_SDV_CLOSE','OUTLET_SDV_CLOSE'],source:'First-stage desalter trip C&E row 14'}
+};
+const S={running:false,fault:false,tripped:false,powerTrip:false,uvClosed:false,tripCause:'',lah:false,level:ENG.sp,lv:SIM.nominalOutput,t:0,history:[ENG.sp],elapsedMs:0,mode:'normal',alarmAck:false,prevUvClosed:false,scenario:{active:false,id:'',diagnosis:'',diagnosed:false,stabilized:false,outcome:'',startMs:0,attempts:0,wrongAttempts:0,visited:[],score:null,debrief:false,investigation:{selected:'A',compare:[],history:[],voteSoe:false}},channelBias:[0,0,0],instrumentFaults:{},channelHistory:[[ENG.sp],[ENG.sp],[ENG.sp]],refHistory:[ENG.sp]};
+const $=id=>document.getElementById(id);
+function fmt(ms){const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000),x=ms%1000;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(x).padStart(3,'0')}
+function log(msg){const txt=fmt(S.elapsedMs)+'  '+msg;const d=document.createElement('div');d.className='event';d.textContent=txt;$('log').prepend(d);const m=$('logMirror');if(m){const x=document.createElement('div');x.className='event';x.textContent=txt;m.prepend(x)}}
+function reset(){
+ const keepMode=S.mode;Object.assign(S,{running:false,fault:false,tripped:false,powerTrip:false,uvClosed:false,tripCause:'',lah:false,level:ENG.sp,lv:SIM.nominalOutput,t:0,history:[ENG.sp],elapsedMs:0,mode:keepMode,alarmAck:false,prevUvClosed:false,scenario:{active:false,id:'',diagnosis:'',diagnosed:false,stabilized:false,outcome:'',startMs:0,attempts:0,wrongAttempts:0,visited:[],score:null,debrief:false,investigation:{selected:'A',compare:[],history:[],voteSoe:false}},channelBias:[0,0,0],instrumentFaults:{},channelHistory:[[ENG.sp],[ENG.sp],[ENG.sp]],refHistory:[ENG.sp]});
+ $('log').innerHTML='';if($('logMirror'))$('logMirror').innerHTML=''; log('CORE TRAINING RESET — simulator returned to normal initial state. Reset/latching is not claimed as plant logic.'); render();
+}
+function start(){if(S.tripped)return;S.running=true;log('Simulation started — normal interface control active.');render()}
+function normal(){
+ // Operator-facing clean return to the simulator normal state. This is a simulator reset, not plant reset logic.
+ reset();
+ S.mode='normal';S.running=true;
+ document.querySelectorAll('.mode[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode==='normal'));
+ log('NORMAL OPERATION — training disturbance, channel bias and simulator trip state cleared; interface restored to 650 mm.');
+ render();
+}
+function voteTrip(states){return states.filter(Boolean).length>=ENG.voting.required}
+function instrumentFaultOffset(i){const tag=INSTRUMENT_FAULT_CONTRACT.supportedTargets[i],f=S.instrumentFaults[tag];return f&&f.active&&INSTRUMENT_FAULT_CONTRACT.supportedBehaviors.includes(f.type)?Number(f.magnitude)||0:0}
+function setInstrumentFault(tag,type='BIAS_HIGH',magnitude=0){if(!INSTRUMENT_FAULT_CONTRACT.supportedTargets.includes(tag))throw new Error('Unsupported instrument-fault target '+tag);if(type!=='BIAS_HIGH')throw new Error('Unsupported instrument-fault behavior '+type);S.instrumentFaults[tag]={active:true,type:'BIAS_HIGH',magnitude:Math.abs(Number(magnitude)||0)};}
+function clearInstrumentFault(tag){if(tag)delete S.instrumentFaults[tag];else S.instrumentFaults={};}
+function channelValues(){return SIM.channelOffsets.map((x,i)=>Math.round(S.level+x+(S.channelBias[i]||0)+instrumentFaultOffset(i)))}
+function channelDiagnostic(vals=channelValues()){const spread=Math.max(...vals)-Math.min(...vals),hh=vals.map(v=>v>=ENG.lahh),votes=hh.filter(Boolean).length;return{spread,votes,state:votes===1?'SINGLE-CHANNEL DISAGREEMENT':votes>=2?'MULTIPLE HH CHANNELS / VOTE SATISFIED':spread>100?'CHANNEL DISAGREEMENT':'CHANNELS CONSISTENT'}}
+function channels(){return channelValues().map(v=>v>=ENG.lahh)}
+function applyEffects(effects){
+ if(effects.includes('POWER_TRIP'))S.powerTrip=true;
+ if(effects.includes('INLET_SDV_CLOSE')||effects.includes('OUTLET_SDV_CLOSE'))S.uvClosed=true;
+}
+function initiate(key){
+ if(S.tripped)return false;
+ const def=CE[key]; if(!def)throw new Error('Unknown C&E initiator '+key);
+ S.tripped=true;S.tripCause=def.label;S.fault=false;S.running=false;applyEffects(def.effects);
+ log('C&E protective initiator asserted — '+def.label+' ('+def.voting+').');
+ def.effects.forEach(e=>log('C&E EFFECT — '+({POWER_TRIP:'DS-TR-101 power unit TRIP',INLET_SDV_CLOSE:'DS-SDV-101 CLOSE',OUTLET_SDV_CLOSE:'DS-SDV-102 CLOSE'}[e])));
+ return true;
+}
+function interfaceTrip(){initiate('IFACE_HH_2OO3')}
+function startHiddenTrainingScenario(){const ids=['CORE-S01','CORE-S02'];startTrainingScenario(ids[Math.floor(Math.random()*ids.length)])}
+function startTrainingScenario(id='CORE-S01'){
+ if(S.mode!=='training'||S.scenario.active||S.tripped)return;
+ reset(); S.mode='training'; S.running=true;
+ if(id==='CORE-S02'){S.fault=false;setInstrumentFault('DS-LIT-102A','BIAS_HIGH',SIM.trainingChannelBias);}
+ else {id='CORE-S01';S.fault=true;}
+ S.scenario={active:true,id,diagnosis:'',diagnosed:false,stabilized:false,outcome:'',startMs:S.elapsedMs,attempts:0,wrongAttempts:0,visited:['trainingView'],score:null,debrief:false,investigation:{selected:'A',compare:[],history:[],voteSoe:false}};
+ log('TRAINING SCENARIO STARTED — initiating condition hidden.');
+ render();
+}
+function submitDiagnosis(choice){
+ if(S.mode!=='training'||!S.scenario.active||S.scenario.outcome)return;
+ S.scenario.diagnosis=choice; S.scenario.attempts++; const key=S.scenario.id==='CORE-S02'?'instrument':'interface'; S.scenario.diagnosed=choice===key; if(!S.scenario.diagnosed)S.scenario.wrongAttempts++;
+ log('TRAINEE DIAGNOSIS submitted — '+(S.scenario.diagnosed?'condition correctly identified':'diagnosis not confirmed'));
+
+ render();
+}
+function stabilizeTrainingScenario(){
+ if(S.mode!=='training'||!S.scenario.active||S.scenario.outcome||!S.scenario.diagnosed||S.tripped)return;
+ if(S.scenario.id==='CORE-S02')clearInstrumentFault('DS-LIT-102A');else S.fault=false; S.scenario.stabilized=true; S.scenario.outcome='RECOVERING';
+ log('TRAINING ACTION — simulator stabilization applied. This is not a plant operating procedure.'); render();
+}
+
+function scenarioDebriefHtml(sc){
+ if(!sc||!sc.id||!sc.outcome)return '';
+ const evidence=(sc.visited||[]).filter(v=>['processView','dcsView','trendsView','alarmsView','esdView'].includes(v)).map(v=>v.replace('View','').toUpperCase());
+ const trainee=sc.diagnosis?({interface:'High interface developing',instrument:'Single protection-channel disagreement'}[sc.diagnosis]||sc.diagnosis):'No diagnosis submitted';
+ let actual='',path='',why='';
+ if(sc.id==='CORE-S01'){
+   actual='A simulator-generated rising interface disturbance.';
+   path='Interface rises → DS-LIT-102A/B/C reach HH → 2oo3 vote → DS-ESD-101 → DS-TR-101 trip + DS-SDV-101 close + DS-SDV-102 close.';
+   why=sc.outcome==='RECOVERED'?'The trainee identified the developing high interface and applied the simulator-only stabilization before the verified protective trip condition was reached.':'The interface disturbance progressed until the 2oo3 HH condition initiated the verified protective trip path.';
+ }else{
+   actual='A simulator-generated disagreement on one interface-protection channel while the vessel interface remained near the normal reference.';
+   path='One DS-LIT-102 channel HH → 1/3 vote only → 2oo3 NOT satisfied → DS-ESD-101 remains clear.';
+   why='The key diagnostic clue is disagreement between one protection channel and the independent process/interface indication. A single HH channel alone does not satisfy the verified 2oo3 vote.';
+ }
+ return `<div class="fpSection">Scenario Debrief — revealed after completion</div><div class="kv"><div><b>Actual condition</b><br>${actual}</div><div><b>Trainee diagnosis</b><br>${trainee}${sc.diagnosed?' — CORRECT':' — NOT CONFIRMED'}</div><div><b>Outcome</b><br>${sc.outcome}</div><div><b>Score</b><br>${sc.score===null?scenarioScore(sc):sc.score}/100 — SIMULATION ASSUMPTION</div><div><b>Evidence inspected</b><br>${evidence.length?evidence.join(', '):'None recorded'}</div><div><b>Diagnosis attempts</b><br>${sc.attempts||0} (${sc.wrongAttempts||0} incorrect)</div></div><div class="fpSection">Protection / logic path</div><div class="src">${path}</div><div class="fpSection">Why this outcome occurred</div><div class="src">${why}</div><div class="src warn"><b>Training boundary:</b> hidden disturbance timing, stabilization action and score are SIMULATION ASSUMPTION. This debrief does not create a plant operating procedure. Unverified ESD reset/latching/restart behavior remains UNRESOLVED.</div>`;
+}
+function revealScenarioDebrief(){if(S.mode!=='training'||!S.scenario.outcome)return;S.scenario.debrief=true;log('TRAINING DEBRIEF — scenario identity and logic path revealed after exercise completion.');render();}
+function replayTraining(){if(S.mode!=='training')return;reset();S.mode='training';render();}
+
+function scenarioScore(sc){
+ const evidence=Math.min(5,(sc.visited||[]).filter(v=>['processView','dcsView','trendsView','alarmsView','esdView'].includes(v)).length)*5;
+ const penalty=Math.min(30,(sc.wrongAttempts||0)*10);
+ const diagnosis=sc.diagnosed?45:0, action=sc.stabilized?20:0, outcome=sc.outcome==='RECOVERED'?10:0;
+ return Math.max(0,Math.min(100,evidence+diagnosis+action+outcome-penalty));
+}
+function recordScenarioView(view){if(S.mode==='training'&&S.scenario.id&&!S.scenario.outcome&&['processView','dcsView','trendsView','alarmsView','esdView'].includes(view)&&!S.scenario.visited.includes(view)){S.scenario.visited.push(view);log('TRAINING EVIDENCE — '+view.replace('View','')+' view inspected.');}}
+function updateScenario(){
+ if(!S.scenario.active)return;
+ if(S.tripped&&!S.scenario.outcome){S.scenario.outcome='TRIPPED';S.scenario.active=false;S.scenario.score=scenarioScore(S.scenario);log('TRAINING OUTCOME — protective trip occurred before recovery. Score '+S.scenario.score+'/100.');}
+ const recovered=S.scenario.id==='CORE-S02'?Object.keys(S.instrumentFaults).length===0:Math.abs(S.level-ENG.sp)<35;
+ if(S.scenario.stabilized&&!S.tripped&&recovered&&S.scenario.outcome!=='RECOVERED'){S.scenario.outcome='RECOVERED';S.scenario.active=false;S.scenario.score=scenarioScore(S.scenario);const msg=S.scenario.id==='CORE-S02'?'single-channel disagreement cleared without satisfying 2oo3 protection':'interface returned to the normal training band';log('TRAINING OUTCOME — '+msg+'. Score '+S.scenario.score+'/100.');}
+}
+
+function tick(){
+ if(!S.tripped && S.running){
+   const err=S.level-ENG.sp;
+   S.lv=Math.max(5,Math.min(100,SIM.nominalOutput+err*SIM.controllerGain));
+   // Core control model: direct action is source-supported; response dynamics are SIMULATION ASSUMPTION.
+   if(S.fault) S.level+=SIM.disturbanceRise-Math.max(0,S.lv-SIM.nominalOutput)*0.025;
+   else S.level+=(ENG.sp-S.level)*SIM.controllerResponse;
+   S.elapsedMs+=SIM.tickMs;S.level=Math.max(0,Math.min(2000,S.level));S.t++;
+   if(S.t%3===0){S.history.push(S.level);if(S.history.length>180)S.history.shift();const cv=channelValues();S.refHistory.push(Math.round(S.level));if(S.refHistory.length>90)S.refHistory.shift();cv.forEach((v,i)=>{S.channelHistory[i].push(v);if(S.channelHistory[i].length>90)S.channelHistory[i].shift()})}
+   if(S.level>=ENG.lah && !S.lah){S.lah=true;log('Interface LAH reached: '+ENG.lah+' mm.')}
+ } updateScenario(); render();
+}
+function render(){
+ const vals=channelValues();const hh=vals.map(v=>v>=ENG.lahh),votes=hh.filter(Boolean).length;
+ if(voteTrip(hh)&&!S.tripped)interfaceTrip();
+ $('level').textContent=Math.round(S.level);$('level2').textContent=Math.round(S.level);$('loopPV').textContent=Math.round(S.level);$('lvpos').textContent=Math.round(S.lv);$('loopOut').textContent=Math.round(S.lv);$('vote').textContent=votes+'/3';$('vote2').textContent=votes+'/3';
+ ['a','b','c'].forEach((id,i)=>{$(id).textContent=vals[i];$('c'+id).classList.toggle('hh',hh[i])});
+ $('inletSdv').classList.toggle('closed',S.uvClosed);$('outletSdv').classList.toggle('closed',S.uvClosed);$('inletSdvtxt').textContent=S.uvClosed?'CLOSED':'OPEN';$('outletSdvtxt').textContent=S.uvClosed?'CLOSED':'OPEN'; if(S.uvClosed&&!S.prevUvClosed){$('inletSdv').classList.add('travel');$('outletSdv').classList.add('travel');setTimeout(()=>{$('inletSdv').classList.remove('travel');$('outletSdv').classList.remove('travel')},650)} S.prevUvClosed=S.uvClosed;
+ const tb=$('tripBanner');
+ if(tb){
+   tb.classList.toggle('show',S.tripped);
+   if(S.tripped){
+     const ifaceCause=S.tripCause.includes('LIT-102A/B/C HH');
+     const fxText=(S.powerTrip?'POWER TRIPPED':'POWER UNIT RUN')+' • '+(S.uvClosed?'BOTH SDVs CLOSED':'SDVs REMAIN OPEN');
+     tb.textContent=ifaceCause
+       ? '1700 LAHH • 2oo3 SATISFIED • ESD ACTIVE • POWER TRIPPED • BOTH SDVs CLOSED'
+       : S.tripCause.toUpperCase()+' • PROTECTION ACTIVE • '+fxText;
+   }else tb.textContent='DS-ESD-101 PROTECTION ACTIVE';
+ }
+ $('powertxt').textContent=S.powerTrip?'TRIPPED':'RUN';$('triptxt').textContent=S.tripped?'INITIATED':'CLEAR';
+ $('power').classList.toggle('off',S.powerTrip);$('sparks').style.display=S.powerTrip?'none':'block';$('readyBadge').textContent=S.tripped?'TRIPPED':S.running?'PLANT ONLINE':'READY';['powertxt','inletSdvtxt','outletSdvtxt','triptxt'].forEach(id=>$(id).classList.toggle('trip',(id==='powertxt'&&S.powerTrip)||(id==='triptxt'&&S.tripped)||((id==='inletSdvtxt'||id==='outletSdvtxt')&&S.uvClosed)));
+ const st=$('state');const activeAlarm=S.tripped||S.level>=ENG.lah;st.className='alarmbar'+(S.tripped?' trip':S.level>=ENG.lah?' warnstate':'')+(activeAlarm&&!S.alarmAck?' unack':'')+(activeAlarm&&S.alarmAck?' ack':'');st.textContent=S.tripped?('PROTECTION ACTIVE — '+S.tripCause):S.level>=1500?'HIGH INTERFACE — INVESTIGATE':S.running?'NORMAL OPERATION':'NORMAL / READY'; const ifaceProtectLamp=document.querySelector('[data-equip="ifaceProtect"] .lamp');if(ifaceProtectLamp){ifaceProtectLamp.classList.toggle('alarm',voteTrip(hh)&&!S.alarmAck);ifaceProtectLamp.classList.toggle('vote',hh.some(Boolean)&&!voteTrip(hh));} const pLamp=document.querySelector('#power .lamp');if(pLamp)pLamp.classList.toggle('alarm',S.powerTrip&&!S.alarmAck);
+ const h=231,waterH=Math.min(h,S.level/ENG.top*h),emulH=25,oilH=Math.max(0,h-waterH);$('water').style.height=waterH+'px';$('emul').style.height=emulH+'px';$('emul').style.bottom=Math.max(0,waterH-emulH/2)+'px';$('oil').style.height=oilH+'px';$('oil').style.bottom=waterH+'px';$('ifaceLine').style.bottom=waterH+'px';document.querySelectorAll('.levelRef[data-ref-level]').forEach(el=>{el.style.bottom=(Number(el.dataset.refLevel)/ENG.top*h)+'px'});if($('currentLevelFlag')){$('currentLevelFlag').style.bottom=Math.min(h,waterH)+'px';$('currentLevelFlag').textContent='PV '+Math.round(S.level)+' mm';} const vstate=S.level>=ENG.lahh?'trip':S.level>=ENG.lah?'high':S.level<=ENG.lal?'low':'normal'; $('vessel').classList.remove('state-normal','state-low','state-high','state-trip'); $('vessel').classList.add('state-'+vstate); if($('currentLevelFlag')){$('currentLevelFlag').className='currentLevelFlag state-'+vstate;} const proc=document.querySelector('.process'); if(proc)proc.classList.toggle('esd-active',S.tripped);
+ if($('procLtNode')){const pv=Math.round(S.level),out=Math.round(S.lv),err=pv-ENG.sp; $('procLtTxt').textContent='PV '+pv+' mm'; $('procLicTxt').textContent=Math.abs(err)<20?'AT SP':err>0?'PV > SP • OUT ↑':'PV < SP • OUT ↓'; $('procLvTxt').textContent=out+'% OPEN'; $('procValveTravel').style.width=out+'%'; $('procValveTravelLabel').textContent=out+'%'; ['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).className='controlNode'); ['procArrow1','procArrow2'].forEach(id=>$(id).className='controlArrow'); if(S.tripped){['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).classList.add('trip'));}else if(Math.abs(err)<20){['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).classList.add('live'));}else{ $('procLtNode').classList.add(pv>=ENG.lah?'high':'live'); $('procLicNode').classList.add('live'); $('procLvNode').classList.add('live'); $('procArrow1').classList.add('live'); $('procArrow2').classList.add('live'); }}
+ if($('dcsPv')){const pv=Math.round(S.level),out=Math.round(S.lv);$('dcsPv').textContent=pv+' mm';$('dcsOut').textContent=out+'%';$('dcsValve').textContent=out+'%';$('dcsValveState').textContent=out+'%';$('dcsPvBar').style.width=Math.min(100,pv/2000*100)+'%';$('dcsSpBar').style.width=(ENG.sp/2000*100)+'%';$('dcsOutBar').style.width=out+'%';$('dcsLall').classList.toggle('active',pv<=300);$('dcsLal').classList.toggle('active',pv<=450);$('dcsLah').classList.toggle('active',pv>=1500);$('dcsLahh').classList.toggle('active',pv>=1700);if($('lahStage')){$('lahStage').classList.toggle('active',pv>=1500&&pv<1700);$('lahhStage').classList.toggle('active',pv>=1700);$('lahStageState').textContent=pv>=1500?(pv>=1700?'PASSED':'ACTIVE — ALARM ONLY'):'CLEAR';$('lahhStageState').textContent=pv>=1700?(voteTrip(hh)?'ACTIVE — 2oo3 ESD':'HH PRESENT'):'CLEAR';}let ls=pv>=1700?'LAHH':pv>=1500?'LAH':pv<=300?'LALL':pv<=450?'LAL':'NORMAL';$('dcsLevelState').textContent=ls;$('dcsLevelState').className=ls==='NORMAL'?'good':'bad';$('dcsPowerState').textContent=S.powerTrip?'TRIPPED':'RUN';$('dcsPowerState').className=S.powerTrip?'bad':'good';$('dcsTripState').textContent=S.tripped?'INITIATED':'CLEAR';$('dcsTripState').className=S.tripped?'bad':'good';$('dcsUv81').textContent=S.uvClosed?'CLOSED':'OPEN';$('dcsUv82').textContent=S.uvClosed?'CLOSED':'OPEN';$('dcsUv81').className=S.uvClosed?'bad':'good';$('dcsUv82').className=S.uvClosed?'bad':'good';
+  if($('dcsVoteDetail')){$('dcsVoteDetail').textContent=votes+' / 3';$('dcsVoteState').textContent=voteTrip(hh)?'SATISFIED':'NOT SATISFIED';$('dcsVoteState').className=voteTrip(hh)?'hot':'good';$('dcsEffectState').textContent=(S.powerTrip&&S.uvClosed)?'PU TRIP + SDVs CLOSED':S.powerTrip?'PU TRIP':S.uvClosed?'SDVs CLOSED':'NONE';$('dcsEffectState').className=(S.powerTrip||S.uvClosed)?'hot':'good';}
+  const err=pv-ENG.sp;let ctrlTxt=Math.abs(err)<20?'AT SP':err>0?'PV > SP • OUTPUT ↑':'PV < SP • OUTPUT ↓';let alarmTxt=pv>=1700?'LAHH 1700 • ESD THRESHOLD':pv>=1500?'LAH 1500 • ALARM ONLY':pv<=300?'LALL 300':pv<=450?'LAL 450':'CLEAR';
+  if($('seqPvTxt')){$('seqPvTxt').textContent=pv+' mm';$('seqCtrlTxt').textContent=ctrlTxt;$('seqValveTxt').textContent=out+'% OPEN';$('seqAlarmTxt').textContent=alarmTxt;$('seqVoteTxt').textContent=votes+'/3'+(voteTrip(hh)?' • 2oo3':'');$('seqEsdTxt').textContent=S.tripped?'PU TRIP • SDVs CLOSE':'CLEAR';
+   ['seqPv','seqCtrl','seqValve','seqAlarm','seqVote','seqEsd'].forEach(id=>$(id).className='corestep');$('seqPv').classList.add(pv===650?'ok':'live');$('seqCtrl').classList.add(Math.abs(err)<20?'ok':'live');$('seqValve').classList.add(Math.abs(err)<20?'ok':'live');if(alarmTxt==='CLEAR')$('seqAlarm').classList.add('ok');else $('seqAlarm').classList.add(pv>=1700?'trip':'live');if(voteTrip(hh))$('seqVote').classList.add('trip');else $('seqVote').classList.add(votes?'live':'ok');$('seqEsd').classList.add(S.tripped?'trip':'ok');}
+ }
+ if($('diagA')){const d=channelDiagnostic(vals);$('diagA').textContent=vals[0]+' mm';$('diagB').textContent=vals[1]+' mm';$('diagC').textContent=vals[2]+' mm';$('diagSpread').textContent=d.spread+' mm';$('diagVote').textContent=d.votes+'/3';$('diagState').textContent=d.state;$('diagState').className='v '+(d.state==='CHANNELS CONSISTENT'?'pass':'unresolved');}
+ if($('scenarioBanner')){const sc=S.scenario;let txt='READY — no scenario active',cls='alarmbar';if(sc.active){txt='SCENARIO ACTIVE — investigate symptoms; initiating disturbance hidden';cls+=' warnstate';}if(sc.outcome==='RECOVERING'){txt='RECOVERY IN PROGRESS — continue monitoring';cls+=' warnstate';}if(sc.outcome==='RECOVERED'){txt='SCENARIO COMPLETE — RECOVERED';}if(sc.outcome==='TRIPPED'){txt='SCENARIO COMPLETE — PROTECTIVE TRIP';cls+=' trip';}$('scenarioBanner').className=cls;$('scenarioBanner').textContent=txt;const rb=$('scenarioResult');if(rb){let r='<b>Training status</b><br>';if(!sc.id)r+='Start the scenario when ready. No initiating fault will be displayed.';else if(sc.outcome==='RECOVERED')r+='Diagnosis: '+(sc.diagnosed?'correct':'not confirmed')+'. Outcome: recovered after simulator stabilization.';else if(sc.outcome==='TRIPPED')r+='Outcome: DS-ESD-101 protective trip. Review Trends, SOE and C&amp;E to reconstruct the event.';else if(sc.diagnosed)r+='Diagnosis accepted: '+(sc.id==='CORE-S02'?'single protection-channel disagreement':'high interface developing')+'. A simulator-only stabilization action is now available.';else if(sc.diagnosis)r+='Diagnosis not confirmed. Continue investigation.';else r+='Scenario running. Investigate before selecting a diagnosis.';rb.innerHTML=r;}const sb=$('scenarioStabilizeBtn');if(sb)sb.disabled=!(sc.active&&sc.diagnosed&&!S.tripped);const db=$('scenarioDebriefBtn'),rp=$('scenarioReplayBtn'),dp=$('scenarioDebrief');if(db)db.style.display=sc.outcome&&!sc.debrief?'inline-block':'none';if(rp)rp.style.display=sc.outcome?'inline-block':'none';if(dp){dp.style.display=sc.debrief?'block':'none';dp.innerHTML=sc.debrief?scenarioDebriefHtml(sc):'';}}
+ if($('scenarioEvidence')){const sc=S.scenario,ev=(sc.visited||[]).filter(v=>['processView','dcsView','trendsView','alarmsView','esdView'].includes(v)).length;$('scenarioEvidence').textContent=ev+'/5';$('scenarioAttempts').textContent=sc.attempts||0;$('scenarioScore').textContent=sc.id?((sc.score===null?scenarioScore(sc):sc.score)+'/100'):'—';}
+ renderSignalFlow();renderProcessSignalSvg();renderEsd();draw();
+}
+function renderSignalFlow(){if(!$('sfLevel'))return;const pv=Math.round(S.level),out=Math.round(S.lv),ch=channels(),nv=ch.filter(Boolean).length,hhVote=voteTrip(ch);$('sfLevelTxt').textContent=pv+' mm';$('sfProtLevelTxt').textContent=pv+' mm';$('sfLvTxt').textContent=out+'% OPEN';$('sfLicTxt').textContent=pv>ENG.sp?'PV > SP • OUT ↑':pv<ENG.sp?'PV < SP • OUT ↓':'AT SP 650';$('sfLitsTxt').textContent=nv+'/3 HH';$('sfVoteTxt').textContent=hhVote?'SATISFIED':'NOT SATISFIED';$('sfEsdTxt').textContent=S.tripped?'INITIATED':'CLEAR';$('sfEffectsTxt').textContent=(S.powerTrip?'PU TRIPPED':'PU RUN')+' • '+(S.uvClosed?'SDVs CLOSED':'SDVs OPEN');const ctrl=['sfLevel','sfLit','sfLic','sfLv','sfWater','sfCA1','sfCA2','sfCA3','sfCA4'];ctrl.forEach(id=>{$(id).classList.remove('ctrlOn');if(!S.tripped)$(id).classList.add('ctrlOn')});const protNodes=['sfProtLevel','sfLits','sfVote','sfEsd','sfEffects'],protArrows=['sfPA1','sfPA2','sfPA3','sfPA4'];[...protNodes,...protArrows].forEach(id=>$(id).classList.remove('warnOn','tripOn'));if(nv>0||pv>=ENG.lahh){$('sfProtLevel').classList.add('warnOn');$('sfLits').classList.add('warnOn');$('sfPA1').classList.add('tripOn')}if(hhVote||S.tripped){['sfProtLevel','sfLits','sfVote','sfEsd','sfEffects',...protArrows].forEach(id=>$(id).classList.add('tripOn'))}const st=$('sfStatus');if(S.tripped){st.className='signalStatus trip';st.textContent='TRIP PATH ACTIVE — '+S.tripCause+' → '+(S.powerTrip?'POWER UNIT TRIP + ':'')+'BOTH SDVs CLOSE.'}else if(pv>=ENG.lah){st.className='signalStatus warn';st.textContent=pv>=ENG.lahh?'LAHH PRESENT — protection channels/voting are being evaluated.':'1500 mm LAH — ALARM ONLY; control action continues and SDVs remain open.'}else{st.className='signalStatus';st.textContent='CONTROL ACTIVE — DS-LIT-101 → DS-LIC-101 → DS-LV-101. Protection path clear.'}}
+function renderProcessSignalSvg(){
+ if(!$('processSignalSvg'))return;
+ const pv=Math.round(S.level), out=Math.round(S.lv), ch=channels(), nv=ch.filter(Boolean).length, voted=voteTrip(ch);
+ const dcs=$('svgDcsBox'), esd=$('svgEsdBox');
+ $('svgDcsPv').textContent='PV '+pv+' • SP '+ENG.sp;
+ $('svgDcsOut').textContent='OUTPUT '+out+'%';
+ dcs.setAttribute('class','svgBox '+(pv>=ENG.lah?'warn':'active'));
+ $('svgDcsOut').setAttribute('class','stateText '+(pv>=ENG.lah?'warnText':'normalText'));
+ $('svgVoteState').textContent=nv+'/3 HH';
+ $('svgEsdState').textContent=S.tripped?'TRIP ACTIVE':voted?'VOTE SATISFIED':(nv?nv+'/3 HH':'CLEAR');
+ esd.setAttribute('class','svgBox '+(S.tripped||voted?'trip':nv?'warn':''));
+ $('svgEsdState').setAttribute('class','stateText '+(S.tripped||voted?'tripText':nv?'warnText':'normalText'));
+ ['svgControlIn','svgControlOut'].forEach(id=>$(id).setAttribute('class','sigWire '+(S.uvClosed?'inactive':''))); $('svgCtrlPulse1').style.display=S.uvClosed?'none':''; $('svgCtrlPulse2').style.display=S.uvClosed?'none':''; const proc=document.querySelector('.process');if(proc)proc.classList.toggle('tripStopped',S.uvClosed); const stopNote=document.querySelector('.tripStopNote');if(stopNote)stopNote.textContent=S.uvClosed?'SDV ISOLATION ACTIVE • PROCESS FLOW STOPPED':(S.powerTrip?'POWER UNIT TRIPPED • PROCESS FLOW PATH NOT ISOLATED':'PROCESS FLOW ACTIVE');
+ const pin=$('svgProtectIn'), protPulse=$('svgProtPulse');
+ pin.setAttribute('class','sigWire '+(S.tripped||voted?'trip':nv?'warn':'inactive'));
+ protPulse.style.display=(nv||S.tripped)?'':'none'; protPulse.setAttribute('class','pulse '+(S.tripped||voted?'trip':nv?'warn':''));
+ const tripActive=S.uvClosed||S.powerTrip;
+ ['svgTripInlet','svgTripOutlet','svgTripPower'].forEach(id=>$(id).setAttribute('class','sigWire '+(tripActive?'trip':'inactive')));
+ $('svgTripPulse').style.display=tripActive?'':'none';
+}
+
+function renderEsd(){if(!$('ceLogic'))return;const ch=channels(),vals=channelValues(),nv=ch.filter(Boolean).length,iface=voteTrip(ch);const flow=$('ceLogic').closest('.ceflow');const stage=S.tripped?3:iface?2:nv>0?1:0;if(flow){const prev=Number(flow.dataset.esdStage||0);flow.classList.toggle('esd-sequence',stage>prev);if(stage>prev){setTimeout(()=>flow.classList.remove('esd-sequence'),1800)}flow.dataset.esdStage=stage;}[['A',0],['B',1],['C',2]].forEach(([n,i])=>{const node=$('ceCh'+n),st=$('ceCh'+n+'State');if(node)node.classList.toggle('active',ch[i]);if(st){st.textContent=vals[i]+' mm — '+(ch[i]?'HH':'NORMAL');st.classList.toggle('hot',ch[i]);}});$('ceVoteState').textContent=nv+'/3 HH — '+(iface?'2oo3 SATISFIED':'NOT SATISFIED');const ifaceTripActive=S.tripped&&S.tripCause.includes('LIT-102A/B/C HH');$('ceLogic').classList.toggle('active',ifaceTripActive);$('ceLogicState').textContent=ifaceTripActive?'INITIATED':(S.tripped?'OTHER INITIATOR ACTIVE':'CLEAR');$('ceWireIn').classList.toggle('active',iface);$('ceWireOut').classList.toggle('active',S.powerTrip||S.uvClosed);$('cePower').classList.toggle('active',S.powerTrip);$('ceInlet').classList.toggle('active',S.uvClosed);$('ceOutlet').classList.toggle('active',S.uvClosed);$('cePowerState').textContent=S.powerTrip?'TRIPPED':'RUN';$('ceInletState').textContent=S.uvClosed?'CLOSED':'OPEN';$('ceOutletState').textContent=S.uvClosed?'CLOSED':'OPEN';['cePowerState','ceInletState','ceOutletState'].forEach(id=>$(id).classList.toggle('hot',(id==='cePowerState'&&S.powerTrip)||(id!=='cePowerState'&&S.uvClosed)));if($('ceActiveCause')){$('ceActiveCause').textContent=S.tripped?('ACTIVE INITIATOR — '+S.tripCause):'NO ACTIVE INITIATOR';$('ceActiveCause').className='alarmbar'+(S.tripped?' trip':'');}if($('ceStageNote')){let msg;if(!S.tripped)msg=stage===0?'STAGE 0 • NORMAL — HH vote not satisfied':stage===1?'STAGE 1 • HH DETECTED — '+nv+'/3 channel'+(nv===1?'':'s')+' at HH; 2oo3 not yet satisfied':'STAGE 2 • 2oo3 SATISFIED — DS-ESD-101 initiating verified effects';else msg=S.powerTrip&&S.uvClosed?'ESD ACTIVE — '+S.tripCause+' → POWER TRIPPED + BOTH SDVs CLOSED':S.powerTrip?'PROTECTION ACTIVE — '+S.tripCause+' → FIRST-STAGE POWER UNIT TRIPPED; SDVs REMAIN OPEN':'ESD ACTIVE — '+S.tripCause+' → BOTH SDVs CLOSED; FIRST-STAGE POWER UNIT REMAINS RUNNING';$('ceStageNote').textContent=msg;$('ceStageNote').className='esdStageNote'+(stage===1?' hh':S.tripped||stage>=2?' trip':'');}}
+function draw(){drawOne($('trend'));if($('trendLarge'))drawOne($('trendLarge'))} function drawOne(c){const x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle='#d9e5ea';x.lineWidth=1;[300,450,650,1500,1700].forEach(v=>{let y=h-v/2000*h;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();x.fillStyle='#607984';x.fillText(v+' mm',5,y-3)});x.strokeStyle='#173f55';x.lineWidth=2;x.beginPath();S.history.forEach((v,i)=>{let px=i/(Math.max(1,S.history.length-1))*w,py=h-v/2000*h;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}
+function setMode(mode){
+ if(mode!=='normal'&&mode!=='training')return;
+ S.mode=mode;S.alarmAck=false;
+ document.querySelectorAll('.mode[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+ log('UI MODE — '+mode.toUpperCase()+(mode==='training'?' (hidden-fault scenario engine available)':''));render();
+}
+function acknowledgeAlarm(){if(S.tripped||S.level>=ENG.lah){S.alarmAck=true;log('OPERATOR ACTION — visible alarm acknowledged. Process/protection state unchanged.');render()}else log('Alarm acknowledge selected — no active visible alarm.');}
+$('startBtn').onclick=start;$('normalBtn').onclick=normal;$('resetBtn').onclick=()=>{reset();setMode('normal');};$('ackBtn').onclick=acknowledgeAlarm;document.querySelectorAll('.mode[data-mode]').forEach(b=>b.onclick=()=>b.dataset.mode==='normal'?normal():setMode(b.dataset.mode));
+if($('hiddenScenarioStart'))$('hiddenScenarioStart').onclick=startHiddenTrainingScenario;if($('scenarioStabilizeBtn'))$('scenarioStabilizeBtn').onclick=stabilizeTrainingScenario;if($('scenarioDebriefBtn'))$('scenarioDebriefBtn').onclick=revealScenarioDebrief;if($('scenarioReplayBtn'))$('scenarioReplayBtn').onclick=replayTraining;document.querySelectorAll('.diagBtn').forEach(b=>b.onclick=()=>submitDiagnosis(b.dataset.diag));
+
+const EFFECT_LABEL={POWER_TRIP:'DS-TR-101 power-unit trip',INLET_SDV_CLOSE:'DS-SDV-101 close',OUTLET_SDV_CLOSE:'DS-SDV-102 close'};
+const stateBadge=(txt,bad=false)=>`<div class="fpState ${bad?'trip':''}">${txt}</div>`;
+const srcNote=(txt,cls='')=>`<div class="src ${cls}"><b>Engineering status</b><br>${txt}</div>`;
+const ceTable=()=>`<table class="table"><tr><th>Initiator</th><th>Voting</th><th>Verified first-stage effect</th></tr>${Object.values(CE).map(d=>`<tr><td>${d.label}</td><td>${d.voting}</td><td>${d.effects.map(x=>EFFECT_LABEL[x]).join(' + ')}</td></tr>`).join('')}</table>`;
+function miniTrendSvg(series,label){const w=520,h=82,p=8,min=0,max=2000,n=Math.max(2,...series.map(a=>a.length));const path=a=>a.map((v,i)=>{const x=p+(i/Math.max(1,n-1))*(w-2*p),y=h-p-((v-min)/(max-min))*(h-2*p);return (i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}).join(' ');const hhY=(h-p)-((ENG.lahh-min)/(max-min))*(h-2*p);return `<div style="margin:5px 0"><div class="muted">${label}</div><svg viewBox="0 0 ${w} ${h}" style="width:100%;height:82px;background:#07141b;border:1px solid #284653;border-radius:6px"><line x1="${p}" y1="${hhY.toFixed(1)}" x2="${w-p}" y2="${hhY.toFixed(1)}" stroke="#a85b5b" stroke-dasharray="5 4"/><path d="${path(series[0])}" fill="none" stroke="#e5edf1" stroke-width="2"/><path d="${path(series[1])}" fill="none" stroke="#65b7d6" stroke-width="1.7"/><path d="${path(series[2])}" fill="none" stroke="#d6b365" stroke-width="1.7"/><path d="${path(series[3])}" fill="none" stroke="#a98bd4" stroke-width="1.7"/></svg><div class="muted">DS-LIT-101 reference • DS-LIT-102A • B • C &nbsp; | &nbsp; dashed line = verified HH threshold</div></div>`}
+function protectionEvidenceHistory(){return miniTrendSvg([S.refHistory,S.channelHistory[0],S.channelHistory[1],S.channelHistory[2]],'Recent instrument evidence — training history')}
+function investigationState(){if(!S.scenario.investigation)S.scenario.investigation={selected:'A',compare:[],history:[],voteSoe:false};return S.scenario.investigation}
+function investigationWorkflow(){const inv=investigationState(),v=channelValues(),idx={A:0,B:1,C:2}[inv.selected]??0,selected=inv.selected;const active=S.mode==='training'&&!!S.scenario.id;const gathered=[...new Set([...(inv.compare||[]).map(x=>'Compare '+x),...(inv.history||[]).map(x=>'History '+x),...(inv.voteSoe?['Vote/SOE']:[])])];return `<div class="fpSection">Investigation Actions — evidence gathering</div><div class="src"><b>Selected protection channel:</b> DS-LIT-102${selected}<div class="actions" style="margin-top:7px"><button class="btn invSelect" data-ch="A">A</button><button class="btn invSelect" data-ch="B">B</button><button class="btn invSelect" data-ch="C">C</button></div><div class="actions" style="margin-top:7px"><button class="btn invAction" data-action="compare">Compare Selected Channel</button><button class="btn invAction" data-action="history">Review Selected History</button><button class="btn invAction" data-action="vote">Review Vote &amp; SOE</button></div><div style="margin-top:7px"><b>Current selected value:</b> ${v[idx]} mm &nbsp; | &nbsp; <b>DS-LIT-101:</b> ${Math.round(S.level)} mm</div></div><div class="src ${active?'':'warn'}"><b>Evidence collected</b><br>${gathered.length?gathered.join(' • '):(active?'None yet':'Evidence recording becomes active during a Training scenario.')}</div><div class="muted">These actions only organize existing simulator evidence. They do not test, bypass, force, calibrate or alter any protection channel and cannot initiate or suppress C&amp;E logic.</div>`}
+function recordInvestigation(action){if(activeEquip!=='ifaceProtect')return;const inv=investigationState(),ch=inv.selected;if(action==='select')return;if(action==='compare'&&!inv.compare.includes(ch))inv.compare.push(ch);if(action==='history'&&!inv.history.includes(ch))inv.history.push(ch);if(action==='vote')inv.voteSoe=true;if(S.mode==='training'&&S.scenario.id){log('TRAINING EVIDENCE — protection-channel '+({compare:'comparison reviewed for DS-LIT-102'+ch,history:'history reviewed for DS-LIT-102'+ch,vote:'vote and SOE evidence reviewed'}[action])+'.');}setPopupTab('overview');render()}
+function protectionEvidenceChecklist(){const v=channelValues(),hh=v.map(x=>x>=ENG.lahh),votes=hh.filter(Boolean).length,ref=Math.round(S.level),spread=Math.round(Math.max(...v)-Math.min(...v));const alarmEvidence=S.tripped?'PROTECTION TRIP ACTIVE':(votes?'HH CHANNEL INDICATION PRESENT':'NO HH CHANNEL INDICATION');const outcome=S.tripped?(S.powerTrip?'DS-TR-101 TRIPPED':'DS-ESD-101 ACTIVE'):'DS-ESD-101 CLEAR';return `<div class="fpSection">Structured troubleshooting evidence</div><table class="table"><tr><th>Evidence area</th><th>Observed evidence</th><th>Engineering meaning</th></tr><tr><td>Process indication</td><td>DS-LIT-101 = ${ref} mm</td><td>Independent interface indication for comparison</td></tr><tr><td>Protection channels</td><td>A ${v[0]} / B ${v[1]} / C ${v[2]} mm</td><td>Compare agreement; do not infer a failed channel from spread alone</td></tr><tr><td>HH states</td><td>A ${hh[0]?'HH':'Normal'} • B ${hh[1]?'HH':'Normal'} • C ${hh[2]?'HH':'Normal'}</td><td>HH threshold = ${ENG.lahh} mm — VERIFIED</td></tr><tr><td>Voting</td><td>${votes}/3 HH</td><td>2oo3 required — VERIFIED</td></tr><tr><td>Alarm / SOE evidence</td><td>${alarmEvidence}</td><td>Use Alarm/SOE view to establish sequence and timing</td></tr><tr><td>Protection outcome</td><td>${outcome}</td><td>Effect state follows deterministic C&amp;E logic</td></tr><tr><td>Channel spread</td><td>${spread} mm</td><td>SIMULATION DIAGNOSTIC only — not a trip/alarm initiator</td></tr></table><div class="src warn"><b>Troubleshooting method</b><br>Correlate process indication, A/B/C agreement, trend direction, alarm/SOE sequence, vote state and protection outcome before submitting a diagnosis. No row above identifies the root cause automatically.</div>`}
+
+const EQUIP={
+ vessel:{title:'DS-V-101 — First-Stage Desalter',overview:()=>`<div class="fpHero"><div class="fpPV"><b>Interface Level</b><div class="big">${Math.round(S.level)} mm</div><span>DS-LIT-101</span></div>${stateBadge(S.tripped?'PROTECTION ACTIVE':'NORMAL OPERATION',S.tripped)}</div><div class="kv"><div><b>Service</b><br>First-stage crude-oil desalting</div><div><b>Normal interface</b><br>650 mm — VERIFIED</div><div><b>LAH / LAHH</b><br>1500 / 1700 mm — VERIFIED</div><div><b>Electrical grids</b><br>Upper energized / lower grounded</div></div>${srcNote('Process behavior and level settings are source-supported. Current vessel drawing is a functional UI representation; exact geometry is not claimed.','warn')}`},
+ ifaceControl:{title:'DS-LIT-101 / DS-LIC-101 — Interface Level Control',overview:()=>`<div class="fpHero"><div class="fpPV"><b>PV</b><div class="big">${Math.round(S.level)} mm</div><span>SP 650 mm</span></div>${stateBadge(S.level>=ENG.lahh?'LAHH':S.level>=ENG.lah?'LAH':'NORMAL',S.level>=ENG.lah)}</div><div class="kv"><div><b>Technology</b><br>Guided Wave Radar — VERIFIED</div><div><b>Controller mode</b><br>AUTO — simulator presentation</div><div><b>PV / SP</b><br>${Math.round(S.level)} / 650 mm</div><div><b>OUT → DS-LV-101</b><br>${Math.round(S.lv)}%</div><div><b>Deviation</b><br>${Math.round(S.level-ENG.sp)} mm</div><div><b>Verified action</b><br>PV above SP → DS-LV-101 opens further</div></div><div class="fpSection">Operator controls</div><div class="src warn">Manual/Auto transfer, SP write and direct valve commands are intentionally disabled until plant control philosophy is verified.</div>${srcNote('650 mm SP and direct-action relationship are VERIFIED. AUTO label, controller tuning and dynamic output response are simulator presentation/assumptions.')}`},
+ ifaceProtect:{title:'DS-LIT-102A/B/C — Protection Channel Troubleshooting',overview:()=>{const v=channelValues(),mn=Math.min(...v),mx=Math.max(...v),spread=mx-mn,votes=channels().filter(Boolean).length;return `<div class="fpHero"><div class="fpPV"><b>Protection Vote</b><div class="big">${votes}/3 HH</div><span>2oo3 required</span></div>${stateBadge(voteTrip(channels())?'VOTE SATISFIED':'VOTE NOT SATISFIED',voteTrip(channels()))}</div><div class="fpSection">Channel comparison — troubleshooting evidence</div><div class="kv"><div><b>DS-LIT-102A</b><br>${v[0]} mm ${v[0]>=ENG.lahh?'• HH':''}</div><div><b>DS-LIT-102B</b><br>${v[1]} mm ${v[1]>=ENG.lahh?'• HH':''}</div><div><b>DS-LIT-102C</b><br>${v[2]} mm ${v[2]>=ENG.lahh?'• HH':''}</div><div><b>Independent interface indication</b><br>DS-LIT-101: ${Math.round(S.level)} mm</div><div><b>Channel spread</b><br>${Math.round(spread)} mm — SIMULATION DIAGNOSTIC</div><div><b>HH threshold</b><br>1700 mm — VERIFIED</div></div>${protectionEvidenceHistory()}${protectionEvidenceChecklist()}${investigationWorkflow()}<div class="src warn"><b>Trainee interpretation required</b><br>Compare all three protection channels, the independent DS-LIT-101 interface indication, current vote and process trend. The faceplate intentionally does not declare the root cause.</div>${srcNote('2oo3 voting and the HH threshold are VERIFIED. Channel spread and individual simulated offsets are training aids / SIMULATION ASSUMPTION. No plant transmitter-diagnostic tolerance is claimed.')}`}},
+ inletSdv:{title:'DS-SDV-101 — Inlet Shutdown Valve',overview:()=>`<div class="fpHero"><div class="fpPV"><b>Valve State</b><div class="big">${S.uvClosed?'CLOSED':'OPEN'}</div><span>Shutdown valve</span></div>${stateBadge(S.uvClosed?'CLOSED':'AVAILABLE',S.uvClosed)}</div><div class="kv"><div><b>Fail action</b><br>Fail Close — VERIFIED</div><div><b>Size / Class</b><br>18 in / Class 300 — VERIFIED</div><div><b>Type</b><br>Triple-eccentric butterfly — VERIFIED</div><div><b>C&E role</b><br>Closes on verified applicable DS-ESD-101 causes</div></div>${srcNote('Valve functional data is source-supported. Graphic is schematic, not exact mechanical geometry.')}`},
+ outletSdv:{title:'DS-SDV-102 — Outlet Shutdown Valve',overview:()=>`<div class="fpHero"><div class="fpPV"><b>Valve State</b><div class="big">${S.uvClosed?'CLOSED':'OPEN'}</div><span>Shutdown valve</span></div>${stateBadge(S.uvClosed?'CLOSED':'AVAILABLE',S.uvClosed)}</div><div class="kv"><div><b>Fail action</b><br>Fail Close — VERIFIED</div><div><b>Size / Class</b><br>18 in / Class 300 — VERIFIED</div><div><b>Type</b><br>Triple-eccentric butterfly — VERIFIED</div><div><b>Actuator</b><br>Pneumatic piston spring-return — VERIFIED</div></div>${srcNote('Vendor information supports the displayed valve/actuator data. Graphic remains schematic.')}`},
+ lv81:{title:'DS-LV-101 — Interface Level Control Valve',overview:()=>`<div class="fpHero"><div class="fpPV"><b>DS-LIC-101 Output</b><div class="big">${Math.round(S.lv)}%</div><span>Simulated valve command</span></div>${stateBadge('AUTO')}</div><div class="kv"><div><b>PV</b><br>${Math.round(S.level)} mm</div><div><b>SP</b><br>650 mm</div><div><b>Verified action</b><br>Rising interface → DS-LV-101 opens</div><div><b>Dynamic response</b><br>SIMULATION ASSUMPTION</div></div>${srcNote('Control relationship is VERIFIED; displayed dynamic output is simulator behavior, not plant tuning.')}`},
+ power:{title:'DS-TR-101 — Power Unit',overview:()=>`<div class="fpHero"><div class="fpPV"><b>Power Unit</b><div class="big">${S.powerTrip?'TRIPPED':'RUN'}</div><span>Upper grid supply</span></div>${stateBadge(S.powerTrip?'TRIPPED':'ENERGIZED',S.powerTrip)}</div><div class="kv"><div><b>Grid arrangement</b><br>Upper energized / lower grounded</div><div><b>Core ESD effect</b><br>Interface HH 2oo3 → power-unit trip — VERIFIED</div><div><b>Current state</b><br>${S.powerTrip?'TRIPPED':'RUNNING'}</div><div><b>Reset philosophy</b><br>UNRESOLVED</div></div>${srcNote('This core simulator displays the power unit only as an effect of the verified interface-HH 2oo3 ESD path. Plant reset/latching philosophy remains UNRESOLVED.','warn')}`},
+ esdTrip:{title:'DS-ESD-101 — Desalters Trip (ESD3)',overview:()=>`<div class="fpHero"><div class="fpPV"><b>DS-ESD-101</b><div class="big">${S.tripped?'INITIATED':'CLEAR'}</div><span>ESD3</span></div>${stateBadge(S.tripped?(S.tripCause||'TRIP ACTIVE'):'NORMAL',S.tripped)}</div><div class="kv"><div><b>Current cause</b><br>${S.tripCause||'None'}</div><div><b>Scope</b><br>Verified first-stage effects only</div><div><b>Reset / latching</b><br>UNRESOLVED</div></div>${srcNote('Initiators/voting/effects shown in this simulator are limited to the visually/source-verified first-stage scope.')}`}
+};
+let activeEquip=null;
+function popupContent(k,tab){const e=EQUIP[k];if(!e)return '';if(tab==='overview')return e.overview();if(tab==='logic'){if(k==='esdTrip')return ceTable()+srcNote('C&E logic is deterministic and source-bounded.');if(k==='ifaceProtect'){const v=channelValues(),votes=channels().filter(Boolean).length;return `<div class="fpSection">Protection / voting evidence</div><div class="kv"><div><b>Voting</b><br>2oo3 — VERIFIED</div><div><b>Current vote</b><br>${votes}/3 HH</div><div><b>DS-LIT-101 comparison</b><br>${Math.round(S.level)} mm</div><div><b>A / B / C</b><br>${v[0]} / ${v[1]} / ${v[2]} mm</div></div>${ceTable()}${srcNote('Use the evidence to decide whether the pattern is consistent with a process rise or channel disagreement. The simulator does not automatically diagnose the cause in this faceplate.','warn')}`;}if(k==='ifaceControl'||k==='lv81')return `<div class="fpSection">DS-LIC-101 control relationship</div><div class="kv"><div><b>Loop</b><br>DS-LIT-101 → DS-LIC-101 → DS-LV-101</div><div><b>SP</b><br>650 mm — VERIFIED</div><div><b>Action</b><br>PV above SP → DS-LV-101 opens further — VERIFIED</div><div><b>Current output</b><br>${Math.round(S.lv)}% — SIMULATION ASSUMPTION</div></div>${srcNote('Controller tuning, response rate and nominal output are simulation assumptions.')}`;if(k==='inletSdv'||k==='outletSdv'||k==='power')return ceTable();return e.overview();}return ''}
+function setPopupTab(tab){if(tab!=='overview'&&tab!=='logic')return;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));$('modalContent').innerHTML=popupContent(activeEquip,tab)}
+function openEquip(k){const e=EQUIP[k];if(!e)return;activeEquip=k;$('modalTitle').textContent=e.title;setPopupTab('overview');$('modalback').classList.add('show')}
+document.querySelectorAll('[data-equip]').forEach(el=>el.addEventListener('click',ev=>{ev.stopPropagation();openEquip(el.dataset.equip)}));
+document.querySelectorAll('.tab[data-tab]').forEach(t=>t.onclick=()=>setPopupTab(t.dataset.tab));$('modalClose').onclick=()=>$('modalback').classList.remove('show');$('modalback').onclick=e=>{if(e.target===$('modalback'))$('modalback').classList.remove('show')};
+$('modalContent').addEventListener('click',e=>{const sel=e.target.closest('.invSelect');if(sel){investigationState().selected=sel.dataset.ch;setPopupTab('overview');return}const act=e.target.closest('.invAction');if(act)recordInvestigation(act.dataset.action)});
+document.querySelectorAll('.nav[data-view]').forEach(n=>n.onclick=()=>{recordScenarioView(n.dataset.view);document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));n.classList.add('active');document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(n.dataset.view).classList.add('active');render()});
+setInterval(tick,SIM.tickMs);reset();setMode('normal');
+</script>
+
+
+<style id="m1-v16-live-ce-style">
+.liveCeCard{margin-top:8px}
+.liveCeHead{display:grid;grid-template-columns:1.7fr .55fr .75fr .7fr .7fr;gap:5px;padding:7px 8px;background:#e8f3f8;border-bottom:1px solid #c7d9e3;font-size:10px;font-weight:900;color:#315f80}
+.liveCeRow{display:grid;grid-template-columns:1.7fr .55fr .75fr .7fr .7fr;gap:5px;align-items:stretch;padding:5px 8px;border-bottom:1px solid #e3edf2;font-size:10px}
+.liveCeRow:last-child{border-bottom:0}
+.liveCeCell{padding:6px;border-radius:4px;background:#f7fafc;min-width:0}
+.liveCeCause b{display:block;color:#173f55}.liveCeCause small{display:block;color:#607984;margin-top:2px}
+.liveCeEffect{text-align:center;font-weight:900}
+.liveCeEffect.yes{background:#edf8f2;color:#087345}
+.liveCeEffect.no{background:#f1f4f6;color:#778b96}
+.liveCeRow.active{background:#fff0f1;box-shadow:inset 4px 0 #d63d4a}
+.liveCeRow.active .liveCeCause,.liveCeRow.active .liveCeVote{background:#ffe1e4;color:#a51e2a}
+.liveCeRow.active .liveCeEffect.yes{background:#d63d4a;color:white;box-shadow:0 0 7px #d63d4a66}
+.liveCeBus{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:9px 0 0;padding:9px;border:1px solid #c7d9e3;border-radius:5px;background:#f8fbfd}
+.liveCeBus .logic{text-align:center;font-weight:900;color:#315f80}
+.liveCeBus .logic.trip{background:#d63d4a;color:#fff;border-radius:5px;padding:8px}
+.liveCeFinal{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.liveCeFinal span{padding:6px 8px;border-radius:4px;background:#eef3f5;font-size:9px;font-weight:900;color:#607984}
+.liveCeFinal span.on{background:#d63d4a;color:#fff}
+@media(max-width:900px){.liveCeHead{display:none}.liveCeRow{grid-template-columns:1fr 1fr}.liveCeCause{grid-column:1/-1}.liveCeBus{grid-template-columns:1fr}.liveCeFinal{justify-content:center}}
+</style>
+
+<script id="m1-v16-live-ce">
+/* V16 LIVE C&E VIEW
+   Visualization only. The existing deterministic CE object remains the single logic authority. */
+(function(){
+  const plantMeta={
+    IFACE_HH_2OO3:{tag:'100-LIT-0082A/B/C',condition:'Interface HH',type:'2oo3'},
+    TOTAL_LEVEL_LL_1OO1:{tag:'100-LIT-0083',condition:'Total liquid level LL',type:'1oo1'},
+    PU_CURRENT_HH_1OO1:{tag:'100-IT-9500',condition:'Power-unit current HH',type:'1oo1'},
+    PU_OIL_LEVEL_LL_1OO1:{tag:'100-LSLL-9500',condition:'Power-unit oil level LL',type:'1oo1'},
+    MANUAL_ESD_CR:{tag:'100-HS-0081A',condition:'Emergency trip PB — Control Room',type:'1oo1'},
+    MANUAL_ESD_LCS:{tag:'100-HS-0081B',condition:'Emergency trip PB — LCS',type:'1oo1'},
+    MANUAL_ESD_LOCAL:{tag:'100-HS-0081C',condition:'Emergency trip PB — Local',type:'1oo1'},
+    UNIT_SHUTDOWN:{tag:'U-0023',condition:'Unit Shutdown Interlock',type:'Interlock'}
+  };
+
+  function activeKey(){
+    if(!S.tripped) return '';
+    return Object.keys(CE).find(k=>CE[k].label===S.tripCause) || '';
+  }
+  function yes(def,e){return def.effects.includes(e)}
+  function effectCell(on,label){
+    return '<div class="liveCeCell liveCeEffect '+(on?'yes':'no')+'">'+(on?label:'—')+'</div>';
+  }
+  function install(){
+    const esd=document.getElementById('esdView');
+    if(!esd || document.getElementById('liveCeMatrix')) return;
+    const card=document.createElement('div');
+    card.className='card liveCeCard';
+    card.id='liveCeMatrix';
+    card.innerHTML='<div class="ct">Live U-0001 / ESD3 Cause &amp; Effect — First Stage</div>'+
+      '<div class="cb">'+
+      '<div class="alarmbar" id="liveCeActive">NO ACTIVE C&amp;E INITIATOR</div>'+
+      '<div class="liveCeHead"><div>CAUSE / CONDITION</div><div>VOTING</div><div>POWER UNIT</div><div>100-UV-0081</div><div>100-UV-0082</div></div>'+
+      '<div id="liveCeRows"></div>'+
+      '<div class="liveCeBus"><div class="muted"><b>CAUSE → VOTING</b><br/>Selected verified initiator</div><div class="logic" id="liveCeLogic">U-0001 / ESD3<br/>CLEAR</div><div class="liveCeFinal"><span id="liveCePu">POWER UNIT RUN</span><span id="liveCeUv81">UV-0081 OPEN</span><span id="liveCeUv82">UV-0082 OPEN</span></div></div>'+
+      '<div class="muted" style="margin-top:7px"><b>Source hierarchy:</b> C&amp;E is authoritative for trip/voting/effects. This graphic reads the existing deterministic C&amp;E engine; it does not implement separate trip logic. Reset/latching remains <b>UNRESOLVED — SOURCE DOCUMENT REQUIRES VERIFICATION</b>.</div>'+
+      '</div>';
+    esd.appendChild(card);
+    renderLiveCe();
+  }
+  window.renderLiveCe=function(){
+    const rows=document.getElementById('liveCeRows'); if(!rows) return;
+    const ak=activeKey();
+    rows.innerHTML=Object.keys(CE).map(k=>{
+      const d=CE[k],m=plantMeta[k]||{tag:d.label,condition:'',type:d.voting};
+      const active=k===ak;
+      return '<div class="liveCeRow '+(active?'active':'')+'">'+
+        '<div class="liveCeCell liveCeCause"><b>'+m.tag+'</b><small>'+m.condition+'</small></div>'+
+        '<div class="liveCeCell liveCeVote">'+m.type+'</div>'+
+        effectCell(yes(d,'POWER_TRIP'),'TRIP')+
+        effectCell(yes(d,'INLET_SDV_CLOSE'),'CLOSE')+
+        effectCell(yes(d,'OUTLET_SDV_CLOSE'),'CLOSE')+
+        '</div>';
+    }).join('');
+    const banner=document.getElementById('liveCeActive');
+    if(banner){banner.textContent=ak?('ACTIVE — '+plantMeta[ak].tag+' • '+plantMeta[ak].condition):'NO ACTIVE C&E INITIATOR';banner.className='alarmbar'+(ak?' trip':'');}
+    const logic=document.getElementById('liveCeLogic');
+    if(logic){logic.innerHTML='U-0001 / ESD3<br/>'+(S.tripped?'ACTIVE':'CLEAR');logic.className='logic'+(S.tripped?' trip':'');}
+    const pu=document.getElementById('liveCePu'),u1=document.getElementById('liveCeUv81'),u2=document.getElementById('liveCeUv82');
+    if(pu){pu.textContent=S.powerTrip?'POWER UNIT TRIPPED':'POWER UNIT RUN';pu.classList.toggle('on',S.powerTrip)}
+    if(u1){u1.textContent=S.uvClosed?'UV-0081 CLOSED':'UV-0081 OPEN';u1.classList.toggle('on',S.uvClosed)}
+    if(u2){u2.textContent=S.uvClosed?'UV-0082 CLOSED':'UV-0082 OPEN';u2.classList.toggle('on',S.uvClosed)}
+  };
+
+  // Extend render without altering the deterministic engine.
+  const priorRenderEsd=window.renderEsd;
+  if(typeof priorRenderEsd==='function'){
+    window.renderEsd=function(){priorRenderEsd();renderLiveCe();}
+  }
+  window.addEventListener('DOMContentLoaded',()=>{install();renderLiveCe();});
+})();
+</script>
+
+
+
+
+
+
+
+<style id="m1-v18-soe-style">
+.soeValidate{margin-top:8px}
+.soeSeq{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:7px}
+.soeStep{border:1px solid #d4e2e9;border-radius:5px;background:#f7fafc;padding:7px;font-size:9px}
+.soeStep b{display:block;color:#315f80;font-size:10px;margin-bottom:3px}
+.soeStep.on{background:#fff0f1;border-color:#d63d4a;color:#a51e2a}
+.soeStep.on b{color:#a51e2a}
+@media(max-width:900px){.soeSeq{grid-template-columns:1fr 1fr}}
+</style>
+<script id="m1-v18-soe-validation">
+/* V18 — SOE sequence visualization only.
+   Engineering effects remain owned by the existing deterministic CE engine.
+   Display timing/order is a SIMULATION ASSUMPTION, not claimed plant SOE timing. */
+(function(){
+ const meta={
+  IFACE_HH_2OO3:{cause:'100-LIT-0082A/B/C HH',vote:'2oo3 SATISFIED'},
+  TOTAL_LEVEL_LL_1OO1:{cause:'100-LIT-0083 LL',vote:'1oo1 SATISFIED'},
+  PU_CURRENT_HH_1OO1:{cause:'100-IT-9500 HH',vote:'1oo1 SATISFIED'},
+  PU_OIL_LEVEL_LL_1OO1:{cause:'100-LSLL-9500 LL',vote:'1oo1 SATISFIED'},
+  MANUAL_ESD_CR:{cause:'100-HS-0081A PB',vote:'1oo1 SATISFIED'},
+  MANUAL_ESD_LCS:{cause:'100-HS-0081B PB',vote:'1oo1 SATISFIED'},
+  MANUAL_ESD_LOCAL:{cause:'100-HS-0081C PB',vote:'1oo1 SATISFIED'},
+  UNIT_SHUTDOWN:{cause:'U-0023 UNIT SHUTDOWN',vote:'INTERLOCK ACTIVE'}
+ };
+ function activeKey(){
+   if(!S.tripped)return '';
+   return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
+ }
+ function install(){
+  const esd=document.getElementById('esdView'); if(!esd||document.getElementById('soeValidation'))return;
+  const c=document.createElement('div');c.className='card soeValidate';c.id='soeValidation';
+  c.innerHTML='<div class="ct">C&amp;E / SOE Sequence</div><div class="cb">'+
+   '<div class="soeSeq">'+
+   '<div class="soeStep" id="soeCause"><b>1 • CAUSE</b><span>NORMAL</span></div>'+
+   '<div class="soeStep" id="soeVote"><b>2 • VOTING / INTERLOCK</b><span>CLEAR</span></div>'+
+   '<div class="soeStep" id="soeLogic"><b>3 • U-0001 / ESD3</b><span>CLEAR</span></div>'+
+   '<div class="soeStep" id="soeEffect"><b>4 • VERIFIED EFFECTS</b><span>NONE</span></div>'+
+   '</div>'+
+   '<div class="muted" style="margin-top:6px">The sequence display is for training traceability. Relative display timing is <b>SIMULATION ASSUMPTION</b>. Plant event timestamps, scan times, latching and reset philosophy are not inferred.</div>'+
+   '</div>'; esd.appendChild(c);
+  renderSoeValidation();
+ }
+ window.renderSoeValidation=function(){
+   const k=activeKey(),m=meta[k],d=k?CE[k]:null;
+   const ids=['soeCause','soeVote','soeLogic','soeEffect'];
+   ids.forEach(id=>{const e=document.getElementById(id);if(e)e.classList.toggle('on',!!k)});
+   if(!k){
+    const vals={soeCause:'NORMAL',soeVote:'CLEAR',soeLogic:'CLEAR',soeEffect:'NONE'};
+    Object.entries(vals).forEach(([id,v])=>{const e=document.querySelector('#'+id+' span');if(e)e.textContent=v});
+    return;
+   }
+   document.querySelector('#soeCause span').textContent=m.cause;
+   document.querySelector('#soeVote span').textContent=m.vote;
+   document.querySelector('#soeLogic span').textContent='U-0001 / ESD3 ACTIVE';
+   const fx=[];
+   if(d.effects.includes('POWER_TRIP'))fx.push('POWER UNIT TRIP');
+   if(d.effects.includes('INLET_SDV_CLOSE'))fx.push('100-UV-0081 CLOSE');
+   if(d.effects.includes('OUTLET_SDV_CLOSE'))fx.push('100-UV-0082 CLOSE');
+   document.querySelector('#soeEffect span').textContent=fx.join(' + ')||'NO VERIFIED EFFECT';
+
+ };
+ const prior=window.renderLiveCe;
+ if(typeof prior==='function')window.renderLiveCe=function(){prior();renderSoeValidation();}
+ window.addEventListener('DOMContentLoaded',()=>{install();renderSoeValidation()});
+})();
+</script>
+
+
+<style id="m1-v19-process-ce-style">
+/* V19: C&E state visualization BELOW the existing process graphic only.
+   Does not move Live Status or Key Process Values. */
+.processCeStrip{margin-top:7px;border:1px solid #c8dae4;border-radius:5px;background:#f8fbfd;overflow:hidden}
+.processCeTitle{padding:6px 9px;background:#e8f3f8;border-bottom:1px solid #c8dae4;font-size:10px;font-weight:900;color:#315f80}
+.processCeFlow{display:grid;grid-template-columns:1.45fr 24px 1fr 24px 1fr 24px 1.7fr;gap:3px;align-items:center;padding:8px}
+.processCeNode{min-width:0;padding:7px 5px;border:1px solid #cfdde5;border-radius:5px;background:#fff;text-align:center;font-size:9px;line-height:1.2;color:#587386}
+.processCeNode b{display:block;font-size:10px;color:#173f55;margin-bottom:2px}
+.processCeArrow{text-align:center;font-size:17px;font-weight:900;color:#9aadb8}
+.processCeNode.active{border-color:#d63d4a;background:#fff0f1;box-shadow:0 0 7px #d63d4a55;color:#a51e2a}
+.processCeNode.active b{color:#a51e2a}
+.processCeArrow.active{color:#d63d4a;text-shadow:0 0 5px #d63d4a55}
+.processCeEffects{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.processCeFx{padding:5px 3px;border-radius:4px;background:#eef3f5;color:#718690;font-weight:900}
+.processCeFx.on{background:#d63d4a;color:#fff;box-shadow:0 0 6px #d63d4a55}
+.processCeFoot{padding:0 9px 7px;font-size:8px;color:#70848f}
+@media(max-width:1100px){
+ .processCeFlow{grid-template-columns:1fr}
+ .processCeArrow{transform:rotate(90deg)}
+}
+</style>
+<script id="m1-v19-process-ce">
+/* V19 PROCESS C&E SIGNAL OVERLAY
+   Visualization consumes the existing deterministic CE/S state.
+   No engineering cause/effect is defined here. */
+(function(){
+ const meta={
+  IFACE_HH_2OO3:['100-LIT-0082A/B/C','HH • 2oo3'],
+  TOTAL_LEVEL_LL_1OO1:['100-LIT-0083','LL • 1oo1'],
+  PU_CURRENT_HH_1OO1:['100-IT-9500','HH • 1oo1'],
+  PU_OIL_LEVEL_LL_1OO1:['100-LSLL-9500','LL • 1oo1'],
+  MANUAL_ESD_CR:['100-HS-0081A','CONTROL ROOM PB • 1oo1'],
+  MANUAL_ESD_LCS:['100-HS-0081B','LCS PB • 1oo1'],
+  MANUAL_ESD_LOCAL:['100-HS-0081C','LOCAL PB • 1oo1'],
+  UNIT_SHUTDOWN:['U-0023','UNIT SHUTDOWN INTERLOCK']
+ };
+ function key(){
+  if(!S.tripped)return '';
+  return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
+ }
+ function install(){
+  if(document.getElementById('processCeStrip'))return;
+  const process=document.querySelector('#processView .process');
+  if(!process)return;
+  /* Insert directly after process graphic, before existing below-process signal interpretation. */
+  const strip=document.createElement('div');
+  strip.id='processCeStrip';strip.className='processCeStrip';
+  strip.innerHTML='<div class="processCeTitle">LIVE C&amp;E DATA SIGNAL — FIRST-STAGE PROTECTION</div>'+
+   '<div class="processCeFlow">'+
+   '<div class="processCeNode" id="pceCause"><b>CAUSE</b><span>NO ACTIVE INITIATOR</span></div>'+
+   '<div class="processCeArrow" id="pceA1">→</div>'+
+   '<div class="processCeNode" id="pceVote"><b>VOTING / INTERLOCK</b><span>CLEAR</span></div>'+
+   '<div class="processCeArrow" id="pceA2">→</div>'+
+   '<div class="processCeNode" id="pceLogic"><b>U-0001 / ESD3</b><span>CLEAR</span></div>'+
+   '<div class="processCeArrow" id="pceA3">→</div>'+
+   '<div class="processCeNode" id="pceEffects"><b>VERIFIED EFFECTS</b><div class="processCeEffects"><div class="processCeFx" id="pcePu">POWER UNIT</div><div class="processCeFx" id="pce81">UV-0081</div><div class="processCeFx" id="pce82">UV-0082</div></div></div>'+
+   '</div><div class="processCeFoot">Normal = inactive/grey. Active verified C&amp;E transmission = red. Visual signal propagation is a SIMULATION ASSUMPTION; the deterministic C&amp;E engine remains authoritative.</div>';
+  process.insertAdjacentElement('afterend',strip);
+  renderProcessCe();
+ }
+ window.renderProcessCe=function(){
+  const k=key(),active=!!k,m=meta[k],d=active?CE[k]:null;
+  const cause=document.querySelector('#pceCause span'),vote=document.querySelector('#pceVote span'),logic=document.querySelector('#pceLogic span');
+  if(cause)cause.textContent=active?(m[0]+' — '+m[1]):'NO ACTIVE INITIATOR';
+  if(vote)vote.textContent=active?(m[1].includes('2oo3')?'2oo3 SATISFIED':m[1].includes('1oo1')?'1oo1 SATISFIED':'INTERLOCK ACTIVE'):'CLEAR';
+  if(logic)logic.textContent=active?'ACTIVE':'CLEAR';
+  ['pceCause','pceVote','pceLogic','pceEffects','pceA1','pceA2','pceA3'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.toggle('active',active)});
+  const pu=document.getElementById('pcePu'),u1=document.getElementById('pce81'),u2=document.getElementById('pce82');
+  if(pu){const on=active&&d.effects.includes('POWER_TRIP');pu.classList.toggle('on',on);pu.textContent=on?'POWER TRIP':'POWER UNIT'}
+  if(u1){const on=active&&d.effects.includes('INLET_SDV_CLOSE');u1.classList.toggle('on',on);u1.textContent=on?'UV-0081 CLOSE':'UV-0081'}
+  if(u2){const on=active&&d.effects.includes('OUTLET_SDV_CLOSE');u2.classList.toggle('on',on);u2.textContent=on?'UV-0082 CLOSE':'UV-0082'}
+ };
+ const prior=window.renderLiveCe;
+ if(typeof prior==='function')window.renderLiveCe=function(){prior();renderProcessCe();}
+ window.addEventListener('DOMContentLoaded',()=>{install();renderProcessCe()});
+})();
+</script>
+
+
+<style id="m1-v20-sequential-ce-style">
+/* V20 — training-only visualization timing. Engineering C&E remains in CE{}. */
+#processCeStrip .processCeNode,
+#processCeStrip .processCeArrow,
+#processCeStrip .processCeFx{transition:background .18s,border-color .18s,color .18s,box-shadow .18s,opacity .18s}
+
+#processCeStrip.ce-transmitting #pceCause{animation:pceNodePulse .72s ease 0s 1 both}
+#processCeStrip.ce-transmitting #pceA1{animation:pceArrowPulse .58s ease .42s 1 both}
+#processCeStrip.ce-transmitting #pceVote{animation:pceNodePulse .72s ease .78s 1 both}
+#processCeStrip.ce-transmitting #pceA2{animation:pceArrowPulse .58s ease 1.20s 1 both}
+#processCeStrip.ce-transmitting #pceLogic{animation:pceNodePulse .72s ease 1.56s 1 both}
+#processCeStrip.ce-transmitting #pceA3{animation:pceArrowPulse .58s ease 1.98s 1 both}
+#processCeStrip.ce-transmitting #pceEffects{animation:pceNodePulse .72s ease 2.34s 1 both}
+#processCeStrip.ce-transmitting .processCeFx.on{animation:pceEffectPulse .9s ease 2.58s 2 both}
+
+@keyframes pceNodePulse{
+  0%{transform:scale(1);box-shadow:none}
+  45%{transform:scale(1.025);box-shadow:0 0 14px rgba(214,61,74,.72)}
+  100%{transform:scale(1);box-shadow:0 0 7px rgba(214,61,74,.34)}
+}
+@keyframes pceArrowPulse{
+  0%{opacity:.25;transform:translateX(-5px)}
+  50%{opacity:1;transform:translateX(4px);text-shadow:0 0 9px rgba(214,61,74,.8)}
+  100%{opacity:1;transform:translateX(0)}
+}
+@keyframes pceEffectPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.045);box-shadow:0 0 11px rgba(214,61,74,.8)}
+}
+#pceStage{
+  padding:5px 9px;border-top:1px solid #d7e3e9;background:#fff;
+  font-size:9px;font-weight:900;color:#536e7c
+}
+#pceStage.trip{color:#b32632;background:#fff5f5}
+</style>
+
+<script id="m1-v20-sequential-ce">
+/* V20 — sequential signal-transmission visualization.
+   IMPORTANT: delays/pulses below are SIMULATION ASSUMPTIONS for training display only.
+   They do not delay, sequence, or alter the deterministic C&E actions. */
+(function(){
+  let lastTrip = false;
+  let timers = [];
+
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+
+  function stage(msg, trip){
+    const e=document.getElementById('pceStage');
+    if(!e)return;
+    e.textContent=msg;
+    e.classList.toggle('trip',!!trip);
+  }
+
+  function activeKey(){
+    if(!window.S || !S.tripped) return '';
+    return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
+  }
+
+  function displayTag(k){
+    return ({
+      IFACE_HH_2OO3:'100-LIT-0082A/B/C HH',
+      TOTAL_LEVEL_LL_1OO1:'100-LIT-0083 LL',
+      PU_CURRENT_HH_1OO1:'100-IT-9500 HH',
+      PU_OIL_LEVEL_LL_1OO1:'100-LSLL-9500 LL',
+      MANUAL_ESD_CR:'100-HS-0081A PB',
+      MANUAL_ESD_LCS:'100-HS-0081B PB',
+      MANUAL_ESD_LOCAL:'100-HS-0081C PB',
+      UNIT_SHUTDOWN:'U-0023 INTERLOCK'
+    })[k] || 'ACTIVE INITIATOR';
+  }
+
+  function voteText(k){
+    if(k==='IFACE_HH_2OO3') return '2oo3 VOTE SATISFIED';
+    if(k==='UNIT_SHUTDOWN') return 'UNIT SHUTDOWN INTERLOCK ACTIVE';
+    return '1oo1 CONDITION SATISFIED';
+  }
+
+  function effectText(k){
+    const d=CE[k];
+    if(!d)return 'FINAL EFFECTS';
+    const x=[];
+    if(d.effects.includes('POWER_TRIP'))x.push('POWER UNIT TRIP');
+    if(d.effects.includes('INLET_SDV_CLOSE'))x.push('100-UV-0081 CLOSE');
+    if(d.effects.includes('OUTLET_SDV_CLOSE'))x.push('100-UV-0082 CLOSE');
+    return x.join(' + ');
+  }
+
+  function installStage(){
+    const strip=document.getElementById('processCeStrip');
+    if(!strip || document.getElementById('pceStage'))return;
+    const e=document.createElement('div');
+    e.id='pceStage';
+    e.textContent='SIGNAL STATUS — NORMAL / NO PROTECTION INITIATOR ACTIVE';
+    const foot=strip.querySelector('.processCeFoot');
+    strip.insertBefore(e,foot || null);
+  }
+
+  function runSequence(){
+    const strip=document.getElementById('processCeStrip'), k=activeKey();
+    if(!strip || !k)return;
+    clearTimers();
+    strip.classList.remove('ce-transmitting');
+    void strip.offsetWidth; // restart CSS sequence
+    strip.classList.add('ce-transmitting');
+
+    stage('1 / 4  INITIATOR DETECTED — '+displayTag(k),true);
+    timers.push(setTimeout(()=>stage('2 / 4  '+voteText(k),true),780));
+    timers.push(setTimeout(()=>stage('3 / 4  U-0001 / ESD3 PROTECTION LOGIC ACTIVE',true),1560));
+    timers.push(setTimeout(()=>stage('4 / 4  VERIFIED EFFECTS — '+effectText(k)+' • PROCESS FLOW STOPPED WHERE SDVs CLOSE',true),2340));
+  }
+
+  function sync(){
+    installStage();
+    const now=!!S.tripped;
+    if(now && !lastTrip) runSequence();
+    if(!now){
+      clearTimers();
+      const strip=document.getElementById('processCeStrip');
+      if(strip)strip.classList.remove('ce-transmitting');
+      stage('SIGNAL STATUS — NORMAL / NO PROTECTION INITIATOR ACTIVE',false);
+    }
+    lastTrip=now;
+  }
+
+  const priorRenderProcessCe=window.renderProcessCe;
+  window.renderProcessCe=function(){
+    if(typeof priorRenderProcessCe==='function') priorRenderProcessCe();
+    sync();
+  };
+
+  window.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{installStage();sync()},0);
+  });
+})();
+</script>
+
+
+<style id="m1-v21-trip-visual-cleanup">
+/* V21 — VISUAL CLEANUP ONLY.
+   No C&E, voting, trip-effect, process-model or control-model changes. */
+
+/* Reduce dominance of active red paths in the main process SVG/graphic. */
+#processView .tripSignal,
+#processView .trip-signal,
+#processView .esdSignal,
+#processView .esd-signal,
+#processView [class*="trip"][class*="signal"],
+#processView [class*="esd"][class*="signal"]{
+  stroke-width:2.2px !important;
+  filter:none !important;
+}
+
+/* Keep animated trip paths readable without a heavy red glow/frame. */
+#processView .tripActive,
+#processView .trip-active,
+#processView .esdActive,
+#processView .esd-active{
+  filter:none !important;
+  box-shadow:none !important;
+}
+
+/* Existing process trip banner: compact status flag rather than vessel-covering banner. */
+#processView .tripBanner,
+#processView .trip-banner,
+#processView .esdBanner,
+#processView .esd-banner,
+#processView [id*="tripBanner"],
+#processView [id*="esdBanner"]{
+  max-width:360px !important;
+  white-space:normal !important;
+  line-height:1.15 !important;
+  font-size:10px !important;
+  padding:5px 8px !important;
+  box-shadow:0 1px 4px rgba(120,20,30,.20) !important;
+  z-index:4 !important;
+}
+
+/* V21 compact overlay, positioned at the bottom-right of the process graphic.
+   The detailed cause/effect explanation remains in the strip below DS-V-101. */
+#v21TripFlag{
+  position:absolute; right:12px; bottom:10px; z-index:8;
+  display:none; max-width:310px; padding:6px 9px;
+  border:1px solid #d65a64; border-radius:5px;
+  background:rgba(255,245,246,.96); color:#a8222e;
+  font-size:9px; font-weight:900; line-height:1.25;
+  box-shadow:0 1px 5px rgba(120,20,30,.15);
+}
+#v21TripFlag.on{display:block}
+#v21TripFlag b{font-size:10px}
+
+/* Final element states should carry the visual emphasis. */
+#processView.v21-tripped [data-state="closed"],
+#processView.v21-tripped .sdv.closed,
+#processView.v21-tripped .valve.closed{
+  filter:drop-shadow(0 0 2px rgba(190,35,50,.45));
+}
+</style>
+
+<script id="m1-v21-trip-visual-cleanup-js">
+/* V21 visual layer only. Existing deterministic S/CE state is read, never modified. */
+(function(){
+  function ensureFlag(){
+    const process=document.querySelector('#processView .process');
+    if(!process || document.getElementById('v21TripFlag')) return;
+    if(getComputedStyle(process).position==='static') process.style.position='relative';
+    const f=document.createElement('div');
+    f.id='v21TripFlag';
+    f.innerHTML='<b>ESD / TRIP ACTIVE</b><br><span id="v21TripFlagText">Final shutdown effects active.</span>';
+    process.appendChild(f);
+  }
+
+  function tripKey(){
+    if(!window.S || !S.tripped || !window.CE) return '';
+    return Object.keys(CE).find(k=>CE[k].label===S.tripCause)||'';
+  }
+
+  function effectsFor(k){
+    const d=k && CE[k];
+    if(!d) return [];
+    const e=[];
+    if(d.effects.includes('POWER_TRIP')) e.push('POWER UNIT TRIPPED');
+    if(d.effects.includes('INLET_SDV_CLOSE')) e.push('UV-0081 CLOSED');
+    if(d.effects.includes('OUTLET_SDV_CLOSE')) e.push('UV-0082 CLOSED');
+    return e;
+  }
+
+  function renderV21(){
+    ensureFlag();
+    const pv=document.getElementById('processView');
+    const flag=document.getElementById('v21TripFlag');
+    if(!pv || !flag || !window.S) return;
+    const on=!!S.tripped, k=tripKey();
+    pv.classList.toggle('v21-tripped',on);
+    flag.classList.toggle('on',on);
+    if(on){
+      const fx=effectsFor(k);
+      const span=document.getElementById('v21TripFlagText');
+      if(span) span.textContent=(S.tripCause || 'Protection initiator active')+
+        (fx.length ? ' • '+fx.join(' • ') : '');
+    }
+  }
+
+  /* Hook only into rendering; do not alter engineering state. */
+  const prior=window.renderLiveCe;
+  if(typeof prior==='function'){
+    window.renderLiveCe=function(){ prior(); renderV21(); };
+  }
+  const priorP=window.renderProcessCe;
+  if(typeof priorP==='function'){
+    window.renderProcessCe=function(){ priorP(); renderV21(); };
+  }
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(renderV21,0));
+})();
+</script>
+
+
+<style id="m1-v22-strict-declutter">
+/* V22 — STRICT PROCESS-VIEW DECLUTTER ONLY.
+   Engineering logic/state is untouched. Detailed cause→vote→logic→effects stays below vessel. */
+
+/* Never alarm-outline the whole vessel. */
+#processView.v21-tripped .vessel,
+#processView.v21-tripped [class*="vessel"],
+#processView.v21-tripped svg [class*="shell"],
+#processView.v21-tripped svg [class*="body"]{
+  filter:none !important;
+  box-shadow:none !important;
+}
+
+/* Hide duplicate main-view trip banners/status ribbons introduced by prior visual layers. */
+#processView .tripBanner,
+#processView .trip-banner,
+#processView .esdBanner,
+#processView .esd-banner,
+#processView [id*="tripBanner"],
+#processView [id*="esdBanner"],
+#processView #v21TripFlag{
+  display:none !important;
+}
+
+/* Protection transmission in main view = thin, no glow. */
+#processView .tripSignal,
+#processView .trip-signal,
+#processView .esdSignal,
+#processView .esd-signal,
+#processView [class*="trip"][class*="signal"],
+#processView [class*="esd"][class*="signal"]{
+  stroke-width:1.6px !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+
+/* Suppress glow/filter on all trip-active process-view SVG elements.
+   State colour is retained; detailed logic remains in C&E panel. */
+#processView.v22-clean-trip svg *{
+  filter:none !important;
+}
+
+/* Single compact final process consequence indicator. */
+#v22FlowStopped{
+  position:absolute;
+  right:12px;
+  bottom:10px;
+  z-index:20;
+  display:none;
+  padding:5px 9px;
+  border:1px solid #d85b66;
+  border-radius:4px;
+  background:rgba(255,247,247,.97);
+  color:#b32632;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.15px;
+}
+#v22FlowStopped.on{display:block}
+</style>
+
+<script id="m1-v22-strict-declutter-js">
+/* VISUALIZATION ONLY — reads S/CE, never changes C&E state or actions. */
+(function(){
+  function ensureIndicator(){
+    const process=document.querySelector('#processView .process');
+    if(!process || document.getElementById('v22FlowStopped')) return;
+    if(getComputedStyle(process).position==='static') process.style.position='relative';
+    const e=document.createElement('div');
+    e.id='v22FlowStopped';
+    e.textContent='PROCESS FLOW STOPPED';
+    process.appendChild(e);
+  }
+
+  function sdvsClosedByState(){
+    if(!window.S) return false;
+    /* Use existing final state, not cause inference. */
+    return S.inletSdvClosed === true ||
+           S.outletSdvClosed === true ||
+           S.sdv1Closed === true ||
+           S.sdv2Closed === true ||
+           (S.tripped && /CLOSED/i.test(
+             ((document.getElementById('sdv1State')||{}).textContent||'')+' '+
+             ((document.getElementById('sdv2State')||{}).textContent||'')
+           ));
+  }
+
+  function syncV22(){
+    ensureIndicator();
+    const pv=document.getElementById('processView');
+    const e=document.getElementById('v22FlowStopped');
+    if(!pv || !e || !window.S) return;
+
+    const stopped=!!S.tripped && sdvsClosedByState();
+    pv.classList.toggle('v22-clean-trip', !!S.tripped);
+    e.classList.toggle('on', stopped);
+
+    /* Remove duplicate textual ribbons only inside process graphic.
+       Do not touch C&E strip, Live Status or Key Process Values. */
+    pv.querySelectorAll('.process .tripBanner,.process .trip-banner,.process .esdBanner,.process .esd-banner')
+      .forEach(x=>x.style.display='none');
+  }
+
+  const hooks=['render','renderLiveCe','renderProcessCe'];
+  hooks.forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){
+        const r=old.apply(this,arguments);
+        syncV22();
+        return r;
+      };
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(syncV22,0));
+})();
+</script>
+
+
+<style id="m1-v23-trip-view-final-cleanup">
+/* V23 — PROCESS GRAPHIC CLEANUP ONLY.
+   No engineering state, C&E voting, trip actions, thresholds or process model changes. */
+
+/* Remove the legacy large red trip banner generated by .tripStopped:after. */
+#processView .process.tripStopped:after{
+  content:none !important;
+  display:none !important;
+}
+
+/* Keep only the V23 compact final consequence indication. */
+#processView .tripStopNote{
+  display:none !important;
+}
+#processView #v21TripFlag,
+#processView #v22FlowStopped{
+  display:none !important;
+}
+
+/* Vessel remains a process vessel — never use the vessel shell itself as an alarm lamp. */
+#processView .process.v23-trip-clean .vessel{
+  border-color:#637d8d !important;
+  box-shadow:inset 0 0 22px #38566d55,0 6px 14px #183a5222 !important;
+  filter:none !important;
+  outline:none !important;
+}
+
+/* Process piping becomes static/neutral after isolation. */
+#processView .process.v23-trip-clean.tripStopped > .pipe{
+  filter:grayscale(1) !important;
+  opacity:.72 !important;
+}
+#processView .process.v23-trip-clean.tripStopped > .flowdot,
+#processView .process.v23-trip-clean.tripStopped > .flow{
+  display:none !important;
+}
+
+/* Final closed SDVs remain the strong shutdown-state indication. */
+#processView .process.v23-trip-clean .valve.closed{
+  filter:none !important;
+}
+
+/* Do not leave the normal control path looking live after process isolation. */
+#processView.v23-isolated #svgControlIn,
+#processView.v23-isolated #svgControlOut{
+  stroke:#9aadb8 !important;
+  filter:none !important;
+  opacity:.72 !important;
+}
+#processView.v23-isolated #svgCtrlPulse1,
+#processView.v23-isolated #svgCtrlPulse2{
+  display:none !important;
+}
+
+/* One compact consequence status only. */
+#v23ProcessStopped{
+  position:absolute;
+  right:12px;
+  bottom:10px;
+  z-index:30;
+  display:none;
+  padding:5px 10px;
+  border:1px solid #d85b66;
+  border-radius:4px;
+  background:#fff7f7;
+  color:#b32632;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.15px;
+}
+#v23ProcessStopped.on{display:block !important}
+</style>
+
+<script id="m1-v23-trip-view-final-cleanup-js">
+/* VISUALIZATION ONLY — reads existing final states. */
+(function(){
+  function ensureV23(){
+    const p=document.querySelector('#processView .process');
+    if(!p || document.getElementById('v23ProcessStopped')) return;
+    const n=document.createElement('div');
+    n.id='v23ProcessStopped';
+    n.textContent='PROCESS FLOW STOPPED';
+    p.appendChild(n);
+  }
+
+  function isolated(){
+    const p=document.querySelector('#processView .process');
+    if(!window.S || !p) return false;
+    /* Existing simulator already asserts tripStopped from the verified SDV isolation state. */
+    return p.classList.contains('tripStopped');
+  }
+
+  function syncV23(){
+    ensureV23();
+    const pv=document.getElementById('processView');
+    const p=pv && pv.querySelector('.process');
+    const n=document.getElementById('v23ProcessStopped');
+    if(!pv || !p || !n) return;
+
+    const iso=isolated();
+    p.classList.toggle('v23-trip-clean', iso);
+    pv.classList.toggle('v23-isolated', iso);
+    n.classList.toggle('on', iso);
+
+    /* Explicitly suppress prior duplicate process-view consequence flags. */
+    const old1=document.getElementById('v21TripFlag');
+    const old2=document.getElementById('v22FlowStopped');
+    if(old1) old1.style.display='none';
+    if(old2) old2.style.display='none';
+  }
+
+  ['render','renderLiveCe','renderProcessCe'].forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){
+        const r=old.apply(this,arguments);
+        syncV23();
+        return r;
+      };
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(syncV23,0));
+})();
+</script>
+
+
+<style id="m1-v24-signal-path-rebuild">
+/* V24 — visual SVG trip-path rebuild.
+   Engineering/C&E state and actions are NOT modified. */
+
+/* Neutralize legacy trip overlay geometry in the process graphic only. */
+#processView.v24-trip-active .process svg .tripSignal,
+#processView.v24-trip-active .process svg .trip-signal,
+#processView.v24-trip-active .process svg .esdSignal,
+#processView.v24-trip-active .process svg .esd-signal,
+#processView.v24-trip-active .process svg [class*="trip"][class*="signal"],
+#processView.v24-trip-active .process svg [class*="esd"][class*="signal"]{
+  opacity:0 !important;
+}
+
+/* No vessel-shell alarm halo. */
+#processView.v24-trip-active .vessel{
+  border-color:#637d8d !important;
+  outline:none !important;
+  filter:none !important;
+  box-shadow:inset 0 0 22px #38566d55,0 6px 14px #183a5222 !important;
+}
+
+/* Isolated process pipes: neutral and static. */
+#processView.v24-trip-active .process > .pipe{
+  filter:grayscale(1) !important;
+  opacity:.70 !important;
+}
+#processView.v24-trip-active .process > .flowdot,
+#processView.v24-trip-active .process > .flow{
+  display:none !important;
+}
+
+/* Normal control path is inactive after ESD isolation. */
+#processView.v24-trip-active #svgControlIn,
+#processView.v24-trip-active #svgControlOut{
+  stroke:#9aadb8 !important;
+  opacity:.65 !important;
+  filter:none !important;
+}
+#processView.v24-trip-active #svgCtrlPulse1,
+#processView.v24-trip-active #svgCtrlPulse2{
+  display:none !important;
+}
+
+/* Dedicated V24 overlay. */
+#v24TripSvg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:16;
+  pointer-events:none;
+  overflow:visible;
+}
+#v24TripSvg .v24-line{
+  fill:none;
+  stroke:#d83b49;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+#v24TripSvg .v24-pulse{
+  fill:#d83b49;
+  filter:none;
+}
+#v24TripSvg .v24-label{
+  fill:#a91f2b;
+  font:700 10px Arial,sans-serif;
+}
+
+/* Bottom label separation. */
+#processView .process .lvTag,
+#processView .process [class*="lvTag"]{
+  transform:translateY(-8px);
+}
+</style>
+
+<script id="m1-v24-signal-path-rebuild-js">
+/* VISUALIZATION ONLY.
+   Reads the existing tripStopped/final-state presentation and draws a clean,
+   dedicated protection path: HH sensors -> 2oo3/ESD -> both SDVs. */
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+
+  function q(sel){ return document.querySelector(sel); }
+
+  function center(el, host){
+    if(!el || !host) return null;
+    const a=el.getBoundingClientRect(), h=host.getBoundingClientRect();
+    return {x:a.left+a.width/2-h.left, y:a.top+a.height/2-h.top};
+  }
+
+  function findByText(root, rx){
+    if(!root) return null;
+    const all=[...root.querySelectorAll('*')];
+    return all.find(e => e.children.length===0 && rx.test((e.textContent||'').trim())) || null;
+  }
+
+  function anchor(root, selectors, textRx){
+    for(const s of selectors){
+      const e=root.querySelector(s);
+      if(e) return e;
+    }
+    return findByText(root,textRx);
+  }
+
+  function line(svg, pts){
+    const p=document.createElementNS(NS,'polyline');
+    p.setAttribute('class','v24-line');
+    p.setAttribute('points',pts.map(v=>`${v.x},${v.y}`).join(' '));
+    svg.appendChild(p);
+    return p;
+  }
+
+  function pulse(svg, pathPts, delay){
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('class','v24-pulse');
+    c.setAttribute('r','4');
+    const path=document.createElementNS(NS,'path');
+    path.setAttribute('d','M '+pathPts.map(v=>`${v.x} ${v.y}`).join(' L '));
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','none');
+    path.id='v24Motion'+Math.random().toString(36).slice(2);
+    svg.appendChild(path);
+    const m=document.createElementNS(NS,'animateMotion');
+    m.setAttribute('dur','1.35s');
+    m.setAttribute('begin',`${delay}s`);
+    m.setAttribute('repeatCount','indefinite');
+    const mp=document.createElementNS(NS,'mpath');
+    mp.setAttributeNS('http://www.w3.org/1999/xlink','href','#'+path.id);
+    m.appendChild(mp); c.appendChild(m); svg.appendChild(c);
+  }
+
+  function build(){
+    const pv=q('#processView'), host=pv && pv.querySelector('.process');
+    if(!pv || !host) return;
+    let svg=q('#v24TripSvg');
+    if(svg) svg.remove();
+
+    const active=host.classList.contains('tripStopped');
+    pv.classList.toggle('v24-trip-active',active);
+    if(!active) return;
+
+    svg=document.createElementNS(NS,'svg');
+    svg.id='v24TripSvg';
+    const r=host.getBoundingClientRect();
+    svg.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);
+    svg.setAttribute('preserveAspectRatio','none');
+    host.appendChild(svg);
+
+    const hh=anchor(host,
+      ['#lit102a','#lit102b','#lit102c','.lit102','.hhTransmitters'],
+      /DS-LIT-102|LIT-102 A\/B\/C/i);
+    const esd=anchor(host,
+      ['#esdLogic','#esdBox','.esdLogic','.esd-box'],
+      /ESD.*2oo3|2oo3.*ESD|ESD.*LOGIC/i);
+    const sdv1=anchor(host,
+      ['#sdv101','.sdv101'],
+      /DS-SDV-101/i);
+    const sdv2=anchor(host,
+      ['#sdv102','.sdv102'],
+      /DS-SDV-102/i);
+
+    const A=center(hh,host), B=center(esd,host),
+          C=center(sdv1,host), D=center(sdv2,host);
+    if(!A || !B || !C || !D) return;
+
+    /* Logical route is deliberately kept outside vessel body where possible. */
+    const pre={x:A.x-18,y:A.y};
+    const up={x:pre.x,y:B.y};
+    const p1=[A,pre,up,B];
+    line(svg,p1); pulse(svg,p1,0);
+
+    const branch={x:B.x+36,y:B.y};
+    const split={x:branch.x,y:Math.min(C.y,D.y)-26};
+    const to1=[B,branch,{x:branch.x,y:C.y},C];
+    const to2=[B,branch,{x:branch.x,y:D.y},D];
+    line(svg,to1); line(svg,to2);
+    pulse(svg,to1,.35); pulse(svg,to2,.65);
+  }
+
+  function sync(){ requestAnimationFrame(build); }
+
+  ['render','renderLiveCe','renderProcessCe'].forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){
+        const r=old.apply(this,arguments);
+        sync();
+        return r;
+      };
+    }
+  });
+  window.addEventListener('resize',sync);
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(sync,50));
+})();
+</script>
+
+
+<style id="m1-v25-process-trip-signal-only">
+/* V25: Process-view visualization only.
+   C&E engine, voting, thresholds, final actions and ESD/C&E page are untouched. */
+
+/* Kill ALL prior red SVG trip geometry inside Process view while tripped.
+   V25's own overlay is explicitly exempted. */
+#processView.v25-trip-active .process svg:not(#v25TripSvg) [stroke="#d83b49"],
+#processView.v25-trip-active .process svg:not(#v25TripSvg) [stroke="#dc3545"],
+#processView.v25-trip-active .process svg:not(#v25TripSvg) [stroke="#e23b4b"],
+#processView.v25-trip-active .process svg:not(#v25TripSvg) .tripSignal,
+#processView.v25-trip-active .process svg:not(#v25TripSvg) .trip-signal,
+#processView.v25-trip-active .process svg:not(#v25TripSvg) .esdSignal,
+#processView.v25-trip-active .process svg:not(#v25TripSvg) .esd-signal{
+  opacity:0 !important;
+  filter:none !important;
+}
+
+/* Remove V24 overlay completely when V25 is active. */
+#processView.v25-trip-active #v24TripSvg{display:none !important}
+
+/* Vessel is never the alarm annunciator. */
+#processView.v25-trip-active .vessel{
+  border-color:#637d8d !important;
+  outline:none !important;
+  filter:none !important;
+  box-shadow:inset 0 0 22px #38566d55,0 6px 14px #183a5222 !important;
+}
+
+/* Isolated process pipes remain neutral/static. */
+#processView.v25-trip-active .process > .pipe{
+  filter:grayscale(1) !important;
+  opacity:.70 !important;
+}
+#processView.v25-trip-active .process > .flowdot,
+#processView.v25-trip-active .process > .flow{
+  display:none !important;
+}
+
+/* Control path no longer competes with protection path after isolation. */
+#processView.v25-trip-active #svgControlIn,
+#processView.v25-trip-active #svgControlOut{
+  stroke:#9aadb8 !important;
+  opacity:.62 !important;
+  filter:none !important;
+}
+#processView.v25-trip-active #svgCtrlPulse1,
+#processView.v25-trip-active #svgCtrlPulse2{
+  display:none !important;
+}
+
+/* Dedicated V25 protection signal — thin, orthogonal, no glow. */
+#v25TripSvg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:18;
+  pointer-events:none;
+  overflow:visible;
+}
+#v25TripSvg .sig{
+  fill:none;
+  stroke:#d83b49;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+#v25TripSvg .pulse{fill:#d83b49}
+</style>
+
+<script id="m1-v25-process-trip-signal-only-js">
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+
+  function leafByText(root, rx){
+    return [...root.querySelectorAll('*')].find(
+      e=>e.children.length===0 && rx.test((e.textContent||'').trim())
+    ) || null;
+  }
+  function pick(root, sels, rx){
+    for(const s of sels){ const e=root.querySelector(s); if(e) return e; }
+    return leafByText(root,rx);
+  }
+  function pt(el,host){
+    if(!el) return null;
+    const a=el.getBoundingClientRect(), h=host.getBoundingClientRect();
+    return {x:a.left+a.width/2-h.left,y:a.top+a.height/2-h.top};
+  }
+  function poly(svg,pts){
+    const e=document.createElementNS(NS,'polyline');
+    e.setAttribute('class','sig');
+    e.setAttribute('points',pts.map(p=>p.x+','+p.y).join(' '));
+    svg.appendChild(e);
+    return e;
+  }
+  function movingDot(svg,pts,delay){
+    const id='v25p'+Math.random().toString(36).slice(2);
+    const path=document.createElementNS(NS,'path');
+    path.id=id;
+    path.setAttribute('d','M '+pts.map(p=>p.x+' '+p.y).join(' L '));
+    path.setAttribute('fill','none'); path.setAttribute('stroke','none');
+    svg.appendChild(path);
+
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('class','pulse'); c.setAttribute('r','3.5');
+    const am=document.createElementNS(NS,'animateMotion');
+    am.setAttribute('dur','1.4s'); am.setAttribute('begin',delay+'s');
+    am.setAttribute('repeatCount','indefinite');
+    const mp=document.createElementNS(NS,'mpath');
+    mp.setAttributeNS('http://www.w3.org/1999/xlink','href','#'+id);
+    am.appendChild(mp); c.appendChild(am); svg.appendChild(c);
+  }
+
+  function rebuild(){
+    const pv=document.getElementById('processView');
+    const host=pv && pv.querySelector('.process');
+    if(!pv || !host) return;
+
+    const active=host.classList.contains('tripStopped');
+    pv.classList.toggle('v25-trip-active',active);
+
+    document.getElementById('v25TripSvg')?.remove();
+    if(!active) return;
+
+    /* Remove V24 instance so two custom overlays can never coexist. */
+    document.getElementById('v24TripSvg')?.remove();
+
+    const hh=pick(host,
+      ['.hhTransmitters','.lit102','#lit102a'],
+      /DS-LIT-102 A\/B\/C|DS-LIT-102A|LIT-102 A\/B\/C/i);
+    const esd=pick(host,
+      ['#esdLogic','.esdLogic','.esd-box'],
+      /ESD.*2oo3|2oo3.*ESD|ESD.*LOGIC/i);
+    const s1=pick(host,['#sdv101','.sdv101'],/DS-SDV-101/i);
+    const s2=pick(host,['#sdv102','.sdv102'],/DS-SDV-102/i);
+
+    const A=pt(hh,host), B=pt(esd,host), C=pt(s1,host), D=pt(s2,host);
+    if(!A||!B||!C||!D) return;
+
+    const r=host.getBoundingClientRect();
+    const svg=document.createElementNS(NS,'svg');
+    svg.id='v25TripSvg';
+    svg.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);
+    svg.setAttribute('preserveAspectRatio','none');
+    host.appendChild(svg);
+
+    /* Route HH -> ESD above the vessel, never across vessel/process piping. */
+    const topY=Math.max(18, Math.min(A.y,B.y)-42);
+    const cause=[A,{x:A.x,y:topY},{x:B.x,y:topY},B];
+    poly(svg,cause); movingDot(svg,cause,0);
+
+    /* ESD -> SDVs: run in upper free space, then descend locally at each valve.
+       This is signal transmission, not process-pipe highlighting. */
+    const cmdY=Math.max(24, topY-20);
+    const trunk=[B,{x:B.x+28,y:B.y},{x:B.x+28,y:cmdY}];
+    poly(svg,trunk);
+
+    const left=[trunk[trunk.length-1],{x:C.x,y:cmdY},C];
+    const right=[trunk[trunk.length-1],{x:D.x,y:cmdY},D];
+    poly(svg,left); poly(svg,right);
+    movingDot(svg,left,.35); movingDot(svg,right,.7);
+  }
+
+  function sync(){ requestAnimationFrame(rebuild); }
+
+  ['render','renderLiveCe','renderProcessCe'].forEach(name=>{
+    const old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){
+        const result=old.apply(this,arguments);
+        sync();
+        return result;
+      };
+    }
+  });
+
+  addEventListener('resize',sync);
+  addEventListener('DOMContentLoaded',()=>setTimeout(sync,80));
+})();
+</script>
+
+
+</body></html>
