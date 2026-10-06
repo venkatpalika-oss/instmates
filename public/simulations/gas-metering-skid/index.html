@@ -3,13 +3,13 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Gas Metering Skid Simulator — Pressure Lesson | InstMates</title>
-<meta name="description" content="Explore a conceptual natural-gas metering skid and its equipment. Unreleased educational pressure, temperature and GC lifecycle lessons; gas-property and flow calculations are not enabled.">
+<meta name="description" content="Explore a conceptual natural-gas metering skid and its equipment. Unreleased educational pressure, temperature and GC lifecycle lessons; captured-GC educational molar mass only; flow calculations are not enabled.">
 <link rel="canonical" href="https://www.instmates.com/simulations/gas-metering-skid/">
 <link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/gas-metering-skid.css">
 </head><body class="gas-skid-page" data-page="simulations" data-public-learning="true">
 <a class="gm-skip" href="#main">Skip to simulator content</a><div id="siteHeader"></div>
 <main id="main" class="gm-shell" tabindex="-1">
-<header class="gm-heading" id="overview"><div><p class="gm-eyebrow">INSTMATES / INTERACTIVE LEARNING</p><h1>Gas Metering Skid Simulator</h1><p class="gm-intro">Explore the equipment. Follow the measurement chain.</p></div><p class="gm-preview"><span aria-hidden="true">◇</span> Pressure, temperature and GC lifecycle lessons active — calculations not enabled</p></header>
+<header class="gm-heading" id="overview"><div><p class="gm-eyebrow">INSTMATES / INTERACTIVE LEARNING</p><h1>Gas Metering Skid Simulator</h1><p class="gm-intro">Explore the equipment. Follow the measurement chain.</p></div><p class="gm-preview"><span aria-hidden="true">◇</span> Pressure, temperature and GC lessons active — captured-GC molar mass available</p></header>
 <nav class="gm-nav" aria-label="Simulator sections"><a href="#overview" class="gm-overview">Overview</a><a href="#process">Process</a><a href="#instruments">Instruments</a><a href="#gas-quality">GC &amp; Quality</a><a href="#flow-computer">Flow Computer</a><span>Fault Scenarios<small>Not active in M1</small></span><span>Trends<small>Not active in M1</small></span><span>Assessment<small>Not active in M1</small></span></nav>
 <div class="gm-workspace">
 <section class="gm-summary" aria-label="Result placeholders"><div class="gm-kpi gm-tone-cyan"><h2>Operating flow</h2><p data-result>—</p><small>Engineering model not enabled</small></div><div class="gm-kpi gm-tone-mint"><h2>Reference flow</h2><p data-result>—</p><small>Engineering model not enabled</small></div><div class="gm-kpi gm-tone-amber"><h2>Heating value</h2><p data-result>—</p><small>Engineering model not enabled</small></div><div class="gm-kpi gm-tone-purple"><h2>Energy flow</h2><p data-result>—</p><small>Engineering model not enabled</small></div></section>
@@ -79,9 +79,24 @@
 <div class="gm-gc-record"><h3>Latest completed result</h3><p class="gm-eyebrow">Educational composition</p><p id="gm-gc-result-identity">No GC result yet</p><p id="gm-gc-result-composition">—</p><p id="gm-gc-result-provenance" class="gm-note">—</p><p id="gm-gc-result-age">Sample age: —</p></div>
 <p class="gm-note">A completed result describes its captured sample, not a live copy of current modeled composition. During a new analysis the previous completed result remains available. Sample age is not an equipment-health assessment.</p>
 <p class="gm-note">Idealized result equals captured sample; delivery is immediate. Separation, detector response, response factors, integration, identification error, uncertainty, retention time, calibration and sample transport are not modeled.</p>
-<p class="gm-note">The GC receives a sample; it does not carry the main process flow. No gas-property or flow calculation enabled.</p><noscript><p>The GC lesson requires JavaScript. No GC result yet.</p></noscript></section>
-<section class="gm-panel" id="gas-properties"><div class="gm-panel-heading"><h2>Calculated gas properties</h2></div><dl class="gm-readings"><div><dt>Molecular weight</dt><dd data-result>—</dd></div><div><dt>Relative density</dt><dd data-result>—</dd></div><div><dt>Compressibility</dt><dd data-result>—</dd></div><div><dt>Heating value</dt><dd data-result>—</dd></div><div><dt>Wobbe Index</dt><dd data-result>—</dd></div></dl><p class="gm-readiness">Model pending validation</p></section>
-<section class="gm-panel" id="flow-computer"><div class="gm-panel-heading"><h2>Flow computer</h2></div><dl class="gm-readings"><div><dt>Flow-computer pressure input<br><small>Selected source: PT</small></dt><dd data-pressure="selected">—</dd></div><div><dt>Flow-computer temperature input<br><small>Selected source: TT</small></dt><dd data-temperature="selected">—</dd></div><div><dt>Reference conditions</dt><dd data-result>—</dd></div><div><dt>Reference flow</dt><dd data-result>—</dd></div><div><dt>Energy flow</dt><dd data-result>—</dd></div><div><dt>Accumulated totals</dt><dd data-result>—</dd></div></dl><div class="gm-gc-record" id="gm-gc-input"><h3>GC composition input</h3><p>Selected source: GC</p><p class="gm-eyebrow">Educational composition</p><p id="gm-gc-input-identity">No GC result yet</p><p id="gm-gc-input-composition">—</p><p id="gm-gc-input-provenance" class="gm-note">—</p><p id="gm-gc-input-age">Sample age: —</p><p class="gm-note">The previous delivered record remains selected while a new sample is analyzed.</p></div><p class="gm-readiness">No gas-property or flow calculation enabled.</p><p class="gm-note">No flow calculation enabled. Pressure, temperature and GC composition are independent educational inputs only.</p>
+<p class="gm-note">The GC receives a sample; it does not carry the main process flow. Only captured-GC educational molar mass is available. No flow calculation enabled.</p><noscript><p>The GC lesson requires JavaScript. No GC result yet.</p></noscript></section>
+<section class="gm-panel" id="gas-properties"><div class="gm-panel-heading"><h2>Calculated gas properties</h2></div>
+<div class="gm-input-set" id="gm-molar-mass" aria-labelledby="gm-molar-mass-title">
+<h3 id="gm-molar-mass-title">Captured GC molar mass</h3>
+<button type="button" id="gm-molar-mass-calculate" hidden>Calculate from delivered GC record</button>
+<p id="gm-molar-mass-status" role="status" aria-live="polite" aria-atomic="true">No calculation yet</p>
+<dl>
+<div><dt>Molar mass</dt><dd id="gm-molar-mass-value">—</dd></div>
+<div><dt>Captured composition</dt><dd id="gm-molar-mass-source">—</dd></div>
+<div><dt>Calculation identity</dt><dd id="gm-molar-mass-identity">—</dd></div>
+<div><dt>Method and source</dt><dd id="gm-molar-mass-provenance">—</dd></div>
+</dl>
+<p>Calculated from the captured educational GC composition. It does not establish current-process composition or measurement-time alignment.</p>
+<p>Educational / source-grounded. No ISO 6976 conformity or custody-transfer conformity is claimed. Measurement Input Set eligibility remains not evaluated.</p>
+<noscript><p>Calculation requires JavaScript. No calculation yet.</p></noscript>
+</div>
+<dl class="gm-readings"><div><dt>Relative density</dt><dd data-result>—</dd></div><div><dt>Compressibility</dt><dd data-result>—</dd></div><div><dt>Heating value</dt><dd data-result>—</dd></div><div><dt>Wobbe Index</dt><dd data-result>—</dd></div></dl><p class="gm-readiness">Other properties: Model pending validation</p></section>
+<section class="gm-panel" id="flow-computer"><div class="gm-panel-heading"><h2>Flow computer</h2></div><dl class="gm-readings"><div><dt>Flow-computer pressure input<br><small>Selected source: PT</small></dt><dd data-pressure="selected">—</dd></div><div><dt>Flow-computer temperature input<br><small>Selected source: TT</small></dt><dd data-temperature="selected">—</dd></div><div><dt>Reference conditions</dt><dd data-result>—</dd></div><div><dt>Reference flow</dt><dd data-result>—</dd></div><div><dt>Energy flow</dt><dd data-result>—</dd></div><div><dt>Accumulated totals</dt><dd data-result>—</dd></div></dl><div class="gm-gc-record" id="gm-gc-input"><h3>GC composition input</h3><p>Selected source: GC</p><p class="gm-eyebrow">Educational composition</p><p id="gm-gc-input-identity">No GC result yet</p><p id="gm-gc-input-composition">—</p><p id="gm-gc-input-provenance" class="gm-note">—</p><p id="gm-gc-input-age">Sample age: —</p><p class="gm-note">The previous delivered record remains selected while a new sample is analyzed.</p></div><p class="gm-readiness">Only captured-GC educational molar mass is available. No flow calculation enabled.</p><p class="gm-note">No flow calculation enabled. Pressure, temperature and GC composition are independent educational inputs only.</p>
 <div class="gm-input-set" id="gm-input-set" aria-labelledby="gm-input-set-title">
 <h3 id="gm-input-set-title">Measurement Input Set</h3>
 <p>Educational provenance snapshot only. No calculation result.</p>
@@ -102,13 +117,13 @@
 <p>Temporal alignment: Not established</p>
 <p>PT/TT are current educational observations; GC represents an earlier captured sample. Their measurement times are not proven aligned.</p>
 <p>Calculation eligibility: Not evaluated</p>
-<p>No engineering eligibility policy or calculation method is implemented.</p>
+<p>No engineering eligibility policy or whole-input-set calculation method is implemented.</p>
 <p>Record quality describes the educational contract only; it does not establish accuracy, calibration, equipment health or custody-transfer suitability. Software tests do not establish engineering validity.</p>
-<p>Reference conditions, staleness, temporal-alignment acceptance and calculation methods: SOURCE REQUIRED + POLICY REQUIRED.</p>
+<p>Reference conditions, staleness, temporal-alignment acceptance and whole-input-set calculation methods: SOURCE REQUIRED + POLICY REQUIRED.</p>
 </div>
 </section>
 </div>
 <section class="gm-panel gm-trends" aria-labelledby="gm-trends-title"><div class="gm-panel-heading"><h2 id="gm-trends-title">Trends</h2><span>Not active in M1</span></div><div class="gm-empty"><span class="gm-empty-symbol" aria-hidden="true">⌁</span><h3>No trend data</h3><p>Time-aligned measurement history will appear only when an approved model is enabled.</p></div></section>
 <section class="gm-panel gm-faults" aria-labelledby="gm-fault-title"><div class="gm-panel-heading"><h2 id="gm-fault-title">Fault scenarios</h2><span>Not active in M1</span></div><p>Guided fault injection and troubleshooting will follow validated instrument and communication behavior.</p><div class="gm-future"><h3>Assessment</h3><p>Not active in M1</p></div></section>
 </div><p class="gm-footnote">A dash means no value, not zero. These educational measurement lessons provide no operational, fiscal or custody-transfer calculations.</p>
-</main><div id="siteFooter"></div><script src="/assets/js/includes.js"></script><script type="module" src="/assets/js/simulations/gas-metering-skid-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-gc-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-input-set-page.js"></script></body></html>
+</main><div id="siteFooter"></div><script src="/assets/js/includes.js"></script><script type="module" src="/assets/js/simulations/gas-metering-skid-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-gc-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-input-set-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-molar-mass-page.js"></script></body></html>

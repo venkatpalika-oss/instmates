@@ -14,7 +14,7 @@ test('gas skid: semantic unreleased learning page and shared shell',()=>{
  assert.match(html,/data-public-learning="true"/);
  assert.match(html,/<meta name="robots" content="noindex,nofollow">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
- assert.match(html,/Pressure, temperature and GC lifecycle lessons active — calculations not enabled/);
+ assert.match(html,/Pressure, temperature and GC lessons active — captured-GC molar mass available/);
  assert.match(html,/<a class="gm-skip" href="#main">/);
 });
 test('gas skid: every enabled local anchor resolves; deferred navigation is not interactive',()=>{
@@ -27,7 +27,7 @@ test('gas skid: every enabled local anchor resolves; deferred navigation is not 
 });
 test('gas skid: only measurement lessons permit numeric controls; other results stay absent',()=>{
  const results=[...html.matchAll(/data-result>([^<]*)</g)].map(m=>m[1]);
- assert.ok(results.length>=10);assert.ok(results.every(x=>x==='—'));
+ assert.ok(results.length>=9);assert.ok(results.every(x=>x==='—'));
  assert.doesNotMatch(visible,/\b(?:NORMAL|HEALTHY|OK|GOOD)\b|\bmA\b|\bbar\b|\bMW\b|\bMJ\b|°K/);
  const lesson=html.match(/<div id="gm-pressure-lesson"[\s\S]*?<\/div>/)[0];
  assert.equal((lesson.match(/<input /g)||[]).length,2);
@@ -41,7 +41,9 @@ test('gas skid: only measurement lessons permit numeric controls; other results 
  for(const id of ['gas-properties']) {
   const section=html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))[0];
   assert.doesNotMatch(section,/<input|data-pressure|data-temperature/);
-  assert.doesNotMatch(section.replace(/<[^>]*>/g,' '),/\d/);
+  assert.match(section,/Captured GC molar mass/);
+  assert.match(section,/id="gm-molar-mass-value">—/);
+  assert.equal((section.match(/data-result>—/g)||[]).length,4);
  }
  assert.match(html,/No flow calculation enabled/);
  assert.match(html,/A dash means no value, not zero/);
@@ -100,7 +102,7 @@ test('gas skid: GC lifecycle controls, distinct records and absent startup resul
   assert.match(html,new RegExp(`id="gm-gc-${prefix}-composition">—`));
   assert.match(html,new RegExp(`id="gm-gc-${prefix}-age">Sample age: —`));
  }
- assert.match(html,/No gas-property or flow calculation enabled/);
+ assert.match(html,/Only captured-GC educational molar mass is available/);
  assert.match(gc,/not representative pipeline gas/);assert.match(gc,/not manufacturer cycle time/);
  assert.doesNotMatch(gc,/process control|feed control|gas blending control|valve control|FRESH|STALE/);
  assert.match(html,/<script type="module" src="\/assets\/js\/simulations\/gas-metering-gc-page.js"><\/script>/);
@@ -117,7 +119,7 @@ test('gas skid: explicit educational input-set boundary and isolated controller'
  assert.match(html,/<script type="module" src="\/assets\/js\/simulations\/gas-metering-input-set-page.js"><\/script>/);
  assert.match(page,/from '.\/gas-metering-input-set-model.js'/);
  assert.match(html,/<button type="button" id="gm-input-set-assemble" hidden>Assemble input set<\/button>/);
- for(const copy of ['No input set assembled','Snapshot — not automatically updated','Temporal alignment: Not established','Calculation eligibility: Not evaluated','No engineering eligibility policy or calculation method is implemented.'])assert.ok(html.includes(copy));
+ for(const copy of ['No input set assembled','Snapshot — not automatically updated','Temporal alignment: Not established','Calculation eligibility: Not evaluated','No engineering eligibility policy or whole-input-set calculation method is implemented.'])assert.ok(html.includes(copy));
  assert.match(page,/addEventListener\('click'/);assert.equal((page.match(/assembleInputSet\(nextSetId/g)||[]).length,1);
  assert.doesNotMatch(page,/setInterval|setTimeout|requestAnimationFrame|MutationObserver|innerHTML|\.focus\(|scrollTo|scrollIntoView/);
  const section=html.split('id="gm-input-set"')[1].split('</section>')[0];

@@ -232,9 +232,59 @@ try {
   await assembleButton.click();assert.match(await setText('status'),/^Set #1 — INCOMPLETE$/);
   await reset.click();
  };
+ const massButton=page.locator('#gm-molar-mass-calculate');
+ const massText=id=>page.locator(`#gm-molar-mass-${id}`).textContent();
+ const massSnapshot=()=>page.locator('#gm-molar-mass').textContent();
+ const massChecks=async()=>{
+  await reset.click();
+  assert.equal(await massText('status'),'No calculation yet');assert.equal(await massText('value'),'—');
+  assert.equal(await page.locator('#gm-molar-mass-status').getAttribute('role'),'status');
+  await massButton.focus();assert.ok(await massButton.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'));
+  await massButton.press('Enter');assert.match(await massText('status'),/GC_UNAVAILABLE/);assert.equal(await massText('value'),'—');
+  await gcStart.click();await gcAdvance.click();await gcAdvance.click();
+  await assembleButton.click();
+  const setBefore=await page.locator('#gm-input-set').textContent(),gcBefore=await gcSnapshot(),measureBefore=await measurementSnapshot();
+  await massButton.focus();await massButton.press('Space');
+  assert.ok(await massButton.evaluate(el=>el===document.activeElement));assert.equal(await massText('value'),'18.642 kg/kmol');
+  assert.match(await massText('source'),/Analysis #1.*Profile A/);
+  assert.deepEqual(await gcSnapshot(),gcBefore);assert.deepEqual(await measurementSnapshot(),measureBefore);
+  assert.equal(await page.locator('#gm-input-set').textContent(),setBefore);
+  const resultA=await massSnapshot();
+  await entry.fill('250');await entry.press('Enter');await bias.check();
+  await switchLesson('temperature');await tempEntry.fill('25');await tempEntry.press('Enter');await tempBias.check();
+  await gcAdvance.click();await gcProfile.selectOption('B');await gcStart.click();
+  assert.equal(await massSnapshot(),resultA);
+  await massButton.click();assert.equal(await massText('value'),'18.642 kg/kmol');assert.match(await massText('source'),/Analysis #1/);
+  const pending=await massSnapshot();await gcAdvance.click();await gcAdvance.click();assert.equal(await massSnapshot(),pending);
+  await massButton.click();assert.equal(await massText('value'),'21.242 kg/kmol');assert.match(await massText('source'),/Analysis #2.*Profile B/);
+  assert.equal(await page.locator('#gm-input-set').textContent(),setBefore);
+  const resultB=await massSnapshot();await gcProfile.selectOption('A');await gcAdvance.click();assert.equal(await massSnapshot(),resultB);
+  for(const label of ['Temporal alignment: Not established','Calculation eligibility: Not evaluated'])assert.ok(setBefore.includes(label));
+  await massButton.focus();const box=await massButton.boundingBox();assert.ok(box.width>=44&&box.height>=44);assert.ok(box.x>=0&&box.x+box.width<=page.viewportSize().width+1);
+  for(const id of ['value','source','identity','provenance'])assert.ok(await page.locator(`#gm-molar-mass-${id}`).evaluate(el=>el.scrollWidth<=el.clientWidth+1));
+  await page.screenshot({path:path.join(output,`molar-mass-${page.viewportSize().width}.png`),fullPage:true});
+  // Test-only provider interception: no product fault hook or live state mutation.
+  await page.evaluate(()=>{
+   document.getElementById('gm-gc-controls').addEventListener('gm-gc-snapshot',event=>{
+    event.stopImmediatePropagation();event.detail.receive({gc:Object.freeze({quality:'INVALID'})});
+   },{capture:true,once:true});
+  });
+  await massButton.click();assert.match(await massText('status'),/No calculation — INVALID_GC_METADATA/);
+  for(const id of ['value','source','identity','provenance'])assert.equal(await massText(id),'—');
+  await massButton.click();assert.equal(await massText('value'),'21.242 kg/kmol');
+  const oldIdentity=await massText('identity');
+  await reset.focus();const scrollBefore=await page.evaluate(()=>scrollY);await reset.press('Enter');
+  assert.ok(await reset.evaluate(el=>el===document.activeElement));assert.ok(Math.abs((await page.evaluate(()=>scrollY))-scrollBefore)<=1,'molar mass reset viewport stable');
+  assert.equal(await massText('status'),'No calculation yet');
+  for(const id of ['value','source','identity','provenance'])assert.equal(await massText(id),'—');
+  await gcStart.click();await gcAdvance.click();await gcAdvance.click();await massButton.click();
+  assert.notEqual(await massText('identity'),oldIdentity);assert.match(await massText('identity'),/calculation-1/);
+  await reset.click();
+ };
  await pressureChecks();check('pressure apply, bias, Enter, Space, invalid drafts and reset');
  await temperatureChecks();check('temperature, independent chains, lesson switching and focus-stable shared reset');
  await gcChecks();check('GC A/B/C, snapshot provenance, prior result separation, age, independent states and shared reset');
+ await massChecks();check('captured molar mass, A/B, pending delivery, immutable display, rejection, identity and isolation');
  await inputSetChecks();check('explicit input sets, provenance, age, biases, immutable display, independence and reset');
  for(const button of await buttons.all()){
   await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');
@@ -250,6 +300,7 @@ try {
    assert.ok(b.x>=0&&b.x+b.width<=width+1,`clipping ${width}`);
    assert.ok(b.y>=0&&b.y+b.height<=900,`focus visibility ${width}`);
   }
+  await massChecks();
   if(width===1440||width<=430){
    await pressureChecks();await temperatureChecks();await gcChecks();await inputSetChecks();
    for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('#gm-pressure-lesson .gm-bias-toggle')]){
@@ -273,9 +324,12 @@ try {
  }
  check('six viewport reflows, target sizes, anchors and mobile ordering');
  await page.setViewportSize({width:390,height:400});await buttons.last().focus();
+ await massButton.focus();const massShort=await massButton.boundingBox();assert.ok(massShort.y>=0&&massShort.y+massShort.height<=400);
+ await buttons.last().focus();
  const short=await buttons.last().boundingBox();assert.ok(short.y>=0&&short.y+short.height<=400);
  check('short viewport focused control visible');
  await page.setViewportSize({width:320,height:900});
+ await gcStart.click();await gcAdvance.click();await gcAdvance.click();await massButton.click();
  // Emulated text enlargement; not physical-browser zoom certification.
  await page.addStyleTag({content:'html{font-size:200%!important}'});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
