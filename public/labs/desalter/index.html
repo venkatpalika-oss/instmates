@@ -247,7 +247,7 @@
 <div class="labControls"><fieldset><legend>Simulation Controls</legend><div class="actions"><button class="btn green" id="startBtn">Run</button><button class="btn" id="pauseBtn">Pause</button><button class="btn" id="normalBtn">Normal Operation</button><button class="btn" id="resetBtn">Reset Simulation</button><button class="btn" onclick="document.documentElement.requestFullscreen?.()">Full Screen</button></div></fieldset>
 <fieldset><legend>Process Disturbance</legend><div class="actions"><button class="btn" id="raiseBtn">Raise Interface</button><button class="btn" id="removeDisturbanceBtn">Remove Process Disturbance</button></div></fieldset>
 <fieldset id="channelExperiment"><legend>Protection Channel Experiment</legend><div class="labChannels"><label>DS-LIT-102A<select class="labBias" data-channel="A" aria-label="DS-LIT-102A simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label><label>DS-LIT-102B<select class="labBias" data-channel="B" aria-label="DS-LIT-102B simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label><label>DS-LIT-102C<select class="labBias" data-channel="C" aria-label="DS-LIT-102C simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label></div><button class="btn" id="clearBiasBtn">Clear Channel Biases</button><p class="muted">Fixed +1200 mm measurement bias — SIMULATION ASSUMPTION. Actual process level is unchanged by a channel bias.</p></fieldset></div>
-<div id="labSummary" class="src" aria-live="polite"></div><p id="labFeedback" role="status">Ready — select Run to begin.</p>
+<div id="labSummary" class="src"></div><p id="labFeedback" role="status">Ready — select Run to begin.</p>
 <p class="muted">Reset Simulation restores the simulator baseline; it is not a plant ESD reset procedure. Removing a disturbance allows simulated recovery and does not reset protection.</p>
 </div></div>
 <div class="card" style="margin-bottom:8px"><div class="ct">Core Level Control &amp; ESD Sequence — First Stage Only</div><div class="cb"><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center"><div><b>300 mm</b><br/><span class="muted">LALL</span></div><div><b>450 mm</b><br/><span class="muted">LAL</span></div><div style="background:#e2f8ec;border-radius:5px;padding:5px"><b>650 mm</b><br/><span class="muted">LIC SP / Normal</span></div><div style="background:#fff0bf;border-radius:5px;padding:5px"><b>1500 mm</b><br/><span class="muted">LAH • ALARM ONLY</span></div><div style="background:#ffe0e2;border-radius:5px;padding:5px"><b>1700 mm</b><br/><span class="muted">LAHH • 2oo3 ESD</span></div></div><div style="margin-top:7px"><b>Control:</b> Level ↑ above 650 → DS-LIC-101 output ↑ → DS-LV-101 opens further → water removal ↑.   <b>Protection:</b> 2 of 3 DS-LIT-102 channels at HH → DS-ESD-101 → power unit TRIP + both SDVs CLOSE.</div><div class="muted" style="margin-top:4px">300/450/1500 are displayed level alarm/reference points. The modeled interface ESD path is the verified 1700 mm HH condition with 2oo3 voting. Dynamic response is SIMULATION ASSUMPTION.</div></div></div>
@@ -528,9 +528,21 @@ function renderSimulationLab(){
  document.querySelectorAll('.labBias').forEach(el=>{el.disabled=!editable;el.value=S.instrumentFaults['DS-LIT-102'+el.dataset.channel]?.active?'high':'normal';});
  $('resetBtn').textContent=explore?'Reset Simulation':'Training Reset';
  $('labSummary').textContent='Actual process: '+Math.round(S.level)+' mm | Protection measurements: '+vals.map((v,i)=>'ABC'[i]+' '+v+' mm'+(hh[i]?' HH':' NORMAL')).join(' • ')+' | Vote '+count+'/3 — 2oo3 '+(voteTrip(hh)?'SATISFIED':'NOT SATISFIED')+' | '+(S.tripped?'ESD ACTIVE • Power '+(S.powerTrip?'TRIPPED':'RUN')+' • SDVs '+(S.uvClosed?'CLOSED':'OPEN'):'ESD CLEAR');
- $('labFeedback').textContent=!explore?'Training owns simulation inputs. Explore controls are unavailable.':S.tripped?'Protective trip — select Reset Simulation or Normal Operation to begin another experiment.':!S.running?(S.t>0?'Paused — inspect any view, Resume or Reset. Input changes are locked.':'Ready — select Run to begin.'):(S.fault?'Interface disturbance active.':'No process disturbance — existing model maintains or recovers toward 650 mm.')+(Object.keys(S.instrumentFaults).length?' Simulated channel bias active; compare measurements.':'');
- document.body.classList.toggle('exploreStopped',explore&&!S.running);
+ const feedback=!explore?'Training owns simulation inputs. Explore controls are unavailable.':S.tripped?'Protective trip — select Reset Simulation or Normal Operation to begin another experiment.':!S.running?(S.t>0?'Paused — inspect any view, Resume or Reset. Input changes are locked.':'Ready — select Run to begin.'):(S.fault?'Interface disturbance active.':'No process disturbance — existing model maintains or recovers toward 650 mm.')+(Object.keys(S.instrumentFaults).length?' Simulated channel bias active; compare measurements.':'');
+ const announcement=feedback+' Vote '+count+'/3; '+(S.tripped?'protection active; power '+(S.powerTrip?'tripped':'running')+'; SDVs '+(S.uvClosed?'closed':'open'):'protection clear')+'.';
+ if($('labFeedback').textContent!==announcement)$('labFeedback').textContent=announcement;
+ document.body.classList.toggle('exploreStopped',!S.running);
+ syncSignalMotion();
 }
+// Presentation only: synchronize both existing and newly rebuilt SVG timelines.
+function syncSignalMotion(){
+ document.querySelectorAll('#processView .process svg').forEach(svg=>{
+  if(!svg.querySelector('animateMotion'))return;
+  if(S.running){if(svg.animationsPaused())svg.unpauseAnimations();}
+  else if(!svg.animationsPaused())svg.pauseAnimations();
+ });
+}
+new MutationObserver(syncSignalMotion).observe(document.querySelector('#processView .process'),{childList:true,subtree:true});
 $('pauseBtn').onclick=()=>exploreAction('pause');$('raiseBtn').onclick=()=>exploreAction('raise');$('removeDisturbanceBtn').onclick=()=>exploreAction('remove');$('clearBiasBtn').onclick=()=>exploreAction('clear');
 document.querySelectorAll('.labBias').forEach(el=>el.onchange=()=>exploreAction('bias',el.dataset.channel,el.value));
 

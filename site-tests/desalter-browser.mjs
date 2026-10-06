@@ -219,6 +219,27 @@ try{
   results.push({viewport,status:'PASS',scenario:'S01 recovery, trip visualization, replay, tripped Reset and Normal Operation',equipmentDialogs:7});
   await context.close();check(`${viewport.width}x${viewport.height}: six views, seven dialogs, trends, investigation, recovery/debrief, trip visualization/state agreement, replay and resets`);
  }
+ // Real browser time verifies SMIL independently of the accelerated model clock.
+ for(const viewport of [{width:1440,height:900},{width:768,height:1024},{width:390,height:844},{width:430,height:932}]){
+  const cx=await browser.newContext({viewport});const p=await watch(cx);await p.goto(base+'/labs/desalter/');
+  const motion=async active=>{
+   await p.waitForFunction(active=>{const svgs=[...document.querySelectorAll('#processView .process svg')].filter(s=>s.querySelector('animateMotion'));return svgs.length>0&&svgs.every(s=>s.animationsPaused()===!active);},active);
+   const sample=()=>p.evaluate(()=>[...document.querySelectorAll('#processView .process svg')].filter(s=>s.querySelector('animateMotion')).map(s=>({id:s.id,time:s.getCurrentTime()})));
+   const a=await sample();await p.waitForTimeout(180);const b=await sample();
+   for(const x of a){const y=b.find(y=>y.id===x.id);assert.ok(y);if(active)assert.ok(y.time>x.time);else assert.equal(y.time,x.time);}
+  };
+  const snap=async name=>p.screenshot({path:`${output}/p2-${viewport.width}-${name}.png`,fullPage:true});
+  await motion(false);await snap('ready');await p.locator('#startBtn').click();await motion(true);
+  await p.evaluate(()=>{window.announcementChanges=0;new MutationObserver(ms=>window.announcementChanges+=ms.length).observe(document.getElementById('labFeedback'),{childList:true,subtree:true,characterData:true});});
+  await p.locator('#raiseBtn').click();await p.waitForTimeout(100);const changes=await p.evaluate(()=>window.announcementChanges);const level=await p.evaluate(()=>S.level);
+  await p.waitForTimeout(1100);assert.ok(await p.evaluate(v=>S.level>v,level));assert.equal(await p.evaluate(()=>window.announcementChanges),changes);assert.ok(changes>0);
+  await p.locator('#pauseBtn').click();await motion(false);const frozen=await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history]);await p.waitForTimeout(500);assert.deepEqual(await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history]),frozen);assert.match(await p.locator('#labFeedback').innerText(),/Paused/);await snap('paused');
+  await p.locator('#startBtn').click();await motion(true);await p.waitForFunction(t=>S.t>t,frozen[2]);await snap('resumed');
+  await p.locator('#resetBtn').click();await motion(false);await clean(p,false);
+  await p.locator('#startBtn').click();for(const c of ['A','B'])await p.locator(`.labBias[data-channel="${c}"]`).selectOption('high');await visualizationAgrees(p);assert.equal(await p.evaluate(()=>S.running),false);await motion(false);assert.match(await p.locator('#labFeedback').innerText(),/protection active/);await snap('trip');
+  await p.locator('#normalBtn').click();await clean(p,true);await motion(true);await p.locator('#resetBtn').click();await clean(p,false);await motion(false);await snap('reset');await publicOnly(p);
+  await cx.close();check(`P2 ${viewport.width}x${viewport.height}: real-time SVG READY/run/pause/resume/trip/reset; transition-only announcements`);
+ }
  // M1: every experiment uses public input controls; state is read only for assertions.
  for(const viewport of [{width:1440,height:900},{width:768,height:1024},{width:390,height:844},{width:430,height:932}]){
   const cx=await browser.newContext({viewport});const p=await watch(cx);

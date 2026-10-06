@@ -112,3 +112,11 @@ test('Desalter M1: learner adapter only changes allowed inputs',()=>{
  assert.equal((html.match(/class="labBias"/g)||[]).length,3);
  assert.doesNotMatch(html,/<input[^>]+(?:number|range)/);
 });
+
+
+test('Desalter P2: SVG timelines follow execution and announcements are transition gated',()=>{
+ assert.match(html,/new MutationObserver\(syncSignalMotion\)/);
+ assert.match(html,/svg\.pauseAnimations\(\)/);assert.match(html,/svg\.unpauseAnimations\(\)/);
+ assert.doesNotMatch(html,/<div id="labSummary"[^>]*aria-live/);
+ assert.match(html,/if\(\$\('labFeedback'\)\.textContent!==announcement\)/);
+});
