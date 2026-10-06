@@ -94,3 +94,14 @@ document.getElementById('gm-pressure-reset').addEventListener('click', () => {
 });
 renderPressure(); renderTemperature(); selectLesson('pressure');
 document.getElementById('gm-lessons').hidden = false;
+
+// Narrow synchronous read-only provider; no transitions, rendering or DOM reconstruction.
+form.addEventListener('gm-measurement-snapshot', event => {
+  if (typeof event.detail?.receive !== 'function') return;
+  const pressure = Object.freeze({...measurementChain(pressureState).selected, measurementType: 'PRESSURE',
+    provenance: Object.freeze({type: 'CURRENT_EDUCATIONAL_OBSERVATION', path: 'PT observation → transmission → FC selection'})});
+  const temperature = Object.freeze({...temperatureChain(temperatureState).selected, measurementType: 'TEMPERATURE',
+    provenance: Object.freeze({type: 'CURRENT_EDUCATIONAL_OBSERVATION', path: 'TT observation → transmission → FC selection'})});
+  event.detail.receive(Object.freeze({pressure, temperature,
+    teachingContext: Object.freeze({ptBiasEnabled: pressureState.biasEnabled, ttBiasEnabled: temperatureState.biasEnabled})}));
+});

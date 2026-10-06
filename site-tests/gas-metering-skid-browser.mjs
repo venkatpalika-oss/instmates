@@ -49,6 +49,7 @@ try {
  });
  const page=await context.newPage();
  page.on('pageerror',e=>errors.push(e.message));
+ page.on('requestfailed',request=>errors.push(`Request failed: ${request.url()}`));
  page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  page.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});
  const check=name=>checks.push(name);
@@ -179,9 +180,62 @@ try {
   for(const prefix of ['result','input']){await expectGC(`${prefix}-identity`,/^No GC result yet$/);await expectGC(`${prefix}-age`,/^Sample age: —$/);}
   await expectChain([300,300,300,300]);await expectTemperature([30,30,30,30]);assert.equal(await bias.isChecked(),false);assert.equal(await tempBias.isChecked(),false);
  };
+ const assembleButton=page.locator('#gm-input-set-assemble');
+ const setText=id=>page.locator(`#gm-input-set-${id}`).textContent();
+ const capturedSnapshot=()=>page.locator('#gm-input-set-records').textContent();
+ const inputSetChecks=async()=>{
+  await reset.click();
+  assert.equal(await setText('status'),'No input set assembled');
+  await expectChain([300,300,300,300]);await expectTemperature([30,30,30,30]);await expectGC('input-identity',/^No GC result yet$/);
+  assert.equal(await assembleButton.evaluate(el=>el.tagName),'BUTTON');
+  await assembleButton.focus();assert.ok(await assembleButton.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'));
+  await assembleButton.press('Enter');
+  assert.ok(await assembleButton.evaluate(el=>el===document.activeElement));
+  assert.equal(await page.locator('#gm-input-set-status').getAttribute('role'),'status');
+  assert.match(await setText('status'),/^Set #1 — INCOMPLETE$/);
+  assert.equal(await setText('integrity'),'STRUCTURALLY_VALID');assert.match(await setText('issues'),/Missing: GC/);
+  assert.match(await setText('pressure'),/300000 Pa \(absolute\).*Source: PT/);assert.match(await setText('temperature'),/30 °C.*Source: TT/);
+  assert.equal(await setText('gc'),'GC: UNAVAILABLE — no composition');
+  const first=await capturedSnapshot();
+  await gcStart.click();await gcAdvance.click();await gcAdvance.click();assert.equal(await capturedSnapshot(),first);
+  await assembleButton.focus();await assembleButton.press('Space');
+  assert.match(await setText('status'),/^Set #2 — COMPLETE$/);assert.equal(await setText('integrity'),'STRUCTURALLY_VALID');
+  assert.match(await setText('gc'),/^Analysis #1 — Profile A/);assert.equal(await setText('age'),'Sample age at assembly: 2 GC simulation steps');
+  assert.match(await setText('gc-provenance'),/Age evaluated at GC tick 2/);
+  const second=await capturedSnapshot();
+  await entry.fill('250');await entry.press('Enter');await bias.check();
+  await switchLesson('temperature');await tempEntry.fill('25');await tempEntry.press('Enter');await tempBias.check();
+  await gcAdvance.click();await gcProfile.selectOption('B');assert.equal(await capturedSnapshot(),second);
+  await gcStart.click();await gcAdvance.click();await gcAdvance.click();assert.equal(await capturedSnapshot(),second);
+  // Preserve invalid drafts/errors and active lesson while reading accepted state.
+  await tempEntry.fill('bad');await tempEntry.press('Enter');await switchLesson('pressure');await entry.fill('bad');await entry.press('Enter');await switchLesson('temperature');
+  const liveMeasurements=await measurementSnapshot(),liveGc=await gcSnapshot();
+  await assembleButton.click();
+  assert.deepEqual(await measurementSnapshot(),liveMeasurements);assert.deepEqual(await gcSnapshot(),liveGc);
+  assert.match(await setText('status'),/^Set #3 — COMPLETE$/);assert.match(await setText('gc'),/^Analysis #2 — Profile B/);
+  assert.equal(await setText('integrity'),'STRUCTURALLY_VALID');assert.match(await setText('pressure'),/270000 Pa.*quality: GOOD/);assert.match(await setText('temperature'),/27 °C.*quality: GOOD/);
+  assert.match(await setText('bias'),/PT teaching bias: ON.*TT teaching bias: ON/);
+  const sectionText=await page.locator('#gm-input-set').textContent();
+  for(const label of ['Snapshot — not automatically updated','Temporal alignment: Not established','Calculation eligibility: Not evaluated'])assert.ok(sectionText.includes(label));
+  assert.doesNotMatch(sectionText,/\b(?:BAD|FAULTY|UNHEALTHY|HEALTHY)\b/);
+  await assembleButton.focus();const box=await assembleButton.boundingBox();assert.ok(box.width>=44&&box.height>=44);assert.ok(box.x>=0&&box.x+box.width<=page.viewportSize().width+1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  for(const id of ['pressure','temperature','gc','age','completeness','integrity']){
+   const el=page.locator(`#gm-input-set-${id}`);assert.ok(await el.isVisible());assert.ok(await el.evaluate(node=>node.scrollWidth<=node.clientWidth+1));
+  }
+  await page.screenshot({path:path.join(output,`input-set-${page.viewportSize().width}.png`),fullPage:true});
+  await reset.focus();const scrollBefore=await page.evaluate(()=>scrollY);await reset.press('Enter');
+  assert.ok(await reset.evaluate(el=>el===document.activeElement));assert.ok(Math.abs((await page.evaluate(()=>scrollY))-scrollBefore)<=1,'input-set shared reset viewport stable');
+  assert.equal(await setText('status'),'No input set assembled');assert.equal(await page.locator('#gm-input-set-records').isVisible(),false);
+  await expectChain([300,300,300,300]);await expectTemperature([30,30,30,30]);await expectGC('tick',/^Simulation step: 0$/);await expectGC('current',/^IDLE/);await expectGC('input-identity',/^No GC result yet$/);
+  assert.equal(await bias.isChecked(),false);assert.equal(await tempBias.isChecked(),false);
+  await assembleButton.click();assert.match(await setText('status'),/^Set #1 — INCOMPLETE$/);
+  await reset.click();
+ };
  await pressureChecks();check('pressure apply, bias, Enter, Space, invalid drafts and reset');
  await temperatureChecks();check('temperature, independent chains, lesson switching and focus-stable shared reset');
  await gcChecks();check('GC A/B/C, snapshot provenance, prior result separation, age, independent states and shared reset');
+ await inputSetChecks();check('explicit input sets, provenance, age, biases, immutable display, independence and reset');
  for(const button of await buttons.all()){
   await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');
   assert.equal(await page.locator('[data-detail]:visible').getAttribute('data-detail'),await button.getAttribute('data-equipment'));
@@ -197,7 +251,7 @@ try {
    assert.ok(b.y>=0&&b.y+b.height<=900,`focus visibility ${width}`);
   }
   if(width===1440||width<=430){
-   await pressureChecks();await temperatureChecks();await gcChecks();
+   await pressureChecks();await temperatureChecks();await gcChecks();await inputSetChecks();
    for(const control of [entry,page.getByRole('button',{name:'Apply pressure',exact:true}),reset,page.locator('#gm-pressure-lesson .gm-bias-toggle')]){
     await control.scrollIntoViewIfNeeded();const b=await control.boundingBox();
     assert.ok(b.width>=44&&b.height>=44);assert.ok(b.x>=0&&b.x+b.width<=width+1);

@@ -111,3 +111,17 @@ test('gas skid: GC lifecycle controls, distinct records and absent startup resul
  assert.doesNotMatch(controller,/data-pressure|data-temperature|pressureState|temperatureState/);
  assert.match(controller,/gm-pressure-reset/);
 });
+
+test('gas skid: explicit educational input-set boundary and isolated controller',()=>{
+ const page=read('public/assets/js/simulations/gas-metering-input-set-page.js');
+ assert.match(html,/<script type="module" src="\/assets\/js\/simulations\/gas-metering-input-set-page.js"><\/script>/);
+ assert.match(page,/from '.\/gas-metering-input-set-model.js'/);
+ assert.match(html,/<button type="button" id="gm-input-set-assemble" hidden>Assemble input set<\/button>/);
+ for(const copy of ['No input set assembled','Snapshot — not automatically updated','Temporal alignment: Not established','Calculation eligibility: Not evaluated','No engineering eligibility policy or calculation method is implemented.'])assert.ok(html.includes(copy));
+ assert.match(page,/addEventListener\('click'/);assert.equal((page.match(/assembleInputSet\(nextSetId/g)||[]).length,1);
+ assert.doesNotMatch(page,/setInterval|setTimeout|requestAnimationFrame|MutationObserver|innerHTML|\.focus\(|scrollTo|scrollIntoView/);
+ const section=html.split('id="gm-input-set"')[1].split('</section>')[0];
+ assert.equal((section.match(/<button /g)||[]).length,1);
+ assert.doesNotMatch(section,/<input|<select|data-result|\b(?:AGA|ISO|GPA|GERG)\b|1\.01325|60 °F|15 °C/);
+ assert.match(section,/SOURCE REQUIRED \+ POLICY REQUIRED/);
+});

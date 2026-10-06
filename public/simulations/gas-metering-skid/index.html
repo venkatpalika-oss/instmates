@@ -81,9 +81,34 @@
 <p class="gm-note">Idealized result equals captured sample; delivery is immediate. Separation, detector response, response factors, integration, identification error, uncertainty, retention time, calibration and sample transport are not modeled.</p>
 <p class="gm-note">The GC receives a sample; it does not carry the main process flow. No gas-property or flow calculation enabled.</p><noscript><p>The GC lesson requires JavaScript. No GC result yet.</p></noscript></section>
 <section class="gm-panel" id="gas-properties"><div class="gm-panel-heading"><h2>Calculated gas properties</h2></div><dl class="gm-readings"><div><dt>Molecular weight</dt><dd data-result>—</dd></div><div><dt>Relative density</dt><dd data-result>—</dd></div><div><dt>Compressibility</dt><dd data-result>—</dd></div><div><dt>Heating value</dt><dd data-result>—</dd></div><div><dt>Wobbe Index</dt><dd data-result>—</dd></div></dl><p class="gm-readiness">Model pending validation</p></section>
-<section class="gm-panel" id="flow-computer"><div class="gm-panel-heading"><h2>Flow computer</h2></div><dl class="gm-readings"><div><dt>Flow-computer pressure input<br><small>Selected source: PT</small></dt><dd data-pressure="selected">—</dd></div><div><dt>Flow-computer temperature input<br><small>Selected source: TT</small></dt><dd data-temperature="selected">—</dd></div><div><dt>Reference conditions</dt><dd data-result>—</dd></div><div><dt>Reference flow</dt><dd data-result>—</dd></div><div><dt>Energy flow</dt><dd data-result>—</dd></div><div><dt>Accumulated totals</dt><dd data-result>—</dd></div></dl><div class="gm-gc-record" id="gm-gc-input"><h3>GC composition input</h3><p>Selected source: GC</p><p class="gm-eyebrow">Educational composition</p><p id="gm-gc-input-identity">No GC result yet</p><p id="gm-gc-input-composition">—</p><p id="gm-gc-input-provenance" class="gm-note">—</p><p id="gm-gc-input-age">Sample age: —</p><p class="gm-note">The previous delivered record remains selected while a new sample is analyzed.</p></div><p class="gm-readiness">No gas-property or flow calculation enabled.</p><p class="gm-note">No flow calculation enabled. Pressure, temperature and GC composition are independent educational inputs only.</p></section>
+<section class="gm-panel" id="flow-computer"><div class="gm-panel-heading"><h2>Flow computer</h2></div><dl class="gm-readings"><div><dt>Flow-computer pressure input<br><small>Selected source: PT</small></dt><dd data-pressure="selected">—</dd></div><div><dt>Flow-computer temperature input<br><small>Selected source: TT</small></dt><dd data-temperature="selected">—</dd></div><div><dt>Reference conditions</dt><dd data-result>—</dd></div><div><dt>Reference flow</dt><dd data-result>—</dd></div><div><dt>Energy flow</dt><dd data-result>—</dd></div><div><dt>Accumulated totals</dt><dd data-result>—</dd></div></dl><div class="gm-gc-record" id="gm-gc-input"><h3>GC composition input</h3><p>Selected source: GC</p><p class="gm-eyebrow">Educational composition</p><p id="gm-gc-input-identity">No GC result yet</p><p id="gm-gc-input-composition">—</p><p id="gm-gc-input-provenance" class="gm-note">—</p><p id="gm-gc-input-age">Sample age: —</p><p class="gm-note">The previous delivered record remains selected while a new sample is analyzed.</p></div><p class="gm-readiness">No gas-property or flow calculation enabled.</p><p class="gm-note">No flow calculation enabled. Pressure, temperature and GC composition are independent educational inputs only.</p>
+<div class="gm-input-set" id="gm-input-set" aria-labelledby="gm-input-set-title">
+<h3 id="gm-input-set-title">Measurement Input Set</h3>
+<p>Educational provenance snapshot only. No calculation result.</p>
+<button type="button" id="gm-input-set-assemble" hidden>Assemble input set</button>
+<p id="gm-input-set-status" role="status" aria-live="polite" aria-atomic="true">No input set assembled</p>
+<div id="gm-input-set-records" hidden>
+<p><strong>Snapshot — not automatically updated</strong></p>
+<dl>
+<div><dt>Pressure</dt><dd id="gm-input-set-pressure">—</dd><dd>Current educational observation: PT observation → transmission → FC selection.</dd></div>
+<div><dt>Temperature</dt><dd id="gm-input-set-temperature">—</dd><dd>Current educational observation: TT observation → transmission → FC selection.</dd></div>
+<div><dt>GC composition</dt><dd id="gm-input-set-gc">—</dd><dd id="gm-input-set-gc-provenance">—</dd><dd id="gm-input-set-age">—</dd></div>
+<div><dt>Completeness</dt><dd id="gm-input-set-completeness">—</dd></div>
+<div><dt>Record integrity</dt><dd id="gm-input-set-integrity">—</dd></div>
+<div><dt>Record issues</dt><dd id="gm-input-set-issues">—</dd></div>
+<div><dt>Teaching context at assembly</dt><dd id="gm-input-set-bias">—</dd></div>
+</dl>
+</div>
+<p>Temporal alignment: Not established</p>
+<p>PT/TT are current educational observations; GC represents an earlier captured sample. Their measurement times are not proven aligned.</p>
+<p>Calculation eligibility: Not evaluated</p>
+<p>No engineering eligibility policy or calculation method is implemented.</p>
+<p>Record quality describes the educational contract only; it does not establish accuracy, calibration, equipment health or custody-transfer suitability. Software tests do not establish engineering validity.</p>
+<p>Reference conditions, staleness, temporal-alignment acceptance and calculation methods: SOURCE REQUIRED + POLICY REQUIRED.</p>
+</div>
+</section>
 </div>
 <section class="gm-panel gm-trends" aria-labelledby="gm-trends-title"><div class="gm-panel-heading"><h2 id="gm-trends-title">Trends</h2><span>Not active in M1</span></div><div class="gm-empty"><span class="gm-empty-symbol" aria-hidden="true">⌁</span><h3>No trend data</h3><p>Time-aligned measurement history will appear only when an approved model is enabled.</p></div></section>
 <section class="gm-panel gm-faults" aria-labelledby="gm-fault-title"><div class="gm-panel-heading"><h2 id="gm-fault-title">Fault scenarios</h2><span>Not active in M1</span></div><p>Guided fault injection and troubleshooting will follow validated instrument and communication behavior.</p><div class="gm-future"><h3>Assessment</h3><p>Not active in M1</p></div></section>
 </div><p class="gm-footnote">A dash means no value, not zero. These educational measurement lessons provide no operational, fiscal or custody-transfer calculations.</p>
-</main><div id="siteFooter"></div><script src="/assets/js/includes.js"></script><script type="module" src="/assets/js/simulations/gas-metering-skid-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-gc-page.js"></script></body></html>
+</main><div id="siteFooter"></div><script src="/assets/js/includes.js"></script><script type="module" src="/assets/js/simulations/gas-metering-skid-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-gc-page.js"></script><script type="module" src="/assets/js/simulations/gas-metering-input-set-page.js"></script></body></html>

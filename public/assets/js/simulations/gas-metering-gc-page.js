@@ -48,3 +48,13 @@ advance.addEventListener('click', () => dispatch({type: 'advance'}));
 byId('gm-pressure-reset').addEventListener('click', () => dispatch({type: 'reset'}));
 render();
 byId('gm-gc-controls').hidden = false;
+
+// Narrow synchronous read-only provider; composition is detached from the selected record.
+byId('gm-gc-controls').addEventListener('gm-gc-snapshot', event => {
+  if (typeof event.detail?.receive !== 'function') return;
+  const gc = Object.freeze({...state.selected,
+    composition: state.selected.composition ? Object.freeze({...state.selected.composition}) : null,
+    measurementType: 'GAS_COMPOSITION', basis: 'mole-percent',
+    provenance: Object.freeze({type: 'SAMPLED_DELAYED_EDUCATIONAL_OBSERVATION'}), timeDomain: 'GC_LOCAL_SIMULATION_STEPS'});
+  event.detail.receive(Object.freeze({gc, gcTick: state.tick}));
+});
