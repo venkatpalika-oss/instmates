@@ -67,3 +67,8 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# P1A generated publication output (not activated for Firebase)
+/dist/hosting/
+/dist/hosting.stage/
+/dist/publication-audit.json

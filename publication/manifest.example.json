@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "reviewedSourceCommit": "0000000000000000000000000000000000000000",
+  "sourceRoot": "public",
+  "artifactRoot": "dist/hosting",
+  "files": [],
+  "excludedFiles": [],
+  "routes": []
+}
