@@ -57,7 +57,7 @@ test('challenge scenarios have modeled evidence and independent expected outcome
  const results=CHALLENGES.map(c=>run(c.state));close(results[0].displayed,2.5);close(results[1].expected,16);close(results[1].loop,4);assert.equal(results[2].displayed,null);
 });
 test('catalog publishes only working routes and four honest categories',()=>{
- assert.equal(CATEGORIES.length,4);assert.equal(SIMULATIONS.length,2);
+ assert.equal(CATEGORIES.length,4);assert.equal(SIMULATIONS.length,3);
  for(const s of SIMULATIONS) assert.ok(existsSync(new URL(`../public${s.href}index.html`,import.meta.url)));
 });
 test('learning pages isolate Firebase, retain shared shell and offer progressive fallback',()=>{
@@ -68,4 +68,15 @@ test('learning pages isolate Firebase, retain shared shell and offer progressive
  }
  const loader=readFileSync(new URL('../public/assets/js/includes.js',import.meta.url),'utf8');
  assert.match(loader,/dataset\.publicLearning !== "true" && !document\.body\.dataset\.authLoaded/);
+});
+
+
+test('Desalter discovery uses the existing classification and public route',()=>{
+ const entry=SIMULATIONS.find(s=>s.id==='desalter');
+ assert.equal(entry.title,'Desalter Training Simulator');assert.equal(entry.category,'Process measurement');
+ assert.equal(entry.href,'/labs/desalter/');assert.equal(entry.lab,'DESALTER');
+ assert.deepEqual(entry.topics,['Level','Control loops','Fault diagnosis']);
+ assert.deepEqual(SIMULATIONS.slice(0,2).map(s=>[s.lab,s.href]),[['01','/simulations/4-20ma-loop/'],['02','/simulations/pressure-transmitter-calibration/']]);
+ const html=readFileSync(new URL('../public/simulations/index.html',import.meta.url),'utf8');
+ assert.match(html.match(/<noscript>[\s\S]*?<\/noscript>/)[0],/href="\/labs\/desalter\/"/);
 });

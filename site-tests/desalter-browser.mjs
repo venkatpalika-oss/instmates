@@ -328,10 +328,10 @@ try{
  await cr.close();check('local slash/no-slash route, UTM query retention and reload');
  // Existing anonymous labs use their real local assets; no outside requests allowed.
  const cs=await browser.newContext();const ps=await watch(cs);
- await ps.goto(base+'/simulations/');await ps.waitForSelector('.sim-card');assert.equal(await ps.locator('.sim-card').count(),2);
+ await ps.goto(base+'/simulations/');await ps.waitForSelector('.sim-card');assert.equal(await ps.locator('.sim-card').count(),3);
  await ps.goto(base+'/simulations/4-20ma-loop/');await ps.locator('#pv').fill('10');assert.equal(await ps.locator('#tx-reading').innerText(),'20.00 mA');
  await ps.goto(base+'/simulations/pressure-transmitter-calibration/');await ps.waitForFunction(()=>document.getElementById('measured')?.textContent==='4.000 mA');await ps.locator('#record').click();assert.equal(await ps.locator('#found-records li').count(),1);
- await cs.close();check('existing two-lab catalog, 4–20 mA response and pressure observation smoke checks');
+ await cs.close();check('three-entry catalog, 4–20 mA response and pressure observation smoke checks');
  // Homepage is unchanged; external Firebase/auth is deliberately not exercised locally.
  const ch=await browser.newContext();const ph=await watch(ch,false);await ph.goto(base+'/');await ph.waitForSelector('#siteHeader a');
  assert.ok(await ph.locator('h1').first().isVisible());smoke.push({page:'homepage',localContent:'PASS',externalAuth:'NOT TESTED — network intentionally blocked'});await ch.close();check('homepage local content and shared navigation smoke check');
