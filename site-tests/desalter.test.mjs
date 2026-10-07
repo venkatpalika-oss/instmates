@@ -98,3 +98,25 @@ test('Desalter: visualization reads lexical state without exporting or copying i
  assert.match(html,/function activeKey\(\)\{\s*if\(!S\.tripped\) return '';/);
  assert.match(html,/function tripKey\(\)\{\s*if\(!S\.tripped\) return '';/);
 });
+
+
+test('Desalter M1: learner adapter only changes allowed inputs',()=>{
+ const adapter=section('function exploreAction','function switchLearningMode');
+ assert.doesNotMatch(adapter,/S\.(?:level|lv|tripped|powerTrip|uvClosed|tripCause|lah|alarmAck)\s*=(?!=)|\b(?:initiate|interfaceTrip|applyEffects)\s*\(/);
+ assert.match(adapter,/S.mode!=='normal'\|\|S.tripped/);
+ assert.match(adapter,/if\(!S.running\)return/);
+ assert.match(adapter,/setInstrumentFault\(tag,'BIAS_HIGH',SIM.trainingChannelBias\)/);
+ assert.match(adapter,/clearInstrumentFault/);
+ assert.match(core,/reset\(\);setMode\(mode\)/);
+ for(const id of ['pauseBtn','raiseBtn','removeDisturbanceBtn','clearBiasBtn','labSummary'])assert.ok(html.includes(`id="${id}"`));
+ assert.equal((html.match(/class="labBias"/g)||[]).length,3);
+ assert.doesNotMatch(html,/<input[^>]+(?:number|range)/);
+});
+
+
+test('Desalter P2: SVG timelines follow execution and announcements are transition gated',()=>{
+ assert.match(html,/new MutationObserver\(syncSignalMotion\)/);
+ assert.match(html,/svg\.pauseAnimations\(\)/);assert.match(html,/svg\.unpauseAnimations\(\)/);
+ assert.doesNotMatch(html,/<div id="labSummary"[^>]*aria-live/);
+ assert.match(html,/if\(\$\('labFeedback'\)\.textContent!==announcement\)/);
+});

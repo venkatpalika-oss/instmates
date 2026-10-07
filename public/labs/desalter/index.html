@@ -232,12 +232,24 @@
  .processColumn .signalRow{grid-template-columns:1fr}.processColumn .signalPath{flex-wrap:wrap}.processColumn .sigNode{flex:1 1 75px;font-size:10px}.processColumn .sigNode b{font-size:11px}
 }
 </style>
-</head><body>
-<header class="top"><div class="brand">InstMates — Desalter Training Simulator<small>First-Stage Desalter (DS-V-101) | Interface Level • Control • 2oo3 ESD Training<br/><span style="font-size:9px;color:#8ea2b8">Training tags are simulator identifiers — not plant tags</span></small></div><div class="modes"><button class="mode active" data-mode="normal">Normal Operation</button><button class="mode" data-mode="training">Training Mode</button></div><div class="plant" id="readyBadge">READY</div></header>
+<style>
+.simulationLab{margin-bottom:8px}.simulationLab p{margin:6px 0}.labControls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.labControls fieldset{min-width:0;border:1px solid #bfd4e1;border-radius:5px;padding:10px}.labControls fieldset:last-child{grid-column:1/-1}.labControls legend{font-weight:800}.labChannels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:8px}.labChannels label{font-weight:700}.labChannels select{display:block;width:100%;min-height:44px;margin-top:4px;font:inherit;border:1px solid #a9c1d1;border-radius:4px;background:white;color:#173d60}.simulationLab .btn{min-height:44px}.simulationLab button:disabled,.simulationLab select:disabled{opacity:.55;cursor:not-allowed}.simulationLab :focus-visible{outline:3px solid #0b78b6;outline-offset:2px}body.exploreStopped .process *{animation-play-state:paused!important}
+@media(max-width:800px){.labControls,.labChannels{grid-template-columns:1fr}.labControls fieldset:last-child{grid-column:auto}}
+</style></head><body>
+<header class="top"><div class="brand">InstMates — Desalter Training Simulator<small>First-Stage Desalter (DS-V-101) | Interface Level • Control • 2oo3 ESD Training<br/><span style="font-size:9px;color:#8ea2b8">Training tags are simulator identifiers — not plant tags</span></small></div><div class="modes"><button class="mode active" data-mode="normal">Explore</button><button class="mode" data-mode="training">Training</button></div><div class="plant" id="readyBadge">READY</div></header>
 <div class="publicBoundary">Public Training Demo — Educational simulation only • Not for plant operation</div>
 <div class="shell"><nav class="side" aria-label="Simulator views"><button type="button" class="nav active" data-view="processView">▣   Process</button><button type="button" class="nav" data-view="dcsView">⌘   DCS</button><button type="button" class="nav" data-view="esdView">♢   ESD / C&amp;E</button><button type="button" class="nav" data-view="trendsView">⌁   Trends</button><button type="button" class="nav" data-view="alarmsView">♧   Alarms</button><button type="button" class="nav" data-view="trainingView">◇   Training</button><div class="sidefoot">Training Process Unit<br/><b>First-Stage Desalter</b><br/><br/>CORE: LEVEL • LT • LIC/LV • ESD</div></nav>
 <main class="main"><section class="view active" id="processView">
-<div class="toolbar"><div class="card"><div class="ct">Quick Actions</div><div class="cb actions"><button class="btn green" id="startBtn">▶ Start</button><button class="btn" id="normalBtn">Normal Operation</button><button class="btn" id="resetBtn">↻ Training Reset</button><button class="btn" onclick="document.documentElement.requestFullscreen?.()">⛶ Full Screen</button></div></div></div>
+<div class="card simulationLab" aria-label="Simulation Lab">
+<div class="ct">Simulation Lab</div><div class="cb">
+<p>Run the simulation, raise the interface, or bias a protection channel. Compare Process, DCS, Trends and ESD/C&amp;E.</p>
+<p class="muted">Explore = experiment manually. Training = investigate hidden scenarios. Switching mode ends the current experiment or exercise and resets the simulator.</p>
+<div class="labControls"><fieldset><legend>Simulation Controls</legend><div class="actions"><button class="btn green" id="startBtn">Run</button><button class="btn" id="pauseBtn">Pause</button><button class="btn" id="normalBtn">Normal Operation</button><button class="btn" id="resetBtn">Reset Simulation</button><button class="btn" onclick="document.documentElement.requestFullscreen?.()">Full Screen</button></div></fieldset>
+<fieldset><legend>Process Disturbance</legend><div class="actions"><button class="btn" id="raiseBtn">Raise Interface</button><button class="btn" id="removeDisturbanceBtn">Remove Process Disturbance</button></div></fieldset>
+<fieldset id="channelExperiment"><legend>Protection Channel Experiment</legend><div class="labChannels"><label>DS-LIT-102A<select class="labBias" data-channel="A" aria-label="DS-LIT-102A simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label><label>DS-LIT-102B<select class="labBias" data-channel="B" aria-label="DS-LIT-102B simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label><label>DS-LIT-102C<select class="labBias" data-channel="C" aria-label="DS-LIT-102C simulated bias"><option value="normal">Normal</option><option value="high">Simulated High Bias</option></select></label></div><button class="btn" id="clearBiasBtn">Clear Channel Biases</button><p class="muted">Fixed +1200 mm measurement bias — SIMULATION ASSUMPTION. Actual process level is unchanged by a channel bias.</p></fieldset></div>
+<div id="labSummary" class="src"></div><p id="labFeedback" role="status">Ready — select Run to begin.</p>
+<p class="muted">Reset Simulation restores the simulator baseline; it is not a plant ESD reset procedure. Removing a disturbance allows simulated recovery and does not reset protection.</p>
+</div></div>
 <div class="card" style="margin-bottom:8px"><div class="ct">Core Level Control &amp; ESD Sequence — First Stage Only</div><div class="cb"><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center"><div><b>300 mm</b><br/><span class="muted">LALL</span></div><div><b>450 mm</b><br/><span class="muted">LAL</span></div><div style="background:#e2f8ec;border-radius:5px;padding:5px"><b>650 mm</b><br/><span class="muted">LIC SP / Normal</span></div><div style="background:#fff0bf;border-radius:5px;padding:5px"><b>1500 mm</b><br/><span class="muted">LAH • ALARM ONLY</span></div><div style="background:#ffe0e2;border-radius:5px;padding:5px"><b>1700 mm</b><br/><span class="muted">LAHH • 2oo3 ESD</span></div></div><div style="margin-top:7px"><b>Control:</b> Level ↑ above 650 → DS-LIC-101 output ↑ → DS-LV-101 opens further → water removal ↑.   <b>Protection:</b> 2 of 3 DS-LIT-102 channels at HH → DS-ESD-101 → power unit TRIP + both SDVs CLOSE.</div><div class="muted" style="margin-top:4px">300/450/1500 are displayed level alarm/reference points. The modeled interface ESD path is the verified 1700 mm HH condition with 2oo3 voting. Dynamic response is SIMULATION ASSUMPTION.</div></div></div>
 <div class="workspace"><div class="processColumn"><div class="card"><div class="ct">▣ Process Overview — First Stage Desalter (DS-V-101)</div><div class="processScroll" tabindex="0" role="region" aria-label="Process drawing — scroll horizontally to inspect equipment"><div class="process">
 <div class="processSignalLegend"><i></i> live signal <i class="trip"></i> trip signal <i class="off"></i> inactive</div>
@@ -417,6 +429,7 @@ function render(){
  const vals=channelValues();const hh=vals.map(v=>v>=ENG.lahh),votes=hh.filter(Boolean).length;
  if(voteTrip(hh)&&!S.tripped)interfaceTrip();
  $('level').textContent=Math.round(S.level);$('level2').textContent=Math.round(S.level);$('loopPV').textContent=Math.round(S.level);$('lvpos').textContent=Math.round(S.lv);$('loopOut').textContent=Math.round(S.lv);$('vote').textContent=votes+'/3';$('vote2').textContent=votes+'/3';
+ renderSimulationLab();
  $('voteMiniTxt').textContent=votes+'/3';$('voteMini').classList.toggle('trip',voteTrip(hh));
  ['A','B','C'].forEach((id,i)=>$('vd'+id).classList.toggle('hh',hh[i]));
  ['a','b','c'].forEach((id,i)=>{$(id).textContent=vals[i];$('c'+id).classList.toggle('hh',hh[i])});
@@ -428,13 +441,13 @@ function render(){
      const ifaceCause=S.tripCause.includes('LIT-102A/B/C HH');
      const fxText=(S.powerTrip?'POWER TRIPPED':'POWER UNIT RUN')+' • '+(S.uvClosed?'BOTH SDVs CLOSED':'SDVs REMAIN OPEN');
      tb.textContent=ifaceCause
-       ? '1700 LAHH • 2oo3 SATISFIED • ESD ACTIVE • POWER TRIPPED • BOTH SDVs CLOSED'
+       ? 'PROTECTION CHANNEL HH (1700 mm threshold) • 2oo3 SATISFIED • ESD ACTIVE • POWER TRIPPED • BOTH SDVs CLOSED'
        : S.tripCause.toUpperCase()+' • PROTECTION ACTIVE • '+fxText;
    }else tb.textContent='DS-ESD-101 PROTECTION ACTIVE';
  }
  $('powertxt').textContent=S.powerTrip?'TRIPPED':'RUN';$('triptxt').textContent=S.tripped?'INITIATED':'CLEAR';
- $('power').classList.toggle('off',S.powerTrip);$('sparks').style.display=S.powerTrip?'none':'block';$('readyBadge').textContent=S.tripped?'TRIPPED':S.running?'PLANT ONLINE':'READY';['powertxt','inletSdvtxt','outletSdvtxt','triptxt'].forEach(id=>$(id).classList.toggle('trip',(id==='powertxt'&&S.powerTrip)||(id==='triptxt'&&S.tripped)||((id==='inletSdvtxt'||id==='outletSdvtxt')&&S.uvClosed)));
- const st=$('state');const activeAlarm=S.tripped||S.level>=ENG.lah;st.className='alarmbar'+(S.tripped?' trip':S.level>=ENG.lah?' warnstate':'')+(activeAlarm&&!S.alarmAck?' unack':'')+(activeAlarm&&S.alarmAck?' ack':'');st.textContent=S.tripped?('PROTECTION ACTIVE — '+S.tripCause):S.level>=1500?'HIGH INTERFACE — INVESTIGATE':S.running?'NORMAL OPERATION':'NORMAL / READY'; const ifaceProtectLamp=document.querySelector('[data-equip="ifaceProtect"] .lamp');if(ifaceProtectLamp){ifaceProtectLamp.classList.toggle('alarm',voteTrip(hh)&&!S.alarmAck);ifaceProtectLamp.classList.toggle('vote',hh.some(Boolean)&&!voteTrip(hh));} const pLamp=document.querySelector('#power .lamp');if(pLamp)pLamp.classList.toggle('alarm',S.powerTrip&&!S.alarmAck);
+ $('power').classList.toggle('off',S.powerTrip);$('sparks').style.display=S.powerTrip?'none':'block';$('readyBadge').textContent=S.tripped?'TRIPPED':S.running?'PLANT ONLINE':S.mode==='normal'&&S.t>0?'PAUSED':'READY';['powertxt','inletSdvtxt','outletSdvtxt','triptxt'].forEach(id=>$(id).classList.toggle('trip',(id==='powertxt'&&S.powerTrip)||(id==='triptxt'&&S.tripped)||((id==='inletSdvtxt'||id==='outletSdvtxt')&&S.uvClosed)));
+ const st=$('state');const activeAlarm=S.tripped||S.level>=ENG.lah;st.className='alarmbar'+(S.tripped?' trip':S.level>=ENG.lah?' warnstate':'')+(activeAlarm&&!S.alarmAck?' unack':'')+(activeAlarm&&S.alarmAck?' ack':'');st.textContent=S.tripped?('PROTECTION ACTIVE — '+S.tripCause):S.level>=1500?'HIGH INTERFACE — INVESTIGATE':votes?'PROCESS NORMAL • PROTECTION CHANNEL DISAGREEMENT':S.running?'NORMAL OPERATION':'NORMAL / READY'; const ifaceProtectLamp=document.querySelector('[data-equip="ifaceProtect"] .lamp');if(ifaceProtectLamp){ifaceProtectLamp.classList.toggle('alarm',voteTrip(hh)&&!S.alarmAck);ifaceProtectLamp.classList.toggle('vote',hh.some(Boolean)&&!voteTrip(hh));} const pLamp=document.querySelector('#power .lamp');if(pLamp)pLamp.classList.toggle('alarm',S.powerTrip&&!S.alarmAck);
  const h=231,waterH=Math.min(h,S.level/ENG.top*h),emulH=25,oilH=Math.max(0,h-waterH);$('water').style.height=waterH+'px';$('emul').style.height=emulH+'px';$('emul').style.bottom=Math.max(0,waterH-emulH/2)+'px';$('oil').style.height=oilH+'px';$('oil').style.bottom=waterH+'px';$('ifaceLine').style.bottom=waterH+'px';document.querySelectorAll('.levelRef[data-ref-level]').forEach(el=>{el.style.bottom=(Number(el.dataset.refLevel)/ENG.top*h)+'px'});if($('currentLevelFlag')){$('currentLevelFlag').style.bottom=Math.min(h,waterH)+'px';$('currentLevelFlag').textContent='PV '+Math.round(S.level)+' mm';} const vstate=S.level>=ENG.lahh?'trip':S.level>=ENG.lah?'high':S.level<=ENG.lal?'low':'normal'; $('vessel').classList.remove('state-normal','state-low','state-high','state-trip'); $('vessel').classList.add('state-'+vstate); if($('currentLevelFlag')){$('currentLevelFlag').className='currentLevelFlag state-'+vstate;} const proc=document.querySelector('.process'); if(proc)proc.classList.toggle('esd-active',S.tripped);
  if($('procLtNode')){const pv=Math.round(S.level),out=Math.round(S.lv),err=pv-ENG.sp; $('procLtTxt').textContent='PV '+pv+' mm'; $('procLicTxt').textContent=Math.abs(err)<20?'AT SP':err>0?'PV > SP • OUT ↑':'PV < SP • OUT ↓'; $('procLvTxt').textContent=out+'% OPEN'; $('procValveTravel').style.width=out+'%'; $('procValveTravelLabel').textContent=out+'%'; ['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).className='controlNode'); ['procArrow1','procArrow2'].forEach(id=>$(id).className='controlArrow'); if(S.tripped){['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).classList.add('trip'));}else if(Math.abs(err)<20){['procLtNode','procLicNode','procLvNode'].forEach(id=>$(id).classList.add('live'));}else{ $('procLtNode').classList.add(pv>=ENG.lah?'high':'live'); $('procLicNode').classList.add('live'); $('procLvNode').classList.add('live'); $('procArrow1').classList.add('live'); $('procArrow2').classList.add('live'); }}
  if($('dcsPv')){const pv=Math.round(S.level),out=Math.round(S.lv);$('dcsPv').textContent=pv+' mm';$('dcsOut').textContent=out+'%';$('dcsValve').textContent=out+'%';$('dcsValveState').textContent=out+'%';$('dcsPvBar').style.width=Math.min(100,pv/2000*100)+'%';$('dcsSpBar').style.width=(ENG.sp/2000*100)+'%';$('dcsOutBar').style.width=out+'%';$('dcsLall').classList.toggle('active',pv<=300);$('dcsLal').classList.toggle('active',pv<=450);$('dcsLah').classList.toggle('active',pv>=1500);$('dcsLahh').classList.toggle('active',pv>=1700);if($('lahStage')){$('lahStage').classList.toggle('active',pv>=1500&&pv<1700);$('lahhStage').classList.toggle('active',pv>=1700);$('lahStageState').textContent=pv>=1500?(pv>=1700?'PASSED':'ACTIVE — ALARM ONLY'):'CLEAR';$('lahhStageState').textContent=pv>=1700?(voteTrip(hh)?'ACTIVE — 2oo3 ESD':'HH PRESENT'):'CLEAR';}let ls=pv>=1700?'LAHH':pv>=1500?'LAH':pv<=300?'LALL':pv<=450?'LAL':'NORMAL';$('dcsLevelState').textContent=ls;$('dcsLevelState').className=ls==='NORMAL'?'good':'bad';$('dcsPowerState').textContent=S.powerTrip?'TRIPPED':'RUN';$('dcsPowerState').className=S.powerTrip?'bad':'good';$('dcsTripState').textContent=S.tripped?'INITIATED':'CLEAR';$('dcsTripState').className=S.tripped?'bad':'good';$('dcsUv81').textContent=S.uvClosed?'CLOSED':'OPEN';$('dcsUv82').textContent=S.uvClosed?'CLOSED':'OPEN';$('dcsUv81').className=S.uvClosed?'bad':'good';$('dcsUv82').className=S.uvClosed?'bad':'good';
@@ -479,8 +492,59 @@ function setMode(mode){
  log('UI MODE — '+mode.toUpperCase()+(mode==='training'?' (hidden-fault scenario engine available)':''));render();
 }
 function acknowledgeAlarm(){if(S.tripped||S.level>=ENG.lah){S.alarmAck=true;log('OPERATOR ACTION — visible alarm acknowledged. Process/protection state unchanged.');render()}else log('Alarm acknowledge selected — no active visible alarm.');}
-$('startBtn').onclick=start;$('normalBtn').onclick=normal;$('resetBtn').onclick=()=>{reset();setMode('normal');};$('ackBtn').onclick=acknowledgeAlarm;document.querySelectorAll('.mode[data-mode]').forEach(b=>b.onclick=()=>b.dataset.mode==='normal'?normal():setMode(b.dataset.mode));
+$('startBtn').onclick=()=>exploreAction('run');$('normalBtn').onclick=normal;$('resetBtn').onclick=()=>{reset();setMode('normal');};$('ackBtn').onclick=acknowledgeAlarm;document.querySelectorAll('.mode[data-mode]').forEach(b=>b.onclick=()=>switchLearningMode(b.dataset.mode));
 if($('hiddenScenarioStart'))$('hiddenScenarioStart').onclick=startHiddenTrainingScenario;if($('scenarioStabilizeBtn'))$('scenarioStabilizeBtn').onclick=stabilizeTrainingScenario;if($('scenarioDebriefBtn'))$('scenarioDebriefBtn').onclick=revealScenarioDebrief;if($('scenarioReplayBtn'))$('scenarioReplayBtn').onclick=replayTraining;document.querySelectorAll('.diagBtn').forEach(b=>b.onclick=()=>submitDiagnosis(b.dataset.diag));
+
+
+// Bounded learner input adapter. Model, voting and effects remain in the existing engine.
+function exploreAction(action,channel,value){
+ if(S.mode!=='normal'||S.tripped)return;
+ if(action==='run'){if(!S.running){S.running=true;log('EXPLORE — simulation running.');render();}return;}
+ if(action==='pause'){if(S.running){S.running=false;log('EXPLORE — simulation paused; inputs locked.');render();}return;}
+ if(!S.running)return;
+ if(action==='raise')S.fault=true;
+ else if(action==='remove')S.fault=false;
+ else if(action==='clear')clearInstrumentFault();
+ else if(action==='bias'){
+  if(!['A','B','C'].includes(channel)||!['normal','high'].includes(value))return;
+  const tag='DS-LIT-102'+channel;
+  if(value==='high')setInstrumentFault(tag,'BIAS_HIGH',SIM.trainingChannelBias);else clearInstrumentFault(tag);
+ }else return;
+ log('EXPLORE — '+({raise:'interface disturbance introduced.',remove:'process disturbance removed; observing recovery.',clear:'channel biases cleared.',bias:'DS-LIT-102'+channel+' simulated bias '+(value==='high'?'enabled.':'cleared.')}[action]));
+ render();
+}
+function switchLearningMode(mode){
+ if(!['normal','training'].includes(mode)||mode===S.mode)return;
+ reset();setMode(mode);
+ document.querySelector('[data-view="'+(mode==='training'?'trainingView':'processView')+'"]').click();
+ log('LEARNING MODE — previous experiment/exercise ended; clean '+(mode==='normal'?'Explore':'Training')+' session.');
+}
+function renderSimulationLab(){
+ const explore=S.mode==='normal',editable=explore&&S.running&&!S.tripped,vals=channelValues(),hh=channels(),count=hh.filter(Boolean).length;
+ $('startBtn').textContent=!S.tripped&&!S.running&&S.t>0?'Resume':'Run';$('startBtn').disabled=!explore||S.running||S.tripped;
+ $('pauseBtn').disabled=!editable;
+ $('channelExperiment').hidden=!explore;
+ ['raiseBtn','removeDisturbanceBtn','clearBiasBtn'].forEach(id=>$(id).disabled=!editable);
+ document.querySelectorAll('.labBias').forEach(el=>{el.disabled=!editable;el.value=S.instrumentFaults['DS-LIT-102'+el.dataset.channel]?.active?'high':'normal';});
+ $('resetBtn').textContent=explore?'Reset Simulation':'Training Reset';
+ $('labSummary').textContent='Actual process: '+Math.round(S.level)+' mm | Protection measurements: '+vals.map((v,i)=>'ABC'[i]+' '+v+' mm'+(hh[i]?' HH':' NORMAL')).join(' • ')+' | Vote '+count+'/3 — 2oo3 '+(voteTrip(hh)?'SATISFIED':'NOT SATISFIED')+' | '+(S.tripped?'ESD ACTIVE • Power '+(S.powerTrip?'TRIPPED':'RUN')+' • SDVs '+(S.uvClosed?'CLOSED':'OPEN'):'ESD CLEAR');
+ const feedback=!explore?'Training owns simulation inputs. Explore controls are unavailable.':S.tripped?'Protective trip — select Reset Simulation or Normal Operation to begin another experiment.':!S.running?(S.t>0?'Paused — inspect any view, Resume or Reset. Input changes are locked.':'Ready — select Run to begin.'):(S.fault?'Interface disturbance active.':'No process disturbance — existing model maintains or recovers toward 650 mm.')+(Object.keys(S.instrumentFaults).length?' Simulated channel bias active; compare measurements.':'');
+ const announcement=feedback+' Vote '+count+'/3; '+(S.tripped?'protection active; power '+(S.powerTrip?'tripped':'running')+'; SDVs '+(S.uvClosed?'closed':'open'):'protection clear')+'.';
+ if($('labFeedback').textContent!==announcement)$('labFeedback').textContent=announcement;
+ document.body.classList.toggle('exploreStopped',!S.running);
+ syncSignalMotion();
+}
+// Presentation only: synchronize both existing and newly rebuilt SVG timelines.
+function syncSignalMotion(){
+ document.querySelectorAll('#processView .process svg').forEach(svg=>{
+  if(!svg.querySelector('animateMotion'))return;
+  if(S.running){if(svg.animationsPaused())svg.unpauseAnimations();}
+  else if(!svg.animationsPaused())svg.pauseAnimations();
+ });
+}
+new MutationObserver(syncSignalMotion).observe(document.querySelector('#processView .process'),{childList:true,subtree:true});
+$('pauseBtn').onclick=()=>exploreAction('pause');$('raiseBtn').onclick=()=>exploreAction('raise');$('removeDisturbanceBtn').onclick=()=>exploreAction('remove');$('clearBiasBtn').onclick=()=>exploreAction('clear');
+document.querySelectorAll('.labBias').forEach(el=>el.onchange=()=>exploreAction('bias',el.dataset.channel,el.value));
 
 const EFFECT_LABEL={POWER_TRIP:'DS-TR-101 power-unit trip',INLET_SDV_CLOSE:'DS-SDV-101 close',OUTLET_SDV_CLOSE:'DS-SDV-102 close'};
 const stateBadge=(txt,bad=false)=>`<div class="fpState ${bad?'trip':''}">${txt}</div>`;

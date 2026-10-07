@@ -44,6 +44,7 @@ async function watch(context,strict=true){
   return route.continue();
  });
  const page=await context.newPage();page.setDefaultTimeout(10000);
+ page.on('requestfailed',r=>errors.push({kind:'resource',message:r.url()+' '+r.failure()?.errorText,strict}));
  page.on('pageerror',e=>errors.push({kind:'runtime',message:e.message,strict}));
  page.on('console',m=>{if(m.type()==='error')errors.push({kind:'console',message:m.text(),strict});});
  page.on('response',r=>{if(r.status()>=400)errors.push({kind:'http',message:`${r.status()} ${r.url()}`,strict});});
@@ -110,6 +111,7 @@ async function beginScenario(page){
  assert.match(await page.locator('#scenarioBanner').innerText(),/SCENARIO ACTIVE/);
  assert.ok(await page.locator('#scenarioStabilizeBtn').isDisabled());
  assert.ok(!(await page.locator('#scenarioDebriefBtn').isVisible()));
+ assert.ok(!(await page.locator('#channelExperiment').isVisible()));
  await publicOnly(page);
 }
 async function investigate(page){
@@ -186,7 +188,7 @@ try{
   assert.equal(await page.evaluate(()=>S.scenario.id),'');assert.equal(await page.evaluate(()=>S.mode),'training');
   assert.ok(!(await page.locator('#scenarioDebrief').isVisible()));
   await page.locator('#hiddenScenarioStart').click();assert.equal(await page.evaluate(()=>S.scenario.active),true);
-  await page.locator('[data-mode="normal"]').click();await clean(page,true);
+  await nav(page,'processView');await page.locator('#normalBtn').click();await clean(page,true);
   await beginScenario(page);await nav(page,'processView');await page.locator('#resetBtn').click();await clean(page,false);
   await page.screenshot({path:`${output}/reset-${viewport.width}.png`,fullPage:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
@@ -197,7 +199,7 @@ try{
   assert.equal(await page.evaluate(()=>S.tripped),false);
   await page.locator('#voteMini').scrollIntoViewIfNeeded();
   await page.screenshot({path:`${output}/process-single-${viewport.width}.png`,fullPage:true});
-  await page.locator('[data-mode="normal"]').click();await clean(page,true);
+  await nav(page,'processView');await page.locator('#normalBtn').click();await clean(page,true);
   await page.evaluate(()=>{Math.random=()=>0.1;});
   // Exercise the genuine trip and both reset paths at every supported viewport.
   await beginScenario(page);await nav(page,'processView');
@@ -212,15 +214,85 @@ try{
   await page.screenshot({path:`${output}/process-reset-${viewport.width}.png`,fullPage:true});
   await beginScenario(page);await nav(page,'processView');await page.clock.runFor(33000);
   await visualizationAgrees(page);assert.equal(await page.evaluate(()=>S.tripped),true);
-  await page.locator('[data-mode="normal"]').click();await clean(page,true);
+  await nav(page,'processView');await page.locator('#normalBtn').click();await clean(page,true);
   await page.clock.runFor(4000);await visualizationAgrees(page);
   results.push({viewport,status:'PASS',scenario:'S01 recovery, trip visualization, replay, tripped Reset and Normal Operation',equipmentDialogs:7});
   await context.close();check(`${viewport.width}x${viewport.height}: six views, seven dialogs, trends, investigation, recovery/debrief, trip visualization/state agreement, replay and resets`);
  }
+ // Real browser time verifies SMIL independently of the accelerated model clock.
+ for(const viewport of [{width:1440,height:900},{width:768,height:1024},{width:390,height:844},{width:430,height:932}]){
+  const cx=await browser.newContext({viewport});const p=await watch(cx);await p.goto(base+'/labs/desalter/');
+  const motion=async active=>{
+   await p.waitForFunction(active=>{const svgs=[...document.querySelectorAll('#processView .process svg')].filter(s=>s.querySelector('animateMotion'));return svgs.length>0&&svgs.every(s=>s.animationsPaused()===!active);},active);
+   const sample=()=>p.evaluate(()=>[...document.querySelectorAll('#processView .process svg')].filter(s=>s.querySelector('animateMotion')).map(s=>({id:s.id,time:s.getCurrentTime()})));
+   const a=await sample();await p.waitForTimeout(180);const b=await sample();
+   for(const x of a){const y=b.find(y=>y.id===x.id);assert.ok(y);if(active)assert.ok(y.time>x.time);else assert.equal(y.time,x.time);}
+  };
+  const snap=async name=>p.screenshot({path:`${output}/p2-${viewport.width}-${name}.png`,fullPage:true});
+  await motion(false);await snap('ready');await p.locator('#startBtn').click();await motion(true);
+  await p.evaluate(()=>{window.announcementChanges=0;new MutationObserver(ms=>window.announcementChanges+=ms.length).observe(document.getElementById('labFeedback'),{childList:true,subtree:true,characterData:true});});
+  await p.locator('#raiseBtn').click();await p.waitForTimeout(100);const changes=await p.evaluate(()=>window.announcementChanges);const level=await p.evaluate(()=>S.level);
+  await p.waitForTimeout(1100);assert.ok(await p.evaluate(v=>S.level>v,level));assert.equal(await p.evaluate(()=>window.announcementChanges),changes);assert.ok(changes>0);
+  await p.locator('#pauseBtn').click();await motion(false);const frozen=await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history]);await p.waitForTimeout(500);assert.deepEqual(await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history]),frozen);assert.match(await p.locator('#labFeedback').innerText(),/Paused/);await snap('paused');
+  await p.locator('#startBtn').click();await motion(true);await p.waitForFunction(t=>S.t>t,frozen[2]);await snap('resumed');
+  await p.locator('#resetBtn').click();await motion(false);await clean(p,false);
+  await p.locator('#startBtn').click();for(const c of ['A','B'])await p.locator(`.labBias[data-channel="${c}"]`).selectOption('high');await visualizationAgrees(p);assert.equal(await p.evaluate(()=>S.running),false);await motion(false);assert.match(await p.locator('#labFeedback').innerText(),/protection active/);await snap('trip');
+  await p.locator('#normalBtn').click();await clean(p,true);await motion(true);await p.locator('#resetBtn').click();await clean(p,false);await motion(false);await snap('reset');await publicOnly(p);
+  await cx.close();check(`P2 ${viewport.width}x${viewport.height}: real-time SVG READY/run/pause/resume/trip/reset; transition-only announcements`);
+ }
+ // M1: every experiment uses public input controls; state is read only for assertions.
+ for(const viewport of [{width:1440,height:900},{width:768,height:1024},{width:390,height:844},{width:430,height:932}]){
+  const cx=await browser.newContext({viewport});const p=await watch(cx);
+  await cx.addInitScript(()=>{Math.random=()=>0.1;});
+  await p.clock.install();await p.goto(base+'/labs/desalter/');await p.clock.pauseAt(new Date(Date.now()+1000));
+  const snap=async name=>{await nav(p,'processView');await p.locator('.simulationLab').scrollIntoViewIfNeeded();assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await p.screenshot({path:`${output}/m1-${viewport.width}-${name}.png`,fullPage:true});};
+  const bias=async(c,value='high')=>p.locator(`.labBias[data-channel="${c}"]`).selectOption(value);
+  const fresh=async()=>{await nav(p,'processView');await p.locator('#resetBtn').click();await clean(p,false);await p.locator('#startBtn').click();};
+  await clean(p,false);await snap('normal');
+  for(const c of ['A','B','C']){
+   await fresh();await bias(c);await p.clock.runFor(500);await visualizationAgrees(p);
+   assert.deepEqual(await p.evaluate(()=>({pv:S.level,values:channelValues(),trip:S.tripped})),{pv:650,values:['A','B','C'].map(x=>x===c?1850:650),trip:false});
+   assert.match(await p.locator('#labSummary').innerText(),/Vote 1\/3 — 2oo3 NOT SATISFIED/);
+   if(c==='A')await snap('single');
+   await bias(c,'normal');assert.equal(await p.locator('#voteMiniTxt').innerText(),'0/3');
+   await bias(c);await p.locator('#clearBiasBtn').click();assert.deepEqual(await p.evaluate(()=>S.instrumentFaults),{});
+  }
+  for(const pair of [['A','B'],['A','C'],['B','C']]){
+   await fresh();for(const c of pair)await bias(c);await p.clock.runFor(4000);await visualizationAgrees(p);
+   assert.deepEqual(await p.evaluate(()=>[S.level,channels().filter(Boolean).length,S.tripped,S.powerTrip,S.uvClosed]),[650,2,true,true,true]);
+   for(const id of ['startBtn','pauseBtn','raiseBtn','removeDisturbanceBtn','clearBiasBtn'])assert.ok(await p.locator('#'+id).isDisabled());
+   assert.equal(await p.locator('.labBias:disabled').count(),3);
+   await nav(p,'dcsView');assert.equal(await p.locator('#dcsPv').innerText(),'650 mm');assert.equal(await p.locator('#dcsPowerState').innerText(),'TRIPPED');
+   await nav(p,'alarmsView');assert.match(await p.locator('#logMirror').innerText(),/C&E protective initiator asserted/);
+   await snap('pair-'+pair.join(''));
+  }
+  await fresh();await p.locator('#raiseBtn').click();await p.clock.runFor(3000);
+  assert.ok(await p.evaluate(()=>S.level>650&&S.lv>50));await snap('disturbance');
+  await p.locator('#pauseBtn').click();assert.equal(await p.locator('#readyBadge').innerText(),'PAUSED');const frozen=await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history,S.instrumentFaults]);
+  await p.clock.runFor(3000);assert.deepEqual(await p.evaluate(()=>[S.level,S.lv,S.t,S.elapsedMs,S.history,S.instrumentFaults]),frozen);
+  assert.ok(await p.locator('#raiseBtn').isDisabled());assert.equal(await p.locator('.labBias:disabled').count(),3);
+  for(const view of views.slice(0,5))await nav(p,view);await snap('paused');
+  assert.equal(await p.locator('#startBtn').innerText(),'Resume');await p.locator('#startBtn').click();await p.clock.runFor(1000);
+  assert.ok(await p.evaluate(t=>S.t>t,frozen[2]));
+  const before=await p.evaluate(()=>S.level);await p.locator('#removeDisturbanceBtn').click();assert.equal(await p.evaluate(()=>S.level),before);
+  await p.clock.runFor(20000);assert.ok(await p.evaluate(()=>Math.abs(S.level-650)<35&&!S.tripped));
+  await fresh();await p.locator('#raiseBtn').click();await p.clock.runFor(27000);
+  assert.ok(await p.evaluate(()=>S.level>=1500&&S.level<1700&&!S.tripped));
+  await nav(p,'dcsView');assert.match(await p.locator('#lahStageState').innerText(),/ALARM ONLY/);
+  await p.clock.runFor(10000);await visualizationAgrees(p);assert.equal(await p.locator('#voteMiniTxt').innerText(),'3/3');await snap('process-trip');
+  await p.locator('#normalBtn').click();await clean(p,true);await p.locator('#resetBtn').click();await clean(p,false);await snap('reset');
+  await p.locator('#startBtn').click();await bias('A');await p.locator('#raiseBtn').click();await p.clock.runFor(1000);await p.locator('#pauseBtn').click();
+  await p.locator('[data-mode="training"]').click();
+  assert.deepEqual(await p.evaluate(()=>[S.mode,S.running,S.fault,S.level,S.instrumentFaults,S.scenario.id]),['training',false,false,650,{},'']);
+  await p.locator('#hiddenScenarioStart').click();await p.clock.runFor(1000);await snap('training');assert.ok(await p.locator('#raiseBtn').isDisabled());
+  await p.locator('[data-mode="normal"]').click();await clean(p,false);
+  for(const el of await p.locator('.simulationLab button,.simulationLab select').all()){const box=await el.boundingBox();assert.ok(box.height>=44);}
+  await cx.close();check(`M1 ${viewport.width}x${viewport.height}: 0/3, every single and pair, process trip, recovery, pause, resets, mode isolation and visual evidence`);
+ }
  // S02: real start button with controlled randomness, no direct fault injection.
  const c2=await browser.newContext({viewport:{width:1440,height:900}});await c2.addInitScript(()=>{Math.random=()=>0.9;});const p2=await watch(c2);
  await p2.clock.install();await p2.goto(base+'/labs/desalter/');await p2.clock.pauseAt(new Date(Date.now()+1000));
- await beginScenario(p2);await p2.clock.runFor(2000);
+ await beginScenario(p2);await p2.clock.runFor(2000);await nav(p2,'processView');assert.ok(!(await p2.locator('#channelExperiment').isVisible()));
  assert.equal(await p2.evaluate(()=>S.scenario.id),'CORE-S02');assert.equal(await p2.evaluate(()=>S.level),650);
  assert.equal(await p2.evaluate(()=>channels().filter(Boolean).length),1);assert.equal(await p2.evaluate(()=>S.tripped),false);
  await recover(p2,'instrument');assert.equal(await p2.evaluate(()=>Object.keys(S.instrumentFaults).length),0);
@@ -243,7 +315,7 @@ try{
  await nav(pt,'alarmsView');const log=await pt.locator('#logMirror').innerText();assert.match(log,/Interface LAH reached/);assert.match(log,/C&E protective initiator asserted/);assert.match(log,/DS-SDV-102 CLOSE/);assert.match(log,/TRAINING OUTCOME/);
  await nav(pt,'trendsView');assert.ok(await pt.evaluate(()=>S.history.length>30));
  await nav(pt,'trainingView');await pt.locator('#scenarioDebriefBtn').click();assert.match(await pt.locator('#scenarioDebrief').innerText(),/TRIPPED/);
- await pt.locator('[data-mode="normal"]').click();await clean(pt,true);await pt.clock.runFor(4000);
+ await nav(pt,'processView');await pt.locator('#normalBtn').click();await clean(pt,true);await pt.clock.runFor(4000);
  assert.equal(await pt.evaluate(()=>S.tripped),false);await ct.close();check('S01: LAH alarm-only, acknowledge, HH/2oo3 trip, all final effects, live C&E, SOE, trend, debrief and trip reset');
  // Loopback routing emulates directory canonicalization only, not Firebase certification.
  const cr=await browser.newContext();const pr=await watch(cr);
