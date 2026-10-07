@@ -485,6 +485,25 @@ test("header: primary navigation is SOLVE → LEARN → SIMULATIONS → CONNECT 
   assert.equal(new Set(headerIds).size, headerIds.length, "duplicate ids in the header include");
 });
 
+test("header: excluded internal Videos routes are absent while external YouTube remains permitted", () => {
+  const internalVideo = (href) => {
+    const url = new URL(href, "https://www.instmates.com/");
+    return ["www.instmates.com", "instmates.com"].includes(url.hostname)
+      && /^\/videos(?:\/|\.html(?:\/|$)|$)/i.test(url.pathname);
+  };
+  for (const href of ["/videos", "/videos/", "/videos.html", "/videos/index.html", "/videos/gc/", "/videos/gc/example.html", "/videos?view=all", "https://www.instmates.com/videos/"]) {
+    assert.equal(internalVideo(href), true, `must reject ${href}`);
+  }
+  for (const href of [YOUTUBE_CHANNEL, "https://www.youtube.com/watch?v=example", "https://youtu.be/example", "/knowledge/"]) {
+    assert.equal(internalVideo(href), false, `must permit ${href}`);
+  }
+  for (const href of hrefs(HEADER_HTML)) assert.equal(internalVideo(href), false, `excluded header route: ${href}`);
+  const more = HEADER_HTML.match(/<div class="dropdown-menu">([\s\S]*?)<\/div>/)[1];
+  assert.deepEqual(hrefs(more), ["/explore.html", "/knowledge/", "/knowledge/field/", "/knowledge/analyzers/", "/technology/gas-chromatography/", "/case-studies/", "/profiles/", "/community/", "/blog/", "/feed/"]);
+  assert.ok(FOOTER_HTML.includes(YOUTUBE_CHANNEL));
+  assert.ok(HOME_HTML.includes(YOUTUBE_CHANNEL));
+});
+
 test("footer: tagline, real site links, official YouTube and LinkedIn links with new-tab indication, legal links", () => {
   assert.ok(FOOTER_HTML.includes("Share Technology · Learn Techniques · Grow Together."));
   const links = FOOTER_HTML.match(/<nav class="footer-links"[\s\S]*?<\/nav>/)[0];

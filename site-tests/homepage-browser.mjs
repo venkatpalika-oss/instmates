@@ -12,6 +12,24 @@ import { readFile, mkdir, writeFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+// Lexical containment only: preserve the server's existing symlink assumptions.
+function isWithinRoot(root, file, paths = path) {
+ const relative = paths.relative(root, file);
+ return relative !== '..' && !relative.startsWith('..' + paths.sep) && !paths.isAbsolute(relative);
+}
+// Exercise Node's actual POSIX and Windows path implementations, without spoofing the OS.
+for (const [paths, publicRoot] of [[path.posix, '/qa/public/'], [path.win32, 'C:\\qa\\public\\']]) {
+ assert.equal(isWithinRoot(publicRoot, paths.resolve(publicRoot, './'), paths), true, 'root / request');
+ assert.equal(isWithinRoot(publicRoot, paths.resolve(publicRoot, './assets/js/includes.js'), paths), true, 'public descendant');
+ assert.equal(isWithinRoot(publicRoot, paths.resolve(publicRoot, '..'), paths), false, 'parent traversal');
+ assert.equal(isWithinRoot(publicRoot, paths.resolve(publicRoot, '../private/file.html'), paths), false, 'outside descendant');
+ assert.equal(isWithinRoot(publicRoot, paths.resolve(publicRoot, '../public-sibling/file.html'), paths), false, 'prefix sibling escape');
+}
+assert.equal(isWithinRoot('C:\\qa\\public', 'D:\\private\\file.html', path.win32), false, 'different Windows drive');
+if (process.argv.includes('--path-check-only')) {
+ console.log('Path containment: 11/11 PASS (POSIX and Windows semantics)');
+ process.exit(0);
+}
 const require=createRequire(import.meta.url);
 const {chromium}=require('playwright');
 const {default:AxeBuilder}=require(process.env.HOME_AXE_MODULE || '@axe-core/playwright');
@@ -22,7 +40,7 @@ const server=createServer(async(req,res)=>{
  try {
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
   let file=path.resolve(root,'.'+pathname);
-  if(file!==root.replace(/\/$/,'') && !file.startsWith(root)) {res.writeHead(403).end();return;}
+  if(!isWithinRoot(root, file)) {res.writeHead(403).end();return;}
   try { if((await stat(file)).isDirectory())file=path.join(file,'index.html'); }
   catch { file=file.replace(/\/$/,'')+'.html'; }
   const data=await readFile(file);
@@ -81,6 +99,56 @@ try {
  assert.ok(await page.locator('.main-nav').isVisible());
  assert.ok(await page.locator('.main-nav a[href="/simulations/"]').isVisible());
  assert.ok(await page.locator('.main-nav a[href="/login.html"]').isVisible());check('shared desktop navigation and signed-out account actions');
+ // P1B.3: shared navigation only; all account/network fixtures remain intercepted.
+ const retainedMore=['/explore.html','/knowledge/','/knowledge/field/','/knowledge/analyzers/','/technology/gas-chromatography/','/case-studies/','/profiles/','/community/','/blog/','/feed/'];
+ const noInternalVideos=async()=>{
+  const hrefs=await page.locator('.siteHeader a[href]').evaluateAll(es=>es.map(e=>e.getAttribute('href')));
+  for(const href of hrefs){
+   const url=new URL(href,base);
+   assert.ok(!([new URL(base).hostname,'www.instmates.com','instmates.com'].includes(url.hostname)&&/^\/videos(?:\/|\.html(?:\/|$)|$)/i.test(url.pathname)),`excluded header destination: ${href}`);
+  }
+  for(const id of ['userMenuBtn','myProfileLink','editProfileLink','logoutBtn'])assert.equal(await page.locator(`#${id}`).count(),1);
+ };
+ for(const width of [1440,1024]){
+  await page.setViewportSize({width,height:1000});
+  assert.ok(await page.locator('.siteHeader').isVisible());
+  const more=page.locator('.main-nav .dropdown-toggle');
+  await more.focus();assert.ok(await more.evaluate(e=>e===document.activeElement));
+  const links=page.locator('.main-nav .nav-dropdown').first().locator('.dropdown-menu a');
+  assert.deepEqual(await links.evaluateAll(es=>es.map(e=>e.getAttribute('href'))),retainedMore);
+  for(let i=0;i<retainedMore.length;i++){
+   await page.keyboard.press('Tab');
+   assert.ok(await links.nth(i).isVisible());
+   assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('href')),retainedMore[i]);
+   assert.ok((await context.request.get(base+retainedMore[i])).ok(),`retained More target ${retainedMore[i]}`);
+  }
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('href')),'/login.html');
+  await noInternalVideos();await overflow();await shot(`header-desktop-${width}`);
+  check(`P1B.3 ${width}px: keyboard More traversal, retained targets, account hooks and no Videos`);
+ }
+ for(const width of [430,320]){
+  await page.setViewportSize({width,height:844});await page.evaluate(()=>scrollTo(0,0));
+  const menu=page.locator('.mobile-menu'),summary=menu.locator('summary');
+  await summary.focus();await page.keyboard.press('Enter');assert.ok(await menu.evaluate(e=>e.open));
+  const links=menu.locator('a:visible');
+  for(const link of await links.all()){
+   const box=await link.boundingBox();assert.ok(box&&box.x>=0&&box.x+box.width<=width+1,`mobile link clipped at ${width}`);
+  }
+  await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('href')),'/#solve');
+  assert.ok(await menu.locator('a[href="/simulations/"]').isVisible());
+  await noInternalVideos();await overflow();await shot(`header-mobile-${width}`);
+  await summary.focus();await page.keyboard.press('Enter');assert.equal(await menu.evaluate(e=>e.open),false);
+  check(`P1B.3 ${width}px: keyboard mobile Menu, wrapping and no Videos`);
+ }
+ for(const selector of ['#watch a[href*="youtube.com"]','.siteFooter a[href*="youtube.com"]']){
+  assert.ok(await page.locator(selector).count()>0);
+  for(const link of await page.locator(selector).all()){
+   assert.equal(await link.getAttribute('target'),'_blank');
+   assert.match(await link.getAttribute('rel'),/noopener/);
+  }
+ }
+ check('P1B.3 external YouTube links preserved without external navigation or account actions');
  assert.match(await page.locator('[data-home=discussions]').innerText(),/No discussions yet/);
  assert.doesNotMatch(await page.locator('[data-home=discussions]').innerText(),/Ask the first|post now/i);check('honest empty community state and no immediate posting promise');
  // Verify real local destinations rather than only href strings.
