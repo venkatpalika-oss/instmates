@@ -180,14 +180,29 @@ try {
  assert.equal(await page.locator('.sim-topic-list a').count(),0);
  assert.equal(await page.locator('img').evaluateAll(es=>es.every(e=>e.complete && e.naturalWidth>0)),true);
  check('local technical icons load and unavailable topics have no fake links');
- assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),2);
+ assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),3);
  await page.setViewportSize({width:1440,height:1100});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-desktop.png`,fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-mobile.png`,fullPage:true});
+ for(const viewport of [{width:1440,height:900},{width:768,height:1024},{width:390,height:844},{width:430,height:932}]){
+  await page.setViewportSize(viewport);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  const card=page.locator('#process-measurement .sim-card[href="/labs/desalter/"]');await card.focus();assert.ok(await card.evaluate(e=>e===document.activeElement));assert.ok(await card.isVisible());
+  await page.screenshot({path:`${output}/catalog-${viewport.width}.png`,fullPage:true});
+ }
+ check('Desalter catalog card visible and keyboard reachable at all four viewports');
+
  if(process.env.SIM_AXE_MODULE) {
   const {default:AxeBuilder}=require(process.env.SIM_AXE_MODULE);
   const result=await new AxeBuilder({page}).include('#main').analyze();assert.equal(result.violations.length,0,JSON.stringify(result.violations.map(v=>v.id)));check('axe automated accessibility: landing main');
  }
+ await page.locator('#process-measurement .sim-card[href="/labs/desalter/"]').click();
+ await page.waitForURL('**/labs/desalter/');assert.ok(await page.locator('.publicBoundary').isVisible());assert.equal(await page.locator('#startBtn').innerText(),'Run');
+ await page.goto(`${base}/simulations/`);await page.waitForSelector('.sim-card');
+ assert.equal(await page.locator('#lab-count').innerText(),'3 working simulations');
+ assert.match(await page.locator('#process-measurement .sim-topic-list').innerText(),/Level[\s\S]*AVAILABLE IN LAB DESALTER/);
+ const fallbackContext=await browser.newContext({javaScriptEnabled:false});const fallback=await fallbackContext.newPage();await fallback.goto(`${base}/simulations/`);
+ await fallback.locator('noscript a[href="/labs/desalter/"]').click();await fallback.waitForURL('**/labs/desalter/');assert.ok(await fallback.locator('.publicBoundary').isVisible());await fallbackContext.close();
+ check('Desalter classification, card and no-JavaScript fallback reach public simulator');
  await page.locator('.sim-card[href="/simulations/4-20ma-loop/"]').click();await page.waitForFunction(()=>document.getElementById('display-reading')?.textContent==='5.00 bar');check('catalog links to working simulation');
  assert.deepEqual(external,[]);assert.deepEqual(errors,[]);check('zero external requests, HTTP errors, console errors or runtime errors');
  await writeFile(`${output}/browser-results.json`,JSON.stringify({checks,errors,external},null,2));
