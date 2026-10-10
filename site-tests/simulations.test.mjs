@@ -57,7 +57,7 @@ test('challenge scenarios have modeled evidence and independent expected outcome
  const results=CHALLENGES.map(c=>run(c.state));close(results[0].displayed,2.5);close(results[1].expected,16);close(results[1].loop,4);assert.equal(results[2].displayed,null);
 });
 test('catalog publishes only working routes and four honest categories',()=>{
- assert.equal(CATEGORIES.length,4);assert.equal(SIMULATIONS.length,3);
+ assert.equal(CATEGORIES.length,4);assert.equal(SIMULATIONS.length,4);
  for(const s of SIMULATIONS) assert.ok(existsSync(new URL(`../public${s.href}index.html`,import.meta.url)));
 });
 test('learning pages isolate Firebase, retain shared shell and offer progressive fallback',()=>{
