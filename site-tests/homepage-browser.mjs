@@ -44,6 +44,8 @@ export const getDocs=async()=>{${fixture==='error'?"throw Object.assign(Error('F
 export const getCountFromServer=async()=>({data:()=>({count:0})});
 export const doc=(...a)=>a,getDoc=async()=>({exists:()=>false}),serverTimestamp=()=>null;
 export const setDoc=()=>{throw Error('Forbidden test write')},addDoc=setDoc;`;
+// PR #59: the AdSense ownership tag is the only approved non-GA external script. Exact URL, no host wildcard.
+const APPROVED_EXTERNAL_SCRIPTS=new Set(['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9595967643816732']);
 await context.route('**/*',async route=>{
  const u=new URL(route.request().url());
  if(u.origin===base)return route.continue();
@@ -54,7 +56,7 @@ await context.route('**/*',async route=>{
  else if(u.pathname.endsWith('/firebase-firestore.js'))body=fsStub();
  else if(u.pathname.endsWith('/firebase-storage.js'))body='export const getStorage=()=>({});';
  else if(u.hostname==='fonts.googleapis.com')contentType='text/css';
- else if(u.hostname!=='www.googletagmanager.com')throw Error(`Unexpected external request ${u}`);
+ else if(u.hostname!=='www.googletagmanager.com'&&!APPROVED_EXTERNAL_SCRIPTS.has(u.href))throw Error(`Unexpected external request ${u}`);
  return route.fulfill({status:200,contentType,headers:{"access-control-allow-origin":"*"},body});
 });
 const page=await context.newPage();
