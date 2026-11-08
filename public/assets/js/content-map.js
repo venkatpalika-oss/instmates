@@ -133,13 +133,11 @@ export const RESOURCES = Object.freeze([
   r("/case-studies/analyzers/", "Analyzer Case Studies", "index", { m: ["analytical"] }),
   r("/case-studies/analyzers/yokogawa/", "Yokogawa Analyzer Case Studies", "index", { m: ["analytical"], t: ["gas-chromatography"] }),
   r("/case-studies/analyzers/yokogawa/gc8000/", "GC8000 Error Codes (600–699)", "index", { m: ["analytical"], t: ["gas-chromatography"] }),
-  r("/case-studies/analyzers/yokogawa/gc8000/error-602-slow-oven-warmup/", "Yokogawa GC8000 Error 602 – Slow Oven Warm-Up", "case", { m: ["analytical"], t: ["gas-chromatography"], a: ["troubleshooting"] }),
   r("/case-studies/analyzers/yokogawa/gc8000/error-603-oven-failure/", "Yokogawa GC8000 Error 603 – Oven Heater Failure", "case", { m: ["analytical"], t: ["gas-chromatography"], a: ["troubleshooting"] }),
   r("/case-studies/analyzers/yokogawa/gc8000/error-604-oven-overtemperature/", "Yokogawa GC8000 Error 604 – Oven Overtemperature", "case", { m: ["analytical"], t: ["gas-chromatography"], a: ["troubleshooting"] }),
   r("/case-studies/analyzers/yokogawa/gc8000/error-605-carrier-gas-low-pressure/", "Yokogawa GC8000 Error 605 – Carrier Gas Low Pressure", "case", { m: ["analytical"], t: ["gas-chromatography"], a: ["troubleshooting"] }),
   r("/case-studies/gc-baseline-drift/", "GC Baseline Drift After Calibration", "case", { m: ["analytical"], t: ["gas-chromatography"], a: ["troubleshooting", "calibration"] }),
   r("/case-studies/rosemount-3051-zero-shift/", "Emerson Rosemount 3051 Zero Shift After Shutdown", "case", { m: ["pressure"], a: ["troubleshooting"] }),
-  r("/case-studies/emerson-rosemount-3414-3417-wet-leg-zero-shift/", "Emerson Rosemount 3414/3417 – Wet Leg Zero Shift", "case", { m: ["pressure", "level"], a: ["troubleshooting"] }),
   r("/case-studies/krohne-altosonic-v12-velocity-mismatch/", "KROHNE ALTOSONIC V12 – Velocity Path Mismatch", "case", { m: ["flow"], a: ["troubleshooting"] }),
 
   // ---------------- Blog ----------------

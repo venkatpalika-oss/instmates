@@ -548,3 +548,25 @@ test("simulation spotlight: real route, five local assets, no duplicate model or
  }
  assert.doesNotMatch(spot,/<input|<canvas|12\.00|script/);
 });
+
+test("field discovery excludes withdrawn cases and retains the reported Error 603 case", () => {
+  const gc = "/case-studies/analyzers/yokogawa/gc8000/";
+  const sitemap = readFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), "utf8");
+  for (const retired of [
+    gc + "error-602-slow-oven-warmup/",
+    "/case-studies/emerson-rosemount-3414-3417-wet-leg-zero-shift/"
+  ]) {
+    assert.equal(resolveUrl(retired), null);
+    assert.ok(!RESOURCES.some(({ path }) => path === retired));
+    assert.ok(!sitemap.includes(retired));
+  }
+  assert.equal(featuredCases()[0].path, gc + "error-603-oven-failure/");
+  assert.match(sectionHtml("field"), /Read the reported symptoms, diagnostic checks and outcome\./);
+  for (const retained of [
+    gc + "error-603-oven-failure/", gc + "error-604-oven-overtemperature/",
+    gc + "error-605-carrier-gas-low-pressure/", "/case-studies/rosemount-3051-zero-shift/"
+  ]) {
+    assert.ok(resolveUrl(retained), retained);
+    assert.ok(RESOURCES.some(({ path }) => path === retained), retained);
+  }
+});

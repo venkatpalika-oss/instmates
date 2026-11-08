@@ -53,7 +53,7 @@ export const TERMS = Object.freeze([
   // ---------- Facet 1: MEASUREMENT (what is measured) ----------
   term("measurement", "pressure", "Pressure", { aliases: ["pt", "dp", "pressure transmitter"], coverage: "supported", tag: "Pressure", entry: "/knowledge/field/pressure/" }),
   term("measurement", "flow", "Flow", { aliases: ["dp flow", "flow measurement", "flowmeter"], coverage: "supported", tag: "Flow", entry: "/knowledge/field/flow/" }),
-  term("measurement", "level", "Level", { aliases: ["level measurement", "wet leg"], coverage: "partial", note: "One case study (wet-leg zero shift); no dedicated pages yet." }),
+  term("measurement", "level", "Level", { aliases: ["level measurement", "wet leg"], coverage: "none" }),
   term("measurement", "temperature", "Temperature", { aliases: ["rtd", "thermocouple"], coverage: "none" }),
   term("measurement", "signals-loops", "Signals & loops", { aliases: ["4-20ma", "4–20 ma", "4-20 ma", "hart", "current loop", "loop wiring", "wiring", "grounding"], coverage: "supported", tag: "4-20mA", entry: "/knowledge/field/signals/4-20ma/" }),
   term("measurement", "analytical", "Analytical", { aliases: ["analyzer", "analyzers", "process analyzer"], coverage: "supported", tag: "Analyzers", entry: "/knowledge/analyzers/", note: "Umbrella for the analytical technologies in facet 2." }),
