@@ -9,6 +9,11 @@
         content="4–20 mA scaling and calculation explained for instrument technicians. Convert mA to engineering units and engineering units to mA using formulas, worked examples, and field logic." />
 
   <link rel="stylesheet" href="/assets/css/style.css?v=2026-01-22" />
+  <style>
+    body[data-page="field-420ma-scaling"] main pre {
+      white-space: pre-wrap;
+    }
+  </style>
   <link rel="canonical" href="https://www.instmates.com/knowledge/field/signals/4-20ma/scaling-calculation/" />
 </head>
 
@@ -62,7 +67,7 @@ Process Value =
   </pre>
 
   <p class="muted">
-    This formula works for pressure, temperature, flow, level, and analyzers.
+    Use this formula when the current is linear and direct-acting with respect to the displayed quantity.
   </p>
 </section>
 
@@ -163,6 +168,64 @@ mA =
 
 <!-- ====================================================== -->
 <section class="panel">
+  <h2>Predict the current</h2>
+  <p>Before opening the lab, predict the current at each process value:</p>
+  <ul>
+    <li>Pressure: 7.5 bar on a 0 to 10 bar transmitter.</li>
+    <li>Temperature: −10 °C on a −20 to +20 °C transmitter.</li>
+  </ul>
+  <details>
+    <summary>Show worked answers</summary>
+    <p><strong>Pressure: 16 mA.</strong> At 7.5 bar the transmitter is at 75% of span.
+      Add 75% of 16 mA to the 4 mA baseline: 4 + 12 = 16 mA.</p>
+    <p><strong>Temperature: 8 mA.</strong> Start at −20 °C. A rise of 10 °C covers
+      one quarter of the 40 °C span, so the current is 4 + 4 = 8 mA.
+      Check in reverse: −20 + (8 − 4) ÷ 16 × 40 = −10 °C.
+      A negative temperature can give a normal loop current.</p>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>Diagnose a DCS scaling mismatch</h2>
+  <p>Simulated exercise: the pressure is 7.5 bar and the receiver sees 16 mA.
+    How could the DCS display 3.75 bar?</p>
+  <p><a href="/simulations/4-20ma-loop/">Test your prediction in LAB 01</a>
+    (simulator requires JavaScript). Use Back to return to the guide.</p>
+  <ol>
+    <li>Select <strong>Reset workbench</strong>. Keep <strong>Follow process value</strong>,
+      fault <strong>Normal</strong> and the 0 to 10 bar transmitter range.
+      Set <strong>Process value</strong> to 7.5. Compare the ideal output, loop current,
+      DCS input and engineering indication.</li>
+    <li>Under <strong>PLC / DCS scale</strong>, leave <strong>Value at 4 mA</strong> at 0.
+      Change only <strong>Value at 20 mA</strong> from 10 to 5. Which reading changes?
+      Does the receiver flag the current as bad?</li>
+    <li>Select <strong>Match transmitter range</strong> without changing the pressure.
+      Compare the same readings again.</li>
+  </ol>
+  <details>
+    <summary>Check the three readings</summary>
+    <p>The indication goes from 7.5 bar to 3.75 bar and back to 7.5 bar.
+      Ideal output, loop current and DCS input stay at 16 mA throughout.
+      Both receiver scales interpret 16 mA as 75%: on the incorrect scale,
+      75% of 5 bar is 3.75 bar. Current quality stays GOOD because the current is in range;
+      the receiver cannot tell from current alone which engineering endpoints you intended.</p>
+  </details>
+</section>
+
+<section class="panel">
+  <h2>Verify the result and its limits</h2>
+  <p>Explain why matching the range restored the indication without changing the current.
+    Then try the temperature prediction: select °C, set LRV to −20, URV to +20
+    and process value to −10. Select <strong>Match transmitter range</strong>.
+    Expect 8 mA and −10 °C. Changing the unit label alone does not convert the numbers.</p>
+  <p>LAB 01 assumes linear, direct-acting, steady-state operation. It does not model
+    wiring resistance, supply compliance, square-root extraction or process dynamics.
+    Agreement here does not verify a real instrument’s calibration, measure its current
+    or diagnose a field fault. All changes in this exercise are on the virtual bench.</p>
+  <p>Scaling reference: <a href="https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z000000PASfSAO&amp;l=en-US">NI: How Can I Scale My 4-20mA Sensor Data?</a></p>
+</section>
+
+<section class="panel">
   <h2>Common Field Errors</h2>
 
   <ul class="checklist">
@@ -180,8 +243,7 @@ mA =
 
   <p class="muted">
     Always confirm transmitter range from nameplate or configuration
-    before adjusting PLC/DCS scaling.  
-    Most “wrong readings” are configuration errors — not hardware faults.
+    before adjusting PLC/DCS scaling.
   </p>
 </section>
 
