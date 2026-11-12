@@ -180,7 +180,7 @@ try {
  assert.equal(await page.locator('.sim-topic-list a').count(),0);
  assert.equal(await page.locator('img').evaluateAll(es=>es.every(e=>e.complete && e.naturalWidth>0)),true);
  check('local technical icons load and unavailable topics have no fake links');
- assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),3);
+ assert.equal(await page.locator('.category').count(),4);assert.equal(await page.locator('.sim-card').count(),4);
  await page.setViewportSize({width:1440,height:1100});await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-desktop.png`,fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/landing-mobile.png`,fullPage:true});
@@ -198,7 +198,7 @@ try {
  await page.locator('#process-measurement .sim-card[href="/labs/desalter/"]').click();
  await page.waitForURL('**/labs/desalter/');assert.ok(await page.locator('.publicBoundary').isVisible());assert.equal(await page.locator('#startBtn').innerText(),'Run');
  await page.goto(`${base}/simulations/`);await page.waitForSelector('.sim-card');
- assert.equal(await page.locator('#lab-count').innerText(),'3 working simulations');
+ assert.equal(await page.locator('#lab-count').innerText(),'4 working simulations');
  assert.match(await page.locator('#process-measurement .sim-topic-list').innerText(),/Level[\s\S]*AVAILABLE IN LAB DESALTER/);
  const fallbackContext=await browser.newContext({javaScriptEnabled:false});const fallback=await fallbackContext.newPage();await fallback.goto(`${base}/simulations/`);
  await fallback.locator('noscript a[href="/labs/desalter/"]').click();await fallback.waitForURL('**/labs/desalter/');assert.ok(await fallback.locator('.publicBoundary').isVisible());await fallbackContext.close();
