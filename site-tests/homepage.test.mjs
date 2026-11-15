@@ -223,15 +223,46 @@ test("home: no second taxonomy, no legacy scripts, no denied collections, no thi
   assert.doesNotMatch(HOME_JS, /collection\(db, "(users|caseStudies|questions|answers)"\)/);
   assert.doesNotMatch(HOME_CODE, /\.(innerHTML|outerHTML)\s*=|insertAdjacentHTML\(|document\.write\(/, "user data must be rendered with textContent");
   const scriptSrcs = [...HOME_HTML.matchAll(/<script[^>]*\bsrc="([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(scriptSrcs.filter((s) => /^https?:/.test(s)), ["https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"], "no new third-party scripts");
+  // AdSense ownership tag (PR #59, ads not activated) and the existing GA4 tag are the only approved external scripts.
+  // Exact, order-sensitive list: no wildcard, no further third-party script.
+  const approvedExternalScripts = [
+    "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9595967643816732",
+    "https://www.googletagmanager.com/gtag/js?id=G-L57QYT7H9F"
+  ];
+  assert.deepEqual(scriptSrcs.filter((s) => /^https?:/.test(s)), approvedExternalScripts, "only approved Google scripts may load on homepage");
   assert.equal((HOME_HTML.match(/<video\b|<iframe\b|<object\b|<embed\b/g) || []).length, 0, "no video, iframe, object or embed element");
   const external = [...HOME_HTML.matchAll(/(?:href|src|srcset)="(https?:\/\/[^"\s]+)/g)].map((m) => m[1])
-    .filter((u) => !/^https:\/\/(www\.instmates\.com|fonts\.googleapis\.com|www\.googletagmanager\.com|schema\.org)/.test(u));
+    .filter((u) => !/^https:\/\/(www\.instmates\.com|fonts\.googleapis\.com|www\.googletagmanager\.com|schema\.org)/.test(u))
+    .filter((u) => !approvedExternalScripts.includes(u));
   assert.deepEqual([...new Set(external)].sort(), [
     LINKEDIN_COMPANY,
     YOUTUBE_CHANNEL,
     ...Object.keys(VERIFIED_VIDEOS).map((id) => `https://www.youtube.com/watch?v=${id}`)
   ].sort(), "only the official channel, the three verified videos and the LinkedIn page are external");
+});
+
+test("home: Consent Mode v2 defaults are denied for EEA/UK/CH and run before every Google tag", () => {
+  const head = HOME_HTML.slice(0, HOME_HTML.indexOf("</head>"));
+  const defaultAt = head.indexOf("gtag('consent', 'default'");
+  const adsenseAt = head.indexOf("pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
+  const gtagJsAt = head.indexOf("www.googletagmanager.com/gtag/js");
+  const configAt = head.indexOf("gtag('config'");
+  assert.ok(defaultAt > -1, "consent default block missing");
+  assert.ok(defaultAt < adsenseAt && defaultAt < gtagJsAt && defaultAt < configAt, "consent default must precede the AdSense tag, gtag.js and gtag('config')");
+  assert.equal((HOME_HTML.match(/function gtag\s*\(/g) || []).length, 1, "exactly one gtag() definition");
+  assert.equal((HOME_HTML.match(/gtag\('consent', 'default'/g) || []).length, 1, "exactly one consent default command");
+  const block = head.slice(defaultAt, head.indexOf("</script>", defaultAt));
+  for (const signal of ["ad_storage", "ad_user_data", "ad_personalization", "analytics_storage"]) {
+    assert.match(block, new RegExp(`${signal}:\\s*'denied'`), `${signal} must default to denied`);
+  }
+  assert.doesNotMatch(block, /'granted'/, "no signal may default to granted");
+  assert.match(block, /wait_for_update:\s*500/, "wait_for_update must give the CMP time to send its update");
+  const region = block.match(/region:\s*\[([\s\S]*?)\]/);
+  assert.ok(region, "defaults must be regional");
+  const codes = [...region[1].matchAll(/'([A-Z]{2})'/g)].map((m) => m[1]).sort();
+  const EEA_UK_CH = ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "IS", "LI", "NO", "GB", "CH"].sort();
+  assert.deepEqual(codes, EEA_UK_CH, "region list must be exactly the EEA, UK and Switzerland");
+  assert.ok(HOME_HTML.includes("gtag('config', 'G-L57QYT7H9F', { send_page_view: true });"), "GA4 configuration preserved");
 });
 
 test("home: community reads are the existing safe public reads only (no writes, no new index, public filter present)", () => {
