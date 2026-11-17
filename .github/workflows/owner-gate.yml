@@ -5,17 +5,27 @@
 # owner/CTO applies solely as an explicit merge authorization for the current
 # head. When the head changes (synchronize), the label is removed by this
 # workflow and the check FAILS until the owner re-authorizes the new head, so
-# an authorization for head A can never authorize head B. The label counts
-# only if its most recent application was made by a listed owner/CTO user
-# account (AUTHORIZERS); a label applied by a bot, app or other account FAILS.
+# an authorization for head A can never authorize head B.
+#
+# The label alone is not trusted. The check also requires that:
+#   1. the most recent application of the label was made by a User account
+#      listed in AUTHORIZERS (a bot, app or other account FAILS), and
+#   2. that application happened after the current head SHA reached this PR,
+#      measured by the earliest run of this workflow for this PR and head.
+#      A stale label left behind by a failed removal therefore FAILS.
+# Any missing evidence or API error FAILS (fail closed).
 #
 # Once branch protection requires this check (Phase B), main cannot be merged
 # — by anyone, including administrators — before the preview job and this
 # explicit authorization are green for the exact head being merged.
 #
 # Minimum permissions: contents read (none needed for code), pull-requests
-# write (remove the label on synchronize), issues read (read the PR timeline
-# to see who applied the label). No PAT, no external secret.
+# write (remove the label on synchronize), issues read (PR timeline: who
+# applied the label and when), actions read (this workflow's runs: when the
+# head reached the PR). No PAT, no external secret.
+#
+# Deterministic tests: site-tests/owner-gate.test.mjs executes the script
+# below against mocked GitHub responses.
 
 name: Owner merge gate
 
@@ -29,6 +39,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: read
+  actions: read
 
 concurrency:
   group: owner-gate-${{ github.event.pull_request.number }}
@@ -47,11 +58,13 @@ jobs:
             // Accounts allowed to authorize a merge. Changing this list is itself
             // a change to main and therefore passes through this gate.
             const AUTHORIZERS = ['venkatpalika-oss'];
+            const WORKFLOW_FILE = 'owner-gate.yml';
             const pr = context.payload.pull_request;
             const { owner, repo } = context.repo;
             const head = pr.head.sha;
             const action = context.payload.action;
             const has = (pr.labels || []).some((l) => l.name === LABEL);
+            const deny = (why) => core.setFailed(`Head ${head} is not authorized: ${why}`);
 
             core.info(`event=${action} pr=#${pr.number} head=${head} labelled=${has}`);
 
@@ -62,28 +75,60 @@ jobs:
                   await github.rest.issues.removeLabel({ owner, repo, issue_number: pr.number, name: LABEL });
                   core.notice(`Head changed to ${head}: '${LABEL}' removed; the owner/CTO must re-authorize this head.`);
                 } catch (err) {
+                  // Not fatal for safety: a label left behind is rejected below as stale.
                   core.warning(`Could not remove '${LABEL}': ${err.message}`);
                 }
               }
-              core.setFailed(`Head ${head} is not authorized. Apply '${LABEL}' only under an explicit owner/CTO merge authorization for this head.`);
+              deny(`the head changed. Apply '${LABEL}' only under an explicit owner/CTO merge authorization for this head.`);
               return;
             }
 
-            if (has) {
-              // The label alone is not proof: any token or app with issue or
-              // pull-request write access can apply it. Only the most recent
-              // application counts, and it must come from an owner/CTO user.
-              const events = await github.paginate(github.rest.issues.listEventsForTimeline, {
-                owner, repo, issue_number: pr.number, per_page: 100,
-              });
-              const last = events.filter((e) => e.event === 'labeled' && e.label && e.label.name === LABEL).pop();
-              const actor = last && last.actor;
-              if (!actor || actor.type !== 'User' || !AUTHORIZERS.includes(actor.login)) {
-                const who = actor ? `${actor.login} (${actor.type})` : 'unknown';
-                core.setFailed(`Head ${head} is not authorized: '${LABEL}' was last applied by ${who}, not by an owner/CTO account (${AUTHORIZERS.join(', ')}).`);
-                return;
-              }
-              core.notice(`Head ${head} is authorized for merge via '${LABEL}' applied by ${actor.login}.`);
+            if (!has) {
+              deny(`'${LABEL}' is absent. Apply it only under an explicit owner/CTO merge authorization for this head.`);
               return;
             }
-            core.setFailed(`Head ${head} is not authorized: '${LABEL}' is absent. Apply it only under an explicit owner/CTO merge authorization for this head.`);
+
+            // Evidence: who applied the label and when (PR timeline), and when the
+            // current head reached this PR (runs of this workflow for this head).
+            let events;
+            let runs;
+            try {
+              events = await github.paginate(github.rest.issues.listEventsForTimeline, {
+                owner, repo, issue_number: pr.number, per_page: 100,
+              });
+              runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+                owner, repo, workflow_id: WORKFLOW_FILE, head_sha: head, event: 'pull_request', per_page: 100,
+              });
+            } catch (err) {
+              deny(`authorization evidence could not be read (${err.message}); failing closed.`);
+              return;
+            }
+
+            const last = (Array.isArray(events) ? events : [])
+              .filter((e) => e && e.event === 'labeled' && e.label && e.label.name === LABEL)
+              .pop();
+            const actor = last && last.actor;
+            if (!actor || actor.type !== 'User' || !AUTHORIZERS.includes(actor.login)) {
+              const who = actor ? `${actor.login} (${actor.type})` : 'an unknown account';
+              deny(`'${LABEL}' was last applied by ${who}, not by an owner/CTO account (${AUTHORIZERS.join(', ')}).`);
+              return;
+            }
+
+            const labelledAt = Date.parse(last.created_at);
+            const headSeen = (Array.isArray(runs) ? runs : [])
+              .filter((r) => r && r.head_sha === head
+                && (r.pull_requests || []).some((p) => p && p.number === pr.number))
+              .map((r) => Date.parse(r.created_at))
+              .filter(Number.isFinite);
+            if (!Number.isFinite(labelledAt) || headSeen.length === 0) {
+              deny(`the time of authorization or the time this head reached PR #${pr.number} could not be established; failing closed.`);
+              return;
+            }
+
+            const headSince = Math.min(...headSeen);
+            if (!(labelledAt > headSince)) {
+              deny(`'${LABEL}' was applied at ${last.created_at}, before head ${head} reached this PR at ${new Date(headSince).toISOString()}. The authorization is stale; re-authorize this head.`);
+              return;
+            }
+
+            core.notice(`Head ${head} is authorized for merge via '${LABEL}' applied by ${actor.login} at ${last.created_at}.`);
