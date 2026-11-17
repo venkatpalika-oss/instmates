@@ -13,10 +13,15 @@ feature branch → PR → `build_and_preview` succeeds → owner/CTO explicitly 
 | State | Result |
 |---|---|
 | No `merge-authorized` label | FAIL |
-| `merge-authorized` present | PASS |
+| `merge-authorized` present, last applied by a listed owner/CTO user | PASS |
+| `merge-authorized` present, last applied by any other account, bot or app | FAIL |
 | Head changes (synchronize) | label removed by the workflow, FAIL until re-authorized |
 
-Authorization is therefore per head SHA. Permissions: `contents: read`, `pull-requests: write` (label removal only); `GITHUB_TOKEN` only, no PAT, no bypass token.
+Authorization is therefore per head SHA. Permissions: `contents: read`, `pull-requests: write` (label removal only), `issues: read` (PR timeline); `GITHUB_TOKEN` only, no PAT, no bypass token.
+
+### Label-actor check
+
+The label alone is not proof of authorization: any token or GitHub App with issue or pull-request write access (including CI tokens and AI agents) can apply it. The gate reads the PR timeline and accepts the label only if its **most recent** `labeled` event was made by a `User` account in the workflow's `AUTHORIZERS` list (currently `venkatpalika-oss`). Changing that list is a change to `main` and passes through this gate.
 
 ## Phase B — branch protection (separate authorization; not active yet)
 
