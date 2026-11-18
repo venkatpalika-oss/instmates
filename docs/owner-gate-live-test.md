@@ -9,3 +9,5 @@ applied by the owner, not a merge authorization.
 
 Step 1: initial head (expected: owner-gate FAIL without label, PASS after the
 owner applies the label).
+
+Step 4: head change (expected: label removed by the workflow, owner-gate FAIL).
